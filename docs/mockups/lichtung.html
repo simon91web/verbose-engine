@@ -1,0 +1,1170 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup: Lichtung – Tagwerk und Siedlung</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..600&family=Geist+Mono:wght@400..500&display=swap">
+<style>/* Werte aus cansol-design/tokens.css */
+/* ---------- Hell ---------- */
+:root {
+    --radius: 5px;
+    --dauer-kurz: 120ms;
+    --dauer: 200ms;
+    --dauer-flaeche: 280ms;
+    --kurve-hinein: cubic-bezier(0.2, 0, 0, 1);
+    --kurve-hinaus: cubic-bezier(0.4, 0, 1, 1);
+
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(1 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --primary: oklch(0.24 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.53 0 0);
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.24 0 0 / 75%);
+    --ok: oklch(0.52 0.14 150);
+    --info: oklch(0.52 0.15 255);
+    --hinweis: oklch(0.54 0.116 70);
+    --handlung: oklch(0.55 0.21 27);
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+
+    --viz-1: #2a78d6;
+    --viz-2: #eb6834;
+    --viz-3: #1baf7a;
+    --viz-4: #eda100;
+    --viz-5: #e87ba4;
+}
+/* ---------- Dunkel (Standard) ---------- */
+.dark {
+    color-scheme: dark;
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.205 0 0);
+    --popover: oklch(0.205 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.92 0 0);
+    --primary-foreground: oklch(0.18 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.92 0 0 / 45%);
+    --ok: oklch(0.72 0.16 150);
+    --info: oklch(0.70 0.13 250);
+    --hinweis: oklch(0.76 0.15 62);
+    --handlung: oklch(0.68 0.2 25);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+
+    --viz-1: #3987e5;
+    --viz-2: #d95926;
+    --viz-3: #199e70;
+    --viz-4: #c98500;
+    --viz-5: #d55181;
+}
+</style>
+<style>
+  /* ---------- Mockup-Seite ---------- */
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #6f6f6f; font: 14px/1.45 'Geist', system-ui, sans-serif; color: #fff; }
+  h1 { font-size: 16px; font-weight: 600; margin: 40px 0 4px; }
+  h1:first-child { margin-top: 0; }
+  .erkl { margin: 0 0 12px; max-width: 900px; color: #eee; }
+  .erkl code { font-family: 'Geist Mono', monospace; font-size: 12px; }
+  .reihe { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+  figure { margin: 0; display: grid; gap: 8px; }
+  figcaption { font-size: 12px; color: #eee; }
+  .regel { background: var(--background); color: var(--foreground); border-radius: 8px; padding: 24px 32px; max-width: 900px; margin-top: 40px; }
+  .regel h2 { font-size: 16px; margin: 0 0 8px; }
+  .regel li { margin: 4px 0; }
+
+  /* ---------- Grundlagen im Gerät ---------- */
+  .geraet { background: var(--background); color: var(--foreground); border-radius: 8px; overflow: hidden; position: relative; display: flex; flex-direction: column; flex: none; font: 14px/1.45 'Geist', system-ui, sans-serif; }
+  .geraet button { font-family: inherit; color: inherit; }
+  .geraet :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .laptop { width: 1100px; height: 700px; }
+  .handy { width: 390px; height: 844px; }
+  .ic { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .ic.g20 { width: 20px; height: 20px; }
+  .muted { color: var(--muted-foreground); }
+  .t-kpi { font-size: 30px; line-height: 36px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .t-h1 { font-size: 24px; line-height: 32px; font-weight: 600; letter-spacing: -0.015em; margin: 0; }
+  .t-h2 { font-size: 16px; line-height: 24px; font-weight: 600; margin: 0; }
+  .klein { font-size: 12px; line-height: 16px; }
+  .t-strong { font-weight: 500; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* Knöpfe */
+  .knopf { height: 42px; padding: 0 16px; border-radius: 5px; font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid transparent; background: none; cursor: pointer; white-space: nowrap; transition: background-color var(--dauer-kurz), opacity var(--dauer-kurz); }
+  .knopf.primaer { background: var(--primary); color: var(--primary-foreground); }
+  .knopf.primaer:hover:not(:disabled) { opacity: .9; }
+  .knopf.umriss { border-color: var(--input); }
+  .knopf.umriss:hover:not(:disabled), .knopf.geist:hover:not(:disabled) { background: var(--muted); }
+  .knopf.kompakt { height: 34px; padding: 0 12px; }
+  .knopf:disabled { opacity: .45; cursor: not-allowed; }
+  .handy .knopf.kompakt { height: 44px; }
+  .handy .knopf { min-height: 44px; }
+  .symk { width: 34px; height: 34px; border-radius: 5px; display: grid; place-items: center; color: var(--muted-foreground); background: none; border: 0; cursor: pointer; position: relative; padding: 0; flex: none; transition: background-color var(--dauer-kurz), color var(--dauer-kurz); }
+  .symk:hover:not(:disabled), .symk[aria-pressed="true"] { background: var(--muted); color: var(--foreground); }
+  .symk:disabled { opacity: .4; cursor: not-allowed; }
+  .handy .symk { width: 44px; height: 44px; }
+  .zahl { position: absolute; top: 2px; right: 2px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px; background: var(--foreground); color: var(--background); font-size: 12px; line-height: 16px; font-weight: 500; }
+  .handy .zahl { top: 6px; right: 6px; }
+  .label { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 8px; border: 1px solid var(--border); border-radius: 999px; font-size: 12px; color: var(--muted-foreground); white-space: nowrap; }
+  .dark .label { border-color: var(--input); }
+  .zustand { display: inline-flex; align-items: center; height: 24px; padding: 0 8px; border-radius: 999px; font-size: 12px; font-weight: 500; border: 1px solid var(--border); color: var(--muted-foreground); white-space: nowrap; }
+  .dark .zustand { border-color: var(--input); }
+  .zustand.ok { color: var(--ok); background: color-mix(in oklch, var(--ok) 10%, transparent); border-color: color-mix(in oklch, var(--ok) 40%, transparent); }
+  .wortmarke { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; }
+  .wortmarke .ic { width: 20px; height: 20px; }
+  .balken { height: 4px; border-radius: 999px; background: var(--muted); overflow: hidden; }
+  .balken > i { display: block; height: 100%; width: 0; background: var(--info); border-radius: inherit; transition: width var(--dauer) linear, background-color var(--dauer-kurz); }
+  .balken.neutral > i { background: var(--foreground); }
+  .balken.voll > i { background: var(--ok); }
+  .ava { width: 24px; height: 24px; border-radius: 999px; background: var(--muted); display: grid; place-items: center; font-size: 12px; font-weight: 500; flex: none; color: var(--muted-foreground); }
+  .ava.gross { width: 32px; height: 32px; font-size: 14px; color: var(--foreground); }
+
+  /* ---------- Laptop: Seitenleiste, Kopfzeile ---------- */
+  .app { flex: 1; display: flex; min-height: 0; position: relative; }
+  .nav { width: 56px; flex: none; background: var(--sidebar); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 8px; gap: 16px; overflow: hidden; transition: width var(--dauer-flaeche) var(--kurve-hinein); }
+  .app.leiste-auf .nav { width: 240px; }
+  .nav-oben { height: 36px; display: none; align-items: center; padding: 0 8px; }
+  .app.leiste-auf .nav-oben { display: flex; }
+  .nav .gruppe { display: grid; gap: 4px; }
+  .nav .unten { margin-top: auto; display: grid; gap: 4px; }
+  .nl { display: flex; align-items: center; gap: 12px; height: 40px; padding: 0 10px; border-radius: 5px; color: var(--sidebar-foreground); white-space: nowrap; cursor: pointer; }
+  .nl .ic { width: 20px; height: 20px; color: var(--muted-foreground); }
+  .nl:hover, .nl.an { background: var(--sidebar-accent); }
+  .nl.an { font-weight: 500; }
+  .nl.an .ic { color: var(--foreground); }
+  .nl .txt { opacity: 0; transition: opacity var(--dauer); }
+  .app.leiste-auf .nl .txt { opacity: 1; }
+  .nl .ava { margin: 0 -2px; }
+  .rechts { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .kz { height: 52px; display: flex; align-items: center; gap: 16px; padding: 0 16px; border-bottom: 1px solid var(--border); flex: none; }
+  .app.leiste-auf .kz-logo { display: none; }
+  .trenn { width: 1px; height: 20px; background: var(--border); }
+  .bereich { font-size: 16px; font-weight: 600; }
+  .reiter { display: flex; gap: 4px; align-self: stretch; }
+  .reiter a, .hreiter a { display: flex; align-items: center; padding: 0 12px; color: var(--muted-foreground); border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; cursor: pointer; }
+  .reiter a.an, .hreiter a.an { color: var(--foreground); font-weight: 500; border-color: var(--foreground); }
+  .kz-rechts { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .suche { width: 240px; height: 34px; border: 1px solid var(--input); border-radius: 5px; display: flex; align-items: center; gap: 8px; padding: 0 8px 0 12px; color: var(--muted-foreground); cursor: text; }
+  .suche span { flex: 1; }
+  kbd { font: 12px 'Geist Mono', ui-monospace, monospace; color: var(--muted-foreground); border: 1px solid var(--border); border-radius: 3px; padding: 0 4px; }
+  .koerper { flex: 1; display: flex; min-height: 0; }
+
+  /* Arbeitsfläche und Werkzeugblatt */
+  .flaeche { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 16px 24px; gap: 8px; }
+  .fl-oben { display: flex; align-items: center; gap: 12px; min-height: 34px; }
+  .fl-werkzeuge { margin-left: auto; display: flex; gap: 8px; }
+  .brett-platz { flex: 1; min-height: 0; display: grid; place-items: center; }
+  .brett-platz svg { width: 100%; height: 100%; display: block; touch-action: none; user-select: none; -webkit-user-select: none; }
+  .rm { height: 32px; flex: none; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 500; white-space: nowrap; overflow: hidden; }
+  .rm.leise { color: var(--muted-foreground); }
+  .rm > .ic { color: var(--ok); }
+  .blatt { width: 400px; flex: none; border-left: 1px solid var(--border); background: var(--card); overflow: hidden; transition: width var(--dauer-flaeche) var(--kurve-hinein), border-color var(--dauer-flaeche); }
+  .blatt.zu { width: 0; border-left-color: transparent; transition-duration: 190ms; transition-timing-function: var(--kurve-hinaus); }
+  .blatt-innen { width: 400px; height: 100%; display: flex; flex-direction: column; }
+  .blatt-kopf { min-height: 56px; flex: none; display: flex; align-items: center; gap: 8px; padding: 0 16px 0 24px; border-bottom: 1px solid var(--border); }
+  .blatt-kopf .symk { margin-left: auto; }
+  .blatt-rumpf { flex: 1; overflow: auto; padding: 24px; display: grid; gap: 24px; align-content: start; scrollbar-gutter: stable; }
+  .blatt-fuss { flex: none; padding: 16px 24px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+  .status { margin-right: auto; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted-foreground); min-height: 16px; white-space: nowrap; }
+
+  /* Inhalte der Blätter */
+  .abschnitt { display: grid; gap: 12px; }
+  .gk { font-size: 12px; line-height: 16px; color: var(--muted-foreground); font-weight: 500; }
+  .kennzahl { display: flex; align-items: baseline; gap: 8px; }
+  .liste { display: grid; gap: 4px; }
+  .zeile { display: flex; align-items: center; gap: 8px; min-height: 32px; }
+  .zeile .wert { margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 500; white-space: nowrap; }
+  .trennlinie { height: 1px; background: var(--border); margin: 8px 0; }
+  .chip { width: 28px; height: 24px; flex: none; display: grid; place-items: center; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); background: color-mix(in oklch, var(--c) 20%, var(--card)); color: var(--sym); }
+  .chip.tier, .chip.hindernis, .chip.leer { background: var(--muted); }
+  .chip.tier { color: var(--foreground); }
+  .chip.hindernis, .chip.leer { color: var(--muted-foreground); }
+  .chip, .rohstoff, .fleck, .ek { --sym: color-mix(in oklch, var(--c), black 25%); }
+  .dark .chip, .dark .rohstoff, .dark .fleck, .dark .ek { --sym: var(--c); }
+  .trupp-zeile { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 48px; }
+  .ladung { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+  .ladung .balken { flex: 1; }
+  .ladung span { font-size: 12px; color: var(--muted-foreground); font-variant-numeric: tabular-nums; white-space: nowrap; min-width: 80px; }
+  .knopf.faeh { min-width: 132px; }
+
+  /* ---------- Brett ---------- */
+  .kachel { transition: transform var(--dauer) var(--kurve-hinein); }
+  .kachel.ohne { transition: none; }
+  .kachel .innen { transition: opacity 120ms var(--kurve-hinaus); }
+  .kachel.weg .innen { opacity: 0; }
+  .kachel polygon { stroke-width: 2; transition: stroke var(--dauer-kurz), stroke-width var(--dauer-kurz), fill var(--dauer-kurz); }
+  .rohstoff polygon { fill: color-mix(in oklch, var(--c) 16%, var(--card)); stroke: color-mix(in oklch, var(--c) 50%, transparent); }
+  .rohstoff.r3 polygon { fill: color-mix(in oklch, var(--c) 28%, var(--card)); }
+  .sym { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .rohstoff .sym { stroke: var(--sym); }
+  .rohstoff circle { fill: var(--sym); }
+  .hindernis polygon { fill: var(--muted); stroke: var(--border); }
+  .dark .hindernis polygon { stroke: var(--input); }
+  .hindernis .sym { stroke: var(--muted-foreground); }
+  .tier polygon { fill: var(--background); stroke: color-mix(in oklch, var(--foreground) 45%, transparent); }
+  .tier .sym { stroke: var(--foreground); }
+  .kachel.gewaehlt polygon { stroke: var(--foreground); stroke-width: 5; }
+  .pfad { fill: none; stroke: var(--foreground); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; opacity: .7; pointer-events: none; }
+  .ring polygon { fill: color-mix(in oklch, var(--foreground) 10%, transparent); stroke: var(--foreground); stroke-width: 3; stroke-dasharray: 8 6; pointer-events: none; }
+
+  /* ---------- Siedlungskarte ---------- */
+  .karte-flaeche { align-items: center; }
+  .karte-platz { flex: 1; min-height: 0; display: grid; place-items: center; width: 100%; }
+  .fleck { cursor: pointer; outline: none; }
+  .fleck polygon { stroke-width: 2; transition: stroke var(--dauer-kurz), stroke-width var(--dauer-kurz); }
+  .fleck.erkundet polygon { fill: color-mix(in oklch, var(--c) 16%, var(--card)); stroke: color-mix(in oklch, var(--c) 50%, transparent); }
+  .fleck.gerodet polygon { fill: var(--card); stroke: color-mix(in oklch, var(--c) 50%, transparent); }
+  .fleck.bebaut polygon { fill: var(--muted); stroke: var(--border); }
+  .fleck.gesperrt polygon { fill: color-mix(in oklch, var(--c) 6%, var(--background)); stroke: var(--border); }
+  .fleck.nebel polygon { fill: transparent; stroke: var(--border); stroke-dasharray: 6 5; }
+  .dark .fleck.bebaut polygon, .dark .fleck.gesperrt polygon, .dark .fleck.nebel polygon { stroke: oklch(1 0 0 / 22%); }
+  .fleck.erkundet .sym, .fleck.gerodet .sym { stroke: var(--sym); }
+  .fleck.bebaut .sym { stroke: var(--foreground); }
+  .fleck.gesperrt .sym, .fleck.nebel .sym { stroke: var(--muted-foreground); }
+  .fleck text { fill: var(--foreground); font-size: 14px; font-weight: 500; }
+  .fleck.gesperrt text { fill: var(--muted-foreground); }
+  .handy .fleck text { font-size: 12px; }
+  .fleck:hover polygon { stroke: color-mix(in oklch, var(--foreground) 60%, transparent); }
+  .fleck.gewaehlt polygon { stroke: var(--foreground); stroke-width: 4; stroke-dasharray: none; }
+  .fleck:focus-visible polygon { stroke: var(--ring); stroke-width: 4; }
+  .legende { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 12px; color: var(--muted-foreground); align-items: center; }
+  .legende span { display: inline-flex; align-items: center; gap: 8px; }
+  .legende svg { width: 18px; height: 16px; flex: none; }
+  .kachel-raster { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 12px; }
+  .kr { display: flex; align-items: center; gap: 8px; min-width: 0; white-space: nowrap; }
+  .wahl { display: grid; grid-template-columns: 16px 32px minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 48px; cursor: pointer; }
+  .wahl input { width: 16px; height: 16px; accent-color: var(--primary); margin: 0; cursor: pointer; }
+  .bau-zeile { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 12px; align-items: center; min-height: 52px; }
+  .bau-zeile .kosten { font-size: 12px; color: var(--muted-foreground); }
+  .bau-zeile .knopf { grid-row: 1 / 3; grid-column: 2; min-width: 96px; }
+  .bau-zeile .kosten.fehlt { color: var(--hinweis); }
+
+  /* ---------- Handy ---------- */
+  .happ { flex: 1; display: flex; flex-direction: column; min-height: 0; position: relative; }
+  .hkz { height: 52px; flex: none; display: flex; align-items: center; padding: 0 4px 0 16px; border-bottom: 1px solid var(--border); }
+  .hkz-rechts { margin-left: auto; display: flex; }
+  .hreiter { display: flex; gap: 4px; padding: 0 8px; border-bottom: 1px solid var(--border); height: 44px; flex: none; overflow: hidden; }
+  .hinhalt { flex: 1; min-height: 0; position: relative; display: flex; flex-direction: column; overflow: hidden; }
+  .tabbar { height: 64px; flex: none; border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(5, 1fr); background: var(--background); position: relative; z-index: 3; }
+  .tab { display: grid; place-items: center; align-content: center; gap: 4px; font-size: 12px; color: var(--muted-foreground); cursor: pointer; }
+  .tab .ic { width: 20px; height: 20px; }
+  .tab.an { color: var(--foreground); font-weight: 500; }
+  .hstatus { padding: 0 4px 0 16px; flex: none; }
+  .hstatus-z1 { display: flex; align-items: center; gap: 8px; height: 48px; }
+  .hstatus-z1 .label { margin-left: auto; }
+  .hstatus-z2 { display: flex; align-items: center; gap: 8px; height: 24px; padding-right: 12px; }
+  .hstatus-z2 .balken { flex: 1; }
+  .hstatus-z2 b { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .handy .brett-platz { padding: 8px 16px 0; }
+  .handy .rm { padding: 0 16px; }
+  .platz-klein { height: 92px; flex: none; }
+  .hblatt { position: absolute; left: 0; right: 0; bottom: 0; background: var(--card); border-top: 1px solid var(--border); border-radius: 8px 8px 0 0; box-shadow: 0 -8px 24px oklch(0 0 0 / 18%); display: flex; flex-direction: column; transition: height var(--dauer-flaeche) var(--kurve-hinein); z-index: 2; }
+  .dark .hblatt { border-top-color: var(--input); }
+  .hblatt.ziehen { transition: none; }
+  .hblatt[data-stufe="klein"] .hblatt-rumpf { overflow: hidden; }
+  .griff { height: 24px; flex: none; display: grid; place-items: center; cursor: grab; touch-action: none; }
+  .griff span { width: 36px; height: 4px; border-radius: 999px; background: color-mix(in oklch, var(--muted-foreground) 60%, transparent); }
+  .hblatt-rumpf { flex: 1; min-height: 0; overflow: auto; padding: 0 16px 16px; display: grid; gap: 24px; align-content: start; }
+  .hblatt-kopf { display: flex; align-items: center; gap: 8px; min-height: 32px; }
+  .hblatt-fuss { flex: none; padding: 12px 16px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+  .hblatt-fuss .knopf { flex: 1; }
+  .ertrag-kacheln { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+  .ek { display: grid; gap: 4px; }
+  .ek-kopf { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--muted-foreground); white-space: nowrap; overflow: hidden; }
+  .ek-kopf .ic { color: var(--sym); }
+  .ek.tier .ek-kopf .ic { color: var(--foreground); }
+  .ek b { font-size: 16px; line-height: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .handy .karte-platz { padding: 8px 16px 0; align-content: start; }
+  .handy .legende { padding: 8px 16px 0; }
+
+  /* ---------- Überlagerungen und Toast ---------- */
+  .ueberlage { position: absolute; inset: 0; z-index: 10; pointer-events: none; }
+  .ueberlage.offen { pointer-events: auto; }
+  .scrim { position: absolute; inset: 0; background: oklch(0 0 0 / 35%); opacity: 0; transition: opacity var(--dauer) var(--kurve-hinein); }
+  .dark .scrim { background: oklch(0 0 0 / 60%); }
+  .ueberlage.offen .scrim { opacity: 1; }
+  .dialog { position: absolute; left: 50%; top: 50%; width: 440px; transform: translate(-50%, -48%); opacity: 0; background: var(--popover); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 10px 30px oklch(0 0 0 / 30%); display: flex; flex-direction: column; transition: opacity var(--dauer) var(--kurve-hinein), transform var(--dauer) var(--kurve-hinein); }
+  .dark .dialog { border-color: var(--input); }
+  .drawer { position: absolute; left: 0; right: 0; bottom: 0; background: var(--popover); border-radius: 8px 8px 0 0; border-top: 1px solid var(--border); display: flex; flex-direction: column; transform: translateY(100%); transition: transform var(--dauer-flaeche) var(--kurve-hinein); }
+  .ueberlage.offen .dialog { opacity: 1; transform: translate(-50%, -50%); }
+  .ueberlage.offen .drawer { transform: none; }
+  .dialog-kopf { padding: 24px 24px 0; }
+  .dialog-rumpf { padding: 16px 24px 8px; display: grid; gap: 4px; }
+  .dialog-status { padding: 0 24px; height: 20px; font-size: 12px; color: var(--muted-foreground); display: flex; align-items: center; gap: 8px; }
+  .dialog-fuss { padding: 16px 24px 24px; display: flex; gap: 8px; justify-content: flex-end; }
+  .drawer .griff { cursor: default; }
+  .drawer .dialog-kopf { padding: 0 16px; }
+  .drawer .dialog-rumpf, .drawer .dialog-status { padding-left: 16px; padding-right: 16px; }
+  .drawer .dialog-fuss { padding: 16px; }
+  .drawer .dialog-fuss .knopf { flex: 1; }
+  .toast { position: absolute; right: 24px; bottom: 24px; z-index: 20; width: 360px; background: var(--popover); color: var(--popover-foreground); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 10px 30px oklch(0 0 0 / 30%); padding: 12px 16px; display: flex; align-items: center; gap: 8px; opacity: 0; transform: translateY(8px); transition: opacity 130ms var(--kurve-hinaus), transform 130ms var(--kurve-hinaus); pointer-events: none; }
+  .dark .toast { border-color: var(--input); }
+  .toast.zeigen { opacity: 1; transform: none; pointer-events: auto; transition-duration: var(--dauer); transition-timing-function: var(--kurve-hinein); }
+  .toast .ic.ok { color: var(--ok); }
+  .toast a { margin-left: auto; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font-weight: 500; white-space: nowrap; }
+  .handy .toast { left: 16px; right: 16px; width: auto; bottom: 76px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .geraet *, .geraet *::before, .geraet *::after { transition-duration: 100ms !important; transition-property: opacity, color, background-color, border-color !important; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Lichtung – Mockup Tagwerk und Siedlung</h1>
+<p class="erkl">Entwurf zu <code>docs/konzept.md</code>. Das Brett ist spielbar: mindestens drei gleiche Nachbarn ziehen,
+  zurückziehen nimmt die letzte Wabe wieder heraus. Umschließt die Kette Felder, werden sie mitgeerntet (beim Ziehen
+  gestrichelt). Gestrüpp neben einer Kette wird gerodet, Hasen fängt nur ein Ring. Punkte unter dem Symbol = Reife,
+  der Ertrag ist ihre Summe. Fähigkeiten im Trupp laden sich durch passende Ketten auf.</p>
+
+<h1>1 · Tagwerk – Dunkel</h1>
+<p class="erkl">Laptop: Arbeitsseite mit eingeklappter Seitenleiste, Brett als Arbeitsfläche, Werkzeugblatt rechts (schließen
+  schiebt das Brett breiter). Handy: Brett in voller Breite, Blatt von unten in drei Höhen – Griff antippen oder ziehen.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Dunkel</figcaption><div class="geraet laptop dark" data-ansicht="tagwerk" data-seed="7"></div></figure>
+  <figure><figcaption>Handy 390 px · Dunkel</figcaption><div class="geraet handy dark" data-ansicht="tagwerk" data-seed="7"></div></figure>
+</div>
+
+<h1>2 · Tagwerk – Hell</h1>
+<div class="reihe">
+  <figure><figcaption>Laptop · Hell</figcaption><div class="geraet laptop" data-ansicht="tagwerk" data-seed="7"></div></figure>
+  <figure><figcaption>Handy 390 px · Hell</figcaption><div class="geraet handy" data-ansicht="tagwerk" data-seed="7"></div></figure>
+</div>
+
+<h1>3 · Tagwerk beendet – Ertrag</h1>
+<p class="erkl">Erscheint, wenn die Schritte aufgebraucht sind oder nach „Heimkehren“. Die letzte Kette lässt sich hier noch
+  zurücknehmen. „Ertrag einbringen“ zeigt kurz „Wird eingebracht …“, dann einen Toast, und der nächste Tag beginnt.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Hell · Dialog</figcaption><div class="geraet laptop" data-ansicht="tagwerk" data-seed="11" data-ende="ja"></div></figure>
+  <figure><figcaption>Handy 390 px · Dunkel · Blatt von unten</figcaption><div class="geraet handy dark" data-ansicht="tagwerk" data-seed="11" data-ende="ja"></div></figure>
+</div>
+
+<h1>4 · Siedlung – Dunkel</h1>
+<p class="erkl">Karte mit Liste (Vorbild Apple Maps): Wabenkarte der Flecken, Auswahl zeigt die Details im Werkzeugblatt bzw. im
+  Blatt von unten. Einziger Hauptknopf: „Tagwerk beginnen“. Flecken anklicken – jeder Zustand hat sein eigenes Blatt.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Dunkel</figcaption><div class="geraet laptop dark" data-ansicht="siedlung"></div></figure>
+  <figure><figcaption>Handy 390 px · Dunkel</figcaption><div class="geraet handy dark" data-ansicht="siedlung"></div></figure>
+</div>
+
+<h1>5 · Siedlung – Hell</h1>
+<div class="reihe">
+  <figure><figcaption>Laptop · Hell</figcaption><div class="geraet laptop" data-ansicht="siedlung"></div></figure>
+  <figure><figcaption>Handy 390 px · Hell</figcaption><div class="geraet handy" data-ansicht="siedlung"></div></figure>
+</div>
+
+<div class="regel">
+  <h2>Ableitungen und offene Punkte</h2>
+  <ul>
+    <li><b>(Abgeleitet) Farben auf dem Brett und der Karte.</b> Inhalt wie eine Karte (DESIGN.md §11): <code>viz-1</code> bis
+      <code>viz-5</code>, Farbe steht für eine Familie (orange Baustoff, grün Pflanze, magenta Frucht, gelb Korn und Samen,
+      blau Wasser), Symbol und Farbe sagen dasselbe. Legende: Ertragsliste bzw. Legende unter der Karte. Kein Rot.</li>
+    <li><b>(Abgeleitet) Auswahl neutral.</b> Gewählte Waben und Flecken mit Linie in Textfarbe, wie Auswahl überall (§3 Regel 2).</li>
+    <li><b>(Abgeleitet) Rückmeldung beim Ziehen an festem Platz</b> unter dem Brett – Ruhiges Layout (§9).</li>
+    <li><b>(Abgeleitet) Fallende Kacheln</b> 200 ms ohne Federn: Bewegung zeigt, woher etwas kommt (§9).</li>
+    <li><b>Frage: Wortmarke statt Cansol-Logo</b> – Lichtung ist kein Cansol-Programm.</li>
+    <li><b>Frage: Optik</b> – ruhiger Cansol-Rahmen mit buntem Brett (so wie hier) oder ein verspielterer Spiel-Look.</li>
+    <li>Werkstatt, Chronik und Einstellungen folgen im nächsten Mockup.</li>
+  </ul>
+</div>
+
+<script>
+// Symbole aus Lucide 0.469.0 (ISC)
+const ICON = {"tree-pine":"<path d=\"m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z\" /><path d=\"M12 22v-3\" />","hexagon":"<path d=\"M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\" />","house":"<path d=\"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8\" /><path d=\"M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\" />","hammer":"<path d=\"m15 12-8.373 8.373a1 1 0 1 1-3-3L12 9\" /><path d=\"m18 15 4-4\" /><path d=\"m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172V7l-2.26-2.26a6 6 0 0 0-4.202-1.756L9 2.96l.92.82A6.18 6.18 0 0 1 12 8.4V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5\" />","book-open":"<path d=\"M12 7v14\" /><path d=\"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z\" />","layout-grid":"<rect width=\"7\" height=\"7\" x=\"3\" y=\"3\" rx=\"1\" /><rect width=\"7\" height=\"7\" x=\"14\" y=\"3\" rx=\"1\" /><rect width=\"7\" height=\"7\" x=\"14\" y=\"14\" rx=\"1\" /><rect width=\"7\" height=\"7\" x=\"3\" y=\"14\" rx=\"1\" />","settings":"<path d=\"M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z\" /><circle cx=\"12\" cy=\"12\" r=\"3\" />","search":"<circle cx=\"11\" cy=\"11\" r=\"8\" /><path d=\"m21 21-4.3-4.3\" />","history":"<path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\" /><path d=\"M3 3v5h5\" /><path d=\"M12 7v5l4 2\" />","bell":"<path d=\"M10.268 21a2 2 0 0 0 3.464 0\" /><path d=\"M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326\" />","panel-left":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" /><path d=\"M9 3v18\" />","panel-right":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" /><path d=\"M15 3v18\" />","tree-deciduous":"<path d=\"M8 19a4 4 0 0 1-2.24-7.32A3.5 3.5 0 0 1 9 6.03V6a3 3 0 1 1 6 0v.04a3.5 3.5 0 0 1 3.24 5.65A4 4 0 0 1 16 19Z\" /><path d=\"M12 19v3\" />","cherry":"<path d=\"M2 17a5 5 0 0 0 10 0c0-2.76-2.5-5-5-3-2.5-2-5 .24-5 3Z\" /><path d=\"M12 17a5 5 0 0 0 10 0c0-2.76-2.5-5-5-3-2.5-2-5 .24-5 3Z\" /><path d=\"M7 14c3.22-2.91 4.29-8.75 5-12 1.66 2.38 4.94 9 5 12\" /><path d=\"M22 9c-4.29 0-7.14-2.33-10-7 5.71 0 10 4.67 10 7Z\" />","leaf":"<path d=\"M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z\" /><path d=\"M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12\" />","nut":"<path d=\"M12 4V2\" /><path d=\"M5 10v4a7.004 7.004 0 0 0 5.277 6.787c.412.104.802.292 1.102.592L12 22l.621-.621c.3-.3.69-.488 1.102-.592A7.003 7.003 0 0 0 19 14v-4\" /><path d=\"M12 4C8 4 4.5 6 4 8c-.243.97-.919 1.952-2 3 1.31-.082 1.972-.29 3-1 .54.92.982 1.356 2 2 1.452-.647 1.954-1.098 2.5-2 .595.995 1.151 1.427 2.5 2 1.31-.621 1.862-1.058 2.5-2 .629.977 1.162 1.423 2.5 2 1.209-.548 1.68-.967 2-2 1.032.916 1.683 1.157 3 1-1.297-1.036-1.758-2.03-2-3-.5-2-4-4-8-4Z\" />","shrub":"<path d=\"M12 22v-7l-2-2\" /><path d=\"M17 8v.8A6 6 0 0 1 13.8 20H10A6.5 6.5 0 0 1 7 8a5 5 0 0 1 10 0Z\" /><path d=\"m14 14-2 2\" />","rabbit":"<path d=\"M13 16a3 3 0 0 1 2.24 5\" /><path d=\"M18 12h.01\" /><path d=\"M18 21h-8a4 4 0 0 1-4-4 7 7 0 0 1 7-7h.2L9.6 6.4a1 1 0 1 1 2.8-2.8L15.8 7h.2c3.3 0 6 2.7 6 6v1a2 2 0 0 1-2 2h-1a3 3 0 0 0-3 3\" /><path d=\"M20 8.54V4a2 2 0 1 0-4 0v3\" /><path d=\"M7.612 12.524a3 3 0 1 0-1.6 4.3\" />","cloud-rain":"<path d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\" /><path d=\"M16 14v6\" /><path d=\"M8 14v6\" /><path d=\"M12 16v6\" />","undo-2":"<path d=\"M9 14 4 9l5-5\" /><path d=\"M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11\" />","x":"<path d=\"M18 6 6 18\" /><path d=\"m6 6 12 12\" />","check":"<path d=\"M20 6 9 17l-5-5\" />","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\" /><path d=\"m9 12 2 2 4-4\" />","fish":"<path d=\"M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.47-3.44 6-7 6s-7.56-2.53-8.5-6Z\" /><path d=\"M18 12v.5\" /><path d=\"M16 17.93a9.77 9.77 0 0 1 0-11.86\" /><path d=\"M7 10.67C7 8 5.58 5.97 2.73 5.5c-1 1.5-1 5 .23 6.5-1.24 1.5-1.24 5-.23 6.5C5.58 18.03 7 16 7 13.33\" /><path d=\"M10.46 7.26C10.2 5.88 9.17 4.24 8 3h5.8a2 2 0 0 1 1.98 1.67l.23 1.4\" /><path d=\"m16.01 17.93-.23 1.4A2 2 0 0 1 13.8 21H9.5a5.96 5.96 0 0 0 1.49-3.98\" />","brick-wall":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" /><path d=\"M12 9v6\" /><path d=\"M16 15v6\" /><path d=\"M16 3v6\" /><path d=\"M3 15h18\" /><path d=\"M3 9h18\" /><path d=\"M8 15v6\" /><path d=\"M8 3v6\" />","sprout":"<path d=\"M7 20h10\" /><path d=\"M10 20c5.5-2.5.8-6.4 3-10\" /><path d=\"M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z\" /><path d=\"M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z\" />","gem":"<path d=\"M6 3h12l4 6-10 13L2 9Z\" /><path d=\"M11 3 8 9l4 13 4-13-3-6\" /><path d=\"M2 9h20\" />","waves":"<path d=\"M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1\" /><path d=\"M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1\" /><path d=\"M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1\" />","bird":"<path d=\"M16 7h.01\" /><path d=\"M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20\" /><path d=\"m20 7 2 .5-2 .5\" /><path d=\"M10 18v3\" /><path d=\"M14 17.75V21\" /><path d=\"M7 18a6 6 0 0 0 3.84-10.61\" />","flame":"<path d=\"M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z\" />","warehouse":"<path d=\"M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35Z\" /><path d=\"M6 18h12\" /><path d=\"M6 14h12\" /><rect width=\"12\" height=\"12\" x=\"6\" y=\"10\" />","map-pin":"<path d=\"M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0\" /><circle cx=\"12\" cy=\"10\" r=\"3\" />","cloud-fog":"<path d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\" /><path d=\"M16 17H7\" /><path d=\"M17 21H9\" />","croissant":"<path d=\"m4.6 13.11 5.79-3.21c1.89-1.05 4.79 1.78 3.71 3.71l-3.22 5.81C8.8 23.16.79 15.23 4.6 13.11Z\" /><path d=\"m10.5 9.5-1-2.29C9.2 6.48 8.8 6 8 6H4.5C2.79 6 2 6.5 2 8.5a7.71 7.71 0 0 0 2 4.83\" /><path d=\"M8 6c0-1.55.24-4-2-4-2 0-2.5 2.17-2.5 4\" /><path d=\"m14.5 13.5 2.29 1c.73.3 1.21.7 1.21 1.5v3.5c0 1.71-.5 2.5-2.5 2.5a7.71 7.71 0 0 1-4.83-2\" /><path d=\"M18 16c1.55 0 4-.24 4 2 0 2-2.17 2.5-4 2.5\" />","lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\" /><path d=\"M7 11V7a5 5 0 0 1 10 0v4\" />","mountain":"<path d=\"m8 3 4 8 5-5 5 15H2L8 3z\" />","wheat":"<path d=\"M2 22 16 8\" /><path d=\"M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z\" /><path d=\"M7.47 8.53 9 7l1.53 1.53a3.5 3.5 0 0 1 0 4.94L9 15l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z\" /><path d=\"M11.47 4.53 13 3l1.53 1.53a3.5 3.5 0 0 1 0 4.94L13 11l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z\" /><path d=\"M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4Z\" /><path d=\"M11.47 17.47 13 19l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L5 19l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z\" /><path d=\"M15.47 13.47 17 15l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L9 15l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z\" /><path d=\"M19.47 9.47 21 11l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L13 11l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z\" />"};
+</script>
+<script>
+const NS = 'http://www.w3.org/2000/svg';
+const ic = (n, k = 'ic') => `<svg class="${k}" viewBox="0 0 24 24" aria-hidden="true">${ICON[n]}</svg>`;
+const jetzt = () => new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+
+class Zufall {
+  constructor(s) { this.s = s >>> 0; }
+  next() {
+    const a = this.s = (this.s + 0x6D2B79F5) >>> 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  }
+}
+
+// ---------- Spieldaten ----------
+const ARTEN = {
+  holz:      { name: 'Holz',     icon: 'tree-pine', farbe: '--viz-2' },
+  beeren:    { name: 'Beeren',   icon: 'cherry',         farbe: '--viz-5' },
+  kraeuter:  { name: 'Kräuter',  icon: 'leaf',           farbe: '--viz-3' },
+  nuesse:    { name: 'Nüsse',    icon: 'nut',            farbe: '--viz-4' },
+  gestruepp: { name: 'Gestrüpp', icon: 'shrub',          hindernis: true },
+  hase:      { name: 'Hase',     icon: 'rabbit',         tier: true },
+  fisch:     { name: 'Fisch',    icon: 'fish',           farbe: '--viz-1' },
+  lehm:      { name: 'Lehm',     icon: 'brick-wall',     farbe: '--viz-2' },
+  schilf:    { name: 'Schilf',   icon: 'sprout',         farbe: '--viz-3' },
+  kiesel:    { name: 'Kiesel',   icon: 'gem',            farbe: '--viz-4' },
+  schlamm:   { name: 'Schlamm',  icon: 'waves',          hindernis: true },
+  ente:      { name: 'Ente',     icon: 'bird',           tier: true },
+};
+const istRohstoff = art => !ARTEN[art].hindernis && !ARTEN[art].tier;
+const ROHSTOFFE = ['holz', 'beeren', 'kraeuter', 'nuesse'];
+const SIEDLER = [
+  { id: 'ida',   name: 'Ida',   beruf: 'Holzfällerin',    faehigkeit: 'Fällen',        laedt: 'holz',     voll: 15, tip: 'Erntet alles Holz ab Reife 2' },
+  { id: 'jonas', name: 'Jonas', beruf: 'Sammler',         faehigkeit: 'Reifen lassen', laedt: 'beeren',   voll: 12, tip: 'Beeren und Nüsse +1 Reife' },
+  { id: 'mara',  name: 'Mara',  beruf: 'Fallenstellerin', faehigkeit: 'Falle',         laedt: 'kraeuter', voll: 12, tip: 'Fängt alle Hasen auf dem Brett' },
+  { id: 'ole',   name: 'Ole',   beruf: 'Fischer',         faehigkeit: 'Netz',          laedt: 'fisch',    voll: 12, tip: 'Erntet allen Fisch einer Spalte' },
+];
+
+function chip(art) {
+  const a = ARTEN[art];
+  const k = a.hindernis ? 'hindernis' : a.tier ? 'tier' : '';
+  return `<span class="chip ${k}" ${a.farbe ? `style="--c: var(${a.farbe})"` : ''}>${ic(a.icon)}</span>`;
+}
+
+// ---------- Rahmen: Laptop und Handy ----------
+const wortmarke = () => `<span class="wortmarke">${ic('hexagon')}Lichtung</span>`;
+const navPunkt = (icon, text, an) => `<a class="nl ${an ? 'an' : ''}" title="${text}" aria-label="${text}" ${an ? 'aria-current="page"' : ''}>${ic(icon)}<span class="txt">${text}</span></a>`;
+const BEREICHE = [['hexagon', 'Tagwerk'], ['house', 'Siedlung'], ['hammer', 'Werkstatt'], ['book-open', 'Chronik']];
+
+function rahmenLaptop({ aktiv, reiter = [], inhalt }) {
+  return `<div class="app">
+    <nav class="nav" aria-label="Bereiche">
+      <div class="nav-oben">${wortmarke()}</div>
+      <div class="gruppe">${BEREICHE.map(([i, t]) => navPunkt(i, t, t === aktiv)).join('')}</div>
+      <div class="unten">${navPunkt('settings', 'Einstellungen')}<a class="nl" title="Simon" aria-label="Simon"><span class="ava">S</span><span class="txt">Simon</span></a></div>
+    </nav>
+    <div class="rechts">
+      <header class="kz">
+        <button class="symk js-leiste" title="Seitenleiste (Strg B)" aria-label="Seitenleiste umschalten">${ic('panel-left', 'ic g20')}</button>
+        <span class="kz-logo">${wortmarke()}</span><span class="trenn kz-logo"></span>
+        <span class="bereich">${aktiv}</span>
+        ${reiter.length ? `<div class="reiter">${reiter.map((r, i) => `<a class="${i ? '' : 'an'}">${r}</a>`).join('')}</div>` : ''}
+        <div class="kz-rechts">
+          <div class="suche" title="Rohstoffe, Rezepte, Gebäude, Siedler">${ic('search')}<span>Suchen</span><kbd>Strg K</kbd></div>
+          <button class="symk" title="Verlauf – Tagebuch der Siedlung" aria-label="Verlauf">${ic('history', 'ic g20')}</button>
+          <button class="symk" title="Benachrichtigungen" aria-label="Benachrichtigungen, 1 neu">${ic('bell', 'ic g20')}<span class="zahl">1</span></button>
+        </div>
+      </header>
+      <div class="koerper">${inhalt}</div>
+    </div>
+    <div class="toast" role="status"></div>
+    <div class="ueberlage"></div>
+  </div>`;
+}
+
+function rahmenHandy({ aktiv, reiter, inhalt }) {
+  return `<div class="happ">
+    <header class="hkz">${wortmarke()}<div class="hkz-rechts">
+      <button class="symk" title="Suchen" aria-label="Suchen">${ic('search', 'ic g20')}</button>
+      <button class="symk" title="Benachrichtigungen" aria-label="Benachrichtigungen, 1 neu">${ic('bell', 'ic g20')}<span class="zahl">1</span></button>
+    </div></header>
+    ${reiter ? `<div class="hreiter">${reiter.map((r, i) => `<a class="${i ? '' : 'an'}">${r}</a>`).join('')}</div>` : ''}
+    <div class="hinhalt">${inhalt}</div>
+    <nav class="tabbar" aria-label="Bereiche">${[...BEREICHE, ['layout-grid', 'Mehr']].map(([i, t]) => `<a class="tab ${t === aktiv ? 'an' : ''}">${ic(i)}<span>${t}</span></a>`).join('')}</nav>
+    <div class="toast" role="status"></div>
+    <div class="ueberlage"></div>
+  </div>`;
+}
+
+function leisteVerdrahten(el) {
+  const knopf = el.querySelector('.js-leiste');
+  if (knopf) knopf.addEventListener('click', () => el.querySelector('.app').classList.toggle('leiste-auf'));
+}
+
+function toast(el, html) {
+  const t = el.querySelector('.toast');
+  t.innerHTML = html;
+  t.classList.add('zeigen');
+  clearTimeout(t._aus);
+  t._aus = setTimeout(() => t.classList.remove('zeigen'), 5000);
+}
+
+function ueberlageOeffnen(el, handy, html) {
+  const u = el.querySelector('.ueberlage');
+  u.innerHTML = `<div class="scrim"></div><div class="${handy ? 'drawer' : 'dialog'}" role="dialog" aria-modal="true">${handy ? '<div class="griff"><span></span></div>' : ''}${html}</div>`;
+  u.getBoundingClientRect();
+  u.classList.add('offen');
+  return u;
+}
+function ueberlageSchliessen(el) {
+  const u = el.querySelector('.ueberlage');
+  if (!u.classList.contains('offen')) return;
+  u.classList.remove('offen');
+  setTimeout(() => { if (!u.classList.contains('offen')) u.innerHTML = ''; }, 300);
+}
+
+// Blatt von unten in drei Höhen: Griff antippen wechselt, Ziehen rastet ein
+function blattHoehen(blatt, hoehen, start) {
+  let stufe = start;
+  const setze = () => { blatt.style.height = hoehen[stufe]() + 'px'; blatt.dataset.stufe = stufe; };
+  setze();
+  const griff = blatt.querySelector('.griff');
+  let y0 = null, h0 = 0, bewegt = false;
+  const weiter = () => { stufe = { klein: 'halb', halb: 'ganz', ganz: 'klein' }[stufe]; setze(); };
+  griff.addEventListener('pointerdown', e => { griff.setPointerCapture(e.pointerId); y0 = e.clientY; h0 = blatt.getBoundingClientRect().height; bewegt = false; blatt.classList.add('ziehen'); });
+  griff.addEventListener('pointermove', e => {
+    if (y0 === null) return;
+    const dy = e.clientY - y0;
+    if (Math.abs(dy) > 4) bewegt = true;
+    if (bewegt) blatt.style.height = Math.max(hoehen.klein(), Math.min(hoehen.ganz(), h0 - dy)) + 'px';
+  });
+  griff.addEventListener('pointerup', () => {
+    blatt.classList.remove('ziehen');
+    if (!bewegt) { y0 = null; weiter(); return; }
+    const h = blatt.getBoundingClientRect().height;
+    stufe = Object.keys(hoehen).reduce((a, b) => Math.abs(hoehen[a]() - h) < Math.abs(hoehen[b]() - h) ? a : b);
+    y0 = null; setze();
+  });
+  griff.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); weiter(); } });
+}
+
+// ---------- Brett-Geometrie: 7 × 7 Waben, flache Oberkante, ungerade Spalten halb tiefer ----------
+const SP = 7, ZE = 7, S = 50, HH = Math.sqrt(3) * S;
+const BREITE = 11 * S, HOEHE = 7.5 * HH;
+const mitte = (c, r) => [S + c * 1.5 * S, HH / 2 + r * HH + (c % 2 ? HH / 2 : 0)];
+const ecken = s => [0, 1, 2, 3, 4, 5].map(i => { const a = Math.PI / 3 * i; return `${(s * Math.cos(a)).toFixed(1)},${(s * Math.sin(a)).toFixed(1)}`; }).join(' ');
+const POLY = ecken(S - 3);
+const nachbarn = (c, r) => (c % 2 ? [[0, -1], [0, 1], [-1, 0], [-1, 1], [1, 0], [1, 1]] : [[0, -1], [0, 1], [-1, -1], [-1, 0], [1, -1], [1, 0]])
+  .map(([dc, dr]) => [c + dc, r + dr]).filter(([x, y]) => x >= 0 && x < SP && y >= 0 && y < ZE);
+const benachbart = (a, b) => nachbarn(a[0], a[1]).some(([x, y]) => x === b[0] && y === b[1]);
+const schl = (c, r) => c * 16 + r;
+
+// ---------- Tagwerk ----------
+class Tagwerk {
+  constructor(el, { handy, seed, ende }) {
+    Object.assign(this, { el, handy, seed, tag: 14, max: 15, gerodet: 38, ziel: 60 });
+    this.ladung = { ida: 6, jonas: 9, mara: 4 };
+    this.trupp = SIEDLER.slice(0, 3);
+    el.innerHTML = handy ? this.vorlageHandy() : this.vorlageLaptop();
+    this.svg = el.querySelector('svg.brett');
+    this.schicht = this.svg.querySelector('.kacheln');
+    this.ringSchicht = this.svg.querySelector('.ring');
+    this.pfadLinie = this.svg.querySelector('.pfad');
+    this.rm = el.querySelector('.rm');
+    this.truppZeichnen();
+    this.verdrahten();
+    this.neuerTag(seed);
+    if (ende) this.endeBeispiel();
+  }
+
+  // --- Vorlagen ---
+  brettSvg() {
+    return `<svg class="brett" viewBox="-6 -6 ${BREITE + 12} ${(HOEHE + 12).toFixed(1)}" role="img" aria-label="Brett Nordwald, 7 mal 7 Waben">
+      <g class="kacheln"></g><g class="ring"></g><polyline class="pfad" points=""></polyline></svg>`;
+  }
+  zielAbschnitt() {
+    return `<div class="abschnitt"><div class="gk">Ziel des Flecks</div>
+      <div class="zeile">${chip('gestruepp')}<span>Gestrüpp roden</span><span class="wert js-ziel"></span></div>
+      <div class="balken"><i class="js-ziel-balken"></i></div></div>`;
+  }
+  vorlageLaptop() {
+    const inhalt = `
+      <section class="flaeche">
+        <div class="fl-oben">
+          <h2 class="t-h1">Nordwald</h2><span class="muted">Tag <span class="js-tag">14</span> · Frühling</span>
+          <span class="label" title="Kräuter wachsen schneller">${ic('cloud-rain')}Regen</span>
+          <div class="fl-werkzeuge">
+            <button class="symk js-zurueck" aria-label="Letzte Kette zurücknehmen">${ic('undo-2', 'ic g20')}</button>
+            <button class="symk js-blatt" aria-pressed="true" title="Werkzeugblatt" aria-label="Werkzeugblatt ein- und ausblenden">${ic('panel-right', 'ic g20')}</button>
+          </div>
+        </div>
+        <div class="brett-platz">${this.brettSvg()}</div>
+        <div class="rm" aria-live="polite"></div>
+      </section>
+      <aside class="blatt"><div class="blatt-innen">
+        <div class="blatt-kopf"><h3 class="t-h2">Tagwerk</h3><button class="symk js-blatt-zu" title="Schließen" aria-label="Werkzeugblatt schließen">${ic('x', 'ic g20')}</button></div>
+        <div class="blatt-rumpf">
+          <div class="abschnitt">
+            <div class="kennzahl"><span class="t-kpi js-schritte"></span><span class="muted">von ${this.max} Schritten</span></div>
+            <div class="balken neutral"><i class="js-schritte-balken"></i></div>
+          </div>
+          ${this.zielAbschnitt()}
+          <div class="abschnitt"><div class="gk">Ertrag</div><div class="ertrag-kacheln js-ek"></div></div>
+          <div class="abschnitt"><div class="gk">Trupp</div><div class="liste js-trupp"></div></div>
+        </div>
+        <div class="blatt-fuss"><span class="status js-status"></span><button class="knopf umriss js-heim">Heimkehren</button></div>
+      </div></aside>`;
+    return rahmenLaptop({ aktiv: 'Tagwerk', inhalt });
+  }
+  vorlageHandy() {
+    const inhalt = `
+      <div class="hstatus">
+        <div class="hstatus-z1"><h2 class="t-h2">Nordwald</h2><span class="muted">Tag <span class="js-tag">14</span></span>
+          <span class="label" title="Kräuter wachsen schneller">${ic('cloud-rain')}Regen</span>
+          <button class="symk js-zurueck" aria-label="Letzte Kette zurücknehmen">${ic('undo-2', 'ic g20')}</button></div>
+        <div class="hstatus-z2"><span class="muted">Schritte</span><b class="js-schritte"></b><span class="muted">/ ${this.max}</span><div class="balken neutral"><i class="js-schritte-balken"></i></div></div>
+      </div>
+      <div class="brett-platz">${this.brettSvg()}</div>
+      <div class="rm" aria-live="polite"></div>
+      <div class="platz-klein"></div>
+      <div class="hblatt">
+        <div class="griff" role="button" tabindex="0" aria-label="Blatt größer oder kleiner"><span></span></div>
+        <div class="hblatt-rumpf">
+          <div class="ertrag-kacheln js-ek"></div>
+          ${this.zielAbschnitt()}
+          <div class="abschnitt"><div class="gk">Trupp</div><div class="liste js-trupp"></div></div>
+          <div class="hblatt-kopf"><span class="status js-status"></span><button class="knopf umriss js-heim">Heimkehren</button></div>
+        </div>
+      </div>`;
+    return rahmenHandy({ aktiv: 'Tagwerk', inhalt });
+  }
+  truppZeichnen() {
+    this.el.querySelector('.js-trupp').innerHTML = this.trupp.map(s => `
+      <div class="trupp-zeile">
+        <span class="ava gross">${s.name[0]}</span>
+        <div><div class="t-strong">${s.name} <span class="muted">· ${s.beruf}</span></div>
+          <div class="ladung"><div class="balken js-lb-${s.id}"><i></i></div><span class="js-lt-${s.id}"></span></div></div>
+        <button class="knopf umriss kompakt faeh js-f" data-id="${s.id}">${s.faehigkeit}</button>
+      </div>`).join('');
+  }
+
+  // --- Ablauf ---
+  neuerTag(seed) {
+    this.zufall = new Zufall(seed);
+    Object.assign(this, { schritte: this.max, gerodetHeute: 0, verlauf: [], pfad: [], id: 1, ausstehend: null });
+    this.ertrag = { holz: 0, beeren: 0, kraeuter: 0, nuesse: 0, hase: 0 };
+    this.gitter = Array.from({ length: SP }, () => Array(ZE).fill(null));
+    for (let c = 0; c < SP; c++) for (let r = 0; r < ZE; r++) this.gitter[c][r] = this.ziehe();
+    this.alleNeu();
+    this.melde('');
+    this.gespeichert = jetzt();
+    this.aktualisiere();
+  }
+  zaehle(art) { let n = 0; for (const sp of this.gitter) for (const t of sp) if (t && t.art === art) n++; return n; }
+  ziehe() {
+    const z = this.zufall.next();
+    let art;
+    if (z < 0.05) art = 'hase';
+    else if (z < 0.14) art = 'gestruepp';
+    else { const w = (z - 0.14) / 0.86; art = w < 0.3 ? 'holz' : w < 0.53 ? 'beeren' : w < 0.78 ? 'kraeuter' : 'nuesse'; }
+    if (art === 'hase' && this.zaehle('hase') >= 2) art = 'kraeuter';
+    const rz = this.zufall.next();
+    return { id: this.id++, art, reife: istRohstoff(art) ? (rz < 0.55 ? 1 : rz < 0.9 ? 2 : 3) : 0 };
+  }
+
+  // --- Zeichnen ---
+  inhalt(t) {
+    const a = ARTEN[t.art];
+    const typ = a.hindernis ? 'hindernis' : a.tier ? 'tier' : 'rohstoff';
+    const punkte = t.reife ? [[0], [-7, 7], [-14, 0, 14]][t.reife - 1].map(x => `<circle cx="${x}" cy="25" r="4"/>`).join('') : '';
+    const dy = t.reife ? -26.2 : -19.2;
+    return `<g class="${typ} r${t.reife}" ${a.farbe ? `style="--c: var(${a.farbe})"` : ''}><polygon points="${POLY}"/>
+      <g class="sym" transform="translate(-19.2 ${dy}) scale(1.6)">${ICON[a.icon]}</g>${punkte}</g>`;
+  }
+  elFuer(t) {
+    let g = this.els.get(t.id);
+    if (!g) {
+      g = document.createElementNS(NS, 'g');
+      g.setAttribute('class', 'kachel');
+      g.innerHTML = '<g class="innen"></g>';
+      this.schicht.appendChild(g);
+      this.els.set(t.id, g);
+      g._neu = true;
+    }
+    const sig = t.art + t.reife;
+    if (g._sig !== sig) { g.firstChild.innerHTML = this.inhalt(t); g._sig = sig; }
+    return g;
+  }
+  setze(g, c, r) { const [x, y] = mitte(c, r); g.style.transform = `translate(${x}px, ${y}px)`; }
+  alleNeu() {
+    this.schicht.innerHTML = '';
+    this.els = new Map();
+    for (let c = 0; c < SP; c++) for (let r = 0; r < ZE; r++) {
+      const g = this.elFuer(this.gitter[c][r]);
+      g._neu = false; g.classList.add('ohne'); this.setze(g, c, r);
+    }
+    this.svg.getBoundingClientRect();
+    this.els.forEach(g => g.classList.remove('ohne'));
+  }
+  zeichne() {
+    const neu = [];
+    for (let c = 0; c < SP; c++) for (let r = 0; r < ZE; r++) {
+      const t = this.gitter[c][r], g = this.elFuer(t);
+      if (g._neu && t.start) { g.classList.add('ohne'); this.setze(g, t.start[0], t.start[1]); neu.push([g, c, r]); }
+      else this.setze(g, c, r);
+      g._neu = false; delete t.start;
+    }
+    if (neu.length) {
+      this.svg.getBoundingClientRect();
+      for (const [g, c, r] of neu) { g.classList.remove('ohne'); this.setze(g, c, r); }
+    }
+  }
+  markiere() {
+    const set = new Set(this.pfad.map(([c, r]) => schl(c, r)));
+    for (let c = 0; c < SP; c++) for (let r = 0; r < ZE; r++) {
+      const g = this.els.get(this.gitter[c][r].id);
+      if (g) g.classList.toggle('gewaehlt', set.has(schl(c, r)));
+    }
+    this.pfadLinie.setAttribute('points', this.pfad.map(([c, r]) => mitte(c, r).map(v => v.toFixed(1)).join(',')).join(' '));
+    const innen = this.pfad.length >= 6 ? this.eingeschlossen(set) : [];
+    this.ringSchicht.innerHTML = innen.map(([c, r]) => { const [x, y] = mitte(c, r); return `<polygon points="${POLY}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"/>`; }).join('');
+    if (!this.pfad.length) return;
+    const a = ARTEN[this.art], n = this.pfad.length, ok = n >= 3;
+    const summe = this.pfad.reduce((s, [c, r]) => s + this.gitter[c][r].reife, 0);
+    const ring = innen.reduce((s, [c, r]) => { const t = this.gitter[c][r]; return s + (istRohstoff(t.art) ? 2 * t.reife : 0); }, 0);
+    const anzahl = art => innen.filter(([c, r]) => this.gitter[c][r].art === art).length;
+    const hasen = anzahl('hase'), gestr = anzahl('gestruepp');
+    const ringTeile = [ring ? `+${ring}` : '', hasen ? `${hasen} ${hasen === 1 ? 'Hase' : 'Hasen'}` : '', gestr ? `${gestr} Gestrüpp` : ''].filter(Boolean);
+    this.melde(`${chip(this.art)}<span>${a.name} · ${n} ${n === 1 ? 'Feld' : 'Felder'}${ok ? ` · +${summe}` : ''}</span>${innen.length ? `<span>· Ring: ${ringTeile.join(' · ')}</span>` : ''}`, !ok);
+  }
+  melde(html, leise = false) { this.rm.innerHTML = html; this.rm.classList.toggle('leise', leise); }
+
+  // --- Regeln ---
+  eingeschlossen(set) {
+    const offen = new Set(), schlange = [];
+    for (let c = 0; c < SP; c++) for (let r = 0; r < ZE; r++) {
+      const rand = c === 0 || r === 0 || c === SP - 1 || r === ZE - 1;
+      if (rand && !set.has(schl(c, r))) { offen.add(schl(c, r)); schlange.push([c, r]); }
+    }
+    while (schlange.length) {
+      const [c, r] = schlange.pop();
+      for (const [x, y] of nachbarn(c, r)) {
+        const k = schl(x, y);
+        if (!set.has(k) && !offen.has(k)) { offen.add(k); schlange.push([x, y]); }
+      }
+    }
+    const innen = [];
+    for (let c = 0; c < SP; c++) for (let r = 0; r < ZE; r++) if (!set.has(schl(c, r)) && !offen.has(schl(c, r))) innen.push([c, r]);
+    return innen;
+  }
+  lade(art, n) { for (const s of this.trupp) if (s.laedt === art) this.ladung[s.id] = Math.min(s.voll, this.ladung[s.id] + n); }
+  sichern() {
+    this.verlauf.push({ gitter: this.gitter.map(sp => sp.map(t => ({ ...t }))), ertrag: { ...this.ertrag }, schritte: this.schritte,
+      gerodet: this.gerodet, gerodetHeute: this.gerodetHeute, ladung: { ...this.ladung }, zufall: this.zufall.s });
+    if (this.verlauf.length > 30) this.verlauf.shift();
+  }
+  entferne(liste) {
+    for (const [c, r] of liste) {
+      const t = this.gitter[c][r], g = this.els.get(t.id);
+      this.els.delete(t.id);
+      g.classList.add('weg');
+      setTimeout(() => g.remove(), 160);
+      this.gitter[c][r] = null;
+    }
+  }
+  fallen() {
+    for (let c = 0; c < SP; c++) {
+      const rest = [];
+      for (let r = ZE - 1; r >= 0; r--) if (this.gitter[c][r]) rest.push(this.gitter[c][r]);
+      let r = ZE - 1;
+      for (const t of rest) this.gitter[c][r--] = t;
+      const fehlt = r + 1;
+      for (; r >= 0; r--) { this.gitter[c][r] = null; }
+      for (r = fehlt - 1; r >= 0; r--) { const t = this.ziehe(); t.start = [c, r - fehlt]; this.gitter[c][r] = t; }
+    }
+  }
+  ernte() {
+    this.sichern();
+    const pfad = this.pfad, art = this.art;
+    this.pfad = [];
+    const set = new Set(pfad.map(([c, r]) => schl(c, r)));
+    const innen = pfad.length >= 6 ? this.eingeschlossen(set) : [];
+    const weg = new Map();
+    let summe = 0, ring = 0, gerodet = 0, hasen = 0;
+    for (const [c, r] of pfad) { summe += this.gitter[c][r].reife; weg.set(schl(c, r), [c, r]); }
+    this.ertrag[art] += summe;
+    this.lade(art, pfad.length);
+    for (const [c, r] of innen) {
+      const t = this.gitter[c][r];
+      if (t.art === 'gestruepp') gerodet++;
+      else if (t.art === 'hase') hasen++;
+      else { ring += 2 * t.reife; this.ertrag[t.art] += 2 * t.reife; this.lade(t.art, 1); }
+      weg.set(schl(c, r), [c, r]);
+    }
+    for (const [c, r] of pfad) for (const [x, y] of nachbarn(c, r)) {
+      if (!weg.has(schl(x, y)) && this.gitter[x][y].art === 'gestruepp') { gerodet++; weg.set(schl(x, y), [x, y]); }
+    }
+    this.ertrag.hase += hasen;
+    this.gerodet = Math.min(this.ziel, this.gerodet + gerodet);
+    this.gerodetHeute += gerodet;
+    this.schritte--;
+    this.entferne([...weg.values()]);
+    this.fallen();
+    this.zeichne();
+    this.markiere();
+    const teile = [`${ARTEN[art].name} +${summe}`];
+    if (ring) teile.push(`Ring +${ring}`);
+    if (gerodet) teile.push(`${gerodet} Gestrüpp gerodet`);
+    if (hasen) teile.push(`${hasen} ${hasen === 1 ? 'Hase' : 'Hasen'} gefangen`);
+    this.melde(`${ic('check')}<span>${teile.join(' · ')}</span>`);
+    this.gespeichert = jetzt();
+    this.aktualisiere();
+    this.ausstehend = setTimeout(() => this.nachZug(), 240);
+  }
+  // Nach jedem Schritt: Hasen hüpfen und fressen Reife, drei Kacheln reifen
+  nachZug() {
+    this.ausstehend = null;
+    const hasen = [];
+    for (let c = 0; c < SP; c++) for (let r = 0; r < ZE; r++) if (this.gitter[c][r].art === 'hase') hasen.push([c, r]);
+    for (const [c, r] of hasen) {
+      const ziele = nachbarn(c, r).filter(([x, y]) => istRohstoff(this.gitter[x][y].art));
+      if (!ziele.length) continue;
+      const [x, y] = ziele[Math.floor(this.zufall.next() * ziele.length)];
+      const h = this.gitter[c][r], t = this.gitter[x][y];
+      t.reife = 1;
+      this.gitter[x][y] = h; this.gitter[c][r] = t;
+    }
+    const roh = [];
+    for (let c = 0; c < SP; c++) for (let r = 0; r < ZE; r++) { const t = this.gitter[c][r]; if (istRohstoff(t.art) && t.reife < 3) roh.push(t); }
+    for (let i = 0; i < 3 && roh.length; i++) roh.splice(Math.floor(this.zufall.next() * roh.length), 1)[0].reife++;
+    this.zeichne();
+    this.markiere();
+    if (this.schritte <= 0) setTimeout(() => this.ende(), 200);
+  }
+  vorziehen() { if (this.ausstehend) { clearTimeout(this.ausstehend); this.nachZug(); } }
+  zurueck() {
+    if (this.ausstehend) { clearTimeout(this.ausstehend); this.ausstehend = null; }
+    const v = this.verlauf.pop();
+    if (!v) return;
+    Object.assign(this, { gitter: v.gitter, ertrag: v.ertrag, schritte: v.schritte, gerodet: v.gerodet, gerodetHeute: v.gerodetHeute, ladung: v.ladung });
+    this.zufall.s = v.zufall;
+    ueberlageSchliessen(this.el);
+    this.alleNeu();
+    this.pfad = [];
+    this.markiere();
+    this.melde(`${ic('undo-2')}<span>Letzte Kette zurückgenommen</span>`);
+    this.aktualisiere();
+  }
+  faehigkeit(id) {
+    const s = SIEDLER.find(x => x.id === id);
+    if (this.ladung[id] < s.voll || this.schritte <= 0) return;
+    this.vorziehen();
+    this.sichern();
+    this.ladung[id] = 0;
+    const alle = [];
+    for (let c = 0; c < SP; c++) for (let r = 0; r < ZE; r++) alle.push([c, r, this.gitter[c][r]]);
+    let text;
+    if (id === 'jonas') {
+      let n = 0;
+      for (const [, , t] of alle) if ((t.art === 'beeren' || t.art === 'nuesse') && t.reife < 3) { t.reife++; n++; }
+      this.zeichne();
+      text = `${s.faehigkeit}: ${n} Kacheln reifen`;
+    } else {
+      const ziel = alle.filter(([, , t]) => id === 'ida' ? t.art === 'holz' && t.reife >= 2 : t.art === 'hase');
+      if (id === 'ida') { const n = ziel.reduce((a, [, , t]) => a + t.reife, 0); this.ertrag.holz += n; text = `${s.faehigkeit}: Holz +${n}`; }
+      else { this.ertrag.hase += ziel.length; text = `${s.faehigkeit}: ${ziel.length} ${ziel.length === 1 ? 'Hase' : 'Hasen'} gefangen`; }
+      this.entferne(ziel.map(([c, r]) => [c, r]));
+      this.fallen();
+      this.zeichne();
+    }
+    this.markiere();
+    this.melde(`${ic('check')}<span>${text}</span>`);
+    this.aktualisiere();
+  }
+
+  // --- Anzeige ---
+  aktualisiere() {
+    const q = s => this.el.querySelectorAll(s);
+    q('.js-schritte').forEach(e => e.textContent = this.schritte);
+    q('.js-schritte-balken').forEach(e => e.style.width = (this.schritte / this.max * 100) + '%');
+    q('.js-tag').forEach(e => e.textContent = this.tag);
+    q('.js-ziel').forEach(e => e.textContent = `${this.gerodet} / ${this.ziel}`);
+    q('.js-ziel-balken').forEach(e => e.style.width = (this.gerodet / this.ziel * 100) + '%');
+    q('.js-status').forEach(e => e.innerHTML = `${ic('check')}Gespeichert · ${this.gespeichert}`);
+    const ek = this.el.querySelector('.js-ek');
+    if (ek) ek.innerHTML = [...ROHSTOFFE, 'hase'].map(a => `<div class="ek ${a === 'hase' ? 'tier' : ''}" ${ARTEN[a].farbe ? `style="--c: var(${ARTEN[a].farbe})"` : ''}>
+      <div class="ek-kopf">${ic(ARTEN[a].icon)}${a === 'hase' ? 'Hasen' : ARTEN[a].name}</div><b>${this.ertrag[a]}</b></div>`).join('');
+    for (const s of this.trupp) {
+      const l = this.ladung[s.id], voll = l >= s.voll;
+      const lb = this.el.querySelector(`.js-lb-${s.id}`);
+      lb.classList.toggle('voll', voll);
+      lb.firstChild.style.width = (l / s.voll * 100) + '%';
+      this.el.querySelector(`.js-lt-${s.id}`).textContent = `${l} / ${s.voll} ${ARTEN[s.laedt].name}`;
+      const k = this.el.querySelector(`.js-f[data-id="${s.id}"]`);
+      const keinHase = s.id === 'mara' && !this.zaehle('hase');
+      k.disabled = !voll || keinHase || this.schritte <= 0;
+      k.title = !voll ? `Lädt durch ${ARTEN[s.laedt].name} – noch ${s.voll - l}` : keinHase ? 'Kein Hase auf dem Brett' : this.schritte <= 0 ? 'Keine Schritte mehr' : `${s.tip} · kostet keinen Schritt`;
+    }
+    q('.js-zurueck').forEach(k => { k.disabled = !this.verlauf.length; k.title = this.verlauf.length ? 'Letzte Kette zurücknehmen (Strg Z)' : 'Noch keine Kette'; });
+  }
+
+  // --- Ende des Tagwerks ---
+  ende() {
+    const fertig = this.schritte <= 0;
+    const z = (c, name, wert) => `<div class="zeile">${c}<span>${name}</span><span class="wert">${wert}</span></div>`;
+    const html = `
+      <div class="dialog-kopf"><h3 class="t-h2">Tagwerk beendet</h3><div class="muted">Nordwald · Tag ${this.tag}</div></div>
+      <div class="dialog-rumpf">
+        ${ROHSTOFFE.map(a => z(chip(a), ARTEN[a].name, '+' + this.ertrag[a])).join('')}
+        ${z(chip('hase'), 'Hasen gefangen', this.ertrag.hase)}
+        <div class="trennlinie"></div>
+        ${z(chip('gestruepp'), 'Gestrüpp gerodet', this.gerodetHeute)}
+        ${z(`<span class="chip leer">${ic('map-pin')}</span>`, 'Ziel des Flecks', `${this.gerodet} / ${this.ziel}`)}
+        ${z(`<span class="chip leer">${ic('croissant')}</span>`, 'Proviant verbraucht', '3 Beerenbrei')}
+      </div>
+      <div class="dialog-status"></div>
+      <div class="dialog-fuss">
+        <button class="knopf geist js-d2" ${fertig && !this.verlauf.length ? 'disabled title="Noch keine Kette"' : ''}>${fertig ? 'Letzte Kette zurück' : 'Weiterspielen'}</button>
+        <button class="knopf primaer js-einbringen" style="min-width: 176px">Ertrag einbringen</button>
+      </div>`;
+    const u = ueberlageOeffnen(this.el, this.handy, html);
+    u.querySelector('.js-d2').addEventListener('click', () => fertig ? this.zurueck() : ueberlageSchliessen(this.el));
+    u.querySelector('.js-einbringen').addEventListener('click', e => {
+      const k = e.currentTarget;
+      k.disabled = true; k.textContent = 'Wird eingebracht …';
+      setTimeout(() => {
+        ueberlageSchliessen(this.el);
+        this.tag++;
+        toast(this.el, `${ic('circle-check', 'ic ok')}<span>Ertrag eingebracht · Tag ${this.tag} beginnt</span><a>Lager ansehen</a>`);
+        this.neuerTag(this.seed + this.tag);
+      }, 700);
+    });
+  }
+  endeBeispiel() {
+    this.ertrag = { holz: 31, beeren: 12, kraeuter: 7, nuesse: 5, hase: 1 };
+    Object.assign(this, { gerodetHeute: 8, gerodet: 46, schritte: 0 });
+    this.aktualisiere();
+    this.ende();
+  }
+
+  // --- Eingabe ---
+  zelleBei(e) {
+    const p = this.svg.createSVGPoint();
+    p.x = e.clientX; p.y = e.clientY;
+    const q = p.matrixTransform(this.svg.getScreenCTM().inverse());
+    let best = null, bd = Infinity;
+    for (let c = 0; c < SP; c++) for (let r = 0; r < ZE; r++) {
+      const [x, y] = mitte(c, r), d = Math.hypot(q.x - x, q.y - y);
+      if (d < bd) { bd = d; best = [c, r]; }
+    }
+    return bd <= S * 0.8 ? best : null;
+  }
+  verdrahten() {
+    const svg = this.svg;
+    svg.addEventListener('pointerdown', e => {
+      if (this.schritte <= 0) return;
+      this.vorziehen();
+      const z = this.zelleBei(e);
+      if (!z || !istRohstoff(this.gitter[z[0]][z[1]].art)) return;
+      svg.setPointerCapture(e.pointerId);
+      this.pfad = [z]; this.art = this.gitter[z[0]][z[1]].art; this.ziehen = true;
+      this.markiere();
+    });
+    svg.addEventListener('pointermove', e => {
+      if (!this.ziehen) return;
+      const z = this.zelleBei(e), p = this.pfad;
+      if (!z) return;
+      const gleich = (a, b) => a[0] === b[0] && a[1] === b[1];
+      if (gleich(z, p[p.length - 1])) return;
+      if (p.length > 1 && gleich(z, p[p.length - 2])) { p.pop(); this.markiere(); return; }
+      if (p.some(q => gleich(q, z)) || !benachbart(p[p.length - 1], z) || this.gitter[z[0]][z[1]].art !== this.art) return;
+      p.push(z);
+      this.markiere();
+    });
+    svg.addEventListener('pointerup', () => {
+      if (!this.ziehen) return;
+      this.ziehen = false;
+      if (this.pfad.length >= 3) this.ernte();
+      else { this.pfad = []; this.markiere(); this.melde(''); }
+    });
+    svg.addEventListener('pointercancel', () => { this.ziehen = false; this.pfad = []; this.markiere(); this.melde(''); });
+    this.el.querySelectorAll('.js-zurueck').forEach(k => k.addEventListener('click', () => this.zurueck()));
+    this.el.querySelectorAll('.js-heim').forEach(k => k.addEventListener('click', () => { this.vorziehen(); this.ende(); }));
+    this.el.querySelectorAll('.js-f').forEach(k => k.addEventListener('click', () => this.faehigkeit(k.dataset.id)));
+    leisteVerdrahten(this.el);
+    const blatt = this.el.querySelector('.blatt');
+    if (blatt) {
+      const umschalter = this.el.querySelector('.js-blatt');
+      const setze = auf => { blatt.classList.toggle('zu', !auf); umschalter.setAttribute('aria-pressed', auf); };
+      umschalter.addEventListener('click', () => setze(blatt.classList.contains('zu')));
+      this.el.querySelector('.js-blatt-zu').addEventListener('click', () => setze(false));
+    }
+    const hblatt = this.el.querySelector('.hblatt');
+    if (hblatt) {
+      const hoehe = () => this.el.querySelector('.hinhalt').getBoundingClientRect().height;
+      blattHoehen(hblatt, { klein: () => 92, halb: () => Math.round(hoehe() * 0.5), ganz: () => hoehe() - 16 }, 'klein');
+    }
+  }
+}
+
+// ---------- Siedlung ----------
+const BIOME = {
+  wald:  { name: 'Wald',     farbe: '--viz-3', icon: 'tree-deciduous', kacheln: ['holz', 'beeren', 'kraeuter', 'nuesse', 'gestruepp', 'hase'], ziel: 'Gestrüpp roden', zielArt: 'gestruepp' },
+  bach:  { name: 'Bachufer', farbe: '--viz-1', icon: 'fish',           kacheln: ['fisch', 'lehm', 'schilf', 'kiesel', 'schlamm', 'ente'],   ziel: 'Schlamm trocknen', zielArt: 'schlamm' },
+  wiese: { name: 'Wiese',    farbe: '--viz-4', icon: 'wheat' },
+  fels:  { name: 'Felshang', farbe: '--viz-2', icon: 'mountain' },
+};
+const FLECKEN = [
+  { q: 0, r: 0, name: 'Lichtung', typ: 'bebaut', icon: 'flame' },
+  { q: 1, r: -1, name: 'Nordwald', typ: 'erkundet', biom: 'wald', stand: 38, ziel: 60, frei: 3 },
+  { q: 1, r: 0, name: 'Bachufer', typ: 'erkundet', biom: 'bach', stand: 12, ziel: 50, frei: 2 },
+  { q: 0, r: 1, name: 'Hütten', typ: 'bebaut', icon: 'house' },
+  { q: -1, r: 1, name: 'Südwald', typ: 'gerodet', biom: 'wald' },
+  { q: -1, r: 0, name: 'Holzplatz', typ: 'bebaut', icon: 'warehouse' },
+  { q: 0, r: -1, name: 'Hain', typ: 'erkundet', biom: 'wald', stand: 5, ziel: 60, frei: 2 },
+  { q: 1, r: 1, name: 'Teich', typ: 'erkundet', biom: 'bach', stand: 0, ziel: 50, frei: 1 },
+  { q: 0, r: 2, name: 'Senke', typ: 'erkundet', biom: 'wald', stand: 0, ziel: 60, frei: 0 },
+  { q: -1, r: 2, name: 'Dickicht', typ: 'erkundet', biom: 'wald', stand: 0, ziel: 60, frei: 0 },
+  { q: -2, r: 2, name: 'Quelle', typ: 'erkundet', biom: 'bach', stand: 0, ziel: 50, frei: 0 },
+  { q: -2, r: 1, name: 'Birken', typ: 'erkundet', biom: 'wald', stand: 0, ziel: 60, frei: 0 },
+  { q: -2, r: 0, name: 'Wiese', typ: 'gesperrt', biom: 'wiese', kapitel: 4, titel: 'Über den Fluss' },
+  { q: -1, r: -1, name: 'Felshang', typ: 'gesperrt', biom: 'fels', kapitel: 3, titel: 'Der Hang' },
+  { q: 0, r: -2, typ: 'nebel', durch: 'Hain' },
+  { q: 1, r: -2, typ: 'nebel', durch: 'Nordwald' },
+  { q: 2, r: -2, typ: 'nebel', durch: 'Nordwald' },
+  { q: 2, r: -1, typ: 'nebel', durch: 'Nordwald' },
+  { q: 2, r: 0, typ: 'nebel', durch: 'Bachufer' },
+];
+const fleckName = f => f.name || `Unerkundet ${f.q},${f.r}`;
+const LAGER = [['holz', 82], ['beeren', 24], ['kraeuter', 19], ['nuesse', 11], ['fisch', 6]];
+
+class Siedlung {
+  constructor(el, { handy }) {
+    Object.assign(this, { el, handy, s: handy ? 41 : 66, gewaehlt: 'Nordwald' });
+    this.trupp = new Set(['ida', 'jonas', 'mara']);
+    const legende = `<div class="legende">${[['erkundet', 'wald', 'Wald'], ['erkundet', 'bach', 'Bachufer'], ['gerodet', 'wald', 'Gerodet'], ['bebaut', null, 'Bebaut'], ['nebel', null, 'Unerkundet']]
+      .map(([typ, b, t]) => `<span><svg viewBox="-9 -8 18 16" aria-hidden="true"><g class="fleck ${typ}" ${b ? `style="--c: var(${BIOME[b].farbe})"` : ''}><polygon points="${ecken(8)}" style="stroke-dasharray: ${typ === 'nebel' ? '3 2' : 'none'}"/></g></svg>${t}</span>`).join('')}</div>`;
+    if (handy) {
+      el.innerHTML = rahmenHandy({ aktiv: 'Siedlung', reiter: ['Karte', 'Gebäude', 'Siedler'], inhalt: `
+        ${legende}<div class="karte-platz"><svg class="karte"></svg></div>
+        <div class="hblatt"><div class="griff" role="button" tabindex="0" aria-label="Blatt größer oder kleiner"><span></span></div><div class="js-detail" style="display: contents"></div></div>` });
+      const hoehe = () => el.querySelector('.hinhalt').getBoundingClientRect().height;
+      blattHoehen(el.querySelector('.hblatt'), { klein: () => 132, halb: () => 290, ganz: () => hoehe() - 16 }, 'halb');
+    } else {
+      el.innerHTML = rahmenLaptop({ aktiv: 'Siedlung', reiter: ['Karte', 'Gebäude', 'Siedler'], inhalt: `
+        <section class="flaeche karte-flaeche"><div class="karte-platz"><svg class="karte"></svg></div>${legende}</section>
+        <aside class="blatt"><div class="blatt-innen js-detail"></div></aside>` });
+    }
+    leisteVerdrahten(el);
+    this.svg = el.querySelector('svg.karte');
+    this.detail = el.querySelector('.js-detail');
+    this.svg.addEventListener('click', e => { const g = e.target.closest('.fleck'); if (g) this.waehle(g.dataset.name); });
+    this.svg.addEventListener('keydown', e => { const g = e.target.closest('.fleck'); if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); this.waehle(g.dataset.name); } });
+    this.zeichneKarte();
+    this.zeigeDetail();
+  }
+  waehle(name) {
+    this.gewaehlt = name;
+    const blatt = this.el.querySelector('.blatt');
+    if (blatt) blatt.classList.remove('zu');
+    this.svg.querySelectorAll('.fleck').forEach(g => g.classList.toggle('gewaehlt', g.dataset.name === name));
+    this.zeigeDetail();
+  }
+  zeichneKarte() {
+    const s = this.s, h = Math.sqrt(3) * s, gr = this.handy ? 0.8 : 1.2;
+    this.svg.setAttribute('viewBox', `${-4 * s} ${-2.5 * h} ${8 * s} ${5 * h}`);
+    this.svg.setAttribute('width', 8 * s);
+    this.svg.setAttribute('height', (5 * h).toFixed(0));
+    this.svg.innerHTML = FLECKEN.map(f => {
+      const x = s * 1.5 * f.q, y = h * (f.r + f.q / 2);
+      const b = f.biom && BIOME[f.biom];
+      const icon = f.icon || (f.typ === 'nebel' ? 'cloud-fog' : f.typ === 'gesperrt' ? 'lock' : b.icon);
+      const mitText = f.typ !== 'nebel';
+      const sy = mitText ? -12 * gr - (this.handy ? 8 : 10) : -12 * gr;
+      const name = fleckName(f);
+      return `<g class="fleck ${f.typ} ${name === this.gewaehlt ? 'gewaehlt' : ''}" data-name="${name}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})" tabindex="0" role="button" aria-label="${f.name || 'Unerkundet'}" ${b ? `style="--c: var(${b.farbe})"` : ''}>
+        <polygon points="${ecken(s - 3)}"/>
+        <g class="sym" transform="translate(${(-12 * gr).toFixed(1)} ${sy.toFixed(1)}) scale(${gr})">${ICON[icon]}</g>
+        ${mitText ? `<text y="${this.handy ? 15 : 28}" text-anchor="middle">${f.name}</text>` : ''}</g>`;
+    }).join('');
+  }
+  zeigeDetail() {
+    const f = FLECKEN.find(x => fleckName(x) === this.gewaehlt);
+    const b = f.biom && BIOME[f.biom];
+    const schliessen = this.handy ? '' : `<button class="symk" title="Schließen" aria-label="Schließen">${ic('x', 'ic g20')}</button>`;
+    let zustand = '', rumpf = '', fuss = '';
+    const kacheln = b && b.kacheln ? `<div class="abschnitt"><div class="gk">Kacheln</div><div class="kachel-raster">${b.kacheln.map(a => `<span class="kr">${chip(a)}${ARTEN[a].name}</span>`).join('')}</div></div>` : '';
+    if (f.typ === 'erkundet') {
+      zustand = `<span class="zustand">Erkundet</span>`;
+      const n = this.trupp.size;
+      rumpf = `${kacheln}
+        <div class="abschnitt"><div class="gk">Rodung</div>
+          <div class="zeile">${chip(b.zielArt)}<span>${b.ziel}</span><span class="wert">${f.stand} / ${f.ziel}</span></div>
+          <div class="balken"><i style="width: ${f.stand / f.ziel * 100}%"></i></div>
+          ${f.frei ? `<div class="zeile muted">${ic('map-pin')}<span>Gibt frei</span><span class="wert">${f.frei} ${f.frei === 1 ? 'Fleck' : 'Flecken'}</span></div>` : ''}</div>
+        <div class="abschnitt"><div class="gk">Morgen</div>
+          <div class="zeile" title="Kräuter, Getreide und Fisch kommen häufiger">${ic('cloud-rain')}<span>Regen</span></div></div>
+        <div class="abschnitt"><div class="gk">Trupp</div><div class="liste">
+          ${SIEDLER.map(s => `<label class="wahl"><input type="checkbox" class="js-wahl" value="${s.id}" ${this.trupp.has(s.id) ? 'checked' : ''}>
+            <span class="ava gross">${s.name[0]}</span><span><span class="t-strong">${s.name}</span> <span class="muted">· ${s.beruf}</span></span>
+            <span class="muted klein" title="${s.tip}">${s.faehigkeit}</span></label>`).join('')}
+          <div class="zeile"><span class="t-strong js-summe">${n * 5} Schritte · ${n} Beerenbrei</span><span class="wert muted">Vorrat 14</span></div>
+        </div></div>`;
+      fuss = `<button class="knopf primaer js-start" style="min-width: 184px" ${n ? '' : 'disabled title="Mindestens ein Siedler"'}>Tagwerk beginnen</button>`;
+    } else if (f.typ === 'gerodet') {
+      zustand = `<span class="zustand ok">Gerodet</span>`;
+      rumpf = `<div class="abschnitt"><div class="gk">Bauen</div><div class="liste">
+          <div class="bau-zeile"><span class="t-strong">Hütte</span><span class="kosten">Holz 20 · Platz für 2 Siedler</span><button class="knopf umriss kompakt js-bau" data-bau="Hütte">Bauen</button></div>
+          <div class="bau-zeile"><span class="t-strong">Zimmerei</span><span class="kosten fehlt">Holz 30 · Stein 10 – Stein fehlt</span><button class="knopf umriss kompakt" disabled title="Stein fehlt: 10 – kommt vom Felshang (Kapitel 3)">Bauen</button></div>
+          <div class="bau-zeile"><span class="t-strong">Trockengestell</span><span class="kosten">Holz 12 · Kräuter halten länger</span><button class="knopf umriss kompakt js-bau" data-bau="Trockengestell">Bauen</button></div>
+        </div></div>${kacheln}`;
+      fuss = `<button class="knopf umriss js-start" style="min-width: 184px">Tagwerk beginnen</button>`;
+    } else if (f.typ === 'bebaut') {
+      const was = { Lichtung: 'Lagerfeuer', 'Hütten': '2 Hütten', Holzplatz: 'Lager' }[f.name];
+      zustand = `<span class="label">${was}</span>`;
+      if (f.name === 'Holzplatz') rumpf = `<div class="abschnitt"><div class="gk">Im Lager</div><div class="liste">
+          ${LAGER.map(([a, n]) => `<div class="zeile">${chip(a)}<span>${ARTEN[a].name}</span><span class="wert">${n}</span></div>`).join('')}
+          <div class="zeile"><span class="chip leer">${ic('croissant')}</span><span>Beerenbrei</span><span class="wert">14</span></div></div></div>`;
+      else rumpf = `<div class="abschnitt"><div class="gk">${f.name === 'Hütten' ? 'Bewohner · 4 von 4 Plätzen' : 'Siedler'}</div><div class="liste">
+          ${SIEDLER.map(s => `<div class="trupp-zeile"><span class="ava gross">${s.name[0]}</span><div><span class="t-strong">${s.name}</span> <span class="muted">· ${s.beruf}</span></div><span class="muted klein">Stufe ${s.id === 'ida' ? 2 : 1}</span></div>`).join('')}</div></div>
+          ${f.name === 'Lichtung' ? `<div class="abschnitt"><div class="gk">Lagerfeuer</div><div class="zeile">${chip('beeren')}<span>3 Beeren → 1 Beerenbrei</span><span class="wert">je Tag 6</span></div></div>` : ''}`;
+      fuss = `<button class="knopf umriss">Werkstatt öffnen</button>`;
+    } else if (f.typ === 'gesperrt') {
+      zustand = `<span class="zustand">Ab Kapitel ${f.kapitel}</span>`;
+      rumpf = `<div class="abschnitt"><div class="gk">Chronik</div><div class="zeile">${ic('book-open')}<span>Kapitel ${f.kapitel} · ${f.titel}</span></div></div>`;
+      fuss = `<button class="knopf umriss">Chronik öffnen</button>`;
+    } else {
+      const d = FLECKEN.find(x => x.name === f.durch);
+      zustand = `<span class="zustand">Unerkundet</span>`;
+      rumpf = `<div class="abschnitt"><div class="gk">Wird sichtbar</div>
+        <div class="zeile">${chip(BIOME[d.biom].zielArt)}<span>${d.name}: ${BIOME[d.biom].ziel}</span><span class="wert">${d.stand} / ${d.ziel}</span></div>
+        <div class="balken"><i style="width: ${d.stand / d.ziel * 100}%"></i></div></div>`;
+      fuss = `<button class="knopf umriss js-hin" data-ziel="${d.name}">${d.name} wählen</button>`;
+    }
+    const titel = `<h3 class="t-h2">${f.name || 'Unerkundet'}</h3>${b && b.name !== f.name ? `<span class="label">${ic(b.icon)}${b.name}</span>` : ''}`;
+    if (this.handy) {
+      this.detail.innerHTML = `<div class="hblatt-rumpf"><div class="hblatt-kopf">${titel}<span style="margin-left: auto">${zustand}</span></div>${rumpf}</div>
+        <div class="hblatt-fuss">${fuss}</div>`;
+    } else {
+      this.detail.innerHTML = `<div class="blatt-kopf">${titel}${zustand}${schliessen}</div>
+        <div class="blatt-rumpf">${rumpf}</div><div class="blatt-fuss">${fuss}</div>`;
+    }
+    this.verdrahteDetail();
+  }
+  verdrahteDetail() {
+    const d = this.detail;
+    d.querySelectorAll('.js-wahl').forEach(c => c.addEventListener('change', () => {
+      c.checked ? this.trupp.add(c.value) : this.trupp.delete(c.value);
+      const n = this.trupp.size, start = d.querySelector('.js-start');
+      d.querySelector('.js-summe').textContent = `${n * 5} Schritte · ${n} Beerenbrei`;
+      start.disabled = !n; start.title = n ? '' : 'Mindestens ein Siedler';
+    }));
+    const start = d.querySelector('.js-start');
+    if (start) start.addEventListener('click', () => {
+      start.disabled = true; start.textContent = 'Wird vorbereitet …';
+      setTimeout(() => {
+        start.disabled = false; start.textContent = 'Tagwerk beginnen';
+        toast(this.el, `${ic('circle-check', 'ic ok')}<span>Tagwerk im ${this.gewaehlt} vorbereitet</span><a>Zum Brett</a>`);
+      }, 700);
+    });
+    d.querySelectorAll('.js-bau').forEach(k => k.addEventListener('click', () => {
+      k.disabled = true; k.textContent = 'Im Bau';
+      toast(this.el, `${ic('circle-check', 'ic ok')}<span>${k.dataset.bau} im Bau · fertig an Tag 15</span><a>Rückgängig</a>`);
+    }));
+    const hin = d.querySelector('.js-hin');
+    if (hin) hin.addEventListener('click', () => this.waehle(hin.dataset.ziel));
+    const zu = d.querySelector('.blatt-kopf .symk');
+    if (zu) zu.addEventListener('click', () => {
+      this.el.querySelector('.blatt').classList.add('zu');
+      this.svg.querySelectorAll('.fleck.gewaehlt').forEach(g => g.classList.remove('gewaehlt'));
+    });
+  }
+}
+
+document.querySelectorAll('.geraet').forEach(el => {
+  const handy = el.classList.contains('handy');
+  if (el.dataset.ansicht === 'tagwerk') el._spiel = new Tagwerk(el, { handy, seed: Number(el.dataset.seed), ende: el.dataset.ende === 'ja' });
+  else el._spiel = new Siedlung(el, { handy });
+});
+</script>
+</body>
+</html>
