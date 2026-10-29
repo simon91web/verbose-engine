@@ -203,8 +203,8 @@ services:
 
 ## Meilensteine
 
-1. **Brett** – ein Tagwerk im Wald spielbar im Browser: Ketten, Ringe, Reife, Gestrüpp, Hasen, Rückgängig. Regeln
-   mit Tests.
+1. **Brett** (fertig) – ein Tagwerk im Wald spielbar im Browser: Ketten, Ringe, Reife, Gestrüpp, Hasen, Rückgängig,
+   dazu schon die drei Wald-Siedler mit Fähigkeiten. Regeln mit Tests.
 2. **Kreislauf** – Flecken-Karte, Lager, Werkstatt mit fünf Rezepten, Speichern im Browser.
 3. **Server** – Docker-Image, Konten, Speichern auf dem Server, PWA, `compose.yaml`.
 4. **Inhalt** – Siedler und Fähigkeiten, Wetter, Händler, Kapitel 1–3, drei Biome.
