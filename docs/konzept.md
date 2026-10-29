@@ -4,8 +4,8 @@ Arbeitstitel. Ein ruhiges Ketten-Puzzle mit Siedlungsaufbau: Du ziehst Ketten ü
 Rohstoffe und machst aus einer Lichtung im Wald nach und nach ein Dorf am Fluss. Läuft im Browser und als App auf dem
 Handy (PWA), gespeichert wird auf deinem eigenen Server (ein Docker-Container).
 
-Mockup: [`mockups/lichtung.html`](mockups/lichtung.html) – Tagwerk, Siedlung und Ertrag, Laptop und 390 px, Dunkel
-und Hell. Das Brett im Mockup ist spielbar.
+Mockup: [`mockups/lichtung.html`](mockups/lichtung.html) – Tagwerk, Siedlung und Ertrag, Laptop und 390 px, Tag und
+Abend. Das Brett im Mockup ist spielbar. Gestaltung: [`design.md`](design.md).
 
 ## Abgrenzung
 
@@ -130,36 +130,22 @@ und Pilze, Winter Frost – die Zeit für Werkstatt und Bauen.
 
 ## Bedienung
 
-Nach DESIGN.md (Cansol-Designsystem). Das Mockup zeigt:
+Eigener Spiel-Look, kein Cansol-Designsystem – Vorgaben in [`design.md`](design.md). Das Mockup zeigt:
 
-- **Bereiche:** Tagwerk · Siedlung · Werkstatt · Chronik, dazu Einstellungen und Person. Laptop: Seitenleiste
-  eingeklappt; Handy: Leiste unten mit „Mehr“.
-- **Tagwerk** ist eine Arbeitsseite: Das Brett ist die Arbeitsfläche, das **Werkzeugblatt** rechts zeigt Schritte,
-  Ziel, Ertrag und Trupp. Handy: Brett in voller Breite, Blatt von unten in drei Höhen.
-- **Siedlung** ist „Karte mit Liste“ (Vorbild Apple Maps): Wabenkarte der Flecken, Auswahl öffnet die Details im
-  Werkzeugblatt mit dem einzigen Hauptknopf „Tagwerk beginnen“.
-- **Rückmeldung beim Ziehen** an festem Platz unter dem Brett („Holz · 5 Felder · +9“, „Ring · 3 eingeschlossen“),
-  damit nichts springt.
-- **Suche** (`Strg K`) findet Rohstoffe, Rezepte, Gebäude und Siedler („Wo bekomme ich Lehm?“). **Verlauf** ist das
-  Tagebuch der Siedlung, die **Glocke** meldet den Händler und fertige Gebäude.
-
-### Abweichungen und Ableitungen
-
-- **(Abgeleitet) Farben auf dem Brett.** Das Brett ist Inhalt wie eine Karte (DESIGN.md §11): Kacheln nutzen `viz-1`
-  bis `viz-5`, jede Farbe steht für eine Familie (orange Baustoff, grün Pflanze, magenta Frucht, gelb Korn und Samen,
-  blau Wasser), Symbol und Farbe sagen dasselbe; Ertragsliste und Kartenlegende erklären sie. Rot kommt nicht vor.
-- **(Abgeleitet) Bewegung auf dem Brett.** Kacheln fallen in 200 ms ohne Federn nach – Bewegung zeigt, woher etwas
-  kommt (§9). Keine Effekte als Schmuck.
-- **Frage: kein Cansol-Logo.** Lichtung ist kein Cansol-Programm; statt des Logos steht die Wortmarke „Lichtung“.
-- **Frage: Optik.** Der Rahmen folgt dem ruhigen Cansol-Stil, bunt ist nur das Brett. Alternative wäre ein
-  verspielterer Spiel-Look – das wäre eine bewusste Abweichung von DESIGN.md.
+- **Siedlung** ist der Startbildschirm: Wabenkarte der Flecken, oben der Vorrat. Antippen öffnet die Karte des Flecks
+  (Laptop rechts, Handy als Blatt von unten) mit dem einen großen Knopf „Tagwerk beginnen“.
+- **Tagwerk** ist bildschirmfüllend: Schritte-Medaille, Zielband, Brett, Beutel und Trupp. Kein Menü im Weg; „‹“
+  führt zur Siedlung zurück, das Tagwerk wartet.
+- **Navigation:** Siedlung · Werkstatt · Chronik · Menü – am Handy als Holzleiste unten, am Laptop als Holzreiter oben.
+- **Rückmeldung beim Ziehen** in der Blase über dem Brett („Holz × 5 · +9“, „Ring! +6 · 1 Hase“ in Gold).
+- **Fähigkeiten** über die Porträts: Ladering füllt sich, voll leuchtet er, Antippen setzt die Fähigkeit ein.
 
 ## Technik
 
 ### Aufbau
 
 ```
-apps/web        Oberfläche: React 19, Vite, TypeScript, Tailwind 4, shadcn/ui, Lucide, Geist – als PWA
+apps/web        Oberfläche: React 19, Vite, TypeScript, Spiel-Tokens aus docs/design.md – als PWA
 apps/server     Server: Node 24, Fastify, SQLite
 packages/spiel  Spielregeln und Spieldaten in reinem TypeScript, mit Tests (Vitest)
 docs/           Konzept, Mockups
@@ -222,12 +208,11 @@ services:
 2. **Kreislauf** – Flecken-Karte, Lager, Werkstatt mit fünf Rezepten, Speichern im Browser.
 3. **Server** – Docker-Image, Konten, Speichern auf dem Server, PWA, `compose.yaml`.
 4. **Inhalt** – Siedler und Fähigkeiten, Wetter, Händler, Kapitel 1–3, drei Biome.
-5. **Feinschliff** – Jahreszeiten, Kapitel 4–6, Einführung, Klang, gezeichnete Kacheln.
+5. **Feinschliff** – Jahreszeiten, Kapitel 4–6, Einführung, Klang.
+6. **Grafik** – gemalter, warmer Stil für Kacheln, Porträts, Karte und Hintergründe (siehe `design.md` › Grafik).
 
 ## Offene Fragen
 
 1. Name „Lichtung“ – passt der?
-2. Optik: ruhiger Cansol-Rahmen mit buntem Brett (wie im Mockup) oder ein eigener, verspielterer Spiel-Look?
-3. Wer spielt: nur du oder mehrere Konten (Familie)?
-4. Server: läuft dort schon ein Reverse-Proxy mit HTTPS? amd64 oder arm64?
-5. Grafik: Lucide-Symbole auf Farbwaben für den Anfang – später gezeichnete Kacheln?
+2. Wer spielt: nur du oder mehrere Konten (Familie)?
+3. Server: läuft dort schon ein Reverse-Proxy mit HTTPS? amd64 oder arm64?
