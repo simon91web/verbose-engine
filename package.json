@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "npm run dev -w @lichtung/web",
     "handy": "npm run dev -w @lichtung/web -- --host",
+    "start": "npm run start -w @lichtung/server",
     "build": "npm run build -w @lichtung/web",
     "test": "npm run test -w @lichtung/spiel",
     "typecheck": "npm run typecheck --workspaces"

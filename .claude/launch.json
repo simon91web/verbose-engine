@@ -4,8 +4,15 @@
     {
       "name": "lichtung-web",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
       "port": 5173
+    },
+    {
+      "name": "lichtung-docker",
+      "url": "http://localhost:8088"
     }
   ]
 }

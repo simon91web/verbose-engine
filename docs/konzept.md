@@ -197,7 +197,8 @@ services:
       LICHTUNG_REGISTRIERUNG: einladung   # offen | einladung | aus
 ```
 
-- Mehrstufiges Dockerfile (bauen mit `node:24`, laufen mit `node:24-slim`), Healthcheck auf `/api/gesund`.
+- Mehrstufiges Dockerfile auf `node:24-slim`: Tests und Build im ersten Schritt, im Image nur Server und gebautes
+  Spiel. Healthcheck auf `/api/gesund`. Der Server läuft als TypeScript direkt in Node 24, ohne eigenen Build.
 - GitHub Actions baut das Image für amd64 und arm64 und legt es in die GitHub Container Registry.
 - HTTPS über den Reverse-Proxy auf dem Server (Caddy, Traefik oder Nginx Proxy Manager) – eine PWA braucht HTTPS.
 
@@ -206,7 +207,7 @@ services:
 1. **Brett** (fertig) – ein Tagwerk im Wald spielbar im Browser: Ketten, Ringe, Reife, Gestrüpp, Hasen, Rückgängig,
    dazu schon die drei Wald-Siedler mit Fähigkeiten. Regeln mit Tests.
 2. **Kreislauf** – Flecken-Karte, Lager, Werkstatt mit fünf Rezepten, Speichern im Browser.
-3. **Server** – Docker-Image, Konten, Speichern auf dem Server, PWA, `compose.yaml`.
+3. **Server** – Docker-Image und `compose.yaml` (vorgezogen, fertig), Konten, Speichern auf dem Server, PWA.
 4. **Inhalt** – Siedler und Fähigkeiten, Wetter, Händler, Kapitel 1–3, drei Biome.
 5. **Feinschliff** – Jahreszeiten, Kapitel 4–6, Einführung, Klang.
 6. **Grafik** – gemalter, warmer Stil für Kacheln, Porträts, Karte und Hintergründe (siehe `design.md` › Grafik).
