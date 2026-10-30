@@ -128,6 +128,49 @@ Berufe frei.
 Das Jahr hat vier Jahreszeiten zu je 12 Tagen. Frühling reift schneller, Sommer bringt öfter Sonne, Herbst mehr Nüsse
 und Pilze, Winter Frost – die Zeit für Werkstatt und Bauen.
 
+## Lehren aus der Entwicklung von Puzzle Craft
+
+Quelle: Rückblick der Entwickler, [„The Evolution of Puzzle Craft“](https://www.gamedeveloper.com/design/the-evolution-of-i-puzzle-craft-i-)
+(Game Developer, 2012). Übernommen werden Erfahrungen, keine Inhalte. Noch nicht umgesetzt, außer wo „✓“ steht.
+
+**Spielaufbau**
+
+| Erfahrung dort | Für Lichtung |
+|---|---|
+| Der Kreislauf trägt alles: Gebäude wollen → Rätsel lösen → bauen → zufrieden sein → nächstes Gebäude wollen. | Jedes Gebäude muss begehrenswert sein. Die Bauen-Karte zeigt, was es am Brett verändert, nicht nur, was es kostet. |
+| Drei Hebel: einmalige Hilfen für mehr Kontrolle, Arbeiter verschieben Verhältnisse, Gebäude ändern dauerhaft die Regeln. | Hilfsmittel einmalig, Siedler mit Fähigkeiten ✓ und Stufen, **Gebäude ändern Regeln am Brett** (z. B. Trockengestell: Kräuter reifen schneller; Stall: Ringe fangen auch Tiere am Rand). Eine Tabelle aller veränderbaren Regelwerte dient als Ideenquelle für Gebäude. |
+| Zwei Bretter fühlen sich verschieden an, weil sie verschieden begrenzt sind: ruhig und an Zeit gebunden gegenüber herausfordernd und an Vorräte gebunden. | Biome brauchen ein eigenes Gefühl, nicht nur andere Kacheln: Wald ruhig mit festen Schritten; Felshang als Wagnis – je tiefer, desto wertvoller, begrenzt nur durch Proviant; Bachufer mit Strömung, die Kacheln seitlich schiebt. |
+| Testspieler wollten sofort wirkende Hilfen und selbst entscheiden. | Fähigkeiten setzt man ein, wann man will ✓. Trupp selbst wählen ✓. |
+| Ein abstrakter Bevölkerungswert verwirrte. Erfahrung für geschicktes Spiel – lange Ketten, Werkzeuge – machte Können wichtig. | Freischalten über verständliche Chronik-Ziele. Dazu **Ansehen** der Siedlung für lange Ketten und Ringe. |
+| Hindernisse wurden vereinheitlicht: dieselben Regeln für alle Kacheln. | Neue Kachelarten folgen den bestehenden Regeln (Kette, Ring, Reife) statt Sonderregeln. |
+
+**Geld und Zeit**
+
+| Erfahrung dort | Für Lichtung |
+|---|---|
+| Wartezeiten und Energie machten das Spiel frustrierend und flogen raus. Belohnungen über Zeit blieben, weil sie Freude machen. | Keine Wartezeiten ✓. Gebäude erzeugen je Tag etwas – das ist die gute Art. |
+| Steigende Preise und eine Münze, die man ständig ausgibt, machten das Spiel spannender und die Münze wertvoll. | Proviant kostet jedes Tagwerk; jeder weitere Siedler desselben Berufs kostet mehr; Taler haben immer eine Verwendung. |
+
+**Oberfläche und Einführung**
+
+| Erfahrung dort | Für Lichtung |
+|---|---|
+| Kacheln, die im Hintergrund verschwanden, und schöne, aber unklare Flächen verwirrten. | Jede Kachel bleibt eine einzelne Marke mit Kontrast zur Matte ✓. Bei der gemalten Grafik geht Lesbarkeit vor Schönheit – an echten Spielern testen. |
+| Spieler wollten selbst bestimmen, wo gebaut wird; frei gesetzte Plätze statt starrem Raster. Das größte Bauwerk wirkte erst, als es über den Bildrand ragte. | Bauen auf den Flecken der Karte ✓. Das letzte große Bauwerk der Chronik darf über die Karte hinausragen. |
+| Jede Art von Ausbau mit einem Tipp erreichbar; eine obere Leiste mit dem Wichtigsten; Vorräte packen als kleines Fenster statt eigener Seite. | Vorrat oben ✓, Trupp und Proviant in der Karte des Flecks ✓. Bauen, Siedler und Hilfsmittel je ein eigener Knopf statt Reiter. |
+| Seiten mit Statistiken und Zusammenhängen verstand niemand. Die Information an Ort und Stelle zu zeigen, wirkte. | Keine Übersichtsseite der Regeln. Wirkungen dort, wo sie gelten: am Gebäude, an der Kachel, am Porträt. |
+| Große Textfenster werden weggeklickt. Kleine Häppchen mit Bild, gesprochen von Dorfbewohnern, und ein hüpfender Zeigepfeil wirken. | Das „So geht's“-Fenster aus Meilenstein 1 wird ersetzt: Siedler sagen kurze Sätze in der Blase, ein Pfeil zeigt auf das Nächste. |
+| Der Durchbruch: mit dem Minimum beginnen und neue Mechaniken durch Gebäude freischalten – die Spieler ändern selbst die Regeln. | Kapitel 1 beginnt nur mit Ketten und Gestrüpp. Reife, Ringe, Hasen und Fähigkeiten kommen nacheinander, jeweils mit einem Gebäude oder einem neuen Siedler. |
+| Einige Zusammenhänge bleiben bewusst unerklärt – Entdecken macht Freude. | Kombinationen (z. B. Ring und Fähigkeit) werden nicht erklärt. |
+| Ladebild und Hauptmenü wurden zu einem schönen Startbild. | Das Startbild ist zugleich die Siedlungswahl mit Code-Eingabe. |
+
+**Arbeitsweise**
+
+| Erfahrung dort | Für Lichtung |
+|---|---|
+| Erst ein Prototyp mit Kritzelgrafik, dann in kleinen Schritten erweitern. | So läuft es ✓: Meilenstein 1 mit Platzhaltern, jede neue Regel einzeln dazu und spielen. |
+| Werte in Datendateien, ein eigener Editor: Balancing ohne neuen Build, Design getrennt von Programmierung. | `daten.ts` ✓. Dazu ein Balancing-Blatt im Spiel (nur mit `?werkstatt` in der Adresse): Werte live ändern, als JSON sichern, Startwert anzeigen und Tage nachspielen. |
+
 ## Bedienung
 
 Eigener Spiel-Look, kein Cansol-Designsystem – Vorgaben in [`design.md`](design.md). Das Mockup zeigt:
@@ -160,10 +203,24 @@ Dockerfile, compose.yaml
   Screenreader möglich.
 - **PWA:** auf Android „Zum Startbildschirm hinzufügen“, spielt offline, speichert später auf dem Server.
 
-### Server und Speichern
+### Siedlungen und Codes statt Konten
 
-- Konten mit Name und Passwort (argon2), Sitzung per Cookie. Erster Start legt den Admin an, weitere Konten per
-  Einladungslink (z. B. Familie).
+Kein Login, keine E-Mail, kein Passwort. Wer spielt, gründet eine **Siedlung** und bekommt dafür einen Code.
+
+- **Neue Siedlung:** Startbild › „Neue Siedlung gründen“ › Namen der Siedlung eingeben (z. B. „Moosbach“). Der Server
+  vergibt einen **Siedlungs-Code** aus vier Wörtern, z. B. `moos-biber-laterne-kiesel`, und zeigt ihn groß auf einem
+  Kärtchen mit „Kopieren“ und „Ich habe ihn notiert“.
+- **Weiterspielen:** Das Gerät merkt sich den Code, danach geht es direkt in die Siedlung. Auf einem neuen Gerät:
+  „Mit Code weiterspielen“. Groß-/Kleinschreibung und Trennzeichen sind egal (`Moos Biber Laterne Kiesel` passt auch).
+- **Mehrere Siedlungen auf einem Gerät** (Familien-Tablet): Das Startbild zeigt alle Siedlungen, die das Gerät kennt.
+- **Code weg = Siedlung weg.** Solange ein Gerät die Siedlung noch kennt, zeigt Menü › „Code anzeigen“ ihn wieder an.
+- **Löschen nach einem Jahr:** Jeder Zugriff merkt sich das Datum. Einmal am Tag löscht der Server Siedlungen, die
+  365 Tage niemand geöffnet hat (`LICHTUNG_AUFBEWAHRUNG_TAGE`). Menü › „Siedlung löschen“ geht jederzeit – mit
+  Rückfrage, weil endgültig.
+- **Sicher genug für einen Heimserver:** rund 1.000 Wörter je Stelle, vier Wörter ≈ 40 Bit. Der Server speichert nur
+  einen Hash des Codes (SHA-256 mit Geheimnis aus `LICHTUNG_GEHEIMNIS`) und lässt je Adresse höchstens 10 falsche
+  Codes pro Minute zu – Raten ist aussichtslos. Wer den Code kennt, kann die Siedlung spielen, wie mit einem Schlüssel.
+- **Keine persönlichen Daten:** gespeichert werden nur Siedlungsname, Spielstand und Datum des letzten Zugriffs.
 - Spielstand als JSON mit Versionsnummer, gespeichert nach jedem Tagwerk und jeder Werkstatt-Aktion.
 - Offline: Stand in IndexedDB, beim nächsten Kontakt hochladen. Zwei Geräte mit verschiedenem Stand: der neuere gilt,
   der ältere bleibt als Sicherung erhalten.
@@ -171,11 +228,13 @@ Dockerfile, compose.yaml
 
 | Methode | Pfad | Wofür |
 |---|---|---|
-| POST | `/api/anmelden`, `/api/abmelden` | Sitzung |
-| POST | `/api/einladung`, `/api/registrieren` | weitere Konten |
-| GET | `/api/spielstand` | Stand laden |
+| POST | `/api/siedlungen` | neue Siedlung: `{ name }` → `{ code }` |
+| GET | `/api/spielstand` | Stand laden – Code im Kopf `Authorization: Code moos-biber-…` |
 | PUT | `/api/spielstand` | Stand speichern (mit Version, sonst 409) |
+| DELETE | `/api/siedlung` | Siedlung endgültig löschen |
 | GET | `/api/gesund` | Healthcheck für Docker |
+
+Tabelle `siedlungen`: `id`, `code_hash` (eindeutig), `name`, `stand` (JSON), `version`, `angelegt`, `zuletzt`.
 
 ### Docker
 
@@ -193,8 +252,8 @@ services:
       - ./data:/data
     environment:
       TZ: Europe/Berlin
-      LICHTUNG_URL: https://lichtung.example.de
-      LICHTUNG_REGISTRIERUNG: einladung   # offen | einladung | aus
+      LICHTUNG_GEHEIMNIS: "langer-zufaelliger-text"   # für die Hashes der Codes
+      LICHTUNG_AUFBEWAHRUNG_TAGE: 365
 ```
 
 - Mehrstufiges Dockerfile auf `node:24-slim`: Tests und Build im ersten Schritt, im Image nur Server und gebautes
@@ -207,13 +266,14 @@ services:
 1. **Brett** (fertig) – ein Tagwerk im Wald spielbar im Browser: Ketten, Ringe, Reife, Gestrüpp, Hasen, Rückgängig,
    dazu schon die drei Wald-Siedler mit Fähigkeiten. Regeln mit Tests.
 2. **Kreislauf** – Flecken-Karte, Lager, Werkstatt mit fünf Rezepten, Speichern im Browser.
-3. **Server** – Docker-Image und `compose.yaml` (vorgezogen, fertig), Konten, Speichern auf dem Server, PWA.
-4. **Inhalt** – Siedler und Fähigkeiten, Wetter, Händler, Kapitel 1–3, drei Biome.
-5. **Feinschliff** – Jahreszeiten, Kapitel 4–6, Einführung, Klang.
+3. **Server** – Docker-Image und `compose.yaml` (vorgezogen, fertig), Siedlungs-Codes, Speichern auf dem Server,
+   Löschen nach einem Jahr, PWA.
+4. **Inhalt** – Siedler und Fähigkeiten, Wetter, Händler, Kapitel 1–3 mit schrittweise freigeschalteten Regeln
+   (siehe Lehren), drei Biome mit eigenem Gefühl.
+5. **Feinschliff** – Jahreszeiten, Kapitel 4–6, Einführung durch Siedler und Zeigepfeil, Klang.
 6. **Grafik** – gemalter, warmer Stil für Kacheln, Porträts, Karte und Hintergründe (siehe `design.md` › Grafik).
 
 ## Offene Fragen
 
 1. Name „Lichtung“ – passt der?
-2. Wer spielt: nur du oder mehrere Konten (Familie)?
-3. Server: läuft dort schon ein Reverse-Proxy mit HTTPS? amd64 oder arm64?
+2. Server: läuft dort schon ein Reverse-Proxy mit HTTPS? amd64 oder arm64?

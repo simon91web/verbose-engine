@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup: Lichtung – Siedlung und Code</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,500..700,0..100&family=Nunito:wght@500..800&display=swap">
+<style>
+  /* ---------- Mockup-Seite ---------- */
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #57534d; font: 15px/1.45 'Nunito', system-ui, sans-serif; color: #fff; }
+  h1.seite { font: 600 20px 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; margin: 48px 0 4px; }
+  h1.seite:first-child { margin-top: 0; }
+  .erkl { margin: 0 0 16px; max-width: 900px; color: #eee; }
+  .reihe { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+  figure { margin: 0; display: grid; gap: 8px; }
+  figcaption { font-size: 13px; color: #eee; font-weight: 700; }
+  .notiz { background: #FFF8EA; color: #3A2A1C; border-radius: 18px; padding: 24px 32px; max-width: 900px; margin-top: 48px; }
+  .notiz h2 { font: 600 20px 'Fraunces', Georgia, serif; margin: 0 0 8px; }
+  .notiz li { margin: 4px 0; }
+
+  /* ---------- Spiel-Tokens (docs/design.md) ---------- */
+  .geraet {
+    --bg-oben: #EAF2DC; --bg-unten: #CFE0AE;
+    --perg: #FFF8EA; --perg-2: #F4E8D0; --rand: #E2CFA9;
+    --holz: #9A6436; --holz-d: #6E4422;
+    --tinte: #3A2A1C; --tinte-2: #7B6550;
+    --moos: #4E7F2F; --moos-d: #3A6222; --moos-h: #7DB453; --gruen-text: #3A6222;
+    --honig: #E8A93A; --honig-d: #B97F1E; --honig-h: #FFE3A1;
+    --gefahr: #B23A2E; --gefahr-d: #85281F; --gefahr-text: #A3352A;
+    --matte: #2F4A2A;
+    --schatten: 0 6px 18px rgba(84, 56, 26, .18);
+    --schatten-k: 0 2px 6px rgba(84, 56, 26, .14);
+    --scrim: rgba(40, 28, 14, .45);
+    --fokus: #2F6FB0;
+    background: linear-gradient(180deg, var(--bg-oben), var(--bg-unten));
+    color: var(--tinte);
+    font: 15px/1.45 'Nunito', system-ui, sans-serif;
+    border-radius: 18px; overflow: hidden; position: relative; flex: none;
+  }
+  .geraet.abend {
+    --bg-oben: #22312F; --bg-unten: #141D1C;
+    --perg: #2F2823; --perg-2: #3B322B; --rand: #4E4033;
+    --holz: #7A5030; --holz-d: #4A2F1B;
+    --tinte: #F4E8D2; --tinte-2: #C3B299;
+    --moos-h: #8CC45F; --gruen-text: #A5D47A;
+    --honig: #F0B54C; --honig-d: #B9822A;
+    --gefahr-text: #F08A7C;
+    --matte: #22331A;
+    --schatten: 0 8px 22px rgba(0, 0, 0, .45);
+    --schatten-k: 0 2px 8px rgba(0, 0, 0, .35);
+    --scrim: rgba(0, 0, 0, .6);
+    --fokus: #8EC5FF;
+  }
+  .laptop { width: 1100px; height: 700px; }
+  .handy { width: 390px; height: 844px; }
+  .geraet button, .geraet input { font-family: inherit; color: inherit; }
+  .geraet :focus-visible { outline: 3px solid var(--fokus); outline-offset: 2px; }
+  .ic { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .fr { font-family: 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; }
+
+  /* Knöpfe */
+  .knopf { --f: var(--perg); --u: var(--rand); --t: var(--tinte); display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 18px; border: 0; border-radius: 14px; background: var(--f); color: var(--t) !important; font-weight: 800; font-size: 15px; box-shadow: 0 4px 0 var(--u); cursor: pointer; white-space: nowrap; transition: transform 90ms, box-shadow 90ms, filter 120ms, opacity 120ms; }
+  .knopf.zweit { border: 2px solid var(--rand); box-shadow: 0 3px 0 var(--rand); }
+  .knopf.haupt { --f: var(--moos); --u: var(--moos-d); --t: #fff; }
+  .knopf.gefahr { --f: var(--gefahr); --u: var(--gefahr-d); --t: #fff; }
+  .knopf:hover:not(:disabled) { filter: brightness(1.06); }
+  .knopf:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 var(--u); }
+  .knopf:disabled { opacity: .5; cursor: not-allowed; }
+  .rund { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--perg); border: 2px solid var(--rand); box-shadow: 0 3px 0 var(--rand); cursor: pointer; padding: 0; flex: none; transition: transform 90ms, box-shadow 90ms; }
+  .rund:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--rand); }
+  .karte { background: var(--perg); border: 2px solid var(--rand); border-radius: 18px; box-shadow: var(--schatten); }
+
+  /* Spielmarken */
+  .mk .kante { fill: var(--kk); }
+  .mk .koerper { fill: var(--k); stroke: var(--kk); stroke-width: 1.5; }
+  .mk .glanz { fill: #fff; opacity: .18; }
+  .mk .sym { fill: none; stroke: var(--sym); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .mk .pip { fill: #FFE7A3; stroke: var(--kk); stroke-width: 1.5; }
+  .t-holz     { --k: #B96B34; --kk: #7E4218; --sym: #FFF4DE; }
+  .t-beeren   { --k: #C4446E; --kk: #8A2647; --sym: #FFF0F3; }
+  .t-kraeuter { --k: #63AE4F; --kk: #3C7A30; --sym: #F4FFEC; }
+  .t-nuesse   { --k: #E2AB3C; --kk: #A57417; --sym: #4A2F0C; }
+  .t-gestruepp{ --k: #5D6150; --kk: #3B3F33; --sym: #D9DDC6; }
+  .t-hase     { --k: #F3E6CC; --kk: #C2A97E; --sym: #7A5236; }
+  .t-wald     { --k: #4F8F3F; --kk: #336528; --sym: #FFF6E2; }
+  .t-bach     { --k: #3F8CC0; --kk: #2A6690; --sym: #F0F8FF; }
+  .t-bebaut   { --k: #F4E6C8; --kk: #C2A574; --sym: #6E4422; }
+
+  /* ---------- Startbild ---------- */
+  .start { height: 100%; display: grid; }
+  .laptop .start { grid-template-columns: minmax(0, 1fr) 440px; gap: 40px; padding: 40px 48px; align-items: center; }
+  .handy .start { grid-template-rows: auto minmax(0, 1fr); }
+  .handy .start.leer { grid-template-rows: minmax(0, 1fr) auto; }
+  .handy .start.leer .buehne { align-content: center; }
+  .handy .start.leer .illu { width: 280px; height: 243px; margin-top: 0; }
+  .buehne { display: grid; justify-items: center; text-align: center; gap: 6px; }
+  .illu { overflow: visible; }
+  .laptop .illu { width: 380px; height: 330px; }
+  .handy .illu { width: 210px; height: 182px; margin-top: 28px; }
+  .spieltitel { margin: 8px 0 0; font: 700 60px/1 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; letter-spacing: -0.01em; }
+  .handy .spieltitel { font-size: 44px; margin-top: 4px; }
+  .untertitel { margin: 0; color: var(--tinte-2); font-weight: 700; }
+  .panel { display: flex; flex-direction: column; gap: 14px; padding: 24px; min-height: 0; }
+  .handy .panel { margin-top: 20px; border-radius: 24px 24px 0 0; border-bottom: 0; padding: 20px 16px 24px; box-shadow: 0 -8px 24px rgba(40, 24, 10, .16); }
+  .panel h2 { margin: 0; font: 600 22px/1.2 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; }
+  .panel p { margin: 0; color: var(--tinte-2); font-weight: 700; }
+  .siedlungen { display: grid; gap: 10px; overflow: auto; min-height: 0; padding: 2px 2px 6px; }
+  .sk { display: flex; align-items: center; gap: 8px; transition: opacity 200ms, transform 200ms; }
+  .sk.weg { opacity: 0; transform: translateX(16px); }
+  .sk-haupt { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 2px solid var(--rand); border-radius: 16px; background: var(--perg-2); box-shadow: 0 3px 0 var(--rand); cursor: pointer; text-align: left; transition: transform 90ms, box-shadow 90ms, filter 120ms; }
+  .sk-haupt:hover { filter: brightness(1.04); }
+  .sk-haupt:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--rand); }
+  .sk-text { flex: 1; min-width: 0; display: grid; }
+  .sk-text b { font: 600 20px/1.2 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sk-text span { font-size: 13px; font-weight: 700; color: var(--tinte-2); }
+  .sk-haupt > .ic { color: var(--tinte-2); }
+  .sk .rund { width: 40px; height: 40px; color: var(--tinte-2); }
+  .sk .rund .ic { width: 18px; height: 18px; }
+  .wappen { width: 48px; height: 44px; flex: none; }
+  .aktionen { display: grid; gap: 12px; margin-top: auto; padding-top: 4px; }
+  .laptop .aktionen { margin-top: 8px; }
+
+  /* ---------- Spielbild (Hintergrund für Menü und Löschen) ---------- */
+  .spiel { height: 100%; display: flex; flex-direction: column; }
+  .laptop .spiel { align-items: center; }
+  .kopf { height: 64px; flex: none; display: flex; align-items: center; gap: 8px; padding: 8px 12px 0; width: 100%; }
+  .laptop .kopf { height: 76px; padding: 0 24px; }
+  .zeichen { width: 36px; height: 36px; border-radius: 50%; background: var(--moos); color: #fff; display: grid; place-items: center; box-shadow: 0 3px 0 var(--moos-d); flex: none; }
+  .zeichen .ic { width: 20px; height: 20px; }
+  .titel { flex: 1; display: grid; justify-items: center; text-align: center; min-width: 0; }
+  .titel b { font: 600 22px/1.15 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; }
+  .laptop .titel b { font-size: 26px; }
+  .titel span { font-size: 13px; font-weight: 700; color: var(--tinte-2); }
+  .rund.an { background: var(--honig); border-color: var(--honig-d); box-shadow: 0 3px 0 var(--honig-d); color: #3A2A1C; }
+  .hud { display: flex; align-items: center; gap: 12px; padding: 8px 16px 0; width: 100%; max-width: 560px; }
+  .medaille { width: 72px; height: 72px; border-radius: 50%; flex: none; display: grid; place-items: center; align-content: center; background: radial-gradient(circle at 35% 30%, var(--honig-h), var(--honig) 72%); border: 4px solid var(--holz); box-shadow: 0 4px 0 var(--holz-d); color: #3A2A1C; }
+  .medaille b { font: 700 30px/1 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; }
+  .medaille span { font: 800 11px/1.2 'Nunito', sans-serif; margin-top: 2px; }
+  .zielband { flex: 1; min-width: 0; background: var(--perg); border: 2px solid var(--rand); border-radius: 14px; padding: 8px 12px 10px; display: grid; gap: 6px; font-weight: 800; font-size: 14px; }
+  .zielband div:first-child { display: flex; justify-content: space-between; }
+  .spur { height: 12px; border-radius: 999px; background: var(--perg-2); border: 1.5px solid var(--rand); overflow: hidden; }
+  .spur i { display: block; height: 100%; width: 77%; border-radius: inherit; background: linear-gradient(var(--moos-h), var(--moos)); }
+  .brett-platz { flex: 1; min-height: 0; display: grid; place-items: center; padding: 12px 10px; width: 100%; max-width: 560px; }
+  .brett-platz svg { width: 100%; height: 100%; }
+  .matte { fill: var(--matte); stroke: var(--holz); stroke-width: 10; }
+
+  /* ---------- Menü ---------- */
+  .menue { position: absolute; top: 68px; right: 12px; z-index: 30; width: 300px; display: grid; gap: 8px; padding: 14px; animation: aufklappen 160ms ease-out; }
+  .laptop .menue { top: 72px; right: 24px; }
+  @keyframes aufklappen { from { opacity: 0; transform: translateY(-6px); } }
+  .menue-kopf { display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 2px dashed var(--rand); }
+  .menue-kopf .wappen { width: 40px; height: 36px; }
+  .menue-kopf div { display: grid; }
+  .menue-kopf b { font: 600 18px/1.2 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; }
+  .menue-kopf span { font-size: 13px; font-weight: 700; color: var(--tinte-2); }
+  .menue h4 { margin: 4px 0 0; font: 800 13px 'Nunito', sans-serif; color: var(--tinte-2); }
+  .segment { display: flex; gap: 4px; padding: 4px; background: var(--perg-2); border-radius: 12px; }
+  .segment button { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 40px; border: 0; border-radius: 9px; background: none; font-weight: 800; font-size: 14px; cursor: pointer; }
+  .segment button .ic { width: 16px; height: 16px; }
+  .segment button.an { background: var(--honig); color: #3A2A1C; box-shadow: 0 2px 0 var(--honig-d); }
+  .menue-zeile { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 8px; border: 0; border-radius: 10px; background: none; font-weight: 800; font-size: 15px; cursor: pointer; text-align: left; }
+  .menue-zeile:hover { background: var(--perg-2); }
+  .menue-zeile.gefahr { color: var(--gefahr-text); }
+  .menue-trenn { border-top: 2px dashed var(--rand); margin: 2px 0; }
+
+  /* ---------- Dialoge ---------- */
+  .ueberlage { position: absolute; inset: 0; z-index: 40; display: grid; grid-template-columns: minmax(0, 460px); justify-content: center; align-content: center; padding: 16px; }
+  .scrim { position: absolute; inset: 0; background: var(--scrim); opacity: 0; transition: opacity 200ms; }
+  .ueberlage.offen .scrim { opacity: 1; }
+  .modal { position: relative; width: 100%; background: var(--perg); border: 2px solid var(--rand); border-radius: 22px; box-shadow: 0 18px 40px rgba(40, 24, 10, .35); padding: 44px 20px 20px; display: grid; gap: 14px; transform: scale(.92); opacity: 0; transition: transform 260ms cubic-bezier(.34, 1.4, .64, 1), opacity 180ms; }
+  .ueberlage.offen .modal { transform: none; opacity: 1; }
+  .schild { position: absolute; left: 50%; top: -24px; transform: translateX(-50%); background: var(--holz); color: #FFF3DC; font: 600 22px 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; padding: 8px 26px; border-radius: 12px; box-shadow: 0 4px 0 var(--holz-d); white-space: nowrap; }
+  .schild.gefahr { background: var(--gefahr); box-shadow: 0 4px 0 var(--gefahr-d); }
+  .unterzeile { text-align: center; color: var(--tinte-2); font-weight: 700; margin-top: -8px; }
+  .modal-text { margin: 0; line-height: 1.45; }
+  .feld { display: grid; gap: 6px; }
+  .feld > span { font-weight: 800; font-size: 14px; }
+  .eingabe-zeile { display: flex; gap: 8px; align-items: center; }
+  .eingabe { flex: 1; min-width: 0; height: 52px; padding: 0 14px; border: 2px solid var(--rand); border-radius: 14px; background: var(--perg-2); font-size: 18px; font-weight: 700; outline: none; transition: border-color 120ms; }
+  .eingabe::placeholder { color: var(--tinte-2); opacity: .75; font-weight: 600; }
+  .eingabe:focus { border-color: var(--honig); }
+  .fehlerzeile { min-height: 22px; font-weight: 700; font-size: 14px; color: var(--gefahr-text); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .fehlerzeile .ic { width: 18px; height: 18px; }
+  .fehlerzeile button { border: 0; background: var(--honig); color: #3A2A1C; font-weight: 800; border-radius: 999px; padding: 2px 10px; cursor: pointer; }
+  .fehlerzeile.ruhig { color: var(--tinte-2); }
+  .modal-fuss { display: flex; flex-wrap: wrap; gap: 12px 10px; margin-top: 4px; }
+  .modal-fuss .knopf { flex: 1 1 150px; }
+  .knopf.fest { min-width: 200px; }
+  .handy .knopf.fest { min-width: 0; }
+
+  /* Code-Kärtchen */
+  .woerter { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .handy .woerter { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wort { position: relative; display: grid; place-items: center; min-height: 64px; padding: 14px 6px 8px; border-radius: 14px; background: var(--perg-2); border: 2px solid var(--rand); box-shadow: 0 3px 0 var(--rand); font: 600 22px/1 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; }
+  .wort span { position: absolute; top: 5px; left: 9px; font: 800 11px 'Nunito', sans-serif; color: var(--tinte-2); }
+  .merken { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 14px; background: color-mix(in srgb, var(--honig) 22%, var(--perg)); border: 2px solid color-mix(in srgb, var(--honig) 55%, var(--perg)); }
+  .merken .ic { color: var(--honig-d); margin-top: 2px; }
+  .merken p { margin: 0; line-height: 1.4; }
+  .merken small { display: block; margin-top: 4px; color: var(--tinte-2); font-size: 13px; font-weight: 700; }
+
+  /* Code eingeben */
+  .slots { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .handy .slots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .slot { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 0 8px; border-radius: 12px; border: 2px dashed var(--rand); color: var(--tinte-2); font-weight: 800; font-size: 15px; overflow: hidden; white-space: nowrap; transition: background-color 120ms, border-color 120ms; }
+  .slot .ic { width: 16px; height: 16px; }
+  .slot.ok { border-style: solid; border-color: color-mix(in srgb, var(--moos) 55%, var(--perg)); background: color-mix(in srgb, var(--moos) 14%, var(--perg)); color: var(--gruen-text); }
+  .slot.falsch { border-style: solid; border-color: color-mix(in srgb, var(--gefahr) 55%, var(--perg)); background: color-mix(in srgb, var(--gefahr) 10%, var(--perg)); color: var(--gefahr-text); }
+
+  /* Toast */
+  .toast { position: absolute; left: 0; right: 0; margin-inline: auto; width: max-content; max-width: calc(100% - 32px); bottom: 24px; z-index: 50; display: flex; align-items: center; gap: 10px; padding: 10px 18px; background: var(--perg); border: 2px solid var(--rand); border-radius: 999px; box-shadow: var(--schatten); font-weight: 800; opacity: 0; visibility: hidden; transform: translateY(12px); transition: opacity 160ms, transform 200ms, visibility 0s 200ms; }
+  .toast.zeigen { opacity: 1; visibility: visible; transform: none; transition: opacity 160ms, transform 200ms; }
+  .toast .ic { color: var(--moos-h); }
+  .toast button { border: 0; background: none; padding: 0 0 0 6px; color: var(--gruen-text); font-weight: 800; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .geraet *, .geraet *::before, .geraet *::after { animation: none !important; transition-duration: 100ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<h1 class="seite">Lichtung – Siedlung und Code</h1>
+<p class="erkl">Mockup zu <code>docs/konzept.md</code> › Siedlungen und Codes. Alles ist durchklickbar: gründen, Code merken,
+  mit Code weiterspielen (richtig ist <b>moos biber laterne kiesel</b>), Menü im Spiel, Siedlung wechseln oder löschen.</p>
+
+<h1 class="seite">1 · Startbild beim ersten Besuch</h1>
+<p class="erkl">Startbild und Hauptmenü in einem. Noch keine Siedlung auf diesem Gerät: gründen oder mit Code weiterspielen.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Tag</figcaption><div class="geraet laptop" data-zustand="start" data-leer="ja"></div></figure>
+  <figure><figcaption>Handy 390 px · Tag</figcaption><div class="geraet handy" data-zustand="start" data-leer="ja"></div></figure>
+</div>
+
+<h1 class="seite">2 · Startbild mit Siedlungen auf diesem Gerät</h1>
+<p class="erkl">Das Gerät kennt Moosbach und Birkenhain (z. B. Familien-Tablet). Antippen öffnet die Siedlung; das Kreuz
+  entfernt sie nur von diesem Gerät – mit Rückgängig, die Siedlung selbst bleibt.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Abend</figcaption><div class="geraet laptop abend" data-zustand="start"></div></figure>
+  <figure><figcaption>Handy 390 px · Abend</figcaption><div class="geraet handy abend" data-zustand="start"></div></figure>
+</div>
+
+<h1 class="seite">3 · Neue Siedlung gründen – und der Code</h1>
+<p class="erkl">Name eingeben oder würfeln, gründen. Danach das Code-Kärtchen: vier Wörter, Kopieren, „Ich habe ihn notiert“.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Tag · Gründen</figcaption><div class="geraet laptop" data-zustand="gruenden" data-leer="ja"></div></figure>
+  <figure><figcaption>Handy 390 px · Abend · Code-Kärtchen</figcaption><div class="geraet handy abend" data-zustand="code" data-leer="ja"></div></figure>
+</div>
+
+<h1 class="seite">4 · Mit Code weiterspielen</h1>
+<p class="erkl">Ein Feld für alle vier Wörter, Einfügen geht auch. Jedes Wort wird gleich geprüft; bei Tippfehlern ein
+  Vorschlag zum Antippen. Falscher Code: Meldung an festem Platz; nach drei Fehlversuchen eine Minute Pause.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Abend</figcaption><div class="geraet laptop abend" data-zustand="eingeben"></div></figure>
+  <figure><figcaption>Handy 390 px · Tag · mit Tippfehler</figcaption><div class="geraet handy" data-zustand="eingeben" data-eingabe="moos biiber laterne"></div></figure>
+</div>
+
+<h1 class="seite">5 · Im Spiel: Menü, Code anzeigen, Siedlung löschen</h1>
+<p class="erkl">Oben im Menü steht die Siedlung. „Code anzeigen“ öffnet dasselbe Kärtchen wie beim Gründen. „Siedlung
+  wechseln“ führt zum Startbild. Löschen ist endgültig – darum als einzige Stelle eine Rückfrage.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Tag · Menü</figcaption><div class="geraet laptop" data-zustand="menue"></div></figure>
+  <figure><figcaption>Handy 390 px · Abend · Löschen</figcaption><div class="geraet handy abend" data-zustand="loeschen"></div></figure>
+</div>
+
+<div class="notiz">
+  <h2>Zu entscheiden</h2>
+  <ul>
+    <li><b>Wortliste:</b> rund 1.000 Wörter aus Wald und Dorf, ohne Umlaute und ß, gut zu tippen und nicht verwechselbar.</li>
+    <li><b>Neue Farbe „Gefahr“</b> (Ziegelrot) nur für Endgültiges – Siedlung löschen. Kommt in <code>docs/design.md</code>.</li>
+    <li><b>Wappen:</b> Jede Siedlung bekommt eine Farbe aus ihrem Namen; später ein gemaltes Wappen an derselben Stelle.</li>
+    <li><b>Illustration</b> im Startbild ist Platzhalter aus Spielmarken – später das gemalte Titelbild.</li>
+  </ul>
+</div>
+
+<script>
+// Symbole aus Lucide 0.469.0 (ISC) – Platzhalter bis zur gemalten Grafik
+const ICON = {"sprout":"<path d=\"M7 20h10\" /><path d=\"M10 20c5.5-2.5.8-6.4 3-10\" /><path d=\"M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z\" /><path d=\"M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z\" />","house":"<path d=\"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8\" /><path d=\"M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\" />","flame":"<path d=\"M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z\" />","tree-pine":"<path d=\"m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z\" /><path d=\"M12 22v-3\" />","cherry":"<path d=\"M2 17a5 5 0 0 0 10 0c0-2.76-2.5-5-5-3-2.5-2-5 .24-5 3Z\" /><path d=\"M12 17a5 5 0 0 0 10 0c0-2.76-2.5-5-5-3-2.5-2-5 .24-5 3Z\" /><path d=\"M7 14c3.22-2.91 4.29-8.75 5-12 1.66 2.38 4.94 9 5 12\" /><path d=\"M22 9c-4.29 0-7.14-2.33-10-7 5.71 0 10 4.67 10 7Z\" />","leaf":"<path d=\"M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z\" /><path d=\"M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12\" />","nut":"<path d=\"M12 4V2\" /><path d=\"M5 10v4a7.004 7.004 0 0 0 5.277 6.787c.412.104.802.292 1.102.592L12 22l.621-.621c.3-.3.69-.488 1.102-.592A7.003 7.003 0 0 0 19 14v-4\" /><path d=\"M12 4C8 4 4.5 6 4 8c-.243.97-.919 1.952-2 3 1.31-.082 1.972-.29 3-1 .54.92.982 1.356 2 2 1.452-.647 1.954-1.098 2.5-2 .595.995 1.151 1.427 2.5 2 1.31-.621 1.862-1.058 2.5-2 .629.977 1.162 1.423 2.5 2 1.209-.548 1.68-.967 2-2 1.032.916 1.683 1.157 3 1-1.297-1.036-1.758-2.03-2-3-.5-2-4-4-8-4Z\" />","shrub":"<path d=\"M12 22v-7l-2-2\" /><path d=\"M17 8v.8A6 6 0 0 1 13.8 20H10A6.5 6.5 0 0 1 7 8a5 5 0 0 1 10 0Z\" /><path d=\"m14 14-2 2\" />","rabbit":"<path d=\"M13 16a3 3 0 0 1 2.24 5\" /><path d=\"M18 12h.01\" /><path d=\"M18 21h-8a4 4 0 0 1-4-4 7 7 0 0 1 7-7h.2L9.6 6.4a1 1 0 1 1 2.8-2.8L15.8 7h.2c3.3 0 6 2.7 6 6v1a2 2 0 0 1-2 2h-1a3 3 0 0 0-3 3\" /><path d=\"M20 8.54V4a2 2 0 1 0-4 0v3\" /><path d=\"M7.612 12.524a3 3 0 1 0-1.6 4.3\" />","chevron-right":"<path d=\"m9 18 6-6-6-6\" />","copy":"<rect width=\"14\" height=\"14\" x=\"8\" y=\"8\" rx=\"2\" ry=\"2\" /><path d=\"M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2\" />","check":"<path d=\"M20 6 9 17l-5-5\" />","key-round":"<path d=\"M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z\" /><circle cx=\"16.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\" />","dices":"<rect width=\"12\" height=\"12\" x=\"2\" y=\"10\" rx=\"2\" ry=\"2\" /><path d=\"m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6\" /><path d=\"M6 18h.01\" /><path d=\"M10 14h.01\" /><path d=\"M15 6h.01\" /><path d=\"M18 9h.01\" />","x":"<path d=\"M18 6 6 18\" /><path d=\"m6 6 12 12\" />","trash-2":"<path d=\"M3 6h18\" /><path d=\"M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6\" /><path d=\"M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2\" /><line x1=\"10\" x2=\"10\" y1=\"11\" y2=\"17\" /><line x1=\"14\" x2=\"14\" y1=\"11\" y2=\"17\" />","circle-alert":"<circle cx=\"12\" cy=\"12\" r=\"10\" /><line x1=\"12\" x2=\"12\" y1=\"8\" y2=\"12\" /><line x1=\"12\" x2=\"12.01\" y1=\"16\" y2=\"16\" />","wifi-off":"<path d=\"M12 20h.01\" /><path d=\"M8.5 16.429a5 5 0 0 1 7 0\" /><path d=\"M5 12.859a10 10 0 0 1 5.17-2.69\" /><path d=\"M19 12.859a10 10 0 0 0-2.007-1.523\" /><path d=\"M2 8.82a15 15 0 0 1 4.177-2.643\" /><path d=\"M22 8.82a15 15 0 0 0-11.288-3.764\" /><path d=\"m2 2 20 20\" />","arrow-left-right":"<path d=\"M8 3 4 7l4 4\" /><path d=\"M4 7h16\" /><path d=\"m16 21 4-4-4-4\" /><path d=\"M20 17H4\" />","menu":"<line x1=\"4\" x2=\"20\" y1=\"12\" y2=\"12\" /><line x1=\"4\" x2=\"20\" y1=\"6\" y2=\"6\" /><line x1=\"4\" x2=\"20\" y1=\"18\" y2=\"18\" />","sun":"<circle cx=\"12\" cy=\"12\" r=\"4\" /><path d=\"M12 2v2\" /><path d=\"M12 20v2\" /><path d=\"m4.93 4.93 1.41 1.41\" /><path d=\"m17.66 17.66 1.41 1.41\" /><path d=\"M2 12h2\" /><path d=\"M20 12h2\" /><path d=\"m6.34 17.66-1.41 1.41\" /><path d=\"m19.07 4.93-1.41 1.41\" />","moon":"<path d=\"M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z\" />","sun-moon":"<path d=\"M12 8a2.83 2.83 0 0 0 4 4 4 4 0 1 1-4-4\" /><path d=\"M12 2v2\" /><path d=\"M12 20v2\" /><path d=\"m4.9 4.9 1.4 1.4\" /><path d=\"m17.7 17.7 1.4 1.4\" /><path d=\"M2 12h2\" /><path d=\"M20 12h2\" /><path d=\"m6.3 17.7-1.4 1.4\" /><path d=\"m19.1 4.9-1.4 1.4\" />","book-open":"<path d=\"M12 7v14\" /><path d=\"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z\" />","undo-2":"<path d=\"M9 14 4 9l5-5\" /><path d=\"M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11\" />","plus":"<path d=\"M5 12h14\" /><path d=\"M12 5v14\" />","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\" /><path d=\"m9 12 2 2 4-4\" />","fish":"<path d=\"M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.47-3.44 6-7 6s-7.56-2.53-8.5-6Z\" /><path d=\"M18 12v.5\" /><path d=\"M16 17.93a9.77 9.77 0 0 1 0-11.86\" /><path d=\"M7 10.67C7 8 5.58 5.97 2.73 5.5c-1 1.5-1 5 .23 6.5-1.24 1.5-1.24 5-.23 6.5C5.58 18.03 7 16 7 13.33\" /><path d=\"M10.46 7.26C10.2 5.88 9.17 4.24 8 3h5.8a2 2 0 0 1 1.98 1.67l.23 1.4\" /><path d=\"m16.01 17.93-.23 1.4A2 2 0 0 1 13.8 21H9.5a5.96 5.96 0 0 0 1.49-3.98\" />","tree-deciduous":"<path d=\"M8 19a4 4 0 0 1-2.24-7.32A3.5 3.5 0 0 1 9 6.03V6a3 3 0 1 1 6 0v.04a3.5 3.5 0 0 1 3.24 5.65A4 4 0 0 1 16 19Z\" /><path d=\"M12 19v3\" />"};
+</script>
+<script>
+const ic = (n, k = 'ic') => `<svg class="${k}" viewBox="0 0 24 24" aria-hidden="true">${ICON[n]}</svg>`;
+const ecken = s => [0, 1, 2, 3, 4, 5].map(i => { const a = Math.PI / 3 * i; return `${(s * Math.cos(a)).toFixed(1)},${(s * Math.sin(a)).toFixed(1)}`; }).join(' ');
+
+/** Spielmarke um (0,0) mit Radius r. */
+function marke(klasse, icon, r, extra = '') {
+  const s = (r * 0.8) / 12;
+  return `<g class="mk ${klasse}" ${extra}><polygon class="kante" points="${ecken(r)}" transform="translate(0 ${(r * 0.1).toFixed(1)})"/>
+    <polygon class="koerper" points="${ecken(r)}"/><ellipse class="glanz" cx="0" cy="${(-r * 0.46).toFixed(1)}" rx="${(r * 0.52).toFixed(1)}" ry="${(r * 0.18).toFixed(1)}"/>
+    <g class="sym" transform="translate(${(-12 * s).toFixed(1)} ${(-12 * s).toFixed(1)}) scale(${s.toFixed(3)})">${ICON[icon]}</g></g>`;
+}
+
+const WAPPEN = ['t-wald', 't-bach', 't-holz', 't-beeren', 't-nuesse'];
+const wappenKlasse = name => WAPPEN[[...name].reduce((s, c) => s + c.charCodeAt(0), 0) % WAPPEN.length];
+const wappen = (name, k = 'wappen') => `<svg class="${k}" viewBox="-24 -22 48 46" aria-hidden="true">${marke(wappenKlasse(name), 'house', 21)}</svg>`;
+
+function illustration() {
+  const r = 40, h = Math.sqrt(3) * r;
+  const pos = (q, s) => [r * 1.5 * q, h * (s + q / 2)];
+  const teile = [
+    [0, 0, 't-bebaut', 'flame'], [1, -1, 't-holz', 'tree-pine'], [1, 0, 't-beeren', 'cherry'], [0, 1, 't-bebaut', 'house'],
+    [-1, 1, 't-kraeuter', 'leaf'], [-1, 0, 't-nuesse', 'nut'], [0, -1, 't-bach', 'fish'],
+    [2, -1, 't-wald', 'tree-deciduous', .55], [-2, 1, 't-gestruepp', 'shrub', .5], [1, -2, 't-kraeuter', 'leaf', .45], [-1, 2, 't-hase', 'rabbit', .55], [2, 0, 't-wald', 'tree-deciduous', .4], [-2, 0, 't-bach', 'fish', .4],
+  ];
+  return `<svg class="illu" viewBox="-150 -135 300 270" aria-hidden="true">${teile.map(([q, s, k, i, o]) => {
+    const [x, y] = pos(q, s);
+    return `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)})" ${o ? `opacity="${o}"` : ''}>${marke(k, i, r - 3)}</g>`;
+  }).join('')}</svg>`;
+}
+
+/** Statisches Brett als Hintergrund für die Spiel-Zustände. */
+function brettBild() {
+  let z = 7;
+  const zufall = () => (z = (z * 16807) % 2147483647) / 2147483647;
+  const S = 50, H = Math.sqrt(3) * S, arten = [['t-holz', 'tree-pine'], ['t-beeren', 'cherry'], ['t-kraeuter', 'leaf'], ['t-nuesse', 'nut'], ['t-gestruepp', 'shrub']];
+  let g = '';
+  for (let c = 0; c < 7; c++) for (let r = 0; r < 7; r++) {
+    const [k, i] = arten[Math.floor(zufall() * (zufall() < .1 ? 5 : 4))];
+    g += `<g transform="translate(${S + c * 1.5 * S} ${(H / 2 + r * H + (c % 2 ? H / 2 : 0)).toFixed(1)})">${marke(k, i, S - 3)}</g>`;
+  }
+  return `<svg viewBox="-26 -26 602 702" aria-hidden="true"><rect class="matte" x="-18" y="-18" width="586" height="686" rx="30"/>${g}</svg>`;
+}
+
+// ---------- Daten des Mockups ----------
+const WOERTER = ['moos', 'biber', 'laterne', 'kiesel', 'eiche', 'farn', 'quelle', 'fuchs', 'nebel', 'pilz', 'rinde', 'honig', 'ahorn', 'birke', 'wiese', 'bach', 'stein', 'kerze', 'korb', 'hafer', 'flachs', 'ziege', 'ente', 'otter', 'dachs', 'eule', 'specht', 'zapfen', 'beere', 'harz', 'laub', 'linde', 'hasel', 'tanne', 'weide', 'mulde', 'schilf', 'kahn', 'steg', 'brunnen', 'ofen', 'sense', 'rabe', 'igel', 'krug', 'fass', 'faden', 'wolle', 'salbei', 'minze'];
+const NAMEN = ['Moosbach', 'Birkenhain', 'Farnwinkel', 'Eulenau', 'Kieselgrund', 'Haselried', 'Lindenhof', 'Otterbrunn', 'Tannenruh', 'Weidenfurt'];
+const RICHTIG = 'moos biber laterne kiesel';
+const BEKANNT = [{ name: 'Moosbach', tag: 14, zuletzt: 'heute', code: ['moos', 'biber', 'laterne', 'kiesel'] }, { name: 'Birkenhain', tag: 3, zuletzt: 'vor 2 Wochen', code: ['eule', 'farn', 'krug', 'nebel'] }];
+
+const zerlege = text => text.toLowerCase().split(/[^a-zäöüß]+/).filter(Boolean);
+function abstand(a, b) {
+  const d = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
+  for (let j = 1; j <= b.length; j++) d[0][j] = j;
+  for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+  return d[a.length][b.length];
+}
+const vorschlag = wort => WOERTER.map(w => [w, abstand(wort, w)]).sort((a, b) => a[1] - b[1]).find(([, d]) => d <= 2)?.[0];
+const zufallsCode = () => Array.from({ length: 4 }, () => WOERTER[Math.floor(Math.random() * WOERTER.length)]);
+
+// ---------- Ein Gerät: kleiner Zustandsautomat ----------
+class Geraet {
+  constructor(el) {
+    Object.assign(this, { el, handy: el.classList.contains('handy'), zustand: el.dataset.zustand, eingabe: el.dataset.eingabe || '', fehlversuche: 0 });
+    this.siedlungen = el.dataset.leer ? [] : BEKANNT.map(s => ({ ...s }));
+    this.aktuell = this.siedlungen[0] || { name: 'Moosbach', tag: 1, zuletzt: 'gerade eben', code: ['moos', 'biber', 'laterne', 'kiesel'] };
+    if (this.zustand === 'code') this.aktuell = { name: 'Farnwinkel', tag: 1, zuletzt: 'gerade eben', code: ['otter', 'laterne', 'zapfen', 'harz'], neu: true };
+    if (this.zustand === 'menue' || this.zustand === 'loeschen') this.siedlungen = BEKANNT.map(s => ({ ...s }));
+    this.zeichne(true);
+  }
+
+  gehe(zustand) { this.zustand = zustand; this.zeichne(); }
+
+  zeichne(sofort = false) {
+    const imSpiel = ['spiel', 'menue', 'loeschen', 'code-zeigen'].includes(this.zustand);
+    const hinten = imSpiel ? this.spielBild() : this.startBild();
+    const vorn = { gruenden: this.gruenden(), code: this.codeKarte(true), 'code-zeigen': this.codeKarte(false), eingeben: this.eingeben(), loeschen: this.loeschen() }[this.zustand];
+    const alterToast = this.el.querySelector('.toast')?.outerHTML || '<div class="toast" role="status"></div>';
+    this.el.innerHTML = hinten + (this.zustand === 'menue' ? this.menue() : '') +
+      (vorn ? `<div class="ueberlage"><div class="scrim js-scrim"></div><div class="modal" role="dialog" aria-modal="true">${vorn}</div></div>` : '') + alterToast;
+    const u = this.el.querySelector('.ueberlage');
+    if (u) sofort ? u.classList.add('offen') : requestAnimationFrame(() => u.classList.add('offen'));
+    this.verdrahten();
+    if (this.zustand === 'eingeben') this.pruefeEingabe();
+  }
+
+  toast(text, aktion) {
+    const t = this.el.querySelector('.toast');
+    t.innerHTML = `${ic('circle-check')}<span>${text}</span>${aktion ? `<button class="js-toast-aktion">${aktion.text}</button>` : ''}`;
+    if (aktion) t.querySelector('.js-toast-aktion').onclick = () => { aktion.tun(); t.classList.remove('zeigen'); };
+    t.classList.add('zeigen');
+    clearTimeout(t._aus);
+    t._aus = setTimeout(() => t.classList.remove('zeigen'), 4000);
+  }
+
+  // --- Ansichten ---
+  startBild() {
+    const leer = !this.siedlungen.length;
+    const knoepfe = `<div class="aktionen">
+      <button class="knopf haupt js-zu-gruenden">${ic('plus')}Neue Siedlung gründen</button>
+      <button class="knopf zweit js-zu-eingeben">${ic('key-round')}${leer ? 'Ich habe schon einen Code' : 'Mit Code weiterspielen'}</button></div>`;
+    const panel = leer
+      ? `<h2>Willkommen auf der Lichtung</h2><p>Gründe dein Dorf im Wald – oder spiel mit deinem Code weiter.</p>${knoepfe}`
+      : `<h2>Deine Siedlungen</h2><div class="siedlungen">${this.siedlungen.map(s => `
+          <div class="sk" data-name="${s.name}">
+            <button class="sk-haupt js-oeffnen" aria-label="${s.name} öffnen">${wappen(s.name)}
+              <span class="sk-text"><b>${s.name}</b><span>Tag ${s.tag} · zuletzt ${s.zuletzt}</span></span>${ic('chevron-right')}</button>
+            <button class="rund js-vergessen" title="Von diesem Gerät entfernen – die Siedlung bleibt erhalten" aria-label="${s.name} von diesem Gerät entfernen">${ic('x')}</button>
+          </div>`).join('')}</div>${knoepfe}`;
+    return `<div class="start${leer ? ' leer' : ''}"><div class="buehne">${illustration()}<h1 class="spieltitel">Lichtung</h1>
+      <p class="untertitel">Ein Dorf entsteht – Kette für Kette.</p></div><div class="panel karte">${panel}</div></div>`;
+  }
+
+  spielBild() {
+    return `<div class="spiel">
+      <header class="kopf"><span class="zeichen">${ic('sprout')}</span>
+        <div class="titel"><b>Nordwald</b><span>${this.aktuell.name} · Tag ${this.aktuell.tag}</span></div>
+        <button class="rund" aria-label="Letzte Kette zurücknehmen" disabled style="opacity:.45">${ic('undo-2')}</button>
+        <button class="rund js-menue ${this.zustand === 'menue' ? 'an' : ''}" aria-label="Menü" aria-expanded="${this.zustand === 'menue'}">${ic('menu')}</button></header>
+      <div class="hud"><div class="medaille"><b>15</b><span>Schritte</span></div>
+        <div class="zielband"><div><span>Gestrüpp roden</span><span>46 / 60</span></div><div class="spur"><i></i></div></div></div>
+      <div class="brett-platz">${brettBild()}</div></div>`;
+  }
+
+  menue() {
+    const s = this.aktuell;
+    return `<div class="menue karte" role="menu">
+      <div class="menue-kopf">${wappen(s.name)}<div><b>${s.name}</b><span>Tag ${s.tag}</span></div></div>
+      <h4>Stimmung</h4>
+      <div class="segment"><button class="${this.el.classList.contains('abend') ? '' : 'an'}">${ic('sun')}Tag</button><button class="${this.el.classList.contains('abend') ? 'an' : ''}">${ic('moon')}Abend</button><button>${ic('sun-moon')}Gerät</button></div>
+      <button class="menue-zeile js-code-zeigen" role="menuitem">${ic('key-round')}Code anzeigen</button>
+      <button class="menue-zeile" role="menuitem">${ic('book-open')}Spielregeln</button>
+      <button class="menue-zeile js-wechseln" role="menuitem">${ic('arrow-left-right')}Siedlung wechseln</button>
+      <div class="menue-trenn"></div>
+      <button class="menue-zeile gefahr js-zu-loeschen" role="menuitem">${ic('trash-2')}Siedlung löschen …</button></div>`;
+  }
+
+  gruenden() {
+    return `<div class="schild">Neue Siedlung</div>
+      <label class="feld"><span>Name deiner Siedlung</span>
+        <span class="eingabe-zeile"><input class="eingabe js-name" maxlength="30" placeholder="z. B. Moosbach" autocomplete="off" value="${this.name || ''}">
+        <button class="rund js-wuerfeln" title="Namen vorschlagen" aria-label="Namen vorschlagen">${ic('dices')}</button></span></label>
+      <div class="fehlerzeile ruhig js-fehler" aria-live="polite"></div>
+      <div class="modal-fuss"><button class="knopf zweit js-abbrechen">Abbrechen</button>
+        <button class="knopf haupt fest js-gruenden" disabled title="Name fehlt">Siedlung gründen</button></div>`;
+  }
+
+  codeKarte(neu) {
+    const s = this.aktuell;
+    return `<div class="schild">Dein Siedlungs-Code</div><div class="unterzeile">${s.name}</div>
+      <div class="woerter">${s.code.map((w, i) => `<div class="wort"><span>${i + 1}</span>${w}</div>`).join('')}</div>
+      <div class="merken">${ic('key-round')}<p><b>Schreib ihn dir auf.</b> Mit dem Code spielst du auf jedem Gerät weiter – ohne ihn ist die Siedlung verloren.
+        <small>Wird ein Jahr lang nicht gespielt, wird die Siedlung gelöscht.</small></p></div>
+      <div class="modal-fuss"><button class="knopf zweit fest js-kopieren">${ic('copy')}<span>Kopieren</span></button>
+        <button class="knopf haupt js-notiert">${neu ? 'Ich habe ihn notiert' : 'Schließen'}</button></div>`;
+  }
+
+  eingeben() {
+    return `<div class="schild">Mit Code weiterspielen</div>
+      <label class="feld"><span>Siedlungs-Code</span>
+        <input class="eingabe js-code" value="${this.eingabe}" placeholder="vier Wörter, z. B. moos biber …" autocomplete="off" autocapitalize="none" spellcheck="false"></label>
+      <div class="slots js-slots"></div>
+      <div class="fehlerzeile js-fehler" role="alert"></div>
+      <div class="modal-fuss"><button class="knopf zweit js-abbrechen">Abbrechen</button>
+        <button class="knopf haupt fest js-weiter" disabled>Weiterspielen</button></div>`;
+  }
+
+  loeschen() {
+    return `<div class="schild gefahr">Siedlung löschen?</div>
+      <p class="modal-text"><b>${this.aktuell.name}</b> wird mit allem Fortschritt gelöscht. Auch mit dem Code kommt danach niemand mehr hinein.</p>
+      <div class="modal-fuss"><button class="knopf zweit js-abbrechen">Behalten</button>
+        <button class="knopf gefahr fest js-endgueltig">${ic('trash-2')}Endgültig löschen</button></div>`;
+  }
+
+  // --- Code prüfen ---
+  pruefeEingabe() {
+    const teile = zerlege(this.eingabe);
+    const slots = this.el.querySelector('.js-slots'), fehler = this.el.querySelector('.js-fehler'), weiter = this.el.querySelector('.js-weiter');
+    slots.innerHTML = [0, 1, 2, 3].map(i => {
+      const w = teile[i];
+      if (!w) return `<div class="slot">Wort ${i + 1}</div>`;
+      return WOERTER.includes(w) ? `<div class="slot ok">${ic('check')}${w}</div>` : `<div class="slot falsch">${ic('circle-alert')}${w}</div>`;
+    }).join('');
+    const unbekannt = teile.slice(0, 4).find(w => !WOERTER.includes(w));
+    fehler.classList.remove('ruhig');
+    if (this.gesperrt) {
+      fehler.innerHTML = `${ic('circle-alert')}Zu viele Versuche – in einer Minute geht es weiter.`;
+    } else if (unbekannt) {
+      const v = vorschlag(unbekannt);
+      fehler.innerHTML = `${ic('circle-alert')}„${unbekannt}“ gibt es nicht${v ? ` – meinst du <button class="js-ersetzen" data-alt="${unbekannt}" data-neu="${v}">${v}</button>?` : '.'}`;
+      const b = fehler.querySelector('.js-ersetzen');
+      if (b) b.onclick = () => {
+        this.eingabe = zerlege(this.eingabe).map(w => w === b.dataset.alt ? b.dataset.neu : w).join(' ') + ' ';
+        const feld = this.el.querySelector('.js-code');
+        feld.value = this.eingabe;
+        feld.focus();
+        this.pruefeEingabe();
+      };
+    } else if (teile.length > 4) {
+      fehler.innerHTML = `${ic('circle-alert')}Der Code hat genau vier Wörter.`;
+    } else if (this.serverFehler) {
+      fehler.innerHTML = `${ic('circle-alert')}${this.serverFehler}`;
+    } else fehler.innerHTML = '';
+    weiter.disabled = this.gesperrt || teile.length !== 4 || !!unbekannt;
+    weiter.title = this.gesperrt ? 'Zu viele Versuche' : teile.length !== 4 ? 'Vier Wörter eingeben' : unbekannt ? 'Ein Wort ist unbekannt' : '';
+  }
+
+  // --- Handlungen ---
+  verdrahten() {
+    const e = this.el, an = (sel, f) => e.querySelectorAll(sel).forEach(k => k.addEventListener('click', f));
+    an('.js-zu-gruenden', () => { this.name = ''; this.gehe('gruenden'); });
+    an('.js-zu-eingeben', () => { this.eingabe = ''; this.serverFehler = ''; this.gehe('eingeben'); });
+    an('.js-abbrechen', () => this.gehe(['loeschen'].includes(this.zustand) ? 'spiel' : 'start'));
+    an('.js-scrim', () => { if (this.zustand !== 'code') this.gehe(['loeschen', 'code-zeigen'].includes(this.zustand) ? 'spiel' : 'start'); });
+    an('.js-menue', () => this.gehe(this.zustand === 'menue' ? 'spiel' : 'menue'));
+    an('.js-code-zeigen', () => this.gehe('code-zeigen'));
+    an('.js-zu-loeschen', () => this.gehe('loeschen'));
+    an('.js-wechseln', () => this.gehe('start'));
+    an('.js-oeffnen', ev => {
+      const name = ev.currentTarget.closest('.sk').dataset.name;
+      this.aktuell = this.siedlungen.find(s => s.name === name);
+      this.aktuell.zuletzt = 'heute';
+      this.gehe('spiel');
+      this.toast(`Willkommen zurück in ${name}`);
+    });
+    an('.js-vergessen', ev => {
+      const karte = ev.currentTarget.closest('.sk'), name = karte.dataset.name;
+      const vorher = [...this.siedlungen];
+      karte.classList.add('weg');
+      setTimeout(() => {
+        this.siedlungen = this.siedlungen.filter(s => s.name !== name);
+        this.gehe('start');
+        this.toast(`${name} von diesem Gerät entfernt`, { text: 'Rückgängig', tun: () => { this.siedlungen = vorher; this.gehe('start'); } });
+      }, 200);
+    });
+
+    // Gründen
+    const name = e.querySelector('.js-name'), gruenden = e.querySelector('.js-gruenden');
+    if (name) {
+      const pruefen = () => {
+        const n = name.value.trim();
+        gruenden.disabled = n.length < 2;
+        gruenden.title = n.length < 2 ? 'Name fehlt' : '';
+        e.querySelector('.js-fehler').textContent = this.siedlungen.some(s => s.name.toLowerCase() === n.toLowerCase()) ? 'Diesen Namen gibt es auf diesem Gerät schon – geht trotzdem.' : '';
+      };
+      name.addEventListener('input', pruefen);
+      name.addEventListener('keydown', ev => { if (ev.key === 'Enter' && !gruenden.disabled) gruenden.click(); });
+      an('.js-wuerfeln', () => { name.value = NAMEN[Math.floor(Math.random() * NAMEN.length)]; pruefen(); name.focus(); });
+      gruenden.addEventListener('click', () => {
+        gruenden.disabled = true; gruenden.textContent = 'Wird gegründet …';
+        setTimeout(() => {
+          this.aktuell = { name: name.value.trim(), tag: 1, zuletzt: 'gerade eben', code: zufallsCode(), neu: true };
+          this.siedlungen.unshift(this.aktuell);
+          this.gehe('code');
+        }, 700);
+      });
+      pruefen();
+    }
+
+    // Code-Kärtchen
+    const kopieren = e.querySelector('.js-kopieren');
+    if (kopieren) kopieren.addEventListener('click', () => {
+      try { navigator.clipboard?.writeText(this.aktuell.code.join(' ')); } catch {}
+      kopieren.innerHTML = `${ic('check')}<span>Kopiert</span>`;
+      setTimeout(() => { kopieren.innerHTML = `${ic('copy')}<span>Kopieren</span>`; }, 2000);
+    });
+    an('.js-notiert', () => {
+      const neu = this.zustand === 'code';
+      this.gehe('spiel');
+      if (neu) this.toast(`Willkommen in ${this.aktuell.name}!`);
+    });
+
+    // Code eingeben
+    const code = e.querySelector('.js-code'), weiter = e.querySelector('.js-weiter');
+    if (code) {
+      code.addEventListener('input', () => { this.eingabe = code.value; this.serverFehler = ''; this.pruefeEingabe(); });
+      code.addEventListener('keydown', ev => { if (ev.key === 'Enter' && !weiter.disabled) weiter.click(); });
+      weiter.addEventListener('click', () => {
+        weiter.disabled = true; weiter.textContent = 'Wird gesucht …';
+        setTimeout(() => {
+          weiter.textContent = 'Weiterspielen';
+          if (zerlege(this.eingabe).join(' ') === RICHTIG) {
+            this.aktuell = this.siedlungen.find(s => s.name === 'Moosbach') || { ...BEKANNT[0] };
+            if (!this.siedlungen.includes(this.aktuell)) this.siedlungen.unshift(this.aktuell);
+            this.gehe('spiel');
+            this.toast('Willkommen zurück in Moosbach');
+            return;
+          }
+          this.fehlversuche++;
+          if (this.fehlversuche >= 3) {
+            this.gesperrt = true;
+            setTimeout(() => { this.gesperrt = false; this.fehlversuche = 0; if (this.zustand === 'eingeben') this.pruefeEingabe(); }, 60000);
+          } else this.serverFehler = 'Diesen Code kennt der Server nicht. Stimmen alle vier Wörter?';
+          this.pruefeEingabe();
+        }, 600);
+      });
+    }
+
+    // Löschen
+    const endgueltig = e.querySelector('.js-endgueltig');
+    if (endgueltig) endgueltig.addEventListener('click', () => {
+      endgueltig.disabled = true; endgueltig.textContent = 'Wird gelöscht …';
+      setTimeout(() => {
+        const name = this.aktuell.name;
+        this.siedlungen = this.siedlungen.filter(s => s.name !== name);
+        this.gehe('start');
+        this.toast(`${name} gelöscht`);
+      }, 700);
+    });
+  }
+}
+
+document.querySelectorAll('.geraet').forEach(el => { el._geraet = new Geraet(el); });
+</script>
+</body>
+</html>
