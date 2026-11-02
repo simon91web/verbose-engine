@@ -21,6 +21,34 @@ Regeln, die das Spiel tragen:
 - **Trupp** – die Siedler, die du mitnimmst, bestimmen Schritte und Fähigkeiten des Tages.
 - **Wetter** – jeder Tag hat eines und ändert die Regeln ein wenig.
 
+## Neue Richtung (Stand 02.11.2026)
+
+Ergebnis der Gespräche im November. Gilt vor den älteren Abschnitten unten (Spielschleife, Werkstatt, Chronik,
+Zeit), die bei der nächsten Überarbeitung angepasst werden.
+
+- **Drei Ebenen:** Tagwerk (Puzzle, Minuten) → Siedlung (ein Durchgang, etwa eine Woche) → Aufbruch (Neubeginn).
+- **Siedlung als Incremental:** Gebäude produzieren in **Echtzeit, bis das Lager voll ist**. Nichts verfällt;
+  unerfüllte Wünsche halten nur das Wachstum an. Ein Tagwerk ohne Proviant ist immer möglich. Der Server rechnet die
+  vergangene Zeit beim Öffnen nach.
+- **Bevölkerungsstufen** mit zwei bis vier Wünschen treiben die Siedlung an und ersetzen die Kapitel der Chronik.
+  Jede Stufe schaltet eine Regel auf dem Brett frei.
+- **Aufbruch:** Jeder Ort hat einen Auftrag (Vollendung). Danach wird ein Wagen gebaut (Teile aus der Werkstatt),
+  ab dann wählt man den Zeitpunkt frei. Mit zieht: ausgewählte Siedler, eine Wagenladung und Wissen (dauerhafte
+  Verbesserungen). An Gabelungen des Flusses wählt man den nächsten Ort.
+- **Alte Siedlungen** bleiben auf der Flusskarte, haben keine Bedürfnisse mehr und liefern in Echtzeit per Boot. In
+  ihrer Verwaltung gibt es drei Hebel: Schwerpunkt, Handelsweg, Vogt. Aktiv gebaut wird immer nur an einem Ort.
+- **Ende:** Die Hafenstadt an der Mündung nach sechs bis acht Siedlungen, danach freies Weiterspielen.
+- **Spieler:** Einzelspieler, mehrere Spieler parallel mit Name und Code. Keine Welten; jede Siedlung behält den
+  Regelstand, mit dem sie gegründet wurde.
+- **Welt in 3D, stilisiert** – weder fotorealistisch noch Comic. Anregungen: Northgard, Dredge, Don't Starve,
+  Dungeon of the Endless, Turmoil, Minecraft. Zunächst Platzhalter-Modelle und -Farben.
+- **Freies Bauen auf einem unsichtbaren Wabenraster:** Gelände wird weich gezeichnet, Gebäude stehen leicht verdreht,
+  Wege als Kurven. Im Baumodus zeigt ein Overlay von matt bis golden mit Prozentzahl, wo ein Gebäude mehr bringt –
+  bauen kann man überall. Abreißen gibt die Hälfte zurück, Versetzen kostet etwa ein Viertel.
+- **Gebäude auf Erntefläche zeigen sich auf dem Brett:** Die Mischung eines Bretts folgt dem Gelände des Gebiets;
+  bebaute Waben stehen anteilig als feste Kacheln darauf. Manche helfen (z. B. Holzfällerhütte: Holz-Ketten daneben
+  +1).
+
 ## Spielschleife
 
 1. **Siedlung:** Fleck auf der Karte wählen, Trupp zusammenstellen, Proviant einpacken.

@@ -84,6 +84,18 @@ Etwas verspielter als in einer App, aber nie im Weg.
 - Bereite Fähigkeiten leuchten sanft.
 - „Weniger Bewegung“ am Gerät: nur Überblenden, kein Federn, kein Leuchten.
 
+## Welt in 3D
+
+Entscheidung 02.11.2026: Die Siedlung ist eine **stilisierte 3D-Welt** – kantig-weich, warmes Licht, Nebel; weder
+fotorealistisch noch Comic. Anregungen: Northgard, Dredge, Don't Starve, Dungeon of the Endless, Turmoil, Minecraft.
+Das Brett bleibt 2D und liegt beim Tagwerk über der Welt. Prototyp: `apps/web/welt.html` (three.js mit React Three
+Fiber, Platzhalter-Modelle).
+
+- Gelände auf einem unsichtbaren Wabenraster, weich gezeichnet; Fluss als Kurve, Wald als Kulisse rundum.
+- Tag und Abend als Beleuchtung: Sonne bzw. Mond, Lagerfeuer und Fenster leuchten am Abend, Nebel hält die Welt klein.
+- Baumodus: feine helle Umrisse für jede bebaubare Wabe, gute Stellen von blass bis golden gefüllt, an der gewählten
+  Stelle ein Etikett mit Prozent, Gründen und „Hier bauen“.
+
 ## Grafik: jetzt und später
 
 **Jetzt (MVP):** Lucide-Symbole auf Farbmarken, Initialen statt Gesichtern, Farbwaben auf der Karte. Es geht um
