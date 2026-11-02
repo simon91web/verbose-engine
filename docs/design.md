@@ -71,6 +71,7 @@ Dieselbe Marke erscheint überall: auf dem Brett, im Beutel, in Ertrag und Lager
   Fähigkeit ein. Noch nicht voll: Antippen nennt in der Blase, was fehlt.
 - **Blase:** Rückmeldung über dem Brett an festem Platz („Holz × 5 · +9“, „Ring! +6 · 1 Hase“ in Gold).
 - **Holzleiste:** Navigation am Handy unten (Siedlung · Werkstatt · Chronik · Menü), aktives Ziel mit Honigkreis.
+  Die Ziele werden mit dem nächsten Mockup neu gefasst (Chronik entfällt, Lager und Forschung kommen dazu).
   Laptop: dieselben Ziele als Holzreiter oben.
 - **Blatt von unten** (Handy) in drei Höhen, wie bisher; Laptop: Pergamentkarte rechts.
 
@@ -91,10 +92,20 @@ fotorealistisch noch Comic. Anregungen: Northgard, Dredge, Don't Starve, Dungeon
 Das Brett bleibt 2D und liegt beim Tagwerk über der Welt. Prototyp: `apps/web/welt.html` (three.js mit React Three
 Fiber, Platzhalter-Modelle).
 
-- Gelände auf einem unsichtbaren Wabenraster, weich gezeichnet; Fluss als Kurve, Wald als Kulisse rundum.
-- Tag und Abend als Beleuchtung: Sonne bzw. Mond, Lagerfeuer und Fenster leuchten am Abend, Nebel hält die Welt klein.
-- Baumodus: feine helle Umrisse für jede bebaubare Wabe, gute Stellen von blass bis golden gefüllt, an der gewählten
-  Stelle ein Etikett mit Prozent, Gründen und „Hier bauen“.
+- Gelände auf einem unsichtbaren Wabenraster, weich gezeichnet; Fluss als Kurve, Wald als Kulisse rundum. Die Karte
+  ist in Fluren geteilt (siehe Konzept); noch nicht aufgedeckte Fluren liegen im Nebel.
+- **Das Licht der Welt folgt der Spieluhr:** Tag, Dämmerung und Nacht, die Länge nach Jahreszeit (siehe Konzept ›
+  Zeit). Sonne bzw. Mond, nachts leuchten Feuer, Fackeln und Fenster. Lichtkreise drängen den Nebel zurück, dunkle
+  Fluren versinken darin. Nebel hält die Welt klein.
+- **Die Oberfläche bleibt bei der eingestellten Stimmung** (Tag, Abend, wie das Gerät) und wechselt nicht mit der
+  Spieluhr – sonst ändern Karten und Knöpfe alle paar Minuten die Farbe.
+- **Nachts lesbar bleiben:** Auch in der längsten Winternacht muss die Siedlung erkennbar sein – Mondlicht, Feuer und
+  Fenster reichen dafür, kein Schwarz.
+- Baumodus: Die Fluren leuchten von blass bis golden, je nachdem, wie gut sie zum gewählten Gebäude passen, mit der
+  Prozentzahl auf der Flur. Innerhalb der Flur feine helle Umrisse für jede freie Wabe, Sonderwaben (Ufer, Fels)
+  hervorgehoben; an der gewählten Stelle ein Etikett mit Gründen und „Hier bauen“. Der Prototyp zeigt noch die
+  ältere Fassung mit Prozent je Wabe.
+- Keine Monster, keine Kampfszenen – die Nacht wirkt durch Dunkel, Nebel und Kälte.
 
 ## Grafik: jetzt und später
 
