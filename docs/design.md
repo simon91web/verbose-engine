@@ -18,6 +18,21 @@ Aus der Arbeit an den Cansol-Apps bleibt nur, was jedes gute Spiel auch braucht:
 - Rückgängig statt Rückfrage (letzte Kette, Bauen).
 - Ziele mindestens 44 px, gut lesbar auch draußen, mit Tastatur bedienbar.
 
+## Wenig Text
+
+Entscheidung Simon, 03.11.2026: **keine erklärenden Sätze im Spiel.** Die Welt, die Marken und die Zahlen zeigen,
+was passiert; Text nennt nur, was man nicht sehen kann.
+
+- **Erlaubt:** Namen (Ole, Nordwald, Holzfäller), Zahlen mit Marke („12/h“, „6/6“), kurze Zustände („wartet“,
+  „voll“, „2 min“), Knöpfe mit einem Verb („Bauen“, „Abreißen“).
+- **Nicht:** Sätze, die erklären, begründen oder Regeln aufsagen („Ein zweiter Träger kommt mit dem Ausbau des
+  Lagers“), Hinweiszeilen unter Knöpfen, Bedienhilfen („antippen zeigt …“), Untertitel zu Überschriften.
+- **Statt Text:** Symbol, Farbe, Zahl, Fortschrittsleiste oder Bewegung in der Welt. Eine Ursache zeigt ein kleines
+  Symbol am Ort; wer mehr wissen will, tippt es an.
+- **Richtwert:** Ein Etikett hat den Namen und höchstens eine kurze Zeile; Karten haben keinen Fließtext.
+- **Mockups** dürfen erklären, aber nur außerhalb der Geräterahmen in der Bildunterschrift. Im Rahmen steht nur, was
+  auch im Spiel stünde.
+
 ## Tag und Abend
 
 Zwei Stimmungen statt Hell und Dunkel. Standard folgt dem System (`prefers-color-scheme`), wählbar unter Menü ›

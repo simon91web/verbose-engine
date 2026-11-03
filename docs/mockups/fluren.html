@@ -111,7 +111,7 @@
   .t-schlamm  { --k: #6B5A48; --kk: #463A2D; --sym: #E8DAC6; }
   .t-ente     { --k: #F2EEDC; --kk: #C3BA97; --sym: #3E6E8C; }
   .t-stein    { --k: #8C8F94; --kk: #5E6166; --sym: #FFFFFF; }
-  .t-bau      { --k: #F6E6C2; --kk: #9A6436; --sym: #6E4422; }
+  .t-bau, .t-baufisch, .t-bausammler { --k: #F6E6C2; --kk: #9A6436; --sym: #6E4422; }
   .t-fund     { --k: #F2D27A; --kk: #B5892A; --sym: #5A3A0C; }
   .mk.bau .koerper { stroke: #FFD978; stroke-width: 4; }
   .aura { fill: none; stroke: #FFD978; stroke-width: 3; stroke-dasharray: 6 6; opacity: .75; }
@@ -155,7 +155,12 @@
   .welt-platz > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   .welt-platz.gedimmt > svg { filter: blur(2px) saturate(.85); transform: scale(1.03); }
   .schilder { position: absolute; inset: 0; pointer-events: none; }
-  .treffer path, .treffer polygon { fill: transparent; stroke: none; cursor: pointer; pointer-events: all; }
+  .treffer path, .treffer polygon, .treffer rect, .treffer circle { fill: transparent; stroke: none; cursor: pointer; pointer-events: all; }
+  .treffer [data-ding] { outline: none; }
+  .laptop .treffer [data-ding]:hover, .treffer [data-ding]:focus-visible { fill: rgba(255, 248, 230, .14); stroke: #FFF3D6; stroke-width: 2; stroke-opacity: .9; }
+  .hover-name { position: absolute; z-index: 4; transform: translate(-50%, calc(-100% - 6px)); padding: 3px 10px; border-radius: 999px; background: var(--perg); border: 2px solid var(--rand); box-shadow: var(--schatten-k); font-weight: 800; font-size: 13px; white-space: nowrap; pointer-events: none; }
+  .leuchten { animation: leuchten 1.3s ease-in-out infinite alternate; }
+  @keyframes leuchten { from { opacity: .5; } to { opacity: 1; } }
   .flamme { transform-box: fill-box; transform-origin: 50% 100%; animation: flackern 1.1s ease-in-out infinite alternate; }
   @keyframes flackern { 0% { transform: scale(1, 1); } 45% { transform: scale(.9, 1.1); } 100% { transform: scale(1.06, .9); } }
   .glut { animation: glut 1.7s ease-in-out infinite alternate; }
@@ -266,6 +271,15 @@
   .abend .etikett b { color: var(--honig); }
   .etikett span { font-size: 13px; font-weight: 700; color: var(--tinte-2); max-width: 230px; }
   .etikett .knopf { margin-top: 4px; }
+  /* Etikett über Figuren und Kleinkram: Bild, Name, was gerade passiert */
+  .etikett.wer { grid-template-columns: auto minmax(0, 1fr); justify-items: start; align-items: center; column-gap: 10px; row-gap: 0; min-width: 0; width: max-content; max-width: 280px; padding: 8px 14px 10px 8px; text-align: left; }
+  .etikett.wer > :first-child { grid-row: 1 / 3; }
+  .etikett.wer .portrait { width: 40px; height: 40px; }
+  .etikett.wer .portrait .gesicht { font-size: 16px; }
+  .etikett.wer b, .abend .etikett.wer b { font: 800 15px/1.25 'Nunito', sans-serif; color: var(--tinte); }
+  .etikett.wer b small { font-weight: 700; font-size: 13px; color: var(--tinte-2); }
+  .etikett.wer span { max-width: 220px; line-height: 1.3; }
+  .etikett .ding-ic { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: #FFE6A6; color: #6E4422; }
 
   /* Überlagerungen */
   .ueberlage { position: absolute; inset: 0; z-index: 10; pointer-events: none; display: grid; place-items: center; }
@@ -280,6 +294,8 @@
   .toast span { white-space: normal; }
   .toast.zeigen { opacity: 1; transform: translate(-50%, 0); }
   .toast .ic { color: var(--moos-h); }
+  .toast.mit-knopf { pointer-events: auto; padding-right: 8px; }
+  .toast .knopf { min-height: 38px; padding: 0 12px; font-size: 14px; }
   .handy .toast { bottom: 92px; border-radius: 20px; }
 
   /* Vorbereiten */
@@ -400,7 +416,10 @@
   .bau-schild.warn .rund-ic { background: color-mix(in srgb, var(--warnung) 22%, var(--perg)); color: var(--warnung); }
   .mini-balken { display: block; width: 100%; min-width: 48px; height: 5px; border-radius: 999px; background: var(--perg-2); overflow: hidden; }
   .mini-balken b { display: block; height: 100%; border-radius: 999px; background: var(--moos-h); }
-  .zeichen-schild { position: absolute; transform: translate(-50%, -100%); width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--perg); border: 2px solid var(--rand); box-shadow: var(--schatten-k); color: var(--tinte-2); pointer-events: auto; cursor: help; }
+  .zeichen-schild { position: absolute; transform: translate(-50%, -100%); width: 30px; height: 30px; padding: 0; border-radius: 50%; display: grid; place-items: center; background: var(--perg); border: 2px solid var(--rand); box-shadow: var(--schatten-k); color: var(--tinte-2); pointer-events: auto; cursor: pointer; }
+  /* Schilder sind kleiner als 44 px – die Trefferfläche reicht darüber hinaus */
+  .flur-schild::before, .bau-schild::before { content: ''; position: absolute; inset: -6px; border-radius: 16px; }
+  .zeichen-schild::before { content: ''; position: absolute; inset: -9px; border-radius: 50%; }
   .zeichen-schild .ic { width: 15px; height: 15px; }
   .zeichen-schild.warn { border-color: var(--warnung); color: var(--warnung); }
   .stufen { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; margin-bottom: 10px; }
@@ -415,6 +434,7 @@
   .schalter-reihe { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
   .kosten { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-variant-numeric: tabular-nums; }
   .kosten > span { display: inline-flex; align-items: center; gap: 3px; }
+  .kosten > span.fehlt { color: var(--warnung); }
   .etikett .kosten { font-size: 14px; color: var(--tinte); }
 
   /* Warenliste (Lager, Baustelle, Bedarf) */
@@ -441,6 +461,23 @@
   .person .gesicht { font-size: 17px; }
   .person small { font-weight: 700; color: var(--tinte-2); font-size: 11px; }
   .person.frei .portrait { border: 2px dashed var(--rand); border-radius: 50%; }
+  button.person { background: none; border: 0; padding: 4px 2px; border-radius: 12px; cursor: pointer; min-height: 44px; }
+  button.person:hover { background: var(--perg-2); }
+
+  /* Gebäude-Karte */
+  .zur-flur { display: inline-flex; align-items: center; gap: 2px; justify-self: start; min-height: 44px; margin: -10px 0 -10px -8px; padding: 0 12px 0 4px; border: 0; border-radius: 12px; background: none; font-weight: 800; font-size: 14px; color: var(--tinte-2) !important; cursor: pointer; }
+  .zur-flur:hover { background: var(--perg-2); }
+  .zur-flur .ic { width: 18px; height: 18px; }
+  button.platz.geb { border: 0; cursor: pointer; }
+  button.platz.geb:hover { filter: brightness(.97); box-shadow: inset 0 0 0 2px var(--rand); }
+  .anbauten { display: grid; gap: 6px; }
+  .anbau { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 52px; padding: 6px 10px; border-radius: 12px; border: 2px solid transparent; background: var(--perg-2); font-weight: 800; font-size: 14px; line-height: 1.2; text-align: left; cursor: pointer; }
+  .anbau small { display: block; font-weight: 700; font-size: 12px; color: var(--tinte-2); }
+  .anbau .ic { color: var(--holz); }
+  .abend .anbau .ic { color: #E2B98A; }
+  .anbau.an { border-color: var(--honig); background: color-mix(in srgb, var(--honig) 16%, var(--perg)); }
+  .anbau.frei { background: none; border: 2px dashed var(--rand); color: var(--tinte-2); }
+  .anbau.frei .ic { color: var(--tinte-2); }
   .zeile .portrait { width: 36px; height: 36px; }
   .zeile .portrait .gesicht { font-size: 15px; }
 
@@ -469,11 +506,15 @@
 <p class="erkl">Das MVP aus <code>docs/konzept.md</code>: die Siedlung in Fluren mit dem Dorf auf der Lichtung,
   Bauen als Baustelle mit Trägern, das Lager, die Rückkehr nach einer Pause, dazu Vorbereiten und Tagwerk aus der
   ersten Fassung. Die Welt ist als flache Zeichnung nachgestellt – im Spiel steht dort die 3D-Welt aus dem Prototyp.
-  Alles ist anklickbar: <b>Fluren und Schilder</b>, <b>Spieluhr</b> (springt im Mockup zwischen Tag, Dämmerung und
-  Nacht), <b>Bauen → Hier bauen</b> (die Baustelle läuft dann im Zeitraffer), <b>Lager</b> in der Navigation, eine
-  <b>Ware im Lager</b>, <b>Zum Dorf ausbauen</b>, Zuerst und Abbrechen an Baustellen.</p>
+  Alles ist anklickbar: <b>Fluren und Schilder</b>, <b>jedes Ding in der Welt</b> – Gebäude, Lager und Stapel,
+  Dorfhäuser, Baustellen, Ole und die anderen Siedler, Lagerfeuer und Fackeln –, die <b>Spieluhr</b> (springt im Mockup
+  zwischen Tag, Dämmerung und Nacht), <b>Bauen → Hier bauen</b> (die Baustelle läuft dann im Zeitraffer), <b>Lager</b>
+  in der Navigation, eine <b>Ware im Lager</b>, <b>Zum Dorf ausbauen</b>, Zuerst und Abbrechen an Baustellen,
+  <b>Abreißen</b> in der Gebäude-Karte.</p>
 <p class="erkl"><b>Neu in dieser Fassung:</b> das Dorf statt einzelner Hütten (4), Baustellen mit Ole als Träger (3),
-  die Lager-Ansicht (5) und „Während du weg warst“ (6).</p>
+  die Lager-Ansicht (5), „Während du weg warst“ (6) und Gebäude und Figuren antippen (9). <b>Wenig Text</b>
+  (<code>docs/design.md</code>): In den Geräten stehen nur Namen, Zahlen, kurze Zustände und Knöpfe; was es erklärt,
+  steht hier in den Bildunterschriften.</p>
 
 <h1>1 · Siedlung mit Fluren – Tag</h1>
 <p class="erkl">Abgesteckt sind Lichtung, Nordwald und Ostufer (feste helle Grenze). Birkenhang und Südwiese sind
@@ -487,7 +528,8 @@
 
 <h1>2 · Siedlung – Abend und Nacht</h1>
 <p class="erkl">Oberfläche in der Stimmung „Abend“, die Welt folgt der Spieluhr: Nacht. Lagerfeuer, Fackel und Fenster
-  halten das Dunkel zurück. Das Ostufer hat kein Licht – es verwildert über Nacht. „Fackel setzen“ ändert das.</p>
+  halten das Dunkel zurück. Das Ostufer hat kein Licht – es verwildert über Nacht, am Morgen liegt mehr Schlamm auf
+  dem Brett. „Fackel setzen“ ändert das.</p>
 <div class="reihe">
   <figure><figcaption>Laptop · Abend · Nacht</figcaption><div class="geraet laptop abend" data-ansicht="siedlung" data-flur="ostufer" data-uhr="nacht"></div></figure>
   <figure><figcaption>Handy 390 px · Abend · Nacht</figcaption><div class="geraet handy abend" data-ansicht="siedlung" data-flur="ostufer" data-uhr="nacht"></div></figure>
@@ -503,8 +545,10 @@
   <figure><figcaption>Handy 390 px · Abend · Dämmerung · Baumodus</figcaption><div class="geraet handy abend" data-ansicht="bauen" data-flur="nordwald" data-uhr="daemmerung"></div></figure>
 </div>
 <p class="erkl" style="margin-top: 24px">Die Baustelle in der Flur-Karte: vier Stufen, das gelieferte Material, wer
-  gerade trägt. Über der Baustelle in der Welt steht ein kleines Schild. Rechts wartet sie nachts auf Bretter – Ole
-  holt derweil Holz, mit Fackel. Abbrechen trägt alles zurück.</p>
+  gerade trägt. Über der Baustelle in der Welt steht ein kleines Schild mit Stufe oder fehlender Ware. Rechts wartet
+  sie nachts auf Bretter (der Sägebock macht 6 je Stunde) – Ole holt derweil Holz, mit Fackel. Abbrechen trägt alles
+  zurück. Im Baumodus nennt das Etikett nur Bonus, Platz und Kosten; ein Chip erscheint nur, wenn es keine passende
+  Flur gibt.</p>
 <div class="reihe">
   <figure><figcaption>Laptop · Tag · Baustelle am Ostufer</figcaption><div class="geraet laptop" data-ansicht="siedlung" data-flur="ostufer" data-uhr="tag"></div></figure>
   <figure><figcaption>Handy 390 px · Abend · Nacht · wartet auf Bretter</figcaption><div class="geraet handy abend" data-ansicht="siedlung" data-flur="ostufer" data-uhr="nacht" data-baustelle="wartet"></div></figure>
@@ -522,8 +566,9 @@
 </div>
 <p class="erkl" style="margin-top: 24px">Die Lichtung antippen öffnet die Dorf-Karte: Bewohner, laufender Bedarf, Zuzug
   und die nächste Stufe. Links ist der Weiler voll und versorgt – <b>„Zum Dorf ausbauen“</b> steckt eine Baustelle am
-  Dorf ab (im Lager sind erst 18 der 30 Bretter; die Baustelle wartet dann auf den Rest). Rechts fehlen Beeren: Das
-  Wachstum ruht, niemand hungert.</p>
+  Dorf ab (im Lager sind erst 18 der 30 Bretter, die Zahl steht in Warnfarbe; die Baustelle wartet dann auf den Rest).
+  Rechts fehlen Beeren: Das Wachstum ruht, niemand hungert, niemand zieht aus. Ausbauen ist dann gesperrt, bis der
+  Weiler wieder voll und versorgt ist.</p>
 <div class="reihe">
   <figure><figcaption>Laptop · Tag · voll und versorgt</figcaption><div class="geraet laptop" data-ansicht="siedlung" data-flur="lichtung" data-uhr="tag"></div></figure>
   <figure><figcaption>Handy 390 px · Abend · Dämmerung · Beeren fehlen</figcaption><div class="geraet handy abend" data-ansicht="siedlung" data-flur="lichtung" data-uhr="daemmerung" data-dorf="mangel"></div></figure>
@@ -532,7 +577,8 @@
 <h1>5 · Lager</h1>
 <p class="erkl">Schlank: je Ware Füllstand, Trend und wann sie voll ist oder ausgeht. Vorgemerktes Material für
   Baustellen ist gestreift. Darunter, was Ole trägt und welches Gebäude auf ihn wartet. <b>Eine Ware antippen</b>
-  führt in die Welt: Erzeuger leuchten grün, Verbraucher golden. Vor dem Lager stehen die Stapel.</p>
+  führt in die Welt: Erzeuger leuchten grün, Verbraucher golden. Vor dem Lager stehen die Stapel. Ausbauen gibt
+  120 je Ware und einen zweiten Träger.</p>
 <div class="reihe">
   <figure><figcaption>Laptop · Tag</figcaption><div class="geraet laptop" data-ansicht="lager" data-flur="lichtung" data-uhr="tag"></div></figure>
   <figure><figcaption>Handy 390 px · Abend · Nacht</figcaption><div class="geraet handy abend" data-ansicht="lager" data-flur="lichtung" data-uhr="nacht"></div></figure>
@@ -548,8 +594,9 @@
 
 <h1>7 · Vorbereiten und Losziehen</h1>
 <p class="erkl">Die Aussichten wandern sofort mit, wenn sich Trupp, Proviant oder Kiepe ändern. „Losziehen“ würfelt:
-  Die Nadel läuft über den Balken und bleibt stehen, das Ergebnis steht dann fest. Nachts lohnt die Laterne – in den
-  Abend-Beispielen ist sie noch nicht eingepackt.</p>
+  Die Nadel läuft über den Balken und bleibt stehen, das Ergebnis steht dann fest – neu laden würfelt nicht neu. Nach
+  einem Missgeschick hilft der Pechausgleich. Nachts lohnt die Laterne – in den Abend-Beispielen ist sie noch nicht
+  eingepackt. Je Siedler im Trupp 1 Proviant; jeder Gegenstand in der Kiepe wirkt einmal.</p>
 <div class="reihe">
   <figure><figcaption>Laptop · Tag</figcaption><div class="geraet laptop" data-ansicht="vorbereiten" data-flur="nordwald" data-uhr="tag" data-seed="5"></div></figure>
   <figure><figcaption>Handy 390 px · Tag</figcaption><div class="geraet handy" data-ansicht="vorbereiten" data-flur="nordwald" data-uhr="tag" data-seed="9"></div></figure>
@@ -562,10 +609,32 @@
 <h1>8 · Tagwerk in der Flur</h1>
 <p class="erkl">Das Brett liegt über dem Nordwald. Der Holzfäller steht als feste Kachel darauf; Holzketten, die ihn
   berühren, zählen doppelt (goldene Strichel um ihn). Der Wurf hat drei Felder Gestrüpp gelegt und eine alte Karte
-  versteckt. Die Kiepe liegt griffbereit – jeder Gegenstand wirkt einmal.</p>
+  versteckt. Die Kiepe liegt griffbereit: antippen, dann eine Wabe wählen.</p>
 <div class="reihe">
   <figure><figcaption>Laptop · Tag</figcaption><div class="geraet laptop" data-ansicht="tagwerk" data-flur="nordwald" data-uhr="tag"></div></figure>
   <figure><figcaption>Handy 390 px · Abend (Welt: Tag)</figcaption><div class="geraet handy abend" data-ansicht="tagwerk" data-flur="nordwald" data-uhr="tag"></div></figure>
+</div>
+
+<h1>9 · Gebäude und Figuren antippen</h1>
+<p class="erkl">Jedes Ding in der Welt antwortet. Der Boden öffnet die Flur-Karte, ein Gebäude seine <b>Gebäude-Karte</b>
+  an derselben Stelle: was es erzeugt, das Fach, die Anbauten, die Kachel im Tagwerk. Oben führt „‹ Nordwald“ zur Flur
+  zurück. Das gewählte Gebäude hat einen Honigrand, die Flur bleibt leicht markiert. Am Laptop zeigt ein weicher
+  Umriss mit Namen, was man gleich antippt. <b>Abreißen</b> gibt die Hälfte zurück (der Sägebock geht mit) und lässt
+  sich rückgängig machen; Versetzen und weitere Anbauten kommen nach dem MVP („bald“). Der Sägebock öffnet die Karte
+  des Holzfällers, sein Anbau ist dort hervorgehoben; er braucht keinen Träger, das Holz geht direkt hinüber.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Tag · Holzfäller gewählt</figcaption><div class="geraet laptop" data-ansicht="siedlung" data-flur="nordwald" data-uhr="tag" data-wahl="bau:holzfaeller"></div></figure>
+  <figure><figcaption>Handy 390 px · Abend · Dämmerung · Holzfäller gewählt</figcaption><div class="geraet handy abend" data-ansicht="siedlung" data-flur="nordwald" data-uhr="daemmerung" data-wahl="bau:holzfaeller"></div></figure>
+</div>
+<p class="erkl" style="margin-top: 24px">Figuren bekommen keine Karte, nur ein <b>Etikett</b> über dem Kopf, das mitläuft.
+  Ole trägt seinen Namen immer, weil er als Träger eine Aufgabe hat; die anderen zeigen ihn erst im Etikett. Laufende
+  Figuren trifft man am Handy schwer – deshalb lassen sich die Bewohner auch in der Dorf-Karte antippen, dann leuchtet
+  die Figur in der Welt auf. Die Baustelle öffnet die Gebäude-Karte im Zustand Baustelle, Lager und Stapel die
+  Lager-Ansicht, Dorfhäuser und Brunnen die Dorf-Karte, Lagerfeuer und Fackel ein Etikett. Bäume, Felsen und Schilf
+  gehören zum Boden.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Abend · Nacht · Ole angetippt</figcaption><div class="geraet laptop abend" data-ansicht="siedlung" data-flur="ostufer" data-uhr="nacht" data-wahl="figur:ole"></div></figure>
+  <figure><figcaption>Handy 390 px · Tag · Baustelle am Ostufer gewählt</figcaption><div class="geraet handy" data-ansicht="siedlung" data-flur="ostufer" data-uhr="tag" data-wahl="bau:fischer"></div></figure>
 </div>
 
 <div class="notiz">
@@ -577,15 +646,16 @@
       fürs Balancing.</li>
     <li>Die Häuser des Dorfs sind Klötze mit Dach; Stufe für Stufe sollen sie im Spiel deutlich anders aussehen.</li>
     <li>Der Zeitraffer der Baustelle und die springende Spieluhr gibt es nur im Mockup.</li>
-    <li>Forschung und Menü sind in der Navigation angelegt, aber noch nicht gestaltet. „Lager ausbauen“ ist nur
-      angedeutet.</li>
+    <li>Forschung und Menü sind in der Navigation angelegt, aber noch nicht gestaltet. „Lager ausbauen“, „Versetzen“
+      und weitere Anbauten sind nur angedeutet.</li>
+    <li>Die Trefferflächen sind hier Rechtecke und Kreise um die Dinge. Im Spiel trifft der Klick das Modell selbst,
+      mindestens 44 px groß; ein Gebäude geht vor seiner Flur, eine Figur vor dem Gebäude.</li>
   </ul>
   <h2>Zu entscheiden</h2>
   <ul>
     <li>Mengen in Echtzeit („15 je Stunde“, „reicht noch 2 h“) statt je Spieltag – verständlicher?</li>
     <li>Das Dorf wächst über die Lichtung. Ab dem Dorf werden dort Waben belegt; bei der Stadt bleibt kaum Platz.
       Sollen die vier Bauplätze der Lichtung dann an den Rand rücken oder entfallen?</li>
-    <li>Der Name über Ole – immer zeigen oder nur beim Antippen?</li>
     <li>Ole ist Fischer und trägt zugleich. Nimmt man ihn ins Tagwerk mit, ruht der Transport (Hinweis im
       Vorbereiten). Gut so – oder sollen Träger nie mitgehen?</li>
     <li>Schilder auf allen Fluren immer sichtbar – oder nur Namen beim Heranzoomen?</li>
@@ -597,6 +667,7 @@
 const ICON = {"axe":"<path d=\"m14 12-8.381 8.38a1 1 0 0 1-3.001-3L11 9\"/><path d=\"M15 15.5a.5.5 0 0 0 .5.5A6.5 6.5 0 0 0 22 9.5a.5.5 0 0 0-.5-.5h-1.672a2 2 0 0 1-1.414-.586l-5.062-5.062a1.205 1.205 0 0 0-1.704 0L9.352 5.648a1.205 1.205 0 0 0 0 1.704l5.062 5.062A2 2 0 0 1 15 13.828z\"/>","backpack":"<path d=\"M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z\"/><path d=\"M8 10h8\"/><path d=\"M8 18h8\"/><path d=\"M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6\"/><path d=\"M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2\"/>","dices":"<rect width=\"12\" height=\"12\" x=\"2\" y=\"10\" rx=\"2\" ry=\"2\"/><path d=\"m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6\"/><path d=\"M6 18h.01\"/><path d=\"M10 14h.01\"/><path d=\"M15 6h.01\"/><path d=\"M18 9h.01\"/>","footprints":"<path d=\"M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z\"/><path d=\"M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z\"/><path d=\"M16 17h4\"/><path d=\"M4 13h4\"/>","lamp":"<path d=\"M12 12v6\"/><path d=\"M4.077 10.615A1 1 0 0 0 5 12h14a1 1 0 0 0 .923-1.385l-3.077-7.384A2 2 0 0 0 15 2H9a2 2 0 0 0-1.846 1.23Z\"/><path d=\"M8 20a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1z\"/>","flag":"<path d=\"M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528\"/>","milestone":"<path d=\"M12 13v8\"/><path d=\"M12 3v3\"/><path d=\"M18.172 6a2 2 0 0 1 1.414.586l2.06 2.06a1.207 1.207 0 0 1 0 1.708l-2.06 2.06a2 2 0 0 1-1.414.586H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z\"/>","warehouse":"<path d=\"M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11\"/><path d=\"M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z\"/><path d=\"M6 13h12\"/><path d=\"M6 17h12\"/>","scroll":"<path d=\"M19 17V5a2 2 0 0 0-2-2H4\"/><path d=\"M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3\"/>","lightbulb":"<path d=\"M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5\"/><path d=\"M9 18h6\"/><path d=\"M10 22h4\"/>","moon":"<path d=\"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401\"/>","sun":"<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2\"/><path d=\"M12 20v2\"/><path d=\"m4.93 4.93 1.41 1.41\"/><path d=\"m17.66 17.66 1.41 1.41\"/><path d=\"M2 12h2\"/><path d=\"M20 12h2\"/><path d=\"m6.34 17.66-1.41 1.41\"/><path d=\"m19.07 4.93-1.41 1.41\"/>","sunset":"<path d=\"M12 10V2\"/><path d=\"m4.93 10.93 1.41 1.41\"/><path d=\"M2 18h2\"/><path d=\"M20 18h2\"/><path d=\"m19.07 10.93-1.41 1.41\"/><path d=\"M22 22H2\"/><path d=\"m16 6-4 4-4-4\"/><path d=\"M16 18a4 4 0 0 0-8 0\"/>","cloud-drizzle":"<path d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\"/><path d=\"M8 19v1\"/><path d=\"M8 14v1\"/><path d=\"M16 19v1\"/><path d=\"M16 14v1\"/><path d=\"M12 21v1\"/><path d=\"M12 16v1\"/>","cloud-fog":"<path d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\"/><path d=\"M16 17H7\"/><path d=\"M17 21H9\"/>","flame":"<path d=\"M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4\"/>","sandwich":"<path d=\"m2.37 11.223 8.372-6.777a2 2 0 0 1 2.516 0l8.371 6.777\"/><path d=\"M21 15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-5.25\"/><path d=\"M3 15a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h9\"/><path d=\"m6.67 15 6.13 4.6a2 2 0 0 0 2.8-.4l3.15-4.2\"/><rect width=\"20\" height=\"4\" x=\"2\" y=\"11\" rx=\"1\"/>","carrot":"<path d=\"M15 16a1 1 0 0 0-7-7q-4 4-5.987 12.385a.5.5 0 0 0 .602.602Q11 20 15 16l-3-3\"/><path d=\"M15 9q4 4 7 0-3-4-7 0 4-4 0-7-4 3 0 7\"/><path d=\"m8 15-2.58-2.58\"/>","sprout":"<path d=\"M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3\"/><path d=\"M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4\"/><path d=\"M5 21h14\"/>","wheat":"<path d=\"M2 22 16 8\"/><path d=\"M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z\"/><path d=\"M7.47 8.53 9 7l1.53 1.53a3.5 3.5 0 0 1 0 4.94L9 15l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z\"/><path d=\"M11.47 4.53 13 3l1.53 1.53a3.5 3.5 0 0 1 0 4.94L13 11l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z\"/><path d=\"M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4Z\"/><path d=\"M11.47 17.47 13 19l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L5 19l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z\"/><path d=\"M15.47 13.47 17 15l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L9 15l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z\"/><path d=\"M19.47 9.47 21 11l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L13 11l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z\"/>","house":"<path d=\"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8\"/><path d=\"M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/>","fish":"<path d=\"M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.47-3.44 6-7 6s-7.56-2.53-8.5-6Z\"/><path d=\"M18 12v.5\"/><path d=\"M16 17.93a9.77 9.77 0 0 1 0-11.86\"/><path d=\"M7 10.67C7 8 5.58 5.97 2.73 5.5c-1 1.5-1 5 .23 6.5-1.24 1.5-1.24 5-.23 6.5C5.58 18.03 7 16 7 13.33\"/><path d=\"M10.46 7.26C10.2 5.88 9.17 4.24 8 3h5.8a2 2 0 0 1 1.98 1.67l.23 1.4\"/><path d=\"m16.01 17.93-.23 1.4A2 2 0 0 1 13.8 21H9.5a5.96 5.96 0 0 0 1.49-3.98\"/>","tree-pine":"<path d=\"m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z\"/><path d=\"M12 22v-3\"/>","tree-deciduous":"<path d=\"M8 19a4 4 0 0 1-2.24-7.32A3.5 3.5 0 0 1 9 6.03V6a3 3 0 1 1 6 0v.04a3.5 3.5 0 0 1 3.24 5.65A4 4 0 0 1 16 19Z\"/><path d=\"M12 19v3\"/>","leaf":"<path d=\"M11 20a10 10 0 0010-10 25.9 25.9 0 00-1.04-7.281 1 1 0 00-1.755-.325C15.833 5.5 13 5.5 9.8 6.1A7 7 0 0011 20\"/><path d=\"M2 21a5 5 0 012.911-4.544C7.613 15.212 8.351 15.24 11 13\"/>","mountain":"<path d=\"m8 3 4 8 5-5 5 15H2L8 3z\"/>","shrub":"<path d=\"M12 22v-5.172a2 2 0 0 0-.586-1.414L9.5 13.5\"/><path d=\"M14.5 14.5 12 17\"/><path d=\"M17 8.8A6 6 0 0 1 13.8 20H10A6.5 6.5 0 0 1 7 8a5 5 0 0 1 10 0z\"/>","plus":"<path d=\"M5 12h14\"/><path d=\"M12 5v14\"/>","check":"<path d=\"M20 6 9 17l-5-5\"/>","x":"<path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/>","chevron-left":"<path d=\"m15 18-6-6 6-6\"/>","menu":"<path d=\"M4 5h16\"/><path d=\"M4 12h16\"/><path d=\"M4 19h16\"/>","coins":"<path d=\"M13.744 17.736a6 6 0 1 1-7.48-7.48\"/><path d=\"M15 6h1v4\"/><path d=\"m6.134 14.768.866-.5 2 3.464\"/><circle cx=\"16\" cy=\"8\" r=\"6\"/>","croissant":"<path d=\"M10.2 18H4.774a1.5 1.5 0 0 1-1.352-.97 11 11 0 0 1 .132-6.487\"/><path d=\"M18 10.2V4.774a1.5 1.5 0 0 0-.97-1.352 11 11 0 0 0-6.486.132\"/><path d=\"M18 5a4 3 0 0 1 4 3 2 2 0 0 1-2 2 10 10 0 0 0-5.139 1.42\"/><path d=\"M5 18a3 4 0 0 0 3 4 2 2 0 0 0 2-2 10 10 0 0 1 1.42-5.14\"/><path d=\"M8.709 2.554a10 10 0 0 0-6.155 6.155 1.5 1.5 0 0 0 .676 1.626l9.807 5.42a2 2 0 0 0 2.718-2.718l-5.42-9.807a1.5 1.5 0 0 0-1.626-.676\"/>","pickaxe":"<path d=\"m14 13-8.381 8.38a1 1 0 0 1-3.001-3L11 9.999\"/><path d=\"M15.973 4.027A13 13 0 0 0 5.902 2.373c-1.398.342-1.092 2.158.277 2.601a19.9 19.9 0 0 1 5.822 3.024\"/><path d=\"M16.001 11.999a19.9 19.9 0 0 1 3.024 5.824c.444 1.369 2.26 1.676 2.603.278A13 13 0 0 0 20 8.069\"/><path d=\"M18.352 3.352a1.205 1.205 0 0 0-1.704 0l-5.296 5.296a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l5.296-5.296a1.205 1.205 0 0 0 0-1.704z\"/>","sparkles":"<path d=\"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z\"/><path d=\"M20 2v4\"/><path d=\"M22 4h-4\"/><circle cx=\"4\" cy=\"20\" r=\"2\"/>","undo-2":"<path d=\"M9 14 4 9l5-5\"/><path d=\"M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11\"/>","lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/>","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m16 9-5.5 5.5L8 12\"/>","triangle-alert":"<path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/>","cherry":"<path d=\"M2 17a5 5 0 0 0 10 0c0-2.76-2.5-5-5-3-2.5-2-5 .24-5 3Z\"/><path d=\"M12 17a5 5 0 0 0 10 0c0-2.76-2.5-5-5-3-2.5-2-5 .24-5 3Z\"/><path d=\"M7 14c3.22-2.91 4.29-8.75 5-12 1.66 2.38 4.94 9 5 12\"/><path d=\"M22 9c-4.29 0-7.14-2.33-10-7 5.71 0 10 4.67 10 7Z\"/>","nut":"<path d=\"M16.847 5.847 20 9a7.23 7.23 0 011.551 7.516C21.241 17.352 21 17.932 21 19v1a1 1 0 01-1 1h-1c-1.069 0-1.648.242-2.485.552A7.2 7.2 0 019.002 20l-3.155-3.153\"/><path d=\"M18.21 5.43c-1.71.69-5.07 1.07-6.71 1.07.46 1.38.91 2.74.61 4.88a.88.88 0 01-.73.74c-1.78.28-3.54-.17-4.88-.62 0 1.64-.38 5-1.07 6.71-.21.52-.82.55-1.17.12A10 10 0 0118.33 4.26c.43.35.4.97-.12 1.17\"/><path d=\"M4.93 4.93 3 3a.7.7 0 010-1\"/>","rabbit":"<path d=\"M13 16a3 3 0 0 1 2.24 5\"/><path d=\"M18 12h.01\"/><path d=\"M18 21h-8a4 4 0 0 1-4-4 7 7 0 0 1 7-7h.2L9.6 6.4a1 1 0 1 1 2.8-2.8L15.8 7h.2c3.3 0 6 2.7 6 6v1a2 2 0 0 1-2 2h-1a3 3 0 0 0-3 3\"/><path d=\"M20 8.54V4a2 2 0 1 0-4 0v3\"/><path d=\"M7.612 12.524a3 3 0 1 0-1.6 4.3\"/>","brick-wall":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M12 9v6\"/><path d=\"M16 15v6\"/><path d=\"M16 3v6\"/><path d=\"M3 15h18\"/><path d=\"M3 9h18\"/><path d=\"M8 15v6\"/><path d=\"M8 3v6\"/>","gem":"<path d=\"M10.5 3 8 9l4 13 4-13-2.5-6\"/><path d=\"M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z\"/><path d=\"M2 9h20\"/>","bird":"<path d=\"M16 7h.01\"/><path d=\"M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20\"/><path d=\"m20 7 2 .5-2 .5\"/><path d=\"M10 18v3\"/><path d=\"M14 17.75V21\"/><path d=\"M7 18a6 6 0 0 0 3.84-10.61\"/>","hammer":"<path d=\"m15 12-9.373 9.373a1 1 0 0 1-3.001-3L12 9\"/><path d=\"m18 15 4-4\"/><path d=\"m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172v-.344a2 2 0 0 0-.586-1.414l-1.657-1.657A6 6 0 0 0 12.516 3H9l1.243 1.243A6 6 0 0 1 12 8.485V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5\"/>","binoculars":"<path d=\"M10 10h4\"/><path d=\"M19 7V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v3\"/><path d=\"M20 21a2 2 0 0 0 2-2v-3.851c0-1.39-2-2.962-2-4.829V8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v11a2 2 0 0 0 2 2z\"/><path d=\"M 22 16 L 2 16\"/><path d=\"M4 21a2 2 0 0 1-2-2v-3.851c0-1.39 2-2.962 2-4.829V8a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v11a2 2 0 0 1-2 2z\"/><path d=\"M9 7V4a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v3\"/>","flower-2":"<path d=\"M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1\"/><circle cx=\"12\" cy=\"8\" r=\"2\"/><path d=\"M12 10v12\"/><path d=\"M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z\"/><path d=\"M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z\"/>","layers":"<path d=\"M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z\"/><path d=\"M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12\"/><path d=\"M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17\"/>","soup":"<path d=\"M11.248 3c.273.1.808.53.747 1.36-.05.83-.938 1.2-.989 2.02-.06.78.333 1.24.727 1.62\"/><path d=\"M16.252 3c.268.1.794.53.745 1.36-.06.83-.923 1.2-.993 2.02-.05.78.338 1.24.725 1.62\"/><path d=\"M19.5 12 22 6\"/><path d=\"M4 12a1 1 0 00-.99 1.133A9 9 0 0012 21a9 9 0 008.99-7.867A1 1 0 0020 12z\"/><path d=\"M6.252 3c.268.1.794.53.745 1.36-.06.83-.923 1.2-.993 2.02-.05.78.338 1.24.735 1.62\"/><path d=\"M7 21h10\"/>","slice":"<path d=\"M11 16.586V19a1 1 0 0 1-1 1H2L18.37 3.63a1 1 0 1 1 3 3l-9.663 9.663a1 1 0 0 1-1.414 0L8 14\"/>"};
 ICON.waves = '<path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>';
 Object.assign(ICON, {"pause":"<rect x=\"14\" y=\"3\" width=\"5\" height=\"18\" rx=\"1\"/><rect x=\"5\" y=\"3\" width=\"5\" height=\"18\" rx=\"1\"/>","hourglass":"<path d=\"M5 22h14\"/><path d=\"M5 2h14\"/><path d=\"M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22\"/><path d=\"M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2\"/>","users":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><path d=\"M16 3.128a4 4 0 0 1 0 7.744\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/>","clock":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 6v6l4 2\"/>","construction":"<rect x=\"2\" y=\"6\" width=\"20\" height=\"8\" rx=\"1\"/><path d=\"M17 14v7\"/><path d=\"M7 14v7\"/><path d=\"M17 3v3\"/><path d=\"M7 3v3\"/><path d=\"M10 14 2.3 6.3\"/><path d=\"m14 6 7.7 7.7\"/><path d=\"m8 6 8 8\"/>","shopping-basket":"<path d=\"m15 11-1 9\"/><path d=\"m19 11-4-7\"/><path d=\"M2 11h20\"/><path d=\"m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4\"/><path d=\"M4.5 15.5h15\"/><path d=\"m5 11 4-7\"/><path d=\"m9 11 1 9\"/>","trending-up":"<path d=\"M16 7h6v6\"/><path d=\"m22 7-8.5 8.5-5-5L2 17\"/>","trending-down":"<path d=\"M16 17h6v-6\"/><path d=\"m22 17-8.5-8.5-5 5L2 7\"/>","door-open":"<path d=\"M10 21H2\"/><path d=\"M10 3H7a2 2 0 00-2 2v16\"/><path d=\"M14 12h.01\"/><path d=\"M19 21V5a2 2 0 00-1.675-1.974l-6.163-1.013A1 1 0 0010 3v18a1 1 0 001.124.992z\"/><path d=\"M22 21h-3\"/>","chevrons-up":"<path d=\"m17 11-5-5-5 5\"/><path d=\"m17 18-5-5-5 5\"/>","sunrise":"<path d=\"M12 2v8\"/><path d=\"m4.93 10.93 1.41 1.41\"/><path d=\"M2 18h2\"/><path d=\"M20 18h2\"/><path d=\"m19.07 10.93-1.41 1.41\"/><path d=\"M22 22H2\"/><path d=\"m8 6 4-4 4 4\"/><path d=\"M16 18a4 4 0 0 0-8 0\"/>","store":"<path d=\"M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5\"/><path d=\"M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244\"/><path d=\"M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05\"/>","castle":"<path d=\"M10 5V3\"/><path d=\"M14 5V3\"/><path d=\"M15 21v-3a3 3 0 0 0-6 0v3\"/><path d=\"M18 3v8\"/><path d=\"M18 5H6\"/><path d=\"M22 11H2\"/><path d=\"M22 9v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9\"/><path d=\"M6 3v8\"/>","house-plus":"<path d=\"M12.35 21H5a2 2 0 0 1-2-2v-9a2 2 0 0 1 .71-1.53l7-6a2 2 0 0 1 2.58 0l7 6A2 2 0 0 1 21 10v2.35\"/><path d=\"M14.8 12.4A1 1 0 0 0 14 12h-4a1 1 0 0 0-1 1v8\"/><path d=\"M15 18h6\"/><path d=\"M18 15v6\"/>","package":"<path d=\"M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z\"/><path d=\"M12 22V12\"/><polyline points=\"3.29 7 12 12 20.71 7\"/><path d=\"m7.5 4.27 9 5.15\"/>"});
+Object.assign(ICON, {"move":"<path d=\"M12 2v20\"/><path d=\"m15 19-3 3-3-3\"/><path d=\"m19 9 3 3-3 3\"/><path d=\"M2 12h20\"/><path d=\"m5 9-3 3 3 3\"/><path d=\"m9 5 3-3 3 3\"/>","trash-2":"<path d=\"M10 11v6\"/><path d=\"M14 11v6\"/><path d=\"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6\"/><path d=\"M3 6h18\"/><path d=\"M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\"/>"});
 </script>
 <script>
 // Symbole aus Lucide (ISC) – Platzhalter bis zur gemalten Grafik
@@ -859,7 +930,18 @@ function zeichneKoerper(k, koerper, opt = {}) {
     fl.push({ z: k.roh(m)[2] - (f.flach ? 0.05 : 0), pts: f.pts.map(k.P), farbe: f.flach ? f.farbe : faktor(f.farbe, hell) });
   }
   fl.sort((a, b) => b.z - a.z);
+  // Honigrand: dieselben Flächen dick in Honig, darüber kommt der Körper selbst
+  if (opt.halo) return fl.map(f => `<polygon points="${punkte(f.pts)}" fill="#FFBE2E" stroke="#FFBE2E" stroke-width="7" stroke-linejoin="round"/>`).join('');
   return fl.map(f => `<polygon points="${punkte(f.pts)}" fill="${f.farbe}" ${opt.geist ? 'stroke="#FFF3D6" stroke-width="1"' : `stroke="${faktor(f.farbe, 0.8)}" stroke-width=".6"`}/>`).join('');
+}
+// Bildschirm-Rechteck um einen Körper
+function huelle(k, koerper) {
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  for (const kp of koerper) for (const f of kp.fl) for (const p of f.pts) {
+    const [x, y] = k.P(p);
+    x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y);
+  }
+  return [x0, y0, x1, y1];
 }
 
 // ---------- Gebäude ----------
@@ -927,12 +1009,12 @@ function hausKoerper(h, stufe, nacht) {
 }
 function dorfExtras(stufe, nacht) {
   const e = [], holz = '#6E4A2C';
-  if (stufe >= 2) e.push({ x: 0.95, z: -0.45, koerper: [quader(0.95, -0.45, 0.36, 0.36, 0.22, 0.3, '#9A958A'), quader(0.82, -0.45, 0.04, 0.04, 0.58, 0.3, holz), quader(1.08, -0.45, 0.04, 0.04, 0.58, 0.3, holz), satteldach(0.95, -0.45, 0.32, 0.36, 0.58, 0.2, 0.3, '#7B5236', '#7B5236', 0.05)] });
+  if (stufe >= 2) e.push({ x: 0.95, z: -0.45, name: 'Brunnen', koerper: [quader(0.95, -0.45, 0.36, 0.36, 0.22, 0.3, '#9A958A'), quader(0.82, -0.45, 0.04, 0.04, 0.58, 0.3, holz), quader(1.08, -0.45, 0.04, 0.04, 0.58, 0.3, holz), satteldach(0.95, -0.45, 0.32, 0.36, 0.58, 0.2, 0.3, '#7B5236', '#7B5236', 0.05)] });
   if (stufe >= 3) for (const [x, z, d, farbe] of [[-0.95, -0.45, 0.4, '#C4446E'], [0.75, 0.85, -0.3, '#E2AB3C']])
-    e.push({ x, z, koerper: [quader(x, z, 0.6, 0.32, 0.3, d, '#B88A55'), quader(x - 0.27, z - 0.12, 0.04, 0.04, 0.62, d, holz), quader(x + 0.27, z - 0.12, 0.04, 0.04, 0.62, d, holz), satteldach(x, z, 0.66, 0.42, 0.62, 0.14, d, farbe, farbe, 0.04)] });
+    e.push({ x, z, name: 'Marktstand', koerper: [quader(x, z, 0.6, 0.32, 0.3, d, '#B88A55'), quader(x - 0.27, z - 0.12, 0.04, 0.04, 0.62, d, holz), quader(x + 0.27, z - 0.12, 0.04, 0.04, 0.62, d, holz), satteldach(x, z, 0.66, 0.42, 0.62, 0.14, d, farbe, farbe, 0.04)] });
   if (stufe >= 4) {
     const fenster = nacht ? '#FFD27A' : '#5B3F25';
-    e.push({ x: -2.65, z: -0.95, koerper: [quader(-2.65, -0.95, 0.75, 0.75, 1.9, 0.2, '#BDB6A8', 0, [[-0.1, 0, 0.1, 0.42, '#6E4422'], [-0.08, 1.25, 0.08, 1.5, fenster]]), satteldach(-2.65, -0.95, 0.75, 0.75, 1.9, 0.8, 0.2, '#5D6B78', '#BDB6A8', 0.06)] });
+    e.push({ x: -2.65, z: -0.95, name: 'Turm', koerper: [quader(-2.65, -0.95, 0.75, 0.75, 1.9, 0.2, '#BDB6A8', 0, [[-0.1, 0, 0.1, 0.42, '#6E4422'], [-0.08, 1.25, 0.08, 1.5, fenster]]), satteldach(-2.65, -0.95, 0.75, 0.75, 1.9, 0.8, 0.2, '#5D6B78', '#BDB6A8', 0.06)] });
     const luecken = [[-100, -80], [-30, -6], [82, 104]];
     for (let g = -140; g <= 140; g += 11) {
       if (luecken.some(([a, b]) => g > a && g < b)) continue;
@@ -989,6 +1071,7 @@ const ARTEN = {
   fisch: { name: 'Fisch', icon: 'fish' }, lehm: { name: 'Lehm', icon: 'brick-wall' }, schilf: { name: 'Schilf', icon: 'sprout' },
   kiesel: { name: 'Kiesel', icon: 'gem' }, schlamm: { name: 'Schlamm', icon: 'waves' }, ente: { name: 'Ente', icon: 'bird' },
   stein: { name: 'Stein', icon: 'mountain' }, bau: { name: 'Holzfäller', icon: 'axe' }, fund: { name: 'Alte Karte', icon: 'scroll' },
+  baufisch: { name: 'Fischer', icon: 'fish' }, bausammler: { name: 'Sammler', icon: 'cherry' },
   brot: { name: 'Brot', icon: 'croissant' }, brei: { name: 'Beerenbrei', icon: 'soup' },
 };
 const SIEDLER = [
@@ -1022,6 +1105,15 @@ const BAUARTEN = {
   fischer:     { bonus: { ufer: 60 }, nur: 'ufer', grund: { ufer: 'am Wasser' }, hinweis: 'nur am Ufer', kosten: { holz: 8, bretter: 6 } },
   sammler:     { bonus: { wiese: 50, wald: 20, lichtung: 10 }, grund: { wiese: 'Beerensträucher', wald: 'Waldrand', lichtung: 'ein paar Sträucher' }, hinweis: 'Wiese +50 %', kosten: { holz: 6, bretter: 2 } },
 };
+// Was ein fertiges Gebäude macht: Ware und Grundwert je Stunde, Kachel im Tagwerk, Fach, Anbau für später
+const GEBAEUDE = {
+  holzfaeller: { ware: 'holz', grund: 12, kachel: 'bau', kette: 'Holzketten', fach: 6, spaeter: 'Köhlermeiler' },
+  fischer:     { ware: 'fisch', grund: 12.5, kachel: 'baufisch', kette: 'Fischketten', fach: 6, spaeter: 'Räucherkate' },
+  sammler:     { ware: 'beeren', grund: 16, kachel: 'bausammler', kette: 'Beerenketten', fach: 6, spaeter: 'Trockengestell' },
+};
+const ANBAU_KOSTEN = { holz: 6 };
+// Wo die Siedler stehen, wenn sie nicht unterwegs sind: ums Lagerfeuer
+const AM_FEUER = { ida: [0.78, 0.2], jonas: [-0.72, -0.28], mara: [0.42, 0.72] };
 const START_BAUTEN = [
   { id: 'lager', art: 'lager', x: -1.9, z: 0.8, dreh: 0.1 },
   { id: 'holzfaeller', art: 'holzfaeller', x: 0.3, z: -5.3, dreh: 0.2 },
@@ -1093,6 +1185,7 @@ class Spiel {
     this.letztes = { trupp: ['ida', 'jonas', 'mara'], proviant: 'brot', kiepe: ['axt', 'wegzehrung'] };
     this.tw = { band: 'ordentlich', kiepe: ['axt', 'wegzehrung', 'laterne'], trupp: ['ida', 'jonas', 'mara'], schritte: 18 };
     this.blattStufe = 'halb';
+    this.wahl = null; this.etikett = null;
     this.ansicht = d.ansicht === 'tagwerk' ? 'tagwerk' : d.ansicht === 'dorfbild' ? 'dorfbild' : 'siedlung';
     if (this.ansicht === 'dorfbild') {
       el.innerHTML = `<div class="welt-platz"><svg class="welt" viewBox="0 0 ${this.w} ${this.h}" role="img" aria-label="${DORF_STUFEN[this.dorf.stufe - 1].name}"></svg></div>`;
@@ -1105,6 +1198,7 @@ class Spiel {
     if (d.ansicht === 'bauen') this.bauenStarten(d.bauart || 'holzfaeller');
     if (d.ansicht === 'vorbereiten') this.vorbereiten('tagwerk', this.auswahl, d.uhr === 'nacht' ? { trupp: ['ida', 'jonas'], proviant: 'brot', kiepe: ['axt'] } : null);
     if (d.ansicht === 'rueckkehr') this.rueckkehr();
+    if (d.wahl) this.waehleDing(d.wahl);
   }
 
   // --- Gerüst ---
@@ -1118,7 +1212,8 @@ class Spiel {
     const nav = [['house', 'Siedlung'], ['warehouse', 'Lager'], ['lightbulb', 'Forschung']];
     const welt = `<div class="welt-platz"><svg class="welt" viewBox="0 0 ${this.w} ${this.h}"></svg><div class="schilder"></div></div>`;
     const vorrat = `<div class="vorrat schwebend">${this.vorratHtml()}</div>`;
-    const bau = `<nav class="bauleiste karte js-bauleiste" hidden></nav><div class="js-etikett"></div><div class="js-bauhinweis"></div>`;
+    const bau = `<nav class="bauleiste karte js-bauleiste" hidden></nav><div class="js-etikett"></div><div class="js-bauhinweis"></div>
+      <div class="js-ding-etikett"></div><div class="hover-name js-hovername" hidden></div>`;
     const ende = `<div class="toast" role="status"></div><div class="ueberlage"></div>`;
     if (!this.handy) return `<div class="spiel">${welt}
       <header class="oben">${wortmarke(true)}<nav class="reiter-holz">${nav.map(([i, t], n) => `<a ${n === 2 ? 'class="js-bald"' : `data-nav="${n ? 'lager' : 'siedlung'}"`} role="button" tabindex="0">${ic(i)}${t}</a>`).join('')}</nav>
@@ -1141,7 +1236,7 @@ class Spiel {
   uhrHtml() {
     const z = this.zeit, summe = z.hell + z.daemm + z.nacht;
     const t = { tag: ['sun', 'noch 3 min hell', 30], daemmerung: ['sunset', 'Dämmerung', (z.hell + 0.5) / summe * 100], nacht: ['moon', 'Nacht · noch 2 min', 78] }[this.uhr];
-    return `<button class="uhr ${this.uhr} js-uhr-knopf" title="Spieluhr: ${z.name}, ${z.hell} min hell, ${z.daemm} min Dämmerung, ${z.nacht} min Nacht – im Mockup antippen">
+    return `<button class="uhr ${this.uhr} js-uhr-knopf" title="Spieluhr: ${z.name}, ${z.hell} min hell, ${z.daemm} min Dämmerung, ${z.nacht} min Nacht">
       <span class="kreis">${ic(t[0])}</span><span>${z.name}${this.handy ? '' : ` <small>· ${t[1]}</small>`}</span>
       <span class="tagesband"><i class="hell" style="flex: ${z.hell}"></i><i class="daemm" style="flex: ${z.daemm}"></i><i class="nacht" style="flex: ${z.nacht}"></i><b style="left: ${t[2].toFixed(0)}%"></b></span></button>`;
   }
@@ -1149,20 +1244,26 @@ class Spiel {
   verdrahten() {
     const el = this.el;
     el.addEventListener('click', e => {
-      const t = e.target.closest('[data-flur], [data-wabe], [data-nav], [data-ware], .js-bald, .js-uhr-knopf, .js-bauen, .js-griff, [data-bauart], .js-bau-aus, .js-hier, .js-vorb, .js-abstecken, .js-fackel, .js-erkunden, .js-zurueck-siedlung, .js-k-ggst, .js-heim, .js-ausbau, .js-zuerst, .js-abbrechen, .js-lager-aus, .js-rueck-zu, .js-rueck-tagwerk');
+      const t = e.target.closest('[data-ding], [data-flur], [data-wabe], [data-nav], [data-ware], .js-bald, .js-uhr-knopf, .js-bauen, .js-griff, [data-bauart], .js-bau-aus, .js-hier, .js-vorb, .js-abstecken, .js-fackel, .js-erkunden, .js-zurueck-siedlung, .js-k-ggst, .js-heim, .js-ausbau, .js-zuerst, .js-abbrechen, .js-lager-aus, .js-rueck-zu, .js-rueck-tagwerk, .js-zur-flur, .js-abreissen, .js-versetzen, .js-rueckgaengig, .js-anbau-frei');
       if (!t || !el.contains(t)) return;
       if (this.hervor && !t.matches('[data-ware]')) this.hervor = null;
       if (t.matches('[data-ware]')) { this.zeigeWare(t.dataset.ware); return; }
-      if (t.matches('[data-nav]')) { this.reiter = t.dataset.nav; if (this.bauModus) this.bauModus = false; this.zeichne(); return; }
+      if (t.matches('[data-ding]')) { this.waehleDing(t.dataset.ding); return; }
+      if (t.matches('.js-zur-flur')) { this.wahl = null; this.zeichne(); return; }
+      if (t.matches('.js-abreissen')) { this.abreissen(t.dataset.bau); return; }
+      if (t.matches('.js-rueckgaengig')) { this.abrissZurueck(); return; }
+      if (t.matches('.js-versetzen')) { this.toast('move', 'Versetzen · bald'); return; }
+      if (t.matches('.js-anbau-frei')) { this.toast('hammer', `${t.dataset.name} · bald`); return; }
+      if (t.matches('[data-nav]')) { this.reiter = t.dataset.nav; this.wahl = null; this.etikett = null; if (this.bauModus) this.bauModus = false; this.zeichne(); return; }
       if (t.matches('.js-ausbau')) { this.dorfAusbauen(); return; }
       if (t.matches('.js-zuerst')) { this.zuerst(t.dataset.bau); return; }
       if (t.matches('.js-abbrechen')) { this.abbrechen(t.dataset.bau); return; }
-      if (t.matches('.js-lager-aus')) { this.toast('warehouse', 'Lager ausbauen würde eine Baustelle am Lager abstecken – im Mockup nur angedeutet'); return; }
+      if (t.matches('.js-lager-aus')) { this.toast('warehouse', 'Lager ausbauen · bald'); return; }
       if (t.matches('.js-rueck-zu')) { this.schliesseUeberlage(); return; }
       if (t.matches('.js-rueck-tagwerk')) { this.schliesseUeberlage(); this.auswahl = 'nordwald'; this.zeichne(); setTimeout(() => this.vorbereiten('tagwerk', 'nordwald'), 260); return; }
       if (t.matches('[data-wabe]')) { this.wahlWabe = t.dataset.wabe; this.zeichne(); return; }
-      if (t.matches('[data-flur]')) { this.reiter = 'siedlung'; this.waehle(t.dataset.flur); return; }
-      if (t.matches('.js-bald')) { this.toast('lightbulb', 'Forschung und Menü kommen in einem späteren Mockup'); return; }
+      if (t.matches('[data-flur]')) { this.reiter = 'siedlung'; this.wahl = null; this.etikett = null; this.waehle(t.dataset.flur); return; }
+      if (t.matches('.js-bald')) { this.toast('lightbulb', 'Bald'); return; }
       if (t.matches('.js-uhr-knopf')) { this.uhr = { tag: 'daemmerung', daemmerung: 'nacht', nacht: 'tag' }[this.uhr]; this.zeichne(); return; }
       if (t.matches('.js-bauen')) { this.bauModus ? this.bauenBeenden() : this.bauenStarten(this.bauart || 'holzfaeller'); return; }
       if (t.matches('.js-griff')) { this.blattStufe = { klein: 'halb', halb: 'ganz', ganz: 'klein' }[this.blattStufe]; this.zeichne(); return; }
@@ -1172,31 +1273,71 @@ class Spiel {
       if (t.matches('.js-vorb')) { this.vorbereiten('tagwerk', this.auswahl); return; }
       if (t.matches('.js-erkunden')) { this.vorbereiten('erkunden', this.auswahl); return; }
       if (t.matches('.js-abstecken')) { this.abstecken(); return; }
-      if (t.matches('.js-fackel')) { this.stand[this.auswahl].licht = true; this.toast('flame', `Fackel steht ${FLUR[this.auswahl].ort} – brennt ab heute Nacht`); this.zeichne(); return; }
+      if (t.matches('.js-fackel')) { this.stand[this.auswahl].licht = true; this.toast('flame', `Fackel · ${FLUR[this.auswahl].name}`); this.zeichne(); return; }
       if (t.matches('.js-zurueck-siedlung, .js-heim')) { this.ansicht = 'siedlung'; this.aufbauen(); return; }
       if (t.matches('.js-k-ggst')) {
         const an = !t.classList.contains('aktiv');
         el.querySelectorAll('.js-k-ggst').forEach(k => k.classList.remove('aktiv'));
         t.classList.toggle('aktiv', an);
-        if (an) { const g = GEGENSTAENDE[t.dataset.g]; this.toast(g.icon, `${g.name} bereit: ${g.wirkung} – eine Wabe antippen. Danach ist sie weg.`); }
+        if (an) { const g = GEGENSTAENDE[t.dataset.g]; this.toast(g.icon, `${g.name}: ${g.wirkung}`); }
       }
     });
     el.addEventListener('keydown', e => {
       if (e.key === 'Escape' && this.bauModus) this.bauenBeenden();
+      else if (e.key === 'Escape' && (this.etikett || this.wahl)) {
+        if (this.etikett) this.etikett = null; else this.wahl = null;
+        this.zeichne();
+      }
       if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('a[data-nav], a.js-bald')) { e.preventDefault(); e.target.click(); }
+      // Dinge in der Welt sind auch mit der Tastatur erreichbar
+      if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.treffer [data-ding]')) { e.preventDefault(); this.fokus = e.target.dataset.ding; this.waehleDing(this.fokus); }
     });
+    // Laptop: weicher Umriss (CSS) und Name beim Darüberfahren
+    if (!this.handy) {
+      el.addEventListener('mouseover', e => {
+        const n = el.querySelector('.js-hovername'), t = e.target.closest('.treffer [data-name]');
+        if (!n) return;
+        if (!t) { n.hidden = true; return; }
+        const r = t.getBoundingClientRect(), g = el.getBoundingClientRect(), m = g.width / el.offsetWidth;
+        n.textContent = t.dataset.name; n.hidden = false;
+        n.style.left = fx((r.left + r.width / 2 - g.left) / m) + 'px'; n.style.top = fx((r.top - g.top) / m) + 'px';
+      });
+      el.addEventListener('mouseleave', () => { const n = el.querySelector('.js-hovername'); if (n) n.hidden = true; });
+    }
+  }
+  // Antippen in der Welt: Gebäude öffnen ihre Karte, Figuren und Kleinkram ein Etikett
+  waehleDing(ding) {
+    const [typ, id] = ding.split(':');
+    this.hervor = null;
+    if (typ === 'lager') { this.wahl = null; this.etikett = null; this.reiter = 'lager'; this.zeichne(); return; }
+    if (typ === 'figur' || typ === 'feuer' || typ === 'fackel') {
+      const gleich = this.etikett?.typ === typ && this.etikett.id === id;
+      this.etikett = gleich ? null : { typ, id };
+      if (this.handy && !gleich && typ === 'figur') this.blattStufe = 'klein';
+      this.zeichne(); return;
+    }
+    this.etikett = null; this.reiter = 'siedlung';
+    if (typ === 'dorf') { this.wahl = { typ: 'dorf' }; this.auswahl = 'lichtung'; }
+    else {
+      const b = this.bauten.find(x => x.id === id);
+      if (!b) return;
+      this.wahl = { typ: 'bau', id }; this.auswahl = this.flurDerWabe(b.wabe);
+    }
+    if (this.handy && this.blattStufe === 'klein') this.blattStufe = 'halb';
+    this.zeichne();
   }
   schliesseUeberlage() {
     const u = this.el.querySelector('.ueberlage');
     u.classList.remove('offen');
     setTimeout(() => { if (!u.classList.contains('offen')) u.innerHTML = ''; }, 250);
   }
-  toast(icon, text) {
+  toast(icon, text, knopf) {
     const t = this.el.querySelector('.toast');
-    t.innerHTML = `${ic(icon)}<span>${text}</span>`;
+    t.innerHTML = `${ic(icon)}<span>${text}</span>${knopf ? `<button class="knopf zweit klein js-rueckgaengig">${ic('undo-2')}${knopf}</button>` : ''}`;
+    t.classList.toggle('mit-knopf', !!knopf);
     t.classList.add('zeigen');
     clearTimeout(t._aus);
-    t._aus = setTimeout(() => t.classList.remove('zeigen'), 4200);
+    t._aus = setTimeout(() => t.classList.remove('zeigen', 'mit-knopf'), knopf ? 7000 : 4200);
   }
 
   // --- Zustand der Fluren ---
@@ -1247,12 +1388,14 @@ class Spiel {
   traegerAuftrag() {
     const b = this.baustellen().find(x => !this.wartetAuf(x));
     if (b) return { route: this.routeZu(b), last: this.ladung(b)[0]?.[0] || 'holz', ziel: b };
-    if (this.lager.holz < 60) return { route: this.routeZu(this.bauten.find(x => x.art === 'holzfaeller')), last: 'holz', ziel: null };
+    const hf = this.bauten.find(x => x.art === 'holzfaeller');
+    if (hf && this.lager.holz < 60) return { route: this.routeZu(hf), last: 'holz', ziel: null };
     return null;
   }
   holzfaellerZustand() {
-    if (this.lager.holz >= 60) return ['pause', 'Holzfäller ruht – das Lager ist voll'];
-    if (this.baustellen().some(b => !this.wartetAuf(b))) return ['hourglass', 'Holzfäller: Fach voll, wartet auf Ole'];
+    if (!this.bauten.some(b => b.art === 'holzfaeller')) return null;
+    if (this.lager.holz >= 60) return ['pause', 'Holzfäller · ruht'];
+    if (this.baustellen().some(b => !this.wartetAuf(b))) return ['hourglass', 'Holzfäller · wartet auf Ole'];
     return null;
   }
   freieWaben(id) {
@@ -1272,7 +1415,7 @@ class Spiel {
   }
   waehle(id) {
     if (this.bauModus) {
-      if (this.stand[id].stand !== 'eigen') { this.toast('flag', `${this.stand[id].stand === 'offen' ? FLUR[id].name : 'Diese Flur'} gehört noch nicht zur Siedlung – erst abstecken`); return; }
+      if (this.stand[id].stand !== 'eigen') { this.toast('flag', `${this.stand[id].stand === 'offen' ? FLUR[id].name : 'Im Nebel'} · nicht abgesteckt`); return; }
       this.auswahl = id; this.wahlWabe = this.standardWabe(id);
     } else {
       this.auswahl = id;
@@ -1283,14 +1426,14 @@ class Spiel {
   abstecken() {
     const id = this.auswahl;
     this.stand[id].stand = 'eigen';
-    this.toast('flag', `${FLUR[id].name} gehört jetzt zur Siedlung · −${this.absteckKosten} Proviant`);
+    this.toast('flag', `${FLUR[id].name} abgesteckt · −${this.absteckKosten} Proviant`);
     this.absteckKosten += 6;
     this.zeichne();
   }
 
   // --- Baumodus ---
   bauenStarten(art) {
-    this.bauModus = true; this.bauart = art;
+    this.bauModus = true; this.bauart = art; this.wahl = null; this.etikett = null;
     const eigene = FLUREN.filter(f => this.stand[f.id].stand === 'eigen' && this.eignung(f.id) !== null && this.bautenIn(f.id).length < this.plaetze(f.id) && this.freieWaben(f.id).length);
     if (this.stand[this.auswahl].stand !== 'eigen' || this.eignung(this.auswahl) === null || !eigene.some(f => f.id === this.auswahl))
       this.auswahl = eigene.sort((a, b) => this.eignung(b.id) - this.eignung(a.id))[0]?.id || this.auswahl;
@@ -1311,8 +1454,7 @@ class Spiel {
     this.bauten.push(b);
     this.bauModus = false; this.wahlWabe = null;
     if (this.handy) this.blattStufe = 'halb';
-    const vor = this.baustellen().length > 1 ? ' · Ole bringt erst die Baustelle davor fertig' : ' · Ole läuft los';
-    this.toast('construction', `Baustelle ${BAU_NAMEN[b.art]} abgesteckt${vor}`);
+    this.toast('construction', `Baustelle ${BAU_NAMEN[b.art]} abgesteckt`);
     this.zeichne();
     this.zeitraffer();
   }
@@ -1327,11 +1469,11 @@ class Spiel {
         if (b.id === 'dorf') {
           this.dorf.stufe++; this.dorf.ausbau = null;
           const st = DORF_STUFEN[this.dorf.stufe - 1];
-          this.toast(st.icon, `Aus dem ${DORF_STUFEN[this.dorf.stufe - 2].name} ist ${ein(st)} geworden · ${st.plaetze} Plätze · neuer Wunsch: ${st.bedarf[0][2] || ARTEN[st.bedarf[0][0]].name}`);
+          this.toast(st.icon, `${st.name} · ${st.plaetze} Plätze`);
         } else {
           b.baustelle = null;
           const id = this.flurDerWabe(b.wabe);
-          this.toast('circle-check', `${BAU_NAMEN[b.art]} fertig · ${FLUR[id].name} ${this.bautenIn(id).length} von ${this.plaetze(id)} · +${BAUARTEN[b.art].bonus[FLUR[id].art] || 0} %`);
+          this.toast('circle-check', `${BAU_NAMEN[b.art]} fertig · +${BAUARTEN[b.art].bonus[FLUR[id].art] || 0} %`);
         }
       }
       this.zeichne();
@@ -1341,7 +1483,7 @@ class Spiel {
     const b = this.baustellen().find(x => x.id === id);
     if (!b) return;
     b.reihe = Math.min(...this.baustellen().map(x => x.reihe)) - 1;
-    this.toast('chevrons-up', `${b.id === 'dorf' ? 'Der Ausbau' : BAU_NAMEN[b.art]} ist jetzt zuerst dran – Ole bringt als Nächstes ${this.ladungText(b) || 'Material'}`);
+    this.toast('chevrons-up', `${b.id === 'dorf' ? 'Ausbau' : BAU_NAMEN[b.art]} zuerst`);
     this.zeichne();
   }
   abbrechen(id) {
@@ -1350,13 +1492,41 @@ class Spiel {
     const g = Object.entries(b.baustelle.geliefert).filter(([, n]) => n > 0);
     g.forEach(([w, n]) => { this.lager[w] += n; });
     if (b.id === 'dorf') this.dorf.ausbau = null; else this.bauten.splice(this.bauten.indexOf(b), 1);
-    this.toast('undo-2', g.length ? `Baustelle abgebrochen · Ole trägt ${g.map(([w, n]) => `${n} ${ARTEN[w].name}`).join(' und ')} zurück ins Lager` : 'Baustelle abgebrochen – es war noch nichts geliefert');
+    this.toast('undo-2', g.length ? `Baustelle abgebrochen · +${g.map(([w, n]) => `${n} ${ARTEN[w].name}`).join(', +')}` : 'Baustelle abgebrochen');
+    this.zeichne();
+  }
+  // Abreißen gibt die Hälfte zurück – Rückgängig statt Rückfrage
+  abrissTeile(b) {
+    const weg = [b, ...(b.art === 'holzfaeller' ? this.bauten.filter(x => x.anbau) : [])], zurueck = {};
+    for (const x of weg) for (const [w, n] of Object.entries(x.anbau ? ANBAU_KOSTEN : BAUARTEN[x.art].kosten)) zurueck[w] = (zurueck[w] || 0) + Math.floor(n / 2);
+    return { weg, zurueck };
+  }
+  abreissen(id) {
+    const b = this.bauten.find(x => x.id === id);
+    if (!b) return;
+    const { weg, zurueck } = this.abrissTeile(b);
+    weg.forEach(x => this.bauten.splice(this.bauten.indexOf(x), 1));
+    Object.entries(zurueck).forEach(([w, n]) => { this.lager[w] += n; });
+    this.abriss = { weg, zurueck };
+    this.wahl = null;
+    const was = Object.entries(zurueck).map(([w, n]) => `${n} ${ARTEN[w].name}`).join(', +');
+    this.toast('trash-2', `${BAU_NAMEN[b.art]} abgerissen · +${was}`, 'Rückgängig');
+    this.zeichne();
+  }
+  abrissZurueck() {
+    const a = this.abriss;
+    if (!a) return;
+    this.bauten.push(...a.weg);
+    Object.entries(a.zurueck).forEach(([w, n]) => { this.lager[w] -= n; });
+    this.abriss = null;
+    this.wahl = { typ: 'bau', id: a.weg[0].id };
+    this.toast('undo-2', `${BAU_NAMEN[a.weg[0].art]} steht wieder`);
     this.zeichne();
   }
   dorfAusbauen() {
     this.dorf.ausbau = { id: 'dorf', art: 'haus', reihe: this.naechsteReihe++, baustelle: { geliefert: {} }, raffer: true };
     const naechste = DORF_STUFEN[this.dorf.stufe];
-    this.toast('construction', `Ausbau ${zum(naechste)} abgesteckt · Ole bringt das Material, sobald er frei ist`);
+    this.toast('construction', `Ausbau ${zum(naechste)} abgesteckt`);
     this.zeichne();
     this.zeitraffer();
   }
@@ -1365,7 +1535,7 @@ class Spiel {
     if (this.handy) this.blattStufe = 'klein';
     const t = this.hervorDaten(w);
     const liste = l => l.length > 1 ? l.slice(0, -1).map(x => x[1]).join(', ') + ' und ' + l.at(-1)[1] : l[0][1];
-    this.toast(ARTEN[w].icon, `${ARTEN[w].name}: ${t.plus.length ? `${liste(t.plus)} ${t.plus.length > 1 ? 'liefern' : 'liefert'}` : 'kommt nur aus dem Tagwerk'}${t.minus.length ? ` · ${liste(t.minus)} ${t.minus.length > 1 ? 'brauchen' : 'braucht'}` : ''}`);
+    this.toast(ARTEN[w].icon, `${ARTEN[w].name}: ${t.plus.length ? `${liste(t.plus)} ${t.plus.length > 1 ? 'liefern' : 'liefert'}` : 'nur aus dem Tagwerk'}${t.minus.length ? ` · ${liste(t.minus)} ${t.minus.length > 1 ? 'brauchen' : 'braucht'}` : ''}`);
     this.zeichne();
   }
   hervorDaten(w) {
@@ -1398,6 +1568,9 @@ class Spiel {
     this.zeichneWelt();
     this.zeichneDetail();
     this.zeichneBaumodus();
+    this.zeichneDingEtikett();
+    const hn = this.el.querySelector('.js-hovername');
+    if (hn) hn.hidden = true;
     if (this.handy) {
       const blatt = this.el.querySelector('.js-blatt');
       blatt.hidden = !!this.bauModus;
@@ -1417,6 +1590,17 @@ class Spiel {
     const sichtbar = p => p[0] > -60 && p[0] < k.w + 60 && p[1] > -120 && p[1] < k.h + 60;
     const uid = this.uid;
     const boden = [], deko = [], dinge = [], lichter = [];
+    // Antippen: Gewähltes bekommt einen Honigrand, jedes Ding eine Trefferfläche von mindestens 44 px
+    const gewaehlt = this.ansicht === 'siedlung' && !this.bauModus ? this.wahl : null;
+    const objTreffer = [], figTreffer = [];
+    const halo = koerper => `<g filter="url(#gl-f${uid})">${zeichneKoerper(k, koerper, { halo: true })}</g>`;
+    const ringAm = (p, rx, ry) => `<ellipse class="leuchten" cx="${fx(p[0])}" cy="${fx(p[1])}" rx="${fx(rx)}" ry="${fx(ry)}" fill="#FFBE2E" fill-opacity=".3" stroke="#FFBE2E" stroke-width="2.5" filter="url(#gl-f${uid})"/>`;
+    const ziel = (ding, name) => `data-ding="${ding}" data-name="${name}" tabindex="0" role="button" aria-label="${name}"`;
+    const rahmenZiel = ([x0, y0, x1, y1], z, ding, name) => {
+      const b = Math.max(44, x1 - x0 + 8), t = Math.max(44, y1 - y0 + 8), cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+      objTreffer.push({ z, svg: `<rect x="${fx(cx - b / 2)}" y="${fx(cy - t / 2)}" width="${fx(b)}" height="${fx(t)}" rx="12" ${ziel(ding, name)}/>` });
+    };
+    const kreisZiel = (p, r, z, ding, name) => objTreffer.push({ z, svg: `<circle cx="${fx(p[0])}" cy="${fx(p[1])}" r="${fx(Math.max(22, r))}" ${ziel(ding, name)}/>` });
     // Boden
     for (const w of WELT.waben.values()) {
       if (w.ecken.some(([x, z]) => roh([x, 0, z])[2] < 1.2)) continue;
@@ -1460,21 +1644,42 @@ class Spiel {
       const fuss = P([b.x, 0, b.z]);
       if (!sichtbar(fuss)) continue;
       const koerper = b.baustelle ? baustelleKoerper(b, this.bauStufe(b), () => gebaeudeKoerper(b, !tag)) : gebaeudeKoerper(b, !tag);
+      if (gewaehlt?.typ === 'bau' && gewaehlt.id === b.id) dinge.push({ z: fuss[2] + 0.02, svg: halo(koerper) });
       dinge.push({ z: fuss[2], svg: zeichneKoerper(k, koerper) });
-      if (b.art === 'lager') dinge.push({ z: P([b.x - 0.7, 0, b.z + 1.3])[2], svg: zeichneKoerper(k, stapelKoerper(b, this.lager)) });
+      let h = huelle(k, koerper);
+      if (b.art === 'lager') {
+        // Lager und Stapel davor sind eine Trefferfläche
+        const stapel = stapelKoerper(b, this.lager), hs = huelle(k, stapel);
+        dinge.push({ z: P([b.x - 0.7, 0, b.z + 1.3])[2], svg: zeichneKoerper(k, stapel) });
+        h = [Math.min(h[0], hs[0]), Math.min(h[1], hs[1]), Math.max(h[2], hs[2]), Math.max(h[3], hs[3])];
+      }
+      rahmenZiel(h, fuss[2], b.art === 'lager' ? 'lager' : 'bau:' + b.id,
+        b.art === 'lager' ? 'Lager' : b.baustelle ? `Baustelle ${BAU_NAMEN[b.art]}` : b.anbau ? `${BAU_NAMEN[b.art]} · Anbau` : BAU_NAMEN[b.art]);
       if (!tag && !b.baustelle && b.art !== 'saegebock') lichter.push({ x: b.x, z: b.z + 0.6, r: b.art === 'lager' ? 1.6 : 1.2, st: 0.55 });
     }
-    // Das Dorf
+    // Das Dorf – jedes Haus öffnet die Dorf-Karte, gewählt leuchtet das ganze Dorf
+    const dorfAn = gewaehlt?.typ === 'dorf', dorfName = DORF_STUFEN[this.dorf.stufe - 1].name;
     for (const h of DORF_HAEUSER.filter(x => x.ab <= this.dorf.stufe)) {
       const fuss = P([h.x, 0, h.z]);
       if (!sichtbar(fuss)) continue;
-      dinge.push({ z: fuss[2], svg: zeichneKoerper(k, hausKoerper(h, this.dorf.stufe, !tag)) });
+      const kp = hausKoerper(h, this.dorf.stufe, !tag);
+      if (dorfAn) dinge.push({ z: fuss[2] + 0.02, svg: halo(kp) });
+      dinge.push({ z: fuss[2], svg: zeichneKoerper(k, kp) });
+      rahmenZiel(huelle(k, kp), fuss[2], 'dorf', dorfName);
       if (!tag) lichter.push({ x: h.x, z: h.z + 0.5, r: 1.15, st: 0.5 });
     }
-    for (const e of dorfExtras(this.dorf.stufe, !tag)) dinge.push({ z: P([e.x, 0, e.z])[2], svg: zeichneKoerper(k, e.koerper) });
+    for (const e of dorfExtras(this.dorf.stufe, !tag)) {
+      const z = P([e.x, 0, e.z])[2];
+      if (dorfAn && e.name) dinge.push({ z: z + 0.02, svg: halo(e.koerper) });
+      dinge.push({ z, svg: zeichneKoerper(k, e.koerper) });
+      if (e.name) rahmenZiel(huelle(k, e.koerper), z, 'dorf', `${e.name} · ${dorfName}`);
+    }
     if (this.dorf.ausbau) {
-      const h = this.ausbauHaus(), b = { ...this.dorf.ausbau, x: h.x, z: h.z, dreh: h.d };
-      dinge.push({ z: P([h.x, 0, h.z])[2], svg: zeichneKoerper(k, baustelleKoerper(b, this.bauStufe(this.dorf.ausbau), () => hausKoerper(h, this.dorf.stufe + 1, !tag))) });
+      const h = this.ausbauHaus(), b = { ...this.dorf.ausbau, x: h.x, z: h.z, dreh: h.d }, z = P([h.x, 0, h.z])[2];
+      const kp = baustelleKoerper(b, this.bauStufe(this.dorf.ausbau), () => hausKoerper(h, this.dorf.stufe + 1, !tag));
+      if (dorfAn) dinge.push({ z: z + 0.02, svg: halo(kp) });
+      dinge.push({ z, svg: zeichneKoerper(k, kp) });
+      rahmenZiel(huelle(k, kp), z, 'dorf', `Ausbau ${zum(DORF_STUFEN[this.dorf.stufe])}`);
     }
     // Geist im Baumodus
     if (this.bauModus && this.wahlWabe) {
@@ -1488,47 +1693,69 @@ class Spiel {
       const h = s * 0.55;
       dinge.push({ z: p[2], svg: `${steine}<g class="flamme"><path d="M${fx(p[0] - s * 0.2)} ${fx(p[1])} Q${fx(p[0] - s * 0.18)} ${fx(p[1] - h * 0.6)} ${fx(p[0])} ${fx(p[1] - h)} Q${fx(p[0] + s * 0.18)} ${fx(p[1] - h * 0.6)} ${fx(p[0] + s * 0.2)} ${fx(p[1])} Z" fill="#F08A2C"/>
         <path d="M${fx(p[0] - s * 0.1)} ${fx(p[1])} Q${fx(p[0] - s * 0.08)} ${fx(p[1] - h * 0.4)} ${fx(p[0])} ${fx(p[1] - h * 0.68)} Q${fx(p[0] + s * 0.08)} ${fx(p[1] - h * 0.4)} ${fx(p[0] + s * 0.1)} ${fx(p[1])} Z" fill="#FFD36A"/></g>` });
+      if (this.etikett?.typ === 'feuer') dinge.push({ z: p[2] + 0.01, svg: ringAm(p, s * 0.6, s * 0.3) });
+      kreisZiel([p[0], p[1] - h * 0.4], s * 0.5, p[2], 'feuer:lichtung', 'Lagerfeuer');
       lichter.push({ x: 0, z: 0, r: tag ? 0 : 3.6, st: 1 });
     }
     // Fackeln
     const fackeln = [];
-    if (this.stand.nordwald.licht) fackeln.push([1.7, -3.9]);
-    if (this.stand.ostufer.licht) fackeln.push([4.6, -1.3]);
-    if (this.stand.birkenhang.stand === 'eigen' && this.stand.birkenhang.licht) fackeln.push([-4.2, -1.2]);
-    for (const [x, z] of fackeln) {
+    if (this.stand.nordwald.licht) fackeln.push([1.7, -3.9, 'nordwald']);
+    if (this.stand.ostufer.licht) fackeln.push([4.6, -1.3, 'ostufer']);
+    if (this.stand.birkenhang.stand === 'eigen' && this.stand.birkenhang.licht) fackeln.push([-4.2, -1.2, 'birkenhang']);
+    for (const [x, z, fid] of fackeln) {
       const p = P([x, 0, z]), o = P([x, 0.95, z]), s = k.f / p[2];
+      if (this.etikett?.typ === 'fackel' && this.etikett.id === fid) dinge.push({ z: p[2] + 0.01, svg: ringAm(p, Math.max(12, s * 0.3), Math.max(6, s * 0.14)) });
+      kreisZiel([(p[0] + o[0]) / 2, (p[1] + o[1]) / 2 - 4], 22, p[2], `fackel:${fid}`, 'Fackel');
       dinge.push({ z: p[2], svg: `<line x1="${fx(p[0])}" y1="${fx(p[1])}" x2="${fx(o[0])}" y2="${fx(o[1])}" stroke="#6E4422" stroke-width="${fx(Math.max(1.5, s * 0.07))}" stroke-linecap="round"/>
         <g class="flamme"><ellipse cx="${fx(o[0])}" cy="${fx(o[1] - s * 0.1)}" rx="${fx(s * 0.09)}" ry="${fx(s * 0.16)}" fill="#F7A23A"/><ellipse cx="${fx(o[0])}" cy="${fx(o[1] - s * 0.07)}" rx="${fx(s * 0.045)}" ry="${fx(s * 0.09)}" fill="#FFE08A"/></g>` });
       lichter.push({ x, z, r: tag ? 0 : 2.4, st: 0.85 });
     }
-    // Ole, der Träger: läuft mit Korb zwischen Lager und Ziel hin und her – nachts mit Fackel
-    const figur = (s, farbe, last, fackel, name) => {
+    // Ole, der Träger: läuft mit Korb zwischen Lager und Ziel hin und her – nachts mit Fackel. Nur der Träger trägt
+    // seinen Namen immer; die anderen Siedler stehen am Feuer oder gehen zur Arbeit.
+    const figur = (s, farbe, last, fackel, name, an) => {
+      const ring = an ? ringAm([0, 0], Math.max(13, s * 0.3), Math.max(6, s * 0.13)) : '';
       const korb = last ? `<rect x="${fx(-s * 0.21)}" y="${fx(-s * 0.37)}" width="${fx(s * 0.15)}" height="${fx(s * 0.17)}" rx="2" fill="#9A6436" stroke="#6E4422" stroke-width="1"/>
         <rect x="${fx(-s * 0.2)}" y="${fx(-s * 0.45)}" width="${fx(s * 0.13)}" height="${fx(s * 0.09)}" rx="1.5" fill="${last === 'bretter' ? '#E3B57A' : '#7E512E'}"/>` : '';
       const licht = fackel ? `<line x1="${fx(s * 0.1)}" y1="${fx(-s * 0.2)}" x2="${fx(s * 0.16)}" y2="${fx(-s * 0.48)}" stroke="#6E4422" stroke-width="2" stroke-linecap="round"/>
         <g class="flamme"><ellipse cx="${fx(s * 0.16)}" cy="${fx(-s * 0.55)}" rx="${fx(s * 0.05)}" ry="${fx(s * 0.09)}" fill="#F7A23A"/><ellipse cx="${fx(s * 0.16)}" cy="${fx(-s * 0.53)}" rx="${fx(s * 0.025)}" ry="${fx(s * 0.05)}" fill="#FFE08A"/></g>` : '';
       const schrift = name ? `<text y="${fx(-s * 0.62 - 3)}" text-anchor="middle" font-size="11" font-weight="800" font-family="Nunito, sans-serif" fill="#FFF8EA" stroke="#3A2A1C" stroke-width="3" paint-order="stroke">${name}</text>` : '';
-      return `${korb}<ellipse cx="0" cy="${fx(-s * 0.18)}" rx="${fx(s * 0.09)}" ry="${fx(s * 0.17)}" fill="${farbe}"/><circle cx="0" cy="${fx(-s * 0.4)}" r="${fx(s * 0.07)}" fill="#F3D9B8"/>${licht}${schrift}`;
+      return `${ring}${korb}<ellipse cx="0" cy="${fx(-s * 0.18)}" rx="${fx(s * 0.09)}" ry="${fx(s * 0.17)}" fill="${farbe}"/><circle cx="0" cy="${fx(-s * 0.4)}" r="${fx(s * 0.07)}" fill="#F3D9B8"/>${licht}${schrift}`;
     };
-    const laeuft = (pts, svg, dur, z) => {
+    // Die Trefferfläche läuft mit der Figur mit
+    const trefferKreis = (id, s, bew = '') => `<circle cx="0" cy="${fx(-s * 0.3)}" r="22" ${ziel('figur:' + id, SIEDLER.find(x => x.id === id).name)}>${bew}</circle>`;
+    const laeuft = (pts, svg, dur, z, id, s) => {
       const pfad = 'M' + pts.map(p => fx(p[0]) + ' ' + fx(p[1])).join(' L'), m = pts[Math.floor(pts.length / 2)];
-      dinge.push({ z, svg: reduziert ? `<g transform="translate(${fx(m[0])} ${fx(m[1])})">${svg}</g>`
-        : `<g>${svg}<animateMotion dur="${dur}s" repeatCount="indefinite" path="${pfad}" keyPoints="0;1;0" keyTimes="0;.5;1" calcMode="linear"/></g>` });
+      const bew = `<animateMotion dur="${dur}s" repeatCount="indefinite" path="${pfad}" keyPoints="0;1;0" keyTimes="0;.5;1" calcMode="linear"/>`;
+      const fest = `transform="translate(${fx(m[0])} ${fx(m[1])})"`;
+      dinge.push({ z, svg: reduziert ? `<g ${fest}>${svg}</g>` : `<g>${svg}${bew}</g>` });
+      figTreffer.push(reduziert ? `<g ${fest}>${trefferKreis(id, s)}</g>` : trefferKreis(id, s, bew));
       return pfad;
     };
+    const steht = (p, svg, z, id, s) => {
+      const fest = `transform="translate(${fx(p[0])} ${fx(p[1])})"`;
+      dinge.push({ z, svg: `<g ${fest}>${svg}</g>` });
+      figTreffer.push(`<g ${fest}>${trefferKreis(id, s)}</g>`);
+    };
     if (!this.bauModus && this.ansicht === 'siedlung') {
+      const an = id => this.etikett?.typ === 'figur' && this.etikett.id === id;
       const auftrag = this.traegerAuftrag(), ole = SIEDLER.find(s => s.id === 'ole');
       if (auftrag) {
         const pts = zuSchirm(auftrag.route), m = pts[Math.floor(pts.length / 2)], s = k.f / m[2];
-        const pfad = laeuft(pts, figur(s, ole.farbe, auftrag.last, !tag, 'Ole'), 16, m[2] - 0.1);
+        const pfad = laeuft(pts, figur(s, ole.farbe, auftrag.last, !tag, 'Ole', an('ole')), 16, m[2] - 0.1, 'ole', s);
         if (!tag) lichter.push({ r: 1.4, st: 0.9, bahn: { pfad, dur: 16, p: m } });
       } else {
         const lager = this.bauten.find(b => b.art === 'lager'), p = P([lager.x + 0.6, 0, lager.z + 1.0]), s = k.f / p[2];
-        dinge.push({ z: p[2] - 0.2, svg: `<g transform="translate(${fx(p[0])} ${fx(p[1])})">${figur(s, ole.farbe, null, false, 'Ole')}</g>` });
+        steht(p, figur(s, ole.farbe, null, false, 'Ole', an('ole')), p[2] - 0.2, 'ole', s);
       }
-      if (tag) {
-        const ida = SIEDLER[0], pts = zuSchirm(this.routeZu(this.bauten.find(b => b.art === 'holzfaeller'))).slice(6), s = k.f / pts[Math.floor(pts.length / 2)][2];
-        laeuft(pts.reverse(), figur(s * 0.95, ida.farbe, null, false, ''), 21, pts[Math.floor(pts.length / 2)][2] - 0.1);
+      const hf = this.bauten.find(b => b.art === 'holzfaeller');
+      for (const sd of SIEDLER.filter(x => x.id !== 'ole')) {
+        if (sd.id === 'ida' && tag && hf) {
+          const pts = zuSchirm(this.routeZu(hf)).slice(6), s = k.f / pts[Math.floor(pts.length / 2)][2];
+          laeuft(pts.reverse(), figur(s * 0.95, sd.farbe, null, false, '', an(sd.id)), 21, pts[Math.floor(pts.length / 2)][2] - 0.1, sd.id, s);
+          continue;
+        }
+        const [x, z] = AM_FEUER[sd.id], p = P([x, 0, z]), s = k.f / p[2];
+        steht(p, figur(s * 0.95, sd.farbe, null, false, '', an(sd.id)), p[2], sd.id, s);
       }
     }
     dinge.sort((a, b) => b.z - a.z);
@@ -1605,9 +1832,14 @@ class Spiel {
           }
         }
       } else if (this.auswahl && this.reiter !== 'lager' && !this.hervor) {
-        oben += `<path d="${pfadVon(WELT.fluren[this.auswahl].umriss)}" fill="#FFBE2E" fill-opacity=".1" stroke="#F0B54C" stroke-width="3.5" filter="url(#gl-f${uid})"/>`;
+        // Ist ein Gebäude oder das Dorf gewählt, bleibt die Flur nur leicht markiert
+        oben += this.wahl
+          ? `<path d="${pfadVon(WELT.fluren[this.auswahl].umriss)}" fill="#FFBE2E" fill-opacity=".05" stroke="#F0B54C" stroke-width="2.5" stroke-opacity=".55"/>`
+          : `<path d="${pfadVon(WELT.fluren[this.auswahl].umriss)}" fill="#FFBE2E" fill-opacity=".1" stroke="#F0B54C" stroke-width="3.5" filter="url(#gl-f${uid})"/>`;
       }
       for (const f of FLUREN) treffer = `<path d="${pfadVon(WELT.fluren[f.id].umriss)}" data-flur="${f.id}"/>` + treffer;
+      // Ein Ding geht vor seiner Flur, das nähere vor dem ferneren, Figuren vor allem
+      if (!this.bauModus) treffer += objTreffer.sort((a, b) => b.z - a.z).map(o => o.svg).join('') + figTreffer.join('');
     }
 
     this.svg.innerHTML = `<defs>
@@ -1624,6 +1856,7 @@ class Spiel {
       <g opacity="${tag ? 1 : .8}">${grenzen}</g>
       <g>${oben}</g>
       <g class="treffer">${treffer}</g>`;
+    if (this.fokus) { this.svg.querySelector(`.treffer [data-ding="${this.fokus}"]`)?.focus(); this.fokus = null; }
     if (this.ansicht === 'siedlung') this.zeichneSchilder(P);
   }
 
@@ -1673,15 +1906,15 @@ class Spiel {
         let p = P([h.x, 1.25, h.z]), unten = false;
         if (schildOrte.some(q => Math.abs(q[0] - p[0]) < 110 && p[1] - q[1] > -20 && p[1] - q[1] < 56)) { p = P([h.x, 0, h.z + 0.55]); unten = true; }
         if (!imBild(p)) continue;
-        const wartet = this.wartetAuf(b), flur = b.id === 'dorf' ? 'lichtung' : this.flurDerWabe(b.wabe);
-        html.push(`<button class="bau-schild${wartet ? ' warn' : ''}${unten ? ' unten' : ''}" data-flur="${flur}" style="left: ${fx(p[0])}px; top: ${fx(p[1])}px">${rundIc(wartet ? 'hourglass' : 'construction')}
-          <span>${wartet ? `wartet auf ${ARTEN[wartet].name}` : STUFEN_NAMEN[this.bauStufe(b)]}</span><span class="mini-balken"><b style="width: ${Math.round(this.fortschritt(b) * 100)}%"></b></span></button>`);
+        const wartet = this.wartetAuf(b), ding = b.id === 'dorf' ? 'dorf' : 'bau:' + b.id;
+        html.push(`<button class="bau-schild${wartet ? ' warn' : ''}${unten ? ' unten' : ''}" data-ding="${ding}" style="left: ${fx(p[0])}px; top: ${fx(p[1])}px">${rundIc(wartet ? 'hourglass' : 'construction')}
+          <span>${wartet ? marke(wartet, 's') : STUFEN_NAMEN[this.bauStufe(b)]}</span><span class="mini-balken"><b style="width: ${Math.round(this.fortschritt(b) * 100)}%"></b></span></button>`);
       }
       const hz = this.holzfaellerZustand(), hf = this.bauten.find(b => b.art === 'holzfaeller');
       if (hz) {
         const p = P([hf.x + 0.95, 0.8, hf.z + 0.35]), q = schildOrte.find(q => Math.abs(q[0] - p[0]) < 75 && p[1] - q[1] > -30 && p[1] - q[1] < 45);
         if (q) p[0] = q[0] + 82;
-        if (imBild(p)) html.push(`<span class="zeichen-schild${hz[0] === 'hourglass' ? ' warn' : ''}" title="${hz[1]}" role="img" aria-label="${hz[1]}" style="left: ${fx(p[0])}px; top: ${fx(p[1])}px">${ic(hz[0])}</span>`); }
+        if (imBild(p)) html.push(`<button class="zeichen-schild${hz[0] === 'hourglass' ? ' warn' : ''}" data-ding="bau:${hf.id}" title="${hz[1]}" aria-label="${hz[1]}" style="left: ${fx(p[0])}px; top: ${fx(p[1])}px">${ic(hz[0])}</button>`); }
     }
     for (const f of FLUREN) {
       const st = this.stand[f.id].stand, fl = WELT.fluren[f.id];
@@ -1694,7 +1927,7 @@ class Spiel {
       if (st === 'nebel') {
         if (!this.erkundbar(f.id) && f.id !== this.auswahl) continue;
         const unterwegs = this.unterwegs === f.id;
-        html.push(`<button class="flur-schild nebel${unterwegs ? ' text' : ''}${an}" data-flur="${f.id}" ${pos} title="Im Nebel – erkunden">${rundIc(unterwegs ? 'binoculars' : 'cloud-fog')}${unterwegs ? `<small>${SIEDLER.find(s => s.id === this.unterwegsWer).name} unterwegs</small>` : ''}</button>`);
+        html.push(`<button class="flur-schild nebel${unterwegs ? ' text' : ''}${an}" data-flur="${f.id}" ${pos} title="Im Nebel">${rundIc(unterwegs ? 'binoculars' : 'cloud-fog')}${unterwegs ? `<small>${SIEDLER.find(s => s.id === this.unterwegsWer).name} unterwegs</small>` : ''}</button>`);
         continue;
       }
       const art = FLUR_ARTEN[f.art];
@@ -1724,46 +1957,49 @@ class Spiel {
     const d = this.el.querySelector('.js-detail');
     if (!d) return;
     const f = FLUR[this.auswahl], st = this.stand[f.id], art = FLUR_ARTEN[f.art];
-    let chips = '', rumpf = '', fuss = '', titel = f.name;
+    let chips = '', rumpf = '', fuss = '', titel = f.name, zurueck = '';
     const marken = `<div class="marken-raster">${art.brett.map(a => `<span class="mr">${marke(a)}${ARTEN[a].name}</span>`).join('')}</div>`;
+    const gebaeude = this.wahl?.typ === 'bau' && this.bauten.find(b => b.id === this.wahl.id);
+    if (this.wahl?.typ === 'bau' && !gebaeude) this.wahl = null;
     if (this.reiter === 'lager') ({ titel, chips, rumpf, fuss } = this.lagerTeile());
+    else if (gebaeude) ({ titel, chips, rumpf, fuss, zurueck } = this.gebaeudeTeile(gebaeude));
     else if (f.id === 'lichtung') ({ titel, chips, rumpf, fuss } = this.dorfTeile());
     else if (st.stand === 'eigen') {
       const bauten = this.bautenIn(f.id), n = this.plaetze(f.id);
       chips = `<span class="chip">${ic(art.icon)}${art.name}</span><span class="chip gut">${art.bonus}</span>`;
       const holz = bauten.find(b => b.art === 'holzfaeller');
       rumpf += bauten.filter(b => b.baustelle).map(b => this.baustelleHtml(b)).join('');
-      rumpf += `<div class="abschnitt"><h4>Bauplätze · ${bauten.length} von ${n}</h4>${this.plaetzeHtml(f.id)}</div>`;
-      rumpf += `<div class="abschnitt"><h4>Auf dem Brett</h4>${marken}${holz ? `<div class="bau-zeile">${marke('bau', 'm')}<span>Holzfäller liegt als Kachel darauf: Holzketten daneben zählen doppelt</span></div>` : ''}</div>`;
-      const licht = f.id === 'lichtung' ? ['Lagerfeuer brennt', '2 Holz je Nacht'] : st.licht ? ['Fackel brennt', '1 Holz je Nacht'] : null;
-      rumpf += `<div class="abschnitt"><h4>In der Nacht</h4>${licht
-        ? `<div class="zeile gut">${ic('flame')}<span>${licht[0]}</span><span class="wert">${licht[1]}</span></div>`
-        : `<div class="zeile warn">${ic('moon')}<span>Dunkel – ${f.artikel} ${f.name} verwildert nachts<small>Am Morgen liegt mehr ${f.art === 'ufer' ? 'Schlamm' : 'Gestrüpp'} auf dem Brett.</small></span></div>
-           <button class="knopf zweit klein js-fackel" style="margin-top: 6px">${ic('flame')}Fackel setzen · 4 Holz</button>`}</div>`;
-      fuss = `<button class="knopf haupt js-vorb">${ic('backpack')}Tagwerk vorbereiten</button><span class="hinweis">Zuletzt: Ida, Jonas, Mara · Brot · Axt, Wegzehrung</span>`;
+      rumpf += `<div class="abschnitt"><h4>Bauplätze · ${bauten.length}/${n}</h4>${this.plaetzeHtml(f.id)}</div>`;
+      rumpf += `<div class="abschnitt"><h4>Auf dem Brett</h4>${marken}${holz ? `<div class="bau-zeile">${marke('bau', 'm')}<span>Holzfäller · Holz daneben ×2</span></div>` : ''}</div>`;
+      const licht = f.id === 'lichtung' ? ['Lagerfeuer', 2] : st.licht ? ['Fackel', 1] : null;
+      rumpf += `<div class="abschnitt"><h4>Nachts</h4>${licht
+        ? `<div class="zeile gut">${ic('flame')}<span>${licht[0]}</span><span class="wert">${kostenHtml({ holz: licht[1] })}</span></div>`
+        : `<div class="zeile warn">${ic('moon')}<span>Verwildert</span><span class="wert">${marke(f.art === 'ufer' ? 'schlamm' : 'gestruepp', 's')}</span></div>
+           <button class="knopf zweit klein js-fackel" style="margin-top: 6px">${ic('flame')}Fackel setzen ${kostenHtml({ holz: 4 })}</button>`}</div>`;
+      fuss = `<button class="knopf haupt js-vorb">${ic('backpack')}Tagwerk vorbereiten</button>`;
     } else if (st.stand === 'offen') {
-      chips = `<span class="chip">${ic(art.icon)}${art.name}</span><span class="chip">${ic('flag')}Erkundet</span>`;
-      rumpf = `<div class="abschnitt"><h4>Abstecken</h4><p class="text">Danach gehört die Flur zur Siedlung: ${f.plaetze || 3} Bauplätze, Tagwerke hier, ${art.bonus.toLowerCase().startsWith('+') ? art.bonus : art.bonus}.</p></div>
-        <div class="abschnitt"><h4>Auf dem Brett</h4>${marken}</div>`;
-      fuss = `<button class="knopf haupt js-abstecken">${ic('flag')}Abstecken · ${this.absteckKosten} Proviant</button><span class="hinweis">Jede weitere Flur kostet mehr – die nächste ${this.absteckKosten + 6}.</span>`;
+      chips = `<span class="chip">${ic(art.icon)}${art.name}</span><span class="chip gut">${art.bonus}</span><span class="chip">${ic('flag')}${f.plaetze || 3} Plätze</span>`;
+      rumpf = `<div class="abschnitt"><h4>Auf dem Brett</h4>${marken}</div>`;
+      fuss = `<button class="knopf haupt js-abstecken">${ic('flag')}Abstecken · ${this.absteckKosten} Proviant</button>`;
     } else {
       titel = 'Im Nebel';
-      chips = `<span class="chip">${ic('cloud-fog')}Unerkundet · im ${richtung(...WELT.fluren[f.id].mitte)}</span>`;
+      chips = `<span class="chip">${ic('cloud-fog')}im ${richtung(...WELT.fluren[f.id].mitte)}</span>`;
       if (this.unterwegs === f.id) {
-        rumpf = `<div class="abschnitt"><div class="zeile">${ic('binoculars')}<span>${SIEDLER.find(s => s.id === this.unterwegsWer).name} ist unterwegs<small>Zurück in etwa 2 Spieltagen (16 Minuten).</small></span></div></div>`;
+        const wer = SIEDLER.find(s => s.id === this.unterwegsWer);
+        rumpf = `<div class="abschnitt"><div class="zeile"><span style="--p: ${wer.farbe}">${portrait(wer)}</span><span>${wer.name} unterwegs<small>noch 16 min</small></span></div></div>`;
         fuss = `<button class="knopf zweit" disabled>${ic('binoculars')}Unterwegs</button>`;
       } else if (f.bruecke && this.erkundbar(f.id)) {
-        rumpf = `<p class="text">Jenseits des Flusses – erreichbar erst mit einer Brücke.</p>`;
         fuss = `<button class="knopf zweit" disabled>${ic('lock')}Brücke fehlt</button>`;
       } else if (this.erkundbar(f.id)) {
-        rumpf = `<p class="text">Ein Kundschafter kann die Flur erkunden – ein bis drei Spieltage unterwegs. Er bringt Erkenntnis mit, manchmal auch einen Fund.</p>`;
         fuss = `<button class="knopf zweit js-erkunden">${ic('binoculars')}Erkunden vorbereiten</button>`;
       } else {
-        rumpf = `<p class="text">Noch zu weit – erst eine Nachbarflur erkunden und abstecken.</p>`;
+        fuss = `<button class="knopf zweit" disabled>${ic('lock')}Zu weit</button>`;
       }
     }
-    const scroll = d.querySelector('.detail-rumpf')?.scrollTop || 0;
-    d.innerHTML = `<div class="detail-kopf"><h3>${titel}</h3><div class="chips">${chips}</div></div>
+    // Dieselbe Karte behält ihre Scrollstellung, eine andere beginnt oben
+    const schluessel = this.reiter + ':' + (gebaeude ? gebaeude.id : f.id), scroll = schluessel === this.karteSchluessel ? d.querySelector('.detail-rumpf')?.scrollTop || 0 : 0;
+    this.karteSchluessel = schluessel;
+    d.innerHTML = `<div class="detail-kopf">${zurueck ? `<button class="zur-flur js-zur-flur">${ic('chevron-left')}${zurueck}</button>` : ''}<h3>${titel}</h3><div class="chips">${chips}</div></div>
       <div class="detail-rumpf">${rumpf}</div>${fuss ? `<div class="detail-fuss">${fuss}</div>` : ''}`;
     d.querySelector('.detail-rumpf').scrollTop = scroll;
   }
@@ -1772,10 +2008,10 @@ class Spiel {
     const bauten = this.bautenIn(id), n = this.plaetze(id), kacheln = [];
     for (let i = 0; i < 4; i++) {
       const b = bauten[i];
-      if (b && b.baustelle) kacheln.push(`<div class="platz bau">${ic('construction')}${BAU_NAMEN[b.art]}<small>${STUFEN_NAMEN[this.bauStufe(b)]}</small><span class="mini-balken"><b style="width: ${Math.round(this.fortschritt(b) * 100)}%"></b></span></div>`);
+      if (b && b.baustelle) kacheln.push(`<button class="platz bau geb" data-ding="bau:${b.id}">${ic('construction')}${BAU_NAMEN[b.art]}<small>${STUFEN_NAMEN[this.bauStufe(b)]}</small><span class="mini-balken"><b style="width: ${Math.round(this.fortschritt(b) * 100)}%"></b></span></button>`);
       else if (b) {
         const anbau = b.art === 'holzfaeller' && this.bauten.find(a => a.anbau);
-        kacheln.push(`<div class="platz">${ic(BAU_ICON[b.art])}${BAU_NAMEN[b.art]}${anbau ? `<small>+ ${BAU_NAMEN[anbau.art]}</small>` : ''}</div>`);
+        kacheln.push(`<button class="platz geb" data-ding="bau:${b.id}">${ic(BAU_ICON[b.art])}${BAU_NAMEN[b.art]}${anbau ? `<small>+ ${BAU_NAMEN[anbau.art]}</small>` : ''}</button>`);
       } else if (i < n) kacheln.push(`<button class="platz frei js-bauen">${ic('plus')}frei</button>`);
       else kacheln.push(`<div class="platz mehr" title="Erschließen: Wegstein aus 6 Stein">${ic('milestone')}Erschließen<small>4. Platz</small></div>`);
     }
@@ -1788,51 +2024,80 @@ class Spiel {
     const stufen = `<div class="stufen">${STUFEN_NAMEN.map((n, i) => `<span class="stufe${i < st ? ' fertig' : i === st ? ' jetzt' : ''}"><i></i>${n}</span>`).join('')}</div>`;
     const material = `<div class="waren">${Object.entries(k).map(([w, n]) => {
       const v = Math.min(n, g[w] || 0), fehlt = wartet === w;
-      return `<div class="ware">${marke(w)}<span class="name">${ARTEN[w].name}<small class="${v >= n ? 'gut' : fehlt ? 'warn' : ''}">${v >= n ? 'alles da' : fehlt ? 'fehlt im Lager' : `noch ${n - v}`}</small></span>
+      return `<div class="ware">${marke(w)}<span class="name">${ARTEN[w].name}${v >= n || fehlt ? `<small class="${v >= n ? 'gut' : 'warn'}">${v >= n ? 'da' : 'fehlt'}</small>` : ''}</span>
         <span class="zahl">${v}<small>/${n}</small></span><span class="balken${v >= n ? ' voll' : ''}"><b style="width: ${Math.round(v / n * 100)}%"></b></span></div>`;
     }).join('')}</div>`;
     const wer = wartet
-      ? `<div class="zeile warn">${ic('hourglass')}<span>Wartet auf ${ARTEN[wartet].name}<small>${wartet === 'bretter' ? 'Der Sägebock macht 6 je Stunde. Ole holt derweil Holz im Nordwald.' : `Im Lager ist kein ${ARTEN[wartet].name} mehr.`}</small></span></div>`
-      : dran ? `<div class="zeile"><span style="--p: ${ole.farbe}">${portrait(ole)}</span><span>Ole bringt ${this.ladungText(b)}<small>Fertig in etwa ${this.restzeit(b)}</small></span></div>`
-      : `<div class="zeile">${ic('hourglass')}<span>Als Nächstes dran<small>Ole trägt erst für ${offen[0].id === 'dorf' ? 'den Ausbau des Dorfs' : `die Baustelle ${BAU_NAMEN[offen[0].art]}`}.</small></span></div>`;
+      ? `<div class="zeile warn">${ic('hourglass')}<span>Wartet auf ${ARTEN[wartet].name}</span></div>`
+      : dran ? `<div class="zeile"><span style="--p: ${ole.farbe}">${portrait(ole)}</span><span>Ole bringt ${this.ladungText(b)}<small>fertig in ${this.restzeit(b)}</small></span></div>`
+      : `<div class="zeile">${ic('hourglass')}<span>Als Nächstes</span></div>`;
     const knoepfe = `<div class="schalter-reihe">${reihe[0] !== b ? `<button class="knopf zweit klein js-zuerst" data-bau="${b.id}">${ic('chevrons-up')}Zuerst</button>` : ''}
       <button class="knopf zweit klein js-abbrechen" data-bau="${b.id}">${ic('x')}Abbrechen</button></div>`;
     return `<div class="abschnitt"><h4>${titel || `Baustelle · ${BAU_NAMEN[b.art]}`}</h4>${stufen}${material}${wer}${knoepfe}</div>`;
   }
+  // --- Gebäude-Karte: was es erzeugt, Fach, Anbauten, Kachel im Tagwerk; Abreißen und Versetzen ---
+  gebaeudeTeile(gewaehlt) {
+    const b = gewaehlt.anbau ? this.bauten.find(x => x.art === 'holzfaeller') : gewaehlt;
+    const fid = this.flurDerWabe(b.wabe), f = FLUR[fid], art = FLUR_ARTEN[f.art], g = GEBAEUDE[b.art];
+    const bonus = BAUARTEN[b.art].bonus[f.art] || 0, grund = BAUARTEN[b.art].grund[f.art];
+    const chips = `<span class="chip">${ic(art.icon)}${f.name} · Platz ${this.bautenIn(fid).indexOf(b) + 1}/${this.plaetze(fid)}</span>`
+      + (bonus ? `<span class="chip gut">+${bonus} %${grund ? ` · ${grund}` : ''}</span>` : '');
+    const menge = Math.round(g.grund * (1 + bonus / 100)), ware = ARTEN[g.ware].name;
+    const brett = `<div class="abschnitt"><h4>Auf dem Brett</h4><div class="bau-zeile">${marke(g.kachel, 'm')}<span>${ware} daneben ×2</span></div></div>`;
+    if (b.baustelle) {
+      const wenn = `<div class="abschnitt"><h4>Wenn fertig</h4><div class="zeile">${marke(g.ware)}<span>${ware}</span><span class="wert">${menge}/h</span></div></div>`;
+      return { zurueck: f.name, titel: BAU_NAMEN[b.art], chips,
+        rumpf: this.baustelleHtml(b, `Baustelle · ${STUFEN_NAMEN[this.bauStufe(b)]}`) + wenn + brett, fuss: '' };
+    }
+    // Das Fach am Gebäude: voll und kein Träger da → es ruht oder wartet
+    const anbau = b.art === 'holzfaeller' ? this.bauten.find(x => x.anbau) : null, ole = SIEDLER.find(s => s.id === 'ole');
+    const hz = b.art === 'holzfaeller' ? this.holzfaellerZustand() : null, fach = hz ? g.fach : b.art === 'holzfaeller' ? 3 : 2;
+    const zustand = hz
+      ? `<div class="zeile warn">${ic(hz[0])}<span>${hz[0] === 'pause' ? 'Ruht · Lager voll' : 'Wartet auf Ole'}</span></div>`
+      : `<div class="zeile"><span style="--p: ${ole.farbe}">${portrait(ole)}</span><span>Ole holt ab</span></div>`;
+    const erzeugt = `<div class="abschnitt"><h4>Erzeugt</h4><div class="waren"><div class="ware">${marke(g.ware)}<span class="name">${ware}<small>${menge}/h${anbau ? ' · 6 zum Sägebock' : ''}</small></span>
+      <span class="zahl"><small>Fach</small> ${fach}<small>/${g.fach}</small></span><span class="balken${fach >= g.fach ? ' voll' : ''}"><b style="width: ${Math.round(fach / g.fach * 100)}%"></b></span></div></div>${zustand}</div>`;
+    const anbauten = `<div class="abschnitt"><h4>Anbauten · ${anbau ? 1 : 0}/2</h4><div class="anbauten">
+      ${anbau ? `<button class="anbau${gewaehlt.anbau ? ' an' : ''}" data-ding="bau:${anbau.id}">${ic('hammer')}<span>Sägebock<small>6 Bretter/h</small></span></button>` : ''}
+      ${[...Array(anbau ? 1 : 2)].map(() => `<button class="anbau frei js-anbau-frei" data-name="${g.spaeter}">${ic('plus')}<span>frei</span></button>`).join('')}</div></div>`;
+    // Umbauen steht am Ende der Karte, nicht im festen Fuß – am Handy bleibt so Platz für den Inhalt
+    const umbauen = `<div class="abschnitt"><h4>Umbauen</h4><div class="schalter-reihe" style="margin: 0"><button class="knopf zweit klein js-versetzen">${ic('move')}Versetzen</button><button class="knopf zweit klein js-abreissen" data-bau="${b.id}">${ic('trash-2')}Abreißen</button></div></div>`;
+    return { zurueck: f.name, titel: BAU_NAMEN[b.art], chips, rumpf: erzeugt + anbauten + brett + umbauen, fuss: '' };
+  }
   dorfTeile() {
     const d = this.dorf, st = DORF_STUFEN[d.stufe - 1], next = DORF_STUFEN[d.stufe], L = this.lager;
     const voll = d.bewohner >= st.plaetze, mangel = d.zustand === 'mangel';
-    const chips = `<span class="chip">${ic(st.icon)}Stufe ${d.stufe} von 4</span><span class="chip">${ic('flame')}Lichtung</span>`;
+    const chips = `<span class="chip">${ic(st.icon)}Stufe ${d.stufe}/4</span><span class="chip">${ic('flame')}Lichtung</span>`;
     let rumpf = `<div class="stufen dorf">${DORF_STUFEN.map((s, i) => `<span class="stufe${i < d.stufe - 1 ? ' fertig' : i === d.stufe - 1 ? ' jetzt' : ''}"><i></i>${s.name}</span>`).join('')}</div>`;
-    const leute = SIEDLER.slice(0, Math.min(4, d.bewohner)).map(s => `<span class="person" style="--p: ${s.farbe}">${portrait(s)}${s.name}<small>${s.id === 'ole' ? 'trägt' : s.beruf}</small></span>`).join('')
+    // Bewohner antippen: die Figur leuchtet in der Welt auf, ihr Etikett öffnet sich
+    const leute = SIEDLER.slice(0, Math.min(4, d.bewohner)).map(s => `<button class="person" style="--p: ${s.farbe}" data-ding="figur:${s.id}">${portrait(s)}${s.name}<small>${s.id === 'ole' ? 'trägt' : s.beruf}</small></button>`).join('')
       + [...Array(Math.max(0, Math.min(4, st.plaetze) - d.bewohner))].map(() => `<span class="person frei"><span class="portrait"></span>frei</span>`).join('');
-    rumpf += `<div class="abschnitt"><h4>Bewohner · ${d.bewohner} von ${st.plaetze}</h4><div class="leute">${leute}</div></div>`;
+    rumpf += `<div class="abschnitt"><h4>Bewohner · ${d.bewohner}/${st.plaetze}</h4><div class="leute">${leute}</div></div>`;
     const bedarf = DORF_STUFEN.slice(0, d.stufe).flatMap(s => s.bedarf).map(([w, n, name]) => {
       const v = L[w] || 0, h = v / n, knapp = v === 0;
-      return `<div class="ware">${marke(w)}<span class="name">${name || ARTEN[w].name}<small>${n} je Stunde</small></span>
+      return `<div class="ware">${marke(w)}<span class="name">${name || ARTEN[w].name}<small>${n}/h</small></span>
         <span class="zahl">${knapp ? `<small class="warn" style="color: var(--warnung); font-weight: 800">fehlt</small>` : `<small>reicht</small> ${dauer(h)}`}</span></div>`;
     }).join('');
-    rumpf += `<div class="abschnitt"><h4>Bedarf · laufend aus dem Lager</h4><div class="waren">${bedarf}</div></div>`;
+    rumpf += `<div class="abschnitt"><h4>Bedarf</h4><div class="waren">${bedarf}</div></div>`;
     rumpf += `<div class="abschnitt"><h4>Zuzug</h4>${mangel
-      ? `<div class="zeile warn">${ic('pause')}<span>Das Wachstum ruht, bis wieder Beeren da sind<small>Niemand hungert, niemand zieht aus.</small></span></div>`
-      : voll ? `<div class="zeile gut">${ic('circle-check')}<span>${gross(st.der)} ${st.name} ist voll und versorgt<small>Mehr Platz gibt der Ausbau.</small></span></div>`
-      : `<div class="zeile">${ic('door-open')}<span>Nächster Siedler in etwa 2 Spieltagen<small>Es ist Platz, und der Bedarf ist gedeckt.</small></span></div>`}</div>`;
+      ? `<div class="zeile warn">${ic('pause')}<span>Ruht · Beeren fehlen</span></div>`
+      : voll ? `<div class="zeile gut">${ic('circle-check')}<span>Voll</span></div>`
+      : `<div class="zeile">${ic('door-open')}<span>Nächster Siedler<small>in 2 Spieltagen</small></span></div>`}</div>`;
     let fuss;
     if (d.ausbau) {
       rumpf += this.baustelleHtml(d.ausbau, `Ausbau ${zum(next)}`);
-      fuss = `<button class="knopf haupt js-vorb">${ic('backpack')}Tagwerk vorbereiten</button><span class="hinweis">Der Ausbau läuft – Ole trägt das Material.</span>`;
+      fuss = `<button class="knopf haupt js-vorb">${ic('backpack')}Tagwerk vorbereiten</button>`;
     } else if (next) {
-      const fehlt = Object.entries(next.kosten).filter(([w, n]) => (L[w] || 0) < n);
       rumpf += `<div class="abschnitt"><h4>Nächste Stufe · ${next.name}</h4>
-        <div class="zeile">${ic('users')}<span>${next.plaetze} Plätze statt ${st.plaetze}</span></div>
-        <div class="zeile">${marke(next.bedarf[0][0])}<span>Neuer Wunsch: ${next.bedarf[0][2] || ARTEN[next.bedarf[0][0]].name}<small>${next.bedarf[0][1]} je Stunde, laufend</small></span></div>
-        <div class="zeile">${ic('sparkles')}<span>Neu auf dem Brett: ${next.neu}</span></div>
-        <div class="zeile">${ic('hammer')}<span>${kostenHtml(next.kosten)}<small>${fehlt.length ? `Im Lager sind erst ${fehlt.map(([w]) => `${L[w]} ${ARTEN[w].name}`).join(' und ')} – die Baustelle wartet dann auf den Rest.` : 'Alles im Lager.'}</small></span></div></div>`;
+        <div class="zeile">${ic('users')}<span>Plätze</span><span class="wert">${next.plaetze}</span></div>
+        <div class="zeile">${marke(next.bedarf[0][0])}<span>${next.bedarf[0][2] || ARTEN[next.bedarf[0][0]].name}</span><span class="wert">${next.bedarf[0][1]}/h</span></div>
+        <div class="zeile">${ic('sparkles')}<span>Brett: ${next.neu}</span></div>
+        <div class="zeile">${ic('hammer')}<span class="kosten">${Object.entries(next.kosten).map(([w, n]) => `<span class="${(L[w] || 0) < n ? 'fehlt' : ''}">${marke(w, 's')}${Math.min(L[w] || 0, n)}/${n}</span>`).join('')}</span></div></div>`;
       fuss = voll && !mangel
         ? `<button class="knopf haupt js-ausbau">${ic(next.icon)}${gross(zum(next))} ausbauen</button><button class="knopf zweit js-vorb">${ic('backpack')}Tagwerk vorbereiten</button>`
-        : `<button class="knopf haupt js-vorb">${ic('backpack')}Tagwerk vorbereiten</button><span class="hinweis">Ausbauen geht, wenn ${st.der} ${st.name} voll und versorgt ist.</span>`;
+        : `<button class="knopf haupt js-vorb">${ic('backpack')}Tagwerk vorbereiten</button><button class="knopf zweit" disabled>${ic('lock')}${gross(zum(next))} ausbauen</button>`;
     }
-    rumpf += `<div class="abschnitt"><h4>Bauplätze der Lichtung · ${this.bautenIn('lichtung').length} von 4</h4>${this.plaetzeHtml('lichtung')}</div>`;
+    rumpf += `<div class="abschnitt"><h4>Bauplätze · ${this.bautenIn('lichtung').length}/4</h4>${this.plaetzeHtml('lichtung')}</div>`;
     return { titel: st.name, chips, rumpf, fuss };
   }
   lagerTeile() {
@@ -1841,45 +2106,41 @@ class Spiel {
     const zeile = w => {
       const v = L[w], r = rate[w], vor = this.vorgemerkt(w), frei = Math.max(0, v - vor);
       let text, cls = '';
-      if (r === undefined) text = 'nur aus dem Tagwerk';
-      else if (v >= 60 && r > 0) { text = w === 'holz' ? 'voll – der Holzfäller ruht' : 'voll'; cls = 'warn'; }
-      else if (v === 0 && r < 0) { text = 'fehlt – das Wachstum ruht'; cls = 'warn'; }
-      else if (r > 0) text = `+${r} je Stunde · voll in ${dauer((60 - v) / r)}`;
-      else { text = `${r} je Stunde · reicht noch ${dauer(v / -r)}`; cls = v / -r < 1.5 ? 'warn' : ''; }
+      if (r === undefined) text = 'Tagwerk';
+      else if (v >= 60 && r > 0) { text = 'voll'; cls = 'warn'; }
+      else if (v === 0 && r < 0) { text = 'fehlt'; cls = 'warn'; }
+      else if (r > 0) text = `+${r}/h · voll in ${dauer((60 - v) / r)}`;
+      else { text = `−${-r}/h · reicht ${dauer(v / -r)}`; cls = v / -r < 1.5 ? 'warn' : ''; }
       if (vor) text += ` · ${vor} vorgemerkt`;
-      return `<button class="ware" data-ware="${w}" title="In der Welt zeigen">${marke(w)}<span class="name">${ARTEN[w].name}<small class="${cls}">${text}</small></span>
+      return `<button class="ware" data-ware="${w}">${marke(w)}<span class="name">${ARTEN[w].name}<small class="${cls}">${text}</small></span>
         <span class="zahl">${v}<small>/60</small></span><span class="balken${v === 0 ? ' leer' : v >= 60 ? ' voll' : ''}"><b style="width: ${frei / 60 * 100}%"></b><b class="vor" style="width: ${Math.min(v, vor) / 60 * 100}%"></b></span></button>`;
     };
     const auftrag = this.traegerAuftrag(), ole = SIEDLER.find(s => s.id === 'ole');
-    const was = !auftrag ? ['Ole hat gerade nichts zu tragen', 'Das Holz ist voll, die Baustellen sind fertig.']
-      : auftrag.ziel ? [`Ole bringt ${this.ladungText(auftrag.ziel)} ${auftrag.ziel.id === 'dorf' ? 'zum Ausbau des Dorfs' : `zum ${BAU_NAMEN[auftrag.ziel.art]}`}`, 'Danach holt er Holz im Nordwald.']
-      : ['Ole holt Holz im Nordwald', this.baustellen().length ? 'Die Baustelle wartet auf Bretter.' : 'Fünf Stück je Gang.'];
+    const ziel = auftrag?.ziel, zielName = ziel && (ziel.id === 'dorf' ? 'Ausbau Dorf' : `${BAU_NAMEN[ziel.art]} · ${FLUR[this.flurDerWabe(ziel.wabe)].name}`);
+    const was = !auftrag ? ['Ole wartet', 'am Lager'] : ziel ? [`Ole bringt ${this.ladungText(ziel)}`, zielName] : ['Ole holt Holz', 'Nordwald'];
     const hz = this.holzfaellerZustand();
-    const faecher = [
-      hz ? `<div class="zeile ${hz[0] === 'hourglass' ? 'warn' : ''}">${ic(hz[0])}<span>Holzfäller · Nordwald<small>${hz[0] === 'pause' ? 'Ruht – im Lager ist kein Platz für Holz.' : 'Fach 6 von 6 – wartet, bis Ole kommt.'}</small></span></div>`
-         : `<div class="zeile">${ic('axe')}<span>Holzfäller · Nordwald<small>Fach 3 von 6</small></span></div>`,
-      `<div class="zeile gut">${ic('hammer')}<span>Sägebock · Anbau<small>Braucht keinen Träger – das Holz geht direkt hinüber.</small></span></div>`,
-    ].join('');
-    const rumpf = `<div class="abschnitt"><h4>Waren · antippen zeigt sie in der Welt</h4><div class="waren">${['holz', 'bretter', 'fisch', 'beeren', 'kraeuter', 'brot'].map(zeile).join('')}</div></div>
-      <div class="abschnitt"><h4>Träger · 1 von 1</h4><div class="zeile"><span style="--p: ${ole.farbe}">${portrait(ole)}</span><span>${was[0]}<small>${was[1]}</small></span></div>
-        <p class="text" style="font-size: 13px">Ein zweiter Träger kommt mit dem Ausbau des Lagers.</p></div>
-      <div class="abschnitt"><h4>Fächer an den Gebäuden</h4>${faecher}</div>`;
-    const fuss = `<button class="knopf haupt js-lager-aus">${ic('warehouse')}Lager ausbauen</button><span class="hinweis">${kostenHtml({ bretter: 20, holz: 10 })} · 120 je Ware und ein zweiter Träger</span>`;
+    const faecher = this.bauten.some(b => b.art === 'holzfaeller')
+      ? `<div class="abschnitt"><h4>Fächer</h4>${hz ? `<div class="zeile ${hz[0] === 'hourglass' ? 'warn' : ''}">${ic(hz[0])}<span>Holzfäller · Nordwald<small>${hz[0] === 'pause' ? 'ruht' : 'Fach 6/6 · wartet'}</small></span></div>`
+         : `<div class="zeile">${ic('axe')}<span>Holzfäller · Nordwald<small>Fach 3/6</small></span></div>`}</div>` : '';
+    const rumpf = `<div class="abschnitt"><h4>Waren</h4><div class="waren">${['holz', 'bretter', 'fisch', 'beeren', 'kraeuter', 'brot'].map(zeile).join('')}</div></div>
+      <div class="abschnitt"><h4>Träger · 1/1</h4><div class="zeile"><span style="--p: ${ole.farbe}">${portrait(ole)}</span><span>${was[0]}<small>${was[1]}</small></span></div></div>
+      ${faecher}`;
+    const fuss = `<button class="knopf haupt js-lager-aus">${ic('warehouse')}Lager ausbauen</button><span class="hinweis">${kostenHtml({ bretter: 20, holz: 10 })}</span>`;
     return { titel: 'Lager', chips: `<span class="chip">${ic('warehouse')}60 je Ware</span><span class="chip">${ic('users')}1 Träger</span>`, rumpf, fuss };
   }
   rueckkehr() {
     const u = this.el.querySelector('.ueberlage'), titel = 'Während du weg warst';
     u.innerHTML = `<div class="scrim"></div><div class="modal rueck" role="dialog" aria-modal="true" aria-label="${titel}">
       ${this.handy ? `<div class="bogen-kopf"><h3>${titel}</h3></div>` : `<div class="schild">${titel}</div>`}
-      <p class="rueck-zeit">${ic('sunrise')}3 Stunden · inzwischen Sommer, Tag 4</p>
+      <p class="rueck-zeit">${ic('sunrise')}3 h · Sommer, Tag 4</p>
       <div class="folgen">
-        <div class="zeile gut">${ic('circle-check')}<span>Der Fischer am Ostufer ist fertig<small>Ole hat das Material gebracht. Seitdem 20 Fisch je Stunde.</small></span></div>
-        <div class="zeile">${marke('holz')}<span>Holz seit 1 h 30 min voll<small>Der Holzfäller ruht, bis wieder Platz ist.</small></span><span class="wert">60</span></div>
-        <div class="zeile">${marke('fisch')}<span>54 gefangen, 45 gegessen</span><span class="wert">55</span></div>
-        <div class="zeile warn">${marke('beeren')}<span>Beeren seit 1 h alle<small>Das Wachstum ruht – niemand hungert, niemand zieht aus.</small></span><span class="wert">0</span></div>
-        <div class="zeile">${ic('flame')}<span>Feuer und Fackel brannten jede Nacht<small>30 Holz verbrannt</small></span></div>
+        <div class="zeile gut">${ic('circle-check')}<span>Fischer fertig<small>Ostufer · 20 Fisch/h</small></span></div>
+        <div class="zeile">${marke('holz')}<span>Holz voll<small>seit 1 h 30 min</small></span><span class="wert">60</span></div>
+        <div class="zeile">${marke('fisch')}<span>Fisch<small>+54 · −45</small></span><span class="wert">55</span></div>
+        <div class="zeile warn">${marke('beeren')}<span>Beeren alle<small>seit 1 h · Zuzug ruht</small></span><span class="wert">0</span></div>
+        <div class="zeile">${ic('flame')}<span>Feuer und Fackel</span><span class="wert">−30 ${marke('holz', 's')}</span></div>
       </div>
-      <div class="vorschlag">${ic('lightbulb')}<span>Beeren gibt es im Wald – ein Tagwerk im Nordwald?</span><button class="knopf zweit klein js-rueck-tagwerk">${ic('backpack')}Vorbereiten</button></div>
+      <div class="vorschlag">${marke('beeren', 's')}<span>Tagwerk im Nordwald</span><button class="knopf zweit klein js-rueck-tagwerk">${ic('backpack')}Vorbereiten</button></div>
       <div class="rueck-fuss"><button class="knopf haupt js-rueck-zu">Zur Siedlung</button></div></div>`;
     u.getBoundingClientRect();
     u.classList.add('offen');
@@ -1893,20 +2154,71 @@ class Spiel {
       + `<button class="rund js-bau-aus" aria-label="Baumodus beenden" title="Baumodus beenden (Esc)">${ic('x')}</button>`;
     const f = FLUR[this.auswahl], voll = this.bautenIn(f.id).length >= this.plaetze(f.id);
     const moeglich = FLUREN.some(x => this.stand[x.id].stand === 'eigen' && this.eignung(x.id) !== null);
-    const text = moeglich ? `${BAU_NAMEN[this.bauart]} bauen · Flur wählen, dann Wabe` : `${BAU_NAMEN[this.bauart]} braucht eine ${FLUR_ARTEN[BAUARTEN[this.bauart].nur].name}-Flur – erst erkunden und abstecken`;
-    hinweis.innerHTML = `<span class="chip bau-hinweis" style="box-shadow: var(--schatten-k); border: 2px solid var(--rand); background: var(--perg)">${ic(BAU_ICON[this.bauart])}${text}</span>`;
+    // Nur wenn nirgends gebaut werden kann, steht unten ein Chip – sonst sagen die leuchtenden Fluren genug
+    hinweis.innerHTML = moeglich ? '' : `<span class="chip bau-hinweis" style="box-shadow: var(--schatten-k); border: 2px solid var(--rand); background: var(--perg)">${ic('lock')}Keine ${FLUR_ARTEN[BAUARTEN[this.bauart].nur].name}-Flur</span>`;
     if (!this.wahlWabe || voll) {
-      et.innerHTML = voll && this.stand[f.id].stand === 'eigen' ? this.etikettHtml(WELT.fluren[f.id].mitte, `<b>Voll</b><span>${f.name}: alle ${this.plaetze(f.id)} Plätze belegt. Erschließen gibt einen vierten.</span>`) : '';
+      et.innerHTML = voll && this.stand[f.id].stand === 'eigen' ? this.etikettHtml(WELT.fluren[f.id].mitte, `<b>Voll</b><span>${this.plaetze(f.id)}/${this.plaetze(f.id)} Plätze</span>`) : '';
       return;
     }
     const w = WELT.waben.get(this.wahlWabe), e = this.eignung(f.id), grund = BAUARTEN[this.bauart].grund[f.art];
-    et.innerHTML = this.etikettHtml([w.x, w.z], `<b>+${e} %</b><span>${f.name}${grund ? ` · ${grund}` : ''} · Platz ${this.bautenIn(f.id).length + 1} von ${this.plaetze(f.id)}</span>
-      ${kostenHtml(BAUARTEN[this.bauart].kosten)}<span>Ole trägt es hin · etwa ½ Spieltag</span>
+    et.innerHTML = this.etikettHtml([w.x, w.z], `<b>+${e} %</b><span>${grund ? `${grund} · ` : ''}Platz ${this.bautenIn(f.id).length + 1}/${this.plaetze(f.id)}</span>
+      ${kostenHtml(BAUARTEN[this.bauart].kosten)}
       <button class="knopf haupt klein js-hier">${ic('hammer')}Hier bauen</button>`);
   }
   etikettHtml([x, z], inhalt) {
     const p = this.k.P([x, 1.0, z]), unten = p[1] < (this.handy ? 300 : 270);
     return `<div class="etikett${unten ? ' unten' : ''}" style="left: ${fx(Math.max(118, Math.min(this.w - 118, p[0])))}px; top: ${fx(unten ? this.k.P([x, 0, z])[1] + 8 : p[1])}px">${inhalt}</div>`;
+  }
+
+  // --- Etikett über Figuren, Lagerfeuer und Fackel: keine eigene Karte ---
+  figurText(s) {
+    const tag = this.uhr === 'tag';
+    if (s.id === 'ole') {
+      const a = this.traegerAuftrag();
+      const was = !a ? 'wartet am Lager'
+        : a.ziel ? `${this.ladungText(a.ziel)} → ${a.ziel.id === 'dorf' ? 'Dorf' : BAU_NAMEN[a.ziel.art]}`
+        : 'holt Holz · Nordwald';
+      return ['Ole <small>· Träger</small>', was];
+    }
+    const arbeit = s.id === 'ida' ? this.bauten.some(b => b.art === 'holzfaeller') : this.bauten.some(b => b.art === 'sammler' && !b.baustelle);
+    const was = !tag || s.id === 'mara' ? 'am Feuer'
+      : !arbeit ? 'ohne Arbeit'
+      : s.id === 'ida' ? 'Holzfäller · Nordwald' : 'Sammlerhütte';
+    return [`${s.name} <small>· ${s.beruf}</small>`, was];
+  }
+  zeichneDingEtikett() {
+    const box = this.el.querySelector('.js-ding-etikett'), e = this.etikett;
+    if (!box) return;
+    if (!e || this.bauModus) { box.innerHTML = ''; return; }
+    let bild = `<span class="ding-ic">${ic('flame')}</span>`, kopf, text;
+    if (e.typ === 'figur') { const s = SIEDLER.find(x => x.id === e.id); bild = `<span style="--p: ${s.farbe}">${portrait(s)}</span>`; [kopf, text] = this.figurText(s); }
+    else if (e.typ === 'feuer') { kopf = 'Lagerfeuer <small>· Lichtung</small>'; text = `${kostenHtml({ holz: 2 })} je Nacht`; }
+    else { const f = FLUR[e.id]; kopf = `Fackel <small>· ${f.name}</small>`; text = `${kostenHtml({ holz: 1 })} je Nacht`; }
+    box.innerHTML = `<div class="etikett wer" role="status">${bild}<b>${kopf}</b><span>${text}</span></div>`;
+    this.etikettSetzen();
+    // Läuft die Figur, läuft das Etikett mit
+    if (e.typ === 'figur' && !this.folgt) {
+      this.folgt = true;
+      const lauf = () => {
+        if (this.etikett?.typ !== 'figur' || !this.el.querySelector('.js-ding-etikett .etikett')) { this.folgt = false; return; }
+        this.etikettSetzen();
+        requestAnimationFrame(lauf);
+      };
+      requestAnimationFrame(lauf);
+    }
+  }
+  etikettSetzen() {
+    const et = this.el.querySelector('.js-ding-etikett .etikett'), e = this.etikett;
+    if (!et || !e) return;
+    const t = this.svg.querySelector(`.treffer [data-ding="${e.typ}:${e.id}"]`);
+    if (!t) { et.hidden = true; return; }
+    const r = t.getBoundingClientRect(), g = this.el.getBoundingClientRect(), m = g.width / this.el.offsetWidth || 1;
+    const x = (r.left + r.width / 2 - g.left) / m, oben = (r.top - g.top) / m, unten = (r.bottom - g.top) / m;
+    const drunter = oben < 200, rechts = this.handy ? this.w - 110 : this.w - 356 - 130;
+    et.hidden = false;
+    et.classList.toggle('unten', drunter);
+    et.style.left = fx(Math.max(110, Math.min(rechts, x))) + 'px';
+    et.style.top = fx(drunter ? unten - 6 : oben + 6) + 'px';
   }
 
   // --- Vorbereiten ---
@@ -1926,20 +2238,20 @@ class Spiel {
     const v = this.vb, f = FLUR[v.flur], nacht = this.uhr === 'nacht', daemm = this.uhr === 'daemmerung', dunkel = nacht ? 0.9 : daemm ? 0.4 : 0;
     const z = [];
     if (v.modus === 'erkunden') z.push(['minus', 'Unbekanntes Gelände', -0.3]);
-    else z.push(f.art === 'fels' ? ['minus', 'Fels ist ein Wagnis', -0.5] : f.art === 'wald' ? ['plus', `${f.name}: ruhiger Wald`, 0.3] : ['null', f.name, 0]);
-    const zeit = nacht ? 'Nacht und Nieselregen' : daemm ? 'Dämmerung und Nieselregen' : 'Herbst, Nieselregen';
-    z.push(['minus', `${zeit}: ${dunkel ? 'dunkel, ' : ''}${v.modus === 'erkunden' ? 'rutschige Wege' : 'Gestrüpp wuchert'}`, -0.5 - dunkel]);
-    if (v.modus === 'erkunden') z.push(v.trupp.has('mara') ? ['plus', 'Mara liest Fährten', 0.4] : ['null', 'Kundschafter ohne Fährtenkunde', 0]);
-    else z.push(v.trupp.has('ida') ? ['plus', 'Ida kennt den Wald', 0.4] : ['null', 'Niemand im Trupp kennt den Wald', 0]);
-    z.push(v.proviant === 'brot' ? ['plus', 'Brot macht satt', 0.2] : v.proviant === 'brei' ? ['null', 'Beerenbrei reicht', 0] : ['minus', 'Notgang ohne Proviant', -1.6]);
+    else z.push(f.art === 'fels' ? ['minus', 'Fels', -0.5] : f.art === 'wald' ? ['plus', 'Ruhiger Wald', 0.3] : ['null', f.name, 0]);
+    z.push(['minus', nacht ? 'Nacht, Nieselregen' : daemm ? 'Dämmerung, Nieselregen' : 'Nieselregen', -0.5 - dunkel]);
+    if (v.modus === 'erkunden') z.push(v.trupp.has('mara') ? ['plus', 'Mara: Fährten', 0.4] : ['null', 'Keine Fährtenkunde', 0]);
+    else z.push(v.trupp.has('ida') ? ['plus', 'Ida: Waldkunde', 0.4] : ['null', 'Keine Waldkunde', 0]);
+    z.push(v.proviant === 'brot' ? ['plus', 'Brot', 0.2] : v.proviant === 'brei' ? ['null', 'Beerenbrei', 0] : ['minus', 'Ohne Proviant', -1.6]);
     const deckt = []; let w = 0;
-    if (v.kiepe.includes('axt') && v.modus === 'tagwerk') { deckt.push('Axt gegen Gestrüpp'); w += 0.4; }
-    if (dunkel && v.kiepe.includes('laterne')) { deckt.push('Laterne gegen das Dunkel'); w += dunkel * 0.85; }
-    z.push(deckt.length ? ['plus', 'Kiepe: ' + deckt.join(', '), w] : ['null', 'Kiepe deckt nichts davon ab', 0]);
+    if (v.kiepe.includes('axt') && v.modus === 'tagwerk') { deckt.push('Axt'); w += 0.4; }
+    if (dunkel && v.kiepe.includes('laterne')) { deckt.push('Laterne'); w += dunkel * 0.85; }
+    if (deckt.length) z.push(['plus', deckt.join(', '), w]);
+    if (this.pech) z.push(['plus', 'Pechausgleich', 0.3]);
     return z;
   }
   aussichten() {
-    const wert = this.faktoren().reduce((s, f) => s + f[2], 0) + (this.pech ? 0.3 : 0);
+    const wert = this.faktoren().reduce((s, f) => s + f[2], 0);
     const e = BAENDER.map(b => Math.exp(b.basis + b.steigung * wert)), sum = e.reduce((a, b) => a + b);
     const p = e.map(v => Math.round(v / sum * 100));
     p[2] += 100 - p.reduce((a, b) => a + b);
@@ -1956,24 +2268,23 @@ class Spiel {
     const band = `<div class="abschnitt aussicht"><h4>Aussichten</h4><div class="band-huelle"><div class="band">${BAENDER.map((b, i) => `<i class="b-${b.id}" style="flex-grow: ${Math.max(p[i], 0.5)}">${p[i] >= 9 ? p[i] + ' %' : ''}</i>`).join('')}</div><span class="nadel"></span></div>
       <div class="legende">${BAENDER.map((b, i) => `<span><i class="b-${b.id}"></i>${b.name} ${p[i]} %</span>`).join('')}</div></div>`;
     const faktoren = `<div class="faktoren">${this.faktoren().map(([vz, text]) => `<div class="faktor"><span class="vz ${vz}">${vz === 'plus' ? '+' : vz === 'minus' ? '−' : '·'}</span><span>${text}</span></div>`).join('')}</div>
-      ${this.pech ? `<div class="vorb-notiz">${ic('sparkles')}Pechausgleich: Nach dem Missgeschick gestern stehen die Aussichten etwas besser.</div>` : ''}
-      ${v.trupp.has('ole') ? `<div class="vorb-notiz">${ic('hourglass')}Ole trägt sonst für das Lager – solange er mitgeht, wartet der Transport.</div>` : ''}
-      ${nacht && v.kiepe.includes('laterne') ? `<div class="vorb-notiz">${ic('sparkles')}Mit Laterne findet man nachts Seltenes – Leuchtpilze, Glühwürmchen.</div>` : ''}`;
+      ${v.trupp.has('ole') ? `<div class="vorb-notiz">${ic('hourglass')}Transport ruht</div>` : ''}
+      ${nacht && v.kiepe.includes('laterne') ? `<div class="vorb-notiz">${ic('sparkles')}Nachts: seltene Funde</div>` : ''}`;
     const notgang = v.proviant === 'ohne';
-    const trupp = `<div class="abschnitt"><h4>${erk ? 'Kundschafter · einer geht' : `Trupp · je Siedler 1 Proviant${notgang ? ' · Notgang: nur einer' : ''}`}</h4><div class="trupp-wahl">${SIEDLER.map(s => {
+    const trupp = `<div class="abschnitt"><h4>${erk ? 'Kundschafter' : `Trupp${notgang ? ' · nur einer' : ''}`}</h4><div class="trupp-wahl">${SIEDLER.map(s => {
       const an = v.trupp.has(s.id), gesperrt = !an && (erk || notgang) && v.trupp.size >= 1 && !erk;
       return `<button class="mitglied ${an ? '' : 'aus'}" style="--p: ${s.farbe}" data-siedler="${s.id}" aria-pressed="${an}" ${gesperrt ? 'disabled' : ''}>${portrait(s).replace('</span></span>', `</span>${an ? `<span class="abzeichen">${ic('check')}</span>` : ''}</span>`)}<span class="name">${s.name}</span><span class="beruf">${s.beruf}</span></button>`;
     }).join('')}</div></div>`;
     const n = Math.max(1, erk ? 2 : notgang ? 0 : v.trupp.size);
     const proviant = `<div class="abschnitt"><h4>Proviant</h4><div class="wahl-reihe">
-      ${[['brot', 'croissant', `Brot × ${n}`, erk ? 'Vorrat 9' : '6 Schritte je Siedler · Vorrat 9'], ['brei', 'soup', `Beerenbrei × ${n}`, erk ? 'Vorrat 14' : '5 Schritte · Vorrat 14'], ['ohne', 'triangle-alert', 'Ohne', 'Notgang']]
+      ${[['brot', 'croissant', `Brot × ${n}`, erk ? 'Vorrat 9' : '6 Schritte · Vorrat 9'], ['brei', 'soup', `Beerenbrei × ${n}`, erk ? 'Vorrat 14' : '5 Schritte · Vorrat 14'], ['ohne', 'triangle-alert', 'Ohne', '4 Schritte']]
         .filter(([id]) => !(erk && id === 'ohne')).map(([id, icon, name, klein]) => `<button class="wahl" data-proviant="${id}" aria-pressed="${v.proviant === id}">${rundIc(icon)}<span>${name}<small>${klein}</small></span></button>`).join('')}</div></div>`;
-    const faecher = [0, 1, 2].map(i => { const g = v.kiepe[i]; return g ? `<button class="fach voll" data-fach="${i}" title="${GEGENSTAENDE[g].name} – antippen zum Auspacken">${ic(GEGENSTAENDE[g].icon)}</button>` : `<button class="fach" disabled aria-label="Leerer Platz">${ic('plus')}</button>`; }).join('');
-    const kiepe = `<div class="abschnitt"><h4>Kiepe · 3 Plätze · jeder Gegenstand wirkt einmal</h4><div class="kiepe">${faecher}<span class="kiepe-text">${v.kiepe.length ? v.kiepe.map(g => GEGENSTAENDE[g].name).join(', ') : 'leer'}</span></div>
+    const faecher = [0, 1, 2].map(i => { const g = v.kiepe[i]; return g ? `<button class="fach voll" data-fach="${i}" title="${GEGENSTAENDE[g].name}">${ic(GEGENSTAENDE[g].icon)}</button>` : `<button class="fach" disabled aria-label="Leerer Platz">${ic('plus')}</button>`; }).join('');
+    const kiepe = `<div class="abschnitt"><h4>Kiepe · ${v.kiepe.length}/3</h4><div class="kiepe">${faecher}<span class="kiepe-text">${v.kiepe.length ? v.kiepe.map(g => GEGENSTAENDE[g].name).join(', ') : 'leer'}</span></div>
       <div class="gegenstaende">${Object.entries(GEGENSTAENDE).map(([id, g]) => { const rest = g.vorrat - v.kiepe.filter(x => x === id).length; return `<button class="ggst" data-ggst="${id}" ${rest <= 0 || v.kiepe.length >= 3 ? 'disabled' : ''} title="${g.wirkung}">${rundIc(g.icon)}<span>${g.name}<small>${g.vorrat ? `noch ${rest}` : 'beim Händler'}</small></span></button>`; }).join('')}</div></div>`;
     const wz = v.kiepe.filter(x => x === 'wegzehrung').length * 4;
-    const summe = erk ? `<span class="summe">${SIEDLER.find(s => v.trupp.has(s.id))?.name || '–'} geht · 2 ${v.proviant === 'brot' ? 'Brot' : 'Beerenbrei'}<small>1–3 Spieltage unterwegs</small></span>`
-      : `<span class="summe">${this.schritte()} Schritte${wz ? ` <small style="display: inline">+${wz} mit Wegzehrung</small>` : ''}<small>${notgang ? 'Notgang ohne Proviant' : `${v.trupp.size} ${v.proviant === 'brot' ? 'Brot' : 'Beerenbrei'}`}</small></span>`;
+    const summe = erk ? `<span class="summe">${SIEDLER.find(s => v.trupp.has(s.id))?.name || '–'} geht · 2 ${v.proviant === 'brot' ? 'Brot' : 'Beerenbrei'}<small>1–3 Spieltage</small></span>`
+      : `<span class="summe">${this.schritte()} Schritte${wz ? ` <small style="display: inline">+${wz} Wegzehrung</small>` : ''}<small>${notgang ? 'ohne Proviant' : `${v.trupp.size} ${v.proviant === 'brot' ? 'Brot' : 'Beerenbrei'}`}</small></span>`;
     const fuss = `<div class="vorb-fuss">${summe}${erk ? '' : `<button class="knopf zweit js-wie">${ic('undo-2')}Wie letztes Mal</button>`}
       <button class="knopf haupt js-los" ${v.trupp.size ? '' : 'disabled'}>${ic(erk ? 'binoculars' : 'dices')}${erk ? 'Losschicken' : 'Losziehen'}</button></div>`;
     const kopfSchliessen = `<button class="rund zu js-zu" aria-label="Schließen" title="Schließen">${ic('x')}</button>`;
@@ -2010,7 +2321,7 @@ class Spiel {
     const wer = [...this.vb.trupp][0];
     this.unterwegs = this.vb.flur; this.unterwegsWer = wer;
     this.vorbSchliessen();
-    this.toast('binoculars', `${SIEDLER.find(s => s.id === wer).name} ist unterwegs – zurück in etwa 2 Spieltagen. Der Wurf steht schon fest.`);
+    this.toast('binoculars', `${SIEDLER.find(s => s.id === wer).name} unterwegs · zurück in 2 Spieltagen`);
     this.zeichne();
   }
   losziehen() {
@@ -2039,12 +2350,11 @@ class Spiel {
     const schritte = Math.max(4, this.schritte() + vl.schritte);
     this.tw = { band: id, kiepe: [...v.kiepe], trupp: [...v.trupp], schritte, fund: !!fund };
     const folgen = `<div class="folgen">
-      <div class="zeile">${marke('gestruepp', 'm')}<span>${vl.belegt} ${vl.belegt === 1 ? 'Feld' : 'Felder'} Gestrüpp zu Beginn</span><span class="wert">${Math.round(vl.belegt / 49 * 100)} %</span></div>
+      <div class="zeile">${marke('gestruepp', 'm')}<span>Gestrüpp</span><span class="wert">${vl.belegt}</span></div>
       <div class="zeile">${ic('footprints')}<span>Schritte${vl.schritte ? ` (${vl.schritte > 0 ? '+' : ''}${vl.schritte})` : ''}</span><span class="wert">${schritte}</span></div>
-      ${fund ? `<div class="zeile gut">${ic(fund[0])}<span>Fund: ${fund[1]}<small>${fund[2]} – liegt als Kachel auf dem Brett</small></span></div>` : ''}
-      <div class="zeile">${ic('backpack')}<span>Kiepe: ${v.kiepe.length ? v.kiepe.map(g => GEGENSTAENDE[g].name).join(', ') : 'leer'}</span></div></div>`;
-    const inhalt = `<div class="verlauf">${this.handy ? `<span class="band-chip b-${id}">${b.name}</span>` : ''}<div class="satz">${vl.satz}</div>${folgen}
-      <span class="fest">${ic('lock', 'ic')} Das Ergebnis steht fest – neu laden würfelt nicht neu.</span>
+      ${fund ? `<div class="zeile gut">${ic(fund[0])}<span>${fund[1]}<small>${fund[2]}</small></span></div>` : ''}
+      <div class="zeile">${ic('backpack')}<span>${v.kiepe.length ? v.kiepe.map(g => GEGENSTAENDE[g].name).join(', ') : 'Kiepe leer'}</span></div></div>`;
+    const inhalt = `<div class="verlauf">${this.handy ? `<span class="band-chip b-${id}">${b.name}</span>` : ''}${folgen}
       <button class="knopf haupt js-zum-brett">Zum Brett</button></div>`;
     if (this.handy) this.modal.innerHTML = `<div class="bogen-kopf"><h3>Tagwerk ${FLUR[v.flur].ort}</h3></div><div class="bogen-rumpf">${inhalt}</div>`;
     else this.modal.innerHTML = `<div class="schild">${b.name}</div>${inhalt}`;
@@ -2057,7 +2367,7 @@ class Spiel {
     const kiepe = `<div class="kiepe-dock">${t.kiepe.map(g => `<button class="k-ggst js-k-ggst" data-g="${g}" title="${GEGENSTAENDE[g].wirkung}">${ic(GEGENSTAENDE[g].icon)}${GEGENSTAENDE[g].name}</button>`).join('')}</div>`;
     const trupp = t.trupp.map(id => SIEDLER.find(s => s.id === id));
     const lade = { ida: 0.55, jonas: 0.3, mara: 0.2, ole: 0.1 };
-    const blase = `<div class="blase"><div class="blase-inhalt">${marke('holz')}Holz × 4 · am Holzfäller doppelt · +14</div></div>`;
+    const blase = `<div class="blase"><div class="blase-inhalt">${marke('holz')}Holz × 4 · ${marke('bau', 's')}×2 · +14</div></div>`;
     const tagzeile = `<span class="tagzeile">${ic('cloud-drizzle')}Herbst · Nieselregen · <span class="band-chip b-${t.band}" style="padding: 1px 8px; font-size: 12px">${b.name}</span></span>`;
     if (!this.handy) return `${welt}<div class="tw">
       <header class="leiste"><div class="links"><button class="knopf zweit klein js-zurueck-siedlung">${ic('chevron-left')}Siedlung</button></div>
@@ -2065,7 +2375,7 @@ class Spiel {
         <div class="rechts"><button class="rund" aria-label="Letzte Kette zurücknehmen" title="Letzte Kette zurücknehmen">${ic('undo-2')}</button></div></header>
       <div class="tw-raster">
         <aside class="spalte"><div class="karte"><div class="medaille gross"><b>${t.schritte}</b><span>Schritte</span></div></div>
-          <div class="karte"><h3>Kiepe</h3>${kiepe}<p class="text" style="font-size: 13px; margin-top: 8px">Antippen, dann eine Wabe wählen. Jeder Gegenstand wirkt einmal.</p></div></aside>
+          <div class="karte"><h3>Kiepe</h3>${kiepe}</div></aside>
         <main class="mitte">${blase}<div class="brett-platz">${this.brettSvg()}</div></main>
         <aside class="spalte"><div class="karte"><h3>Trupp</h3><div class="liste">${trupp.map(s => `<button class="mitglied zeilig" style="--p: ${s.farbe}">${portrait(s, lade[s.id])}<span class="name">${s.name}</span><span class="beruf">${s.beruf}</span></button>`).join('')}</div></div>
           <button class="knopf zweit unten js-heim">${ic('house')}Heimkehren</button></aside>
