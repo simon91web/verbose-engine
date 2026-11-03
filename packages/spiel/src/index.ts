@@ -2,3 +2,8 @@ export * from './daten';
 export * from './geometrie';
 export * from './tagwerk';
 export * from './zufall';
+export * from './spieldaten';
+export * from './uhr';
+export * from './siedlung';
+export * from './aktionen';
+export * from './nachrechnen';
