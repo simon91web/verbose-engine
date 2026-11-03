@@ -105,6 +105,11 @@ Fiber, Platzhalter-Modelle).
   Prozentzahl auf der Flur. Innerhalb der Flur feine helle Umrisse für jede freie Wabe, Sonderwaben (Ufer, Fels)
   hervorgehoben; an der gewählten Stelle ein Etikett mit Gründen und „Hier bauen“. Der Prototyp zeigt noch die
   ältere Fassung mit Prozent je Wabe.
+- **Das Dorf wächst sichtbar:** Jede Stufe sieht anders aus – Weiler aus Holzhütten, dann mehr und größere Häuser,
+  Stein, ein Markt, eine Mauer. Das Dorf ist der deutlichste Fortschritt der Siedlung und soll von weitem lesbar sein.
+- **Transport ist sichtbar:** Träger tragen ihre Last (Stämme, Säcke) über die Wege, nachts mit Fackel; Baustellen
+  wachsen in vier Stufen (Pflöcke, Fundament, Gerüst, Dach); Boote kommen über den Fluss und legen am Steg an. Ein
+  kleines Zeichen über einem Gebäude zeigt, dass es ruht oder wartet.
 - Keine Monster, keine Kampfszenen – die Nacht wirkt durch Dunkel, Nebel und Kälte.
 
 ## Grafik: jetzt und später

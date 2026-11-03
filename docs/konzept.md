@@ -7,6 +7,7 @@ deinem eigenen Server (ein Docker-Container).
 
 - Mockup Spiel-Look: [`mockups/lichtung.html`](mockups/lichtung.html) – Tagwerk, Ertrag, Siedlung; Laptop und 390 px,
   Tag und Abend. Das Brett im Mockup ist spielbar.
+- Mockup MVP: [`mockups/fluren.html`](mockups/fluren.html) – Fluren, Dorf, Baustelle, Lager, Rückkehr, Tagwerk.
 - Mockup Codes: [`mockups/siedlung-code.html`](mockups/siedlung-code.html).
 - Prototyp der Welt: `apps/web/welt.html` (3D, Platzhalter).
 - Gestaltung: [`design.md`](design.md).
@@ -16,8 +17,8 @@ deinem eigenen Server (ein Docker-Container).
 Puzzle Craft 1 und 2 sind das Vorbild für das **Genre**: Ketten ziehen und mit dem Ertrag eine Siedlung aufbauen.
 Lichtung baut sie nicht nach – keine Namen, Grafiken, Kacheln, Gebäude, Werkzeuge oder Abläufe von dort. Von Northgard,
 Siedler, Frostpunk, Don't Starve und Dredge übernehmen wir einzelne Spielideen (Fluren mit Bauplätzen, Warenketten,
-Ereignisse mit Entscheidungen, Tag und Nacht), aber keine Namen, Grafiken oder Inhalte. Eigene Regeln, die das Spiel
-tragen:
+Träger und Baustellen, Ereignisse mit Entscheidungen, Tag und Nacht), aber keine Namen, Grafiken oder Inhalte. Eigene
+Regeln, die das Spiel tragen:
 
 - **Wabenbrett** statt Quadrate – sechs Nachbarn, andere Ketten.
 - **Ringe schließen** – was eine Kette umschließt, wird mitgeerntet. Nur so fängt man Tiere.
@@ -50,7 +51,7 @@ Tagwerke“.
 ## Zeit
 
 Das Spiel läuft in **beschleunigter Echtzeit**, damit sich die Siedlung bewegt: Siedler gehen morgens zur Arbeit und
-abends heim, die Fenster leuchten, die Wege leeren sich.
+abends heim, die Fenster leuchten, nachts sind nur noch Träger mit Fackeln unterwegs.
 
 - **Ein Spieltag dauert 8 Minuten.** Wie viel davon hell ist, hängt von der Jahreszeit ab und ändert sich von Tag zu
   Tag ein wenig:
@@ -66,9 +67,10 @@ abends heim, die Fenster leuchten, die Wege leeren sich.
 - **Jahreszeiten:** Frühling reift schneller, Sommer bringt öfter Sonne, Herbst mehr Nüsse und Pilze, Winter Frost und
   lange Nächte.
 - **Die Produktion rechnet mit dem Durchschnitt.** Die Nacht bringt Stimmung, Risiko und Gelegenheiten, hält die
-  Gebäude aber nicht an. So bleibt das Nachrechnen einfach.
-- **Abwesenheit:** Die Zeit läuft weiter, Gebäude produzieren, bis das Lager voll ist, und die Feuer werden aus dem
-  Lager versorgt. Ereignisse kommen nur, während man spielt.
+  Gebäude und Träger aber nicht an. So bleibt das Nachrechnen einfach.
+- **Abwesenheit:** Die Zeit läuft weiter. Gebäude produzieren, bis ihr Fach voll ist, Träger tragen, Baustellen
+  wachsen, Boote kommen an, die Siedler essen, und die Feuer werden aus dem Lager versorgt. Ereignisse kommen nur,
+  während man spielt.
 - **Wetter** hält ein bis drei Spieltage und wird einen Tag vorher angekündigt (Vorschlag). Wirkung auf dem Brett:
   siehe Tagwerk › Wetter.
 
@@ -79,10 +81,10 @@ Jede Flur hat eine Art und einen Bonus.
 
 | Flur | Bonus | Besonderheit |
 |---|---|---|
-| Lichtung (Start) | Dorfplatz, Lager | 4 Bauplätze statt 3 |
+| Lichtung (Start) | Dorf, Lager | 4 Bauplätze statt 3 |
 | Wald | Holzfäller, Köhler | Bäume weichen nur, wo gebaut wird |
-| Ufer | Fischer, Mühle | Wassergebäude nur auf Uferwaben |
-| Wiese | Felder, Hütten | – |
+| Ufer | Fischer, Mühle, Steg | Wassergebäude nur auf Uferwaben |
+| Wiese | Felder, Sammler | – |
 | Fels | Steinbruch, Erzgrube | Felsgebäude nur auf Felswaben |
 | Selten: Quelle, alter Hain, Moor … | eigene Boni | – |
 
@@ -94,7 +96,10 @@ Jede Flur hat eine Art und einen Bonus.
   kommt aus der Regel, nicht aus dem Platz – die Fluren bleiben zum größten Teil Natur.
 - **Innerhalb der Flur ist Bauen frei** auf einem unsichtbaren Wabenraster, der Ort ist fast egal. Ausnahmen: Ufer- und
   Felsgebäude, und Anbauten brauchen freie Nachbarwaben. Gebäude stehen leicht verdreht, Wege laufen als Kurven.
-- **Größe:** Gebäude belegen eine Wabe, Dorfplatz und Lager drei.
+- **Größe:** Gebäude belegen eine Wabe, das Lager drei. Das Dorf liegt in der Mitte der Lichtung, wächst mit seinen
+  Stufen und belegt keinen Bauplatz.
+- **Gebaut wird auf einer Baustelle:** Man platziert, die Träger bringen das Material, das Haus wächst (siehe Lager,
+  Träger und Baustellen).
 - **Baumodus:** Die Fluren leuchten von blass bis golden, je nachdem, wie gut sie zum gewählten Gebäude passen; die
   Prozentzahl steht auf der Flur. Innerhalb der Flur zeigen feine Umrisse die freien Waben, Sonderwaben sind
   hervorgehoben.
@@ -115,21 +120,82 @@ Jede Flur hat eine Art und einen Bonus.
 | Holz → Holzkohle | Holzfäller mit Anbau Köhlermeiler | Brennstoff für lange Nächte, Schmiede |
 | Korn → Mehl → Brot | Feld; Mühle am Ufer mit Anbau Backofen | Wünsche, besserer Proviant |
 | Fisch → Räucherfisch | Fischer mit Anbau Räucherkate | haltbarer Proviant für Vorhaben und Aufbruch |
-| Flachs → Leinen | Feld; Hütte mit Anbau Webstuhl | Wünsche |
+| Flachs → Leinen | Feld mit Anbau Webstuhl | Wünsche |
 | Erz + Holzkohle → Eisen → Werkzeug | Erzgrube am Fels; Schmiede | Axt und Sichel für die Kiepe |
 
-- **Lager:** ein Lagerhaus am Dorfplatz mit Platz je Ware, ausbaubar. Gebäude produzieren, bis ihr Fach voll ist. Die
-  Waren stehen als Stapel sichtbar vor dem Lager. **Träger** laufen die Wege ab – nur zur Anschauung, die Entfernung
-  zählt nicht. Echter Transport müsste beim Nachrechnen jeden Gang nachspielen.
 - **Händler:** Alle paar Spieltage legt ein Boot an, mit drei Aufträgen („8 Bretter, 4 Leinen → 30 Taler und
-  Bauplan“). Taler kaufen Ausrüstung, Saatgut und Baupläne und haben immer eine Verwendung. Ein verpasster Auftrag
-  verfällt ohne Strafe.
+  Bauplan“). Man sieht es schon auf dem Fluss kommen. Taler kaufen Ausrüstung, Saatgut und Baupläne und haben immer
+  eine Verwendung. Ein verpasster Auftrag verfällt ohne Strafe.
 
-## Bevölkerungsstufen und Beschlüsse
+## Lager, Träger und Baustellen
 
-- **Stufen mit zwei bis vier Wünschen** treiben die Siedlung an und ersetzen die Kapitel der früheren Chronik. Wünsche
-  verlangen Waren aus den Ketten (z. B. Brot, Leinen). Unerfüllte Wünsche halten nur das Wachstum an.
-- **Neue Siedler** ziehen ein, wenn eine Hütte frei ist und die Stufe es erlaubt.
+Entscheidung 02.11.2026: **Waren werden wirklich getragen**, aber nicht gnadenlos. Die Rechnung spielt nicht jeden
+Schritt nach, sondern jeden Gang – mit Abgang und Ankunft (siehe Technik › Nachrechnen).
+
+### Lager
+
+- **Ein Lagerhaus am Dorf** mit einem Fach je Ware (Vorschlag): anfangs 60, ausgebaut 120 und 200. Spezialspeicher
+  sind **Anbauten am Lager** ohne eigenen Bauplatz, z. B. Kornspeicher (Nahrung) und Holzplatz (Baustoffe).
+- **Die Größe des Lagers bestimmt den Rhythmus:** Anfangs ist ein Fach nach 2–4 Stunden voll, ausgebaut hält es eine
+  Nacht.
+- **Jedes Gebäude hat ein kleines Fach** für das, was es macht, Werkstätten eines für ihre Zutaten. Ist das Fach voll
+  und kommt kein Träger, ruht das Gebäude; fehlt eine Zutat, wartet es. Nichts geht verloren.
+- **Die Waren stehen als Stapel vor dem Lager** und wachsen mit dem Bestand.
+- **Jede Ware liegt an einem Ort:** im Fach eines Gebäudes, auf einem Träger, im Lager, auf einer Baustelle oder am
+  Steg.
+
+### Träger
+
+- **Wenige Träger, große Last** (Vorschlag): Träger sind Siedler aus dem Dorf, die am Lagerhaus arbeiten – anfangs
+  einer, mit jedem Ausbau einer mehr, höchstens drei. Jeder trägt einen Korb mit 5 Stück, die Forschung „Schubkarre“
+  verdoppelt das. Bei so wenigen hat jeder einen Namen („Ida trägt Bretter zur Baustelle“).
+- **Ziel fürs Balancing:** Ein Träger reicht für die Lichtung und eine Nachbarflur. Ab der dritten oder vierten Flur
+  oder bei zwei Baustellen zugleich stockt es spürbar – dann entscheidet man: Lager ausbauen, Weg ausbauen oder
+  Anbauten statt eigener Gebäude. Der Engpass löst eine Entscheidung aus, er ist kein Dauerzustand.
+- **Ein Gang** hat Ware, Menge, Start, Ziel, Abgang und Ankunft. Die Dauer folgt aus der Länge des Wegs und dessen
+  Ausbau.
+- **Feste Reihenfolge:** zuerst Baustellen (in der Reihenfolge des Platzierens; eine lässt sich mit einem Tipp
+  vorziehen), dann Zutaten für Werkstätten, dann volle Fächer abholen.
+- **Die Entfernung zählt, aber grob:** Eine ferne Flur heißt längere Gänge. Dagegen helfen mehr Träger, ein
+  ausgebauter Weg in der Flur (Pfad → Weg → Straße) und **Anbauten: Sie brauchen keinen Transport**, die Ware geht
+  direkt hinüber (Mehl in den Backofen). Das macht Anbauten noch wertvoller.
+- **Nicht gnadenlos:** Kein Stau, Wege haben keine Kapazität. Kein Gang geht verloren. Jedes wartende Gebäude sagt,
+  worauf es wartet („wartet auf Träger“, „wartet auf Korn“). Nachts tragen die Träger mit Fackeln weiter.
+- **Den Ertrag eines Tagwerks bringt der Trupp selbst mit**, er fliegt wie bisher sichtbar ins Lager. Liegt in der
+  Flur eine Baustelle, geht passendes Material direkt dorthin.
+
+### Baustellen
+
+- **Erst platzieren, dann bauen.** Nach „Hier bauen“ stehen sofort Pflöcke und Band, der erste Träger läuft gleich
+  los.
+- **Material wird beim Platzieren vorgemerkt** („Bretter 42 · 8 verplant“), damit es nicht anderswo verbraucht wird.
+  Fehlt etwas, darf man trotzdem platzieren; die Baustelle zeigt, worauf sie wartet.
+- **Sichtbare Stufen:** Pflöcke → Fundament → Gerüst → Dach, je ein Viertel des Materials. Gebaut wird, während das
+  Material kommt; nach der letzten Ladung bleibt nur eine kurze Restarbeit.
+- **Dauer:** kleines Gebäude (Fischer, Sammler) etwa ein halber Spieltag, Werkstatt einer, Großes (Ausbau von Dorf
+  oder Lager, Brücke) zwei bis drei. Den
+  größten Teil macht das Tragen aus – nahe Baustellen sind schneller fertig.
+- **Keine Wartezeit im schlechten Sinn:** Man sieht, was passiert, und kann es beschleunigen (näher bauen, mehr
+  Träger, Tagwerk in der Flur). Keine Uhr, die man abwartet oder freikauft.
+- **Rückgängig statt Rückfrage:** Abbrechen geht jederzeit, die gelieferte Ware wird zurückgetragen.
+
+## Das Dorf: Stufen und Beschlüsse
+
+- **Ein Dorf, das als Ganzes wächst** (Entscheidung 02.11.2026): Gewohnt wird nicht in einzelnen Hütten auf
+  Bauplätzen, sondern im Dorf auf der Lichtung. Es wächst in Stufen – Weiler → Dorf → Marktflecken → Stadt –, und jede
+  Stufe sieht anders aus: mehr Häuser, dann Stein, ein Markt, eine Mauer. Wohnen kostet so keine Bauplätze in den
+  Fluren, und man sieht den Fortschritt auf einen Blick. Die Stufen des Dorfs sind die Bevölkerungsstufen.
+- **Zuzug:** Alle paar Spieltage zieht ein Siedler ein, wenn im Dorf Platz frei ist und der Bedarf gedeckt ist.
+- **Ausbau:** Ist das Dorf voll und der Bedarf gedeckt, kann man es ausbauen – eine Baustelle am Dorf. Die neue Stufe
+  bringt Platz und zwei bis vier neue Wünsche.
+- **Klein bleiben** (Vorschlag): anfangs 4 Siedler, am Ende einer Siedlung 15–20.
+- **Wünsche** verlangen Waren aus den Ketten (z. B. Fisch und Beeren, später Brot und Leinen) und ersetzen die Kapitel
+  der früheren Chronik.
+- **Laufender Verbrauch** (Entscheidung 02.11.2026): Wünsche sind kein einmaliges Abliefern, die Siedler verbrauchen
+  die Waren je Spieltag – direkt aus dem Lager, ins Dorf wird nichts getragen. Die Wünsche bleiben als Bedarf, jede
+  Stufe bringt neue dazu.
+- **Mangel hält nur das Wachstum an.** Niemand hungert, niemand zieht aus, die Stufe bleibt. Die Lager-Ansicht zeigt,
+  wie lange eine Ware noch reicht.
 - **Mit dem Minimum beginnen:** Die erste Stufe kennt nur Ketten und Gestrüpp. Reife, Ringe, Tiere und Fähigkeiten
   kommen in den ersten Stufen nacheinander dazu.
 - **Beschlüsse:** Jeder Aufstieg bietet außerdem **zwei Regeln zur Wahl**, die für diese Siedlung bleiben (z. B. „Ringe
@@ -138,8 +204,8 @@ Jede Flur hat eine Art und einen Bonus.
 ## Tagwerk: das Puzzle
 
 **Rolle:** ein gezielter Schub. Die Gebäude liefern gleichmäßig, aber selten genau das, was gerade fehlt; mit dem
-Tagwerk holt man sich den Engpass. Rhythmus eines Besuchs: Lager voll → zurückkommen → einsammeln und bauen → ein, zwei
-Tagwerke für das Fehlende → weglegen (5–10 Minuten).
+Tagwerk holt man sich den Engpass. Rhythmus eines Besuchs: Lager voll → zurückkommen → nachsehen und Baustellen setzen →
+ein, zwei Tagwerke für das Fehlende → weglegen (5–10 Minuten).
 
 - **Ein Tagwerk spielt in einer Flur.** Die Kameraeinstellung fährt hinein, das Brett legt sich über die Welt. Die
   Kachelmischung folgt der Art der Flur.
@@ -248,7 +314,7 @@ Siedler sammeln Erfahrung (Stufe 2: schneller geladen, Stufe 3: +1 Schritt).
 | Sichel | erntet eine ganze Linie entlang einer Wabenachse | Schmiede |
 | Stiefel | aller Schlamm auf dem Brett wird zu Lehm | Händler |
 | Laterne | hebt Nebel und Dunkelheit auf dem ganzen Brett auf | Wachs vom Imker |
-| Saatbeutel | alle Kacheln in einem Umkreis +1 Reife | Garten-Anbau an der Hütte |
+| Saatbeutel | alle Kacheln in einem Umkreis +1 Reife | Gärten im Dorf |
 | Lockfutter | alle Tiere springen in die Mitte | Korn |
 | Wegzehrung | +4 Schritte | Backofen |
 
@@ -286,8 +352,8 @@ Beispiele:
 
 - **Erkenntnis** gibt es für neu entdeckte Fluren, erfüllte Wünsche und Aufstiege, Fund-Kacheln auf dem Brett und
   später stetig aus einer Schreibstube.
-- Der **Forschungsbaum** schaltet Anbauten, Gebäude, Lagerplatz, Erschließen und Kiepenplätze frei und macht Kacheln
-  wertvoller.
+- Der **Forschungsbaum** schaltet Anbauten, Gebäude, Lagerplatz, Erschließen, Kiepenplätze und Transport (Schubkarre,
+  Bootsbau) frei und macht Kacheln wertvoller.
 - **Die Forschung zieht beim Aufbruch mit.** Sie ist das Wissen, mit dem jede neue Siedlung schneller startet – die
   Ebene über allen Siedlungen.
 
@@ -296,15 +362,43 @@ Beispiele:
 - **Aufbruch:** Jeder Ort hat einen Auftrag (Vollendung). Danach wird ein Wagen gebaut (Teile aus den Warenketten), ab
   dann wählt man den Zeitpunkt frei. Mit zieht: ausgewählte Siedler, eine Wagenladung und die Forschung. An Gabelungen
   des Flusses wählt man den nächsten Ort.
-- **Alte Siedlungen** bleiben auf der Flusskarte, haben keine Bedürfnisse mehr und liefern in Echtzeit per Boot. In
-  ihrer Verwaltung gibt es drei Hebel: Schwerpunkt, Handelsweg, Vogt. Aktiv gebaut wird immer nur an einem Ort.
+- **Alte Siedlungen** bleiben auf der Flusskarte, haben keine Bedürfnisse mehr und liefern in Echtzeit per Boot oder
+  Karren. In ihrer Verwaltung gibt es drei Hebel: **Schwerpunkt** (welche Ware), **Handelsweg** (zur aktiven Siedlung
+  oder gegen Taler zum Händler), **Vogt** (mehr Ladung oder schnellerer Takt). Aktiv gebaut wird immer nur an einem
+  Ort.
 - **Ende:** Die Hafenstadt an der Mündung nach sechs bis acht Siedlungen, danach freies Weiterspielen.
+
+### Routen zwischen den Siedlungen
+
+Entscheidung 02.11.2026: **Fahrzeit statt Simulation.** Unterwegs wird nichts gerechnet; Abfahrt und Dauer stehen
+fest, die Position auf der Karte ergibt sich daraus.
+
+- **Boote und Karren pendeln** hin und zurück. Der Takt folgt aus Hinweg, Laden und Rückweg; ein zweites Fahrzeug auf
+  derselben Route verdoppelt ihn.
+
+| | Wasser: Boot | Land: Karren |
+|---|---|---|
+| Ladung | 30 | 12 |
+| Hinweg zum Nachbarort | 1 Spieltag (flussab) | 2 Spieltage |
+| Rückweg | 2 Spieltage (gegen die Strömung) | 2 Spieltage |
+| Braucht | Steg an beiden Orten, Forschung Bootsbau | einen Weg, von Anfang an |
+| Jahreszeit | Winter: Eisgang, halbes Tempo | Frühling: Schlamm, halbes Tempo |
+
+- Weiter entfernte Orte brauchen entsprechend länger. Die alten Siedlungen liegen flussauf, ihre Boote fahren also
+  mit der Strömung zur aktiven Siedlung.
+- **Rückfracht ist freiwillig.** Wer flussauf Werkzeug oder Leinen mitschickt, hebt die Ladung der alten Siedlung –
+  ein Hebel, kein Muss.
+- **Künstliche Position:** der Anteil der verstrichenen Fahrzeit auf der Routenkurve. Auf der Flusskarte sieht man
+  Boote und Karren unterwegs; in der 3D-Welt taucht das Boot am Kartenrand auf und legt am Steg an, dort übernehmen
+  die Träger.
+- **Nichts geht verloren:** Ist das Lager voll, wartet die Ladung am Steg; ist auch der Steg voll, behält die alte
+  Siedlung ihre Ware.
 
 ## Lehren aus der Entwicklung von Puzzle Craft
 
 Quelle: Rückblick der Entwickler, [„The Evolution of Puzzle Craft“](https://www.gamedeveloper.com/design/the-evolution-of-i-puzzle-craft-i-)
 (Game Developer, 2012). Übernommen werden Erfahrungen, keine Inhalte. Noch nicht umgesetzt, außer wo „✓“ steht. Die
-Spalte „Für Lichtung“ entstand vor der neuen Richtung: Kapitel und Chronik-Ziele heißen jetzt Bevölkerungsstufen und
+Spalte „Für Lichtung“ entstand vor der neuen Richtung: Kapitel und Chronik-Ziele heißen jetzt Stufen des Dorfs und
 Wünsche, Flecken heißen Fluren, die Hilfsmittel stecken in der Kiepe.
 
 **Spielaufbau**
@@ -322,7 +416,7 @@ Wünsche, Flecken heißen Fluren, die Hilfsmittel stecken in der Kiepe.
 
 | Erfahrung dort | Für Lichtung |
 |---|---|
-| Wartezeiten und Energie machten das Spiel frustrierend und flogen raus. Belohnungen über Zeit blieben, weil sie Freude machen. | Keine Energie: Ein Tagwerk geht immer (Notgang). Gebäude produzieren in Echtzeit – das ist die gute Art. |
+| Wartezeiten und Energie machten das Spiel frustrierend und flogen raus. Belohnungen über Zeit blieben, weil sie Freude machen. | Keine Energie: Ein Tagwerk geht immer (Notgang). Gebäude produzieren in Echtzeit – das ist die gute Art. Baustellen brauchen Zeit, aber man sieht die Träger laufen und kann es beschleunigen; keine Uhr zum Abwarten oder Freikaufen. |
 | Steigende Preise und eine Münze, die man ständig ausgibt, machten das Spiel spannender und die Münze wertvoll. | Proviant kostet jedes Tagwerk; jede weitere Flur und jeder weitere Siedler desselben Berufs kostet mehr; Taler haben immer eine Verwendung. |
 
 **Oberfläche und Einführung**
@@ -358,6 +452,11 @@ nächsten Mockup neu gefasst: Die Chronik entfällt, Lager und Forschung kommen 
 - **Rückmeldung beim Ziehen** in der Blase über dem Brett („Holz × 5 · +9“, „Ring! +6 · 1 Hase“ in Gold).
 - **Fähigkeiten** über die Porträts: Ladering füllt sich, voll leuchtet er, Antippen setzt die Fähigkeit ein.
 - **Ereignisse** als Karte über der Welt mit 2–3 Wegen.
+- **Lager** als schlanke Ansicht: je Ware Füllstand, Trend („+12 je Tag“) und Prognose („voll in 1 h 40 min“, „reicht
+  noch 2 h“). Antippen einer Ware führt in die Welt; Erzeuger, Verbraucher und ihre Wege leuchten auf.
+- **In der Welt** zeigt ein kleines Zeichen über einem Gebäude, dass es ruht (Fach voll) oder wartet (Zutat fehlt).
+- **„Während du weg warst“:** Beim Öffnen fasst eine kleine Karte zusammen, was passiert ist („+120 Holz · Holz seit
+  2 h voll · 2 Boote angekommen · Fischer fertig“).
 
 ## Technik
 
@@ -373,11 +472,21 @@ Dockerfile, compose.yaml
 ```
 
 - **Spielregeln getrennt von der Oberfläche.** `packages/spiel` kennt nur Daten: Brett erzeugen, Kette prüfen, Ring
-  finden, nachfallen lassen, reifen, Tiere bewegen, Wetter, Spieluhr, Produktion, Wurf. Zufall mit Startwert: jeder
-  Zug ist reproduzierbar, Rückgängig ist sauber, Tests sind einfach.
+  finden, nachfallen lassen, reifen, Tiere bewegen, Wetter, Spieluhr, Produktion, Lager, Gänge, Baustellen, Routen,
+  Wurf. Zufall mit Startwert: jeder Zug ist reproduzierbar, Rückgängig ist sauber, Tests sind einfach.
 - **Spieluhr:** Spielzeit = verstrichene Echtzeit seit der Gründung × Faktor. Wetter, Würfe und Ereignisse folgen aus
-  Startwert und Tageszahl. Beim Öffnen rechnet der Server die Abwesenheit nach (Produktion bis zum vollen Lager,
-  Brennstoff der Nächte).
+  Startwert und Tageszahl. Beim Öffnen rechnet der Server die Abwesenheit nach.
+- **Nachrechnen – ein Prinzip für alles:**
+  - Jeder Transport ist ein Datensatz: Ware, Menge, Start, Ziel, Abgang, Ankunft – für Träger, Karren, Boote und den
+    Händler. Der Spielstand speichert die offenen Gänge, keine Positionen.
+  - `nachrechnen(stand, bis)` springt von Ereignis zu Ereignis (Ankunft, Fach voll, Baustelle fertig, Abfahrt) und
+    rechnet dazwischen die gleichmäßigen Werte: Produktion, Verbrauch, Brennstoff. Es liefert den neuen Stand und die
+    Zusammenfassung „Während du weg warst“.
+  - Die Position ist reine Darstellung: Anteil der Fahrzeit auf der Wegkurve, in three.js bei jedem Bild neu.
+  - Aufwand, grob geschätzt: drei Träger machen rund 200 Gänge je Stunde, eine Woche Abwesenheit ergibt unter
+    100.000 Ereignisse – in JavaScript deutlich unter einer Sekunde. Steht alles still (Lager voll, keine Baustelle),
+    springt die Rechnung gleich zum nächsten geplanten Ereignis.
+  - Der Server rechnet verbindlich, der Browser rechnet nur voraus und wird beim nächsten Abgleich korrigiert.
 - **Spieldaten als Tabellen** (Fluren, Kacheln, Ketten, Gebäude, Stufen, Ereignisse) – Balancing ohne Code.
 - **Welt in 3D** mit three.js und React Three Fiber, Platzhalter-Modelle. **Das Brett bleibt SVG** und liegt beim
   Tagwerk über der Welt: 49 Waben sind für SVG wenig, scharf auf jedem Bildschirm, leicht zu animieren, Tastatur und
@@ -445,6 +554,57 @@ services:
 - GitHub Actions baut das Image für amd64 und arm64 und legt es in die GitHub Container Registry.
 - HTTPS über den Reverse-Proxy auf dem Server (Caddy, Traefik oder Nginx Proxy Manager) – eine PWA braucht HTTPS.
 
+## MVP: die Kernschleife prüfen
+
+Entscheidung 02.11.2026. Das Konzept ist größer als das, was wir sicher wissen. Das MVP beantwortet deshalb nur eine
+Frage: **Macht es Spaß, in kurzen Besuchen eine kleine Siedlung wachsen zu sehen und mit dem Puzzle gezielt zu holen,
+was gerade fehlt?** Macht diese Schleife keinen Spaß, retten sie Wurf, Nacht und Forschung nicht. Macht sie Spaß,
+kommen die anderen Teile einzeln dazu, und jeder muss zeigen, dass er das Spiel besser macht.
+
+**Drin:**
+
+- **Karte mit fünf Fluren:** Lichtung, Wald, Ufer und Wiese zum Abstecken (kostet Proviant), eine im Nebel als
+  Ausblick. Je Flur drei Bauplätze und ein Bonus nach Art der Flur.
+- **Drei Gebäude und eine Kette:** Holzfäller mit Anbau Sägebock (Holz → Bretter), Fischer, Sammlerhütte.
+- **Lager** mit Fächern und Stapeln, **Baustellen**.
+- **Das Dorf** mit drei Stufen und laufendem Verbrauch (Fisch und Beeren; Bretter für den Ausbau).
+- **Tagwerk** in einer Flur mit Gebäude-Kacheln – das Brett aus Meilenstein 1 gibt es schon.
+- **Vorbereiten nur mit Trupp und Proviant:** Mehr Siedler bringen mehr Schritte, essen aber auch mehr.
+- **Spieluhr** mit Tag und Nacht, vorerst nur als Licht.
+- **Nachrechnen und Speichern** im Browser.
+- **Werkstatt** (`?werkstatt`) mit Zeitraffer und allen Werten zum Live-Ändern, damit wir für die Balance nicht eine
+  Woche warten müssen.
+
+**Bewusst später:** Wurf mit Aussichten und Kiepe; Nacht mit Fackeln, Jahreszeiten und Wetter; Ereignisse und
+Beschlüsse; Forschung; Erkunden mit Kundschafter; Händler; Aufbruch und Routen; Server und Codes.
+
+**Im MVP entscheiden:**
+
+- **Träger echt oder nur zur Anschauung:** ein Schalter in der Werkstatt. Bei „sofort“ landet jede Ware gleich im
+  Lager, und Baustellen bekommen ihr Material sofort; bei „echt“ tragen ein bis drei Träger. Weil jeder Gang ohnehin
+  als Datensatz läuft, kostet der Schalter wenig. Jede Variante ein paar Tage spielen, dann entscheiden.
+- **Wohnen als wachsendes Dorf:** gleich so bauen. Trägt es nicht, merken wir es früh.
+
+**Woran wir Spaß erkennen:** eine Woche spielen, zwei, drei kurze Besuche am Tag – der Rhythmus, für den das Spiel
+gedacht ist. Dabei auf vier Dinge achten:
+
+1. Will ich zurückkommen, oder fühlt es sich wie Pflicht an?
+2. Gibt es bei jedem Besuch eine Entscheidung (was bauen, welche Flur, wie viel Proviant)?
+3. Spiele ich das Tagwerk gern? Lasse ich es weg, ist der Schub zu schwach; muss ich es spielen, ist er zu stark.
+4. Macht das wachsende Dorf stolz? Machen die Träger die Welt lebendiger oder nur langsamer?
+
+**Reihenfolge,** jeder Schritt für sich spielbar:
+
+1. Rechenkern in `packages/spiel`: Spieluhr, Lager, Produktion, Verbrauch, Dorf, Nachrechnen – mit Tests und
+   Zeitraffer.
+2. Welt: Fluren mit Bauplätzen und Abstecken, Baustellen, Stapel, das Dorf auf der Lichtung.
+3. Tagwerk in der Flur mit Gebäude-Kacheln und Proviant.
+4. Träger mit Schalter.
+5. Eine Woche spielen, dann entscheiden, was als Nächstes dazukommt.
+
+Mockup: [`mockups/fluren.html`](mockups/fluren.html) – Fluren, Bauen und Baustelle, das Dorf in seinen Stufen,
+Lager, „Während du weg warst“, Vorbereiten und Tagwerk; Laptop und 390 px, Tag und Abend. Wartet auf Freigabe.
+
 ## Meilensteine
 
 1. **Brett** (fertig) – ein Tagwerk im Wald spielbar im Browser: Ketten, Ringe, Reife, Gestrüpp, Hasen, Rückgängig,
@@ -452,15 +612,16 @@ services:
 2. **Docker** (fertig) – Image, `compose.yaml`, Healthcheck, Build für amd64 und arm64.
 3. **Welt-Prototyp** (fertig) – stilisierte 3D-Welt mit Gelände, Fluss, Wald und Fels, Tag und Abend, Bauen mit
    Overlay, Wege als Kurven.
-4. **Fluren und Tagwerk** – Fluren mit Nebel, Erkunden, Abstecken und Bauplatz-Grenze; Overlay je Flur; Tagwerk in
-   einer Flur mit Gebäude-Kacheln; Lager mit Stapeln; eine Kette (Holz → Bretter); Spieluhr mit Tag, Dämmerung und
-   Nacht; Speichern im Browser.
-5. **Vorhaben** – Vorbereiten mit Aussichten, Wurf und Kiepe; Notgang; Wetter, Jahreszeiten, Nacht mit Feuer und
-   Fackeln.
-6. **Die Siedlung wächst** – Bevölkerungsstufen mit Wünschen und Beschlüssen, weitere Ketten und Anbauten,
+4. **MVP: die Kernschleife** – Fluren mit Abstecken und Bauplatz-Grenze, drei Gebäude und eine Kette, Lager,
+   Baustellen, Dorf mit drei Stufen und laufendem Verbrauch, Tagwerk in der Flur, Träger mit Schalter, Werkstatt
+   mit Zeitraffer (siehe MVP). Danach eine Woche spielen und entscheiden.
+5. **Vorhaben** – Vorbereiten mit Aussichten, Wurf und Kiepe; Erkunden mit Kundschafter; Notgang; Wetter,
+   Jahreszeiten, Nacht mit Feuer und Fackeln.
+6. **Die Siedlung wächst** – das Dorf bis zur Stadt, Beschlüsse, weitere Ketten und Anbauten, Lagerausbau,
    Ereignisse, Händler.
 7. **Server** – Codes für Spieler, Spielstand auf dem Server, Nachrechnen der Abwesenheit, Löschen nach einem Jahr, PWA.
-8. **Forschung und Aufbruch** – Forschungsbaum, Wagen, Flusskarte, alte Siedlungen mit Verwaltung, Hafenstadt.
+8. **Forschung und Aufbruch** – Forschungsbaum, Wagen, Flusskarte, alte Siedlungen mit Verwaltung, Routen mit Booten
+   und Karren, Hafenstadt.
 9. **Grafik und Feinschliff** – eigene Modelle und gemalter Stil (siehe `design.md` › Grafik), Einführung durch Siedler
    und Zeigepfeil, Klang.
 
@@ -469,8 +630,13 @@ services:
 1. Name „Lichtung“ – passt der?
 2. Server: läuft dort schon ein Reverse-Proxy mit HTTPS? amd64 oder arm64?
 3. Gabelungen am Fluss – ja oder nein?
-4. Namen der Bevölkerungsstufen.
+4. Namen der Dorfstufen – Vorschlag: Weiler, Dorf, Marktflecken, Stadt.
 5. Länge eines Durchgangs – passt etwa eine Woche?
-6. Als Vorschlag eingetragen, aber noch nicht ausdrücklich bestätigt: Träger nur zur Anschauung; die Forschung zieht
-   beim Aufbruch mit; Wetter hält ein bis drei Spieltage; Reisevorbereitung als Projekt (Wagenbau) statt Wartezeit.
+6. Als Vorschlag eingetragen, aber noch nicht ausdrücklich bestätigt: die Forschung zieht beim Aufbruch mit; Wetter
+   hält ein bis drei Spieltage; Reisevorbereitung als Projekt (Wagenbau) statt Wartezeit; Größenordnung des Dorfs
+   (4 bis 15–20 Siedler) und der Träger (1 bis 3, Korb mit 5).
 7. Codes: Der Code gehört künftig zum Spieler statt zur Siedlung – Abläufe in `mockups/siedlung-code.html` anpassen.
+8. Brauchen Gebäude Arbeiter? Vorschlag: nein. Die Siedler mit Beruf arbeiten sichtbar an ihrem Gebäude, aber ohne
+   Zuteilung und ohne Zählen; zugeteilt wird nur, wer trägt und wer im Trupp loszieht. Ob die Träger echt tragen,
+   klärt das MVP.
+9. Lager: ein Fach je Ware (Vorschlag) oder Platz je Warenfamilie (Baustoffe, Nahrung, Waren)?

@@ -1,0 +1,2119 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup: Lichtung – MVP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,500..700,0..100&family=Nunito:wght@500..900&display=swap">
+<style>
+  /* ---------- Mockup-Seite ---------- */
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #57534d; font: 15px/1.45 'Nunito', system-ui, sans-serif; color: #fff; }
+  h1 { font: 600 20px 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; margin: 48px 0 4px; }
+  h1:first-child { margin-top: 0; }
+  .erkl { margin: 0 0 16px; max-width: 900px; color: #eee; }
+  .erkl b { color: #fff; }
+  .reihe { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+  figure { margin: 0; display: grid; gap: 8px; }
+  figcaption { font-size: 13px; color: #eee; font-weight: 700; }
+  .notiz { background: #FFF8EA; color: #3A2A1C; border-radius: 18px; padding: 24px 32px; max-width: 900px; margin-top: 48px; }
+  .notiz h2 { font: 600 20px 'Fraunces', Georgia, serif; margin: 0 0 8px; }
+  .notiz li { margin: 4px 0; }
+
+  /* ---------- Spiel-Tokens: Tag ---------- */
+  .geraet {
+    --bg-oben: #EAF2DC; --bg-unten: #CFE0AE;
+    --perg: #FFF8EA; --perg-2: #F4E8D0; --rand: #E2CFA9;
+    --holz: #9A6436; --holz-d: #6E4422;
+    --tinte: #3A2A1C; --tinte-2: #7B6550;
+    --moos: #4E7F2F; --moos-d: #3A6222; --moos-h: #7DB453; --gruen-text: #3A6222;
+    --honig: #E8A93A; --honig-d: #B97F1E; --honig-h: #FFE3A1;
+    --warnung: #B4532A;
+    --matte: #2F4A2A;
+    --schatten: 0 6px 18px rgba(84, 56, 26, .18);
+    --schatten-k: 0 2px 6px rgba(84, 56, 26, .14);
+    --scrim: rgba(40, 28, 14, .45);
+    --fokus: #2F6FB0;
+    background: linear-gradient(180deg, var(--bg-oben), var(--bg-unten));
+    color: var(--tinte);
+    font: 15px/1.45 'Nunito', system-ui, sans-serif;
+    border-radius: 18px; overflow: hidden; position: relative; flex: none;
+  }
+  /* ---------- Spiel-Tokens: Abend ---------- */
+  .geraet.abend {
+    --bg-oben: #22312F; --bg-unten: #141D1C;
+    --perg: #2F2823; --perg-2: #3B322B; --rand: #4E4033;
+    --holz: #7A5030; --holz-d: #4A2F1B;
+    --tinte: #F4E8D2; --tinte-2: #C3B299;
+    --moos-h: #8CC45F; --gruen-text: #A5D47A;
+    --honig: #F0B54C; --honig-d: #B9822A;
+    --warnung: #F09A6B;
+    --matte: #22331A;
+    --schatten: 0 8px 22px rgba(0, 0, 0, .45);
+    --schatten-k: 0 2px 8px rgba(0, 0, 0, .35);
+    --scrim: rgba(0, 0, 0, .6);
+    --fokus: #8EC5FF;
+  }
+  .laptop { width: 1100px; height: 700px; }
+  .handy { width: 390px; height: 844px; }
+  .geraet button { font-family: inherit; color: inherit; }
+  .geraet [hidden] { display: none !important; }
+  .geraet :focus-visible { outline: 3px solid var(--fokus); outline-offset: 2px; }
+  .ic { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Knöpfe zum Drücken */
+  .knopf { --f: var(--perg); --u: var(--rand); --t: var(--tinte); display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 18px; border: 0; border-radius: 14px; background: var(--f); color: var(--t) !important; font-weight: 800; font-size: 15px; box-shadow: 0 4px 0 var(--u); cursor: pointer; white-space: nowrap; transition: transform 90ms, box-shadow 90ms, filter 120ms; }
+  .knopf.zweit { border: 2px solid var(--rand); box-shadow: 0 3px 0 var(--rand); }
+  .knopf.haupt { --f: var(--moos); --u: var(--moos-d); --t: #fff; }
+  .knopf.klein { min-height: 40px; padding: 0 14px; font-size: 14px; }
+  .knopf:hover:not(:disabled) { filter: brightness(1.06); }
+  .knopf:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 var(--u); }
+  .knopf:disabled { opacity: .5; cursor: not-allowed; }
+  .rund { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--perg); border: 2px solid var(--rand); box-shadow: 0 3px 0 var(--rand); cursor: pointer; padding: 0; flex: none; transition: transform 90ms, box-shadow 90ms; }
+  .rund:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 var(--rand); }
+
+  /* Pergament, Wortmarke, Chips */
+  .karte { background: var(--perg); border: 2px solid var(--rand); border-radius: 16px; box-shadow: var(--schatten); padding: 16px; }
+  .karte h3 { font: 600 18px/1.2 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; margin: 0 0 8px; }
+  .wortmarke { display: flex; align-items: center; gap: 8px; font: 700 22px 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; white-space: nowrap; }
+  .wortmarke .zeichen { width: 34px; height: 34px; border-radius: 50%; background: var(--moos); color: #fff; display: grid; place-items: center; box-shadow: 0 3px 0 var(--moos-d); }
+  .wortmarke .zeichen .ic { width: 18px; height: 18px; }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--perg-2); font-weight: 800; font-size: 13px; white-space: nowrap; }
+  .chip .ic { width: 16px; height: 16px; }
+  .chip.gut { background: color-mix(in srgb, var(--moos) 18%, var(--perg)); color: var(--gruen-text); }
+  .chip.warn { background: color-mix(in srgb, var(--warnung) 18%, var(--perg)); color: var(--warnung); }
+
+  /* Spielmarken */
+  .token { width: 28px; height: 28px; flex: none; overflow: visible; }
+  .token.m { width: 34px; height: 34px; }
+  .mk .kante { fill: var(--kk); }
+  .mk .koerper { fill: var(--k); stroke: var(--kk); stroke-width: 1.5; }
+  .mk .glanz { fill: #fff; opacity: .18; }
+  .mk .sym { fill: none; stroke: var(--sym); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .mk .pip { fill: #FFE7A3; stroke: var(--kk); stroke-width: 1.5; }
+  .mk.r3 .koerper { stroke: #FFD978; stroke-width: 3.5; }
+  .t-holz     { --k: #B96B34; --kk: #7E4218; --sym: #FFF4DE; }
+  .t-bretter  { --k: #C98A4E; --kk: #8A5626; --sym: #FFF4DE; }
+  .t-beeren   { --k: #C4446E; --kk: #8A2647; --sym: #FFF0F3; }
+  .t-kraeuter { --k: #63AE4F; --kk: #3C7A30; --sym: #F4FFEC; }
+  .t-nuesse   { --k: #E2AB3C; --kk: #A57417; --sym: #4A2F0C; }
+  .t-korn     { --k: #E2AB3C; --kk: #A57417; --sym: #4A2F0C; }
+  .t-flachs   { --k: #6FA7D8; --kk: #3F72A0; --sym: #F2F8FF; }
+  .t-gestruepp{ --k: #5D6150; --kk: #3B3F33; --sym: #D9DDC6; }
+  .t-hase     { --k: #F3E6CC; --kk: #C2A97E; --sym: #7A5236; }
+  .t-fisch    { --k: #3F8CC0; --kk: #2A6690; --sym: #F0F8FF; }
+  .t-lehm     { --k: #B5784E; --kk: #80502E; --sym: #FFF1E0; }
+  .t-schilf   { --k: #86A84C; --kk: #5A7A2E; --sym: #F6FFE8; }
+  .t-kiesel   { --k: #D9B356; --kk: #A0801F; --sym: #4A3A0C; }
+  .t-schlamm  { --k: #6B5A48; --kk: #463A2D; --sym: #E8DAC6; }
+  .t-ente     { --k: #F2EEDC; --kk: #C3BA97; --sym: #3E6E8C; }
+  .t-stein    { --k: #8C8F94; --kk: #5E6166; --sym: #FFFFFF; }
+  .t-bau      { --k: #F6E6C2; --kk: #9A6436; --sym: #6E4422; }
+  .t-fund     { --k: #F2D27A; --kk: #B5892A; --sym: #5A3A0C; }
+  .mk.bau .koerper { stroke: #FFD978; stroke-width: 4; }
+  .aura { fill: none; stroke: #FFD978; stroke-width: 3; stroke-dasharray: 6 6; opacity: .75; }
+
+  /* Pille, Medaille, Blase */
+  .pille { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px 2px 2px; background: var(--perg); border: 2px solid var(--rand); border-radius: 999px; font-weight: 800; font-variant-numeric: tabular-nums; box-shadow: var(--schatten-k); white-space: nowrap; flex: none; }
+  .pille small { font-weight: 700; color: var(--tinte-2); font-size: 12px; }
+  .pille .rund-ic { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--perg-2); }
+  .pille .rund-ic .ic { width: 16px; height: 16px; }
+  .medaille { width: 72px; height: 72px; border-radius: 50%; flex: none; display: grid; place-items: center; align-content: center; background: radial-gradient(circle at 35% 30%, var(--honig-h), var(--honig) 72%); border: 4px solid var(--holz); box-shadow: 0 4px 0 var(--holz-d), var(--schatten-k); color: #3A2A1C; }
+  .medaille b { font: 700 30px/1 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; font-variant-numeric: tabular-nums; }
+  .medaille span { font: 800 11px/1.2 'Nunito', sans-serif; margin-top: 2px; }
+  .medaille.gross { width: 100px; height: 100px; margin: 0 auto; }
+  .medaille.gross b { font-size: 42px; }
+  .blase { height: 44px; flex: none; display: flex; align-items: center; justify-content: center; }
+  .blase-inhalt { display: inline-flex; align-items: center; gap: 8px; padding: 4px 14px 4px 6px; background: #FFE6A6; border: 2px solid var(--honig); color: #3A2A1C; border-radius: 999px; font-weight: 800; box-shadow: var(--schatten-k); white-space: nowrap; max-width: 100%; }
+  .handy .blase-inhalt { font-size: 13px; }
+
+  /* Trupp: Porträt */
+  .mitglied { display: grid; justify-items: center; gap: 2px; background: none; border: 0; padding: 4px; border-radius: 14px; cursor: pointer; min-width: 70px; text-align: center; }
+  .mitglied .name { font-weight: 800; font-size: 13px; line-height: 1.3; }
+  .mitglied .beruf { font-weight: 700; color: var(--tinte-2); font-size: 12px; line-height: 1.2; }
+  .portrait { position: relative; width: 52px; height: 52px; flex: none; display: block; }
+  .portrait .ladering { position: absolute; inset: 0; transform: rotate(-90deg); }
+  .portrait .ring-bg { fill: none; stroke: var(--perg-2); stroke-width: 5; }
+  .portrait .ring-wert { fill: none; stroke: var(--moos-h); stroke-width: 5; stroke-linecap: round; }
+  .portrait .gesicht { position: absolute; inset: 6px; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--p) 55%, white), var(--p) 75%); color: #FFF6E2; font: 700 20px 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .18); }
+  .ohne-ring .gesicht { inset: 2px; }
+  .portrait .abzeichen { position: absolute; right: -3px; top: -3px; width: 22px; height: 22px; border-radius: 50%; background: var(--moos); color: #fff; display: grid; place-items: center; border: 2px solid var(--perg); }
+  .portrait .abzeichen .ic { width: 12px; height: 12px; stroke-width: 3.2; }
+  .mitglied.aus .portrait { opacity: .45; filter: grayscale(.7); }
+  .mitglied:disabled { cursor: not-allowed; }
+  .mitglied.zeilig { display: grid; grid-template-columns: 52px 1fr; column-gap: 12px; justify-items: start; align-items: center; text-align: left; width: 100%; padding: 4px; }
+  .mitglied.zeilig .portrait { grid-row: 1 / 3; }
+  .mitglied.zeilig .name { align-self: end; font-size: 15px; }
+  .mitglied.zeilig .beruf { align-self: start; }
+
+  /* ---------- Welt ---------- */
+  .spiel { position: absolute; inset: 0; }
+  .welt-platz { position: absolute; inset: 0; overflow: hidden; background: #E2E8D8; }
+  .welt-platz > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .welt-platz.gedimmt > svg { filter: blur(2px) saturate(.85); transform: scale(1.03); }
+  .schilder { position: absolute; inset: 0; pointer-events: none; }
+  .treffer path, .treffer polygon { fill: transparent; stroke: none; cursor: pointer; pointer-events: all; }
+  .flamme { transform-box: fill-box; transform-origin: 50% 100%; animation: flackern 1.1s ease-in-out infinite alternate; }
+  @keyframes flackern { 0% { transform: scale(1, 1); } 45% { transform: scale(.9, 1.1); } 100% { transform: scale(1.06, .9); } }
+  .glut { animation: glut 1.7s ease-in-out infinite alternate; }
+  @keyframes glut { to { opacity: .72; } }
+
+  .flur-schild { position: absolute; transform: translate(-50%, -50%); display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 3px; border-radius: 999px; background: var(--perg); border: 2px solid var(--rand); font-weight: 800; font-size: 13px; line-height: 1.2; white-space: nowrap; box-shadow: var(--schatten-k); pointer-events: auto; cursor: pointer; color: var(--tinte); }
+  .flur-schild .rund-ic { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--perg-2); }
+  .flur-schild .rund-ic .ic { width: 15px; height: 15px; }
+  .flur-schild small { font-weight: 700; color: var(--tinte-2); font-size: 12px; }
+  .flur-schild.offen { border-style: dashed; background: color-mix(in srgb, var(--perg) 82%, transparent); }
+  .flur-schild.nebel { padding: 3px; border-style: dashed; background: color-mix(in srgb, var(--perg) 70%, transparent); }
+  .flur-schild.nebel.text { padding-right: 10px; }
+  .flur-schild.an { border-color: var(--honig); border-style: solid; box-shadow: 0 0 0 3px color-mix(in srgb, var(--honig) 45%, transparent), var(--schatten-k); }
+  .flur-schild .dunkel-ic { color: var(--warnung); }
+  .flur-schild .prozent { font: 700 18px/1 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; color: var(--honig-d); }
+  .abend .flur-schild .prozent { color: var(--honig); }
+  .flur-schild.leise { opacity: .8; }
+  .handy .flur-schild { font-size: 12px; padding: 2px 8px 2px 2px; }
+  .handy .flur-schild .rund-ic { width: 22px; height: 22px; }
+  .handy .flur-schild.nebel { padding: 2px; }
+
+  /* Kopf, Spieluhr, Vorrat */
+  .oben { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; gap: 12px; padding: 14px 16px 0; pointer-events: none; z-index: 4; }
+  .oben > * { pointer-events: auto; }
+  .oben .rechts { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+  .wortmarke.schwebend { padding: 4px 14px 4px 4px; background: var(--perg); border: 2px solid var(--rand); border-radius: 999px; box-shadow: var(--schatten-k); font-size: 20px; }
+  .reiter-holz { display: flex; gap: 4px; padding: 4px; background: var(--holz); border-radius: 14px; box-shadow: 0 3px 0 var(--holz-d); }
+  .reiter-holz a { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 10px; color: #F6E3C4; font-weight: 800; cursor: pointer; }
+  .reiter-holz a .ic { width: 18px; height: 18px; }
+  .reiter-holz a.an { background: var(--honig); color: #3A2A1C; }
+  .uhr { display: inline-grid; grid-template-columns: auto auto; align-items: center; column-gap: 8px; row-gap: 3px; padding: 4px 12px 5px 4px; border-radius: 999px; background: var(--perg); border: 2px solid var(--rand); box-shadow: var(--schatten-k); cursor: pointer; font-weight: 800; font-size: 13px; line-height: 1.2; text-align: left; }
+  .uhr .kreis { grid-row: 1 / 3; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: #F2C14E; color: #3A2A1C; box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .15); }
+  .uhr.daemmerung .kreis { background: #E8875A; }
+  .uhr.nacht .kreis { background: #33406A; color: #E8EEFF; }
+  .uhr .kreis .ic { width: 18px; height: 18px; }
+  .uhr small { font-weight: 700; color: var(--tinte-2); }
+  .tagesband { position: relative; display: flex; width: 120px; height: 7px; border-radius: 999px; overflow: visible; }
+  .tagesband i { height: 100%; }
+  .tagesband i:first-child { border-radius: 999px 0 0 999px; } .tagesband i:last-of-type { border-radius: 0 999px 999px 0; }
+  .tagesband .hell { background: #F2C14E; } .tagesband .daemm { background: #E8875A; } .tagesband .nacht { background: #3E4C7A; }
+  .tagesband b { position: absolute; top: -4px; width: 5px; height: 15px; margin-left: -2.5px; border-radius: 3px; background: var(--tinte); box-shadow: 0 0 0 2px var(--perg); }
+  .handy .tagesband { width: 84px; }
+  .vorrat { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+  .vorrat.schwebend { position: absolute; top: 72px; left: 16px; right: 372px; z-index: 3; }
+  .handy .vorrat.schwebend { top: 64px; left: 0; right: 0; padding: 0 12px 6px; }
+
+  /* Flur-Karte */
+  .detail { display: flex; flex-direction: column; min-height: 0; padding: 0; }
+  .flur-karte { position: absolute; top: 74px; right: 16px; bottom: 16px; width: 340px; z-index: 3; }
+  .detail-kopf { padding: 16px 16px 8px; display: grid; gap: 8px; }
+  .detail-kopf h3 { font: 600 26px/1.15 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; margin: 0; }
+  .detail-rumpf { flex: 1; min-height: 0; overflow: auto; padding: 4px 16px 16px; display: grid; gap: 16px; align-content: start; }
+  .abschnitt h4 { margin: 0 0 6px; font: 800 13px 'Nunito', sans-serif; color: var(--tinte-2); }
+  .detail-fuss { padding: 12px 16px 16px; border-top: 2px dashed var(--rand); display: grid; gap: 8px; }
+  .detail-fuss .hinweis { font-size: 13px; font-weight: 700; color: var(--tinte-2); }
+  .plaetze { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .platz { display: grid; justify-items: center; align-content: center; gap: 2px; min-height: 74px; padding: 6px 4px; border-radius: 12px; background: var(--perg-2); font-size: 12px; font-weight: 800; text-align: center; line-height: 1.2; }
+  .platz .ic { color: var(--holz); width: 22px; height: 22px; }
+  .abend .platz .ic { color: #E2B98A; }
+  .platz small { font-weight: 700; color: var(--tinte-2); font-size: 11px; }
+  .platz.frei { background: none; border: 2px dashed var(--rand); color: var(--tinte-2); }
+  .platz.frei .ic, .platz.mehr .ic { color: var(--tinte-2); }
+  .platz.mehr { background: none; border: 2px dotted var(--rand); color: var(--tinte-2); }
+  .marken-raster { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px 8px; }
+  .mr { display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 14px; white-space: nowrap; }
+  .zeile { display: flex; align-items: center; gap: 10px; min-height: 36px; font-weight: 700; }
+  .zeile .ic { color: var(--tinte-2); }
+  .zeile .wert { margin-left: auto; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .zeile.warn { color: var(--warnung); align-items: flex-start; }
+  .zeile.warn .ic { color: var(--warnung); margin-top: 2px; }
+  .zeile small { display: block; font-weight: 700; color: var(--tinte-2); }
+  .zeile.gut .ic { color: var(--honig-d); }
+  .text { margin: 0; font-weight: 600; color: var(--tinte-2); }
+  .bau-zeile { display: flex; gap: 10px; align-items: center; font-size: 14px; font-weight: 700; margin-top: 8px; }
+
+  /* Handy: Blatt und Holzleiste */
+  .blatt { position: absolute; left: 0; right: 0; bottom: 76px; background: var(--perg); border-top: 2px solid var(--rand); border-radius: 22px 22px 0 0; box-shadow: 0 -8px 24px rgba(40, 24, 10, .2); display: flex; flex-direction: column; transition: height 280ms cubic-bezier(.2, 0, 0, 1); z-index: 3; }
+  .blatt .detail { flex: 1; overflow: hidden; }
+  .griff { height: 22px; flex: none; display: grid; place-items: center; cursor: pointer; }
+  .griff span { width: 40px; height: 5px; border-radius: 999px; background: var(--rand); }
+  .blatt .detail-kopf { padding-top: 0; }
+  .blatt .bauen-rund { position: absolute; right: 12px; top: -58px; }
+  .holzleiste { position: absolute; left: 0; right: 0; bottom: 0; height: 76px; background: linear-gradient(var(--holz), var(--holz-d)); border-top: 3px solid var(--holz-d); display: grid; grid-template-columns: repeat(4, 1fr); padding-bottom: 6px; z-index: 5; }
+  .ziel { display: grid; justify-items: center; align-content: center; gap: 2px; color: #F6E3C4; font-weight: 800; font-size: 12px; cursor: pointer; background: none; border: 0; }
+  .ziel .kreis { width: 44px; height: 34px; border-radius: 999px; display: grid; place-items: center; }
+  .ziel.an { color: #FFF6E2; }
+  .ziel.an .kreis { background: var(--honig); color: #3A2A1C; box-shadow: 0 3px 0 var(--honig-d); }
+  .welt-knopf { position: absolute; left: 16px; bottom: 16px; z-index: 3; }
+
+  /* Baumodus */
+  .bauleiste { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); display: flex; align-items: center; gap: 4px; padding: 6px; border-radius: 18px; z-index: 4; }
+  .handy .bauleiste { left: 8px; right: 8px; bottom: 84px; transform: none; justify-content: space-between; }
+  .bau-knopf { display: grid; justify-items: center; gap: 2px; min-width: 88px; min-height: 58px; padding: 6px 10px; border: 0; border-radius: 12px; background: none; font-weight: 800; font-size: 13px; cursor: pointer; }
+  .bau-knopf small { font-weight: 700; color: var(--tinte-2); font-size: 11px; }
+  .bau-knopf.an small { color: #6E4422; }
+  .bau-knopf:hover { background: var(--perg-2); }
+  .bau-knopf.an { background: var(--honig); color: #3A2A1C; box-shadow: 0 3px 0 var(--honig-d); }
+  .handy .bau-knopf { min-width: 0; flex: 1; padding: 6px 2px; font-size: 11px; }
+  .handy .bau-knopf small { display: none; }
+  .bauleiste .rund { margin-left: 4px; }
+  .bau-hinweis { position: absolute; left: 50%; bottom: 96px; transform: translateX(-50%); z-index: 4; }
+  .handy .bau-hinweis { bottom: 160px; }
+  .etikett { position: absolute; z-index: 4; display: grid; justify-items: center; gap: 4px; min-width: 200px; padding: 10px 12px 12px; background: var(--perg); color: var(--tinte); border: 2px solid var(--rand); border-radius: 16px; box-shadow: var(--schatten); transform: translate(-50%, calc(-100% - 14px)); text-align: center; }
+  .etikett::after { content: ''; position: absolute; left: 50%; bottom: -9px; width: 14px; height: 14px; margin-left: -7px; background: var(--perg); border-right: 2px solid var(--rand); border-bottom: 2px solid var(--rand); transform: rotate(45deg); }
+  .etikett.unten { transform: translate(-50%, 18px); }
+  .etikett.unten::after { bottom: auto; top: -9px; transform: rotate(225deg); }
+  .etikett b { font: 700 26px/1 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; color: var(--honig-d); }
+  .abend .etikett b { color: var(--honig); }
+  .etikett span { font-size: 13px; font-weight: 700; color: var(--tinte-2); max-width: 230px; }
+  .etikett .knopf { margin-top: 4px; }
+
+  /* Überlagerungen */
+  .ueberlage { position: absolute; inset: 0; z-index: 10; pointer-events: none; display: grid; place-items: center; }
+  .ueberlage.offen { pointer-events: auto; }
+  .scrim { position: absolute; inset: 0; background: var(--scrim); opacity: 0; transition: opacity 200ms; }
+  .ueberlage.offen .scrim { opacity: 1; }
+  .modal { position: relative; width: min(440px, calc(100% - 32px)); background: var(--perg); border: 2px solid var(--rand); border-radius: 22px; box-shadow: 0 18px 40px rgba(40, 24, 10, .35); padding: 40px 20px 18px; transform: scale(.94); opacity: 0; transition: transform 260ms cubic-bezier(.34, 1.4, .64, 1), opacity 180ms; }
+  .ueberlage.offen .modal { transform: none; opacity: 1; }
+  .schild { position: absolute; left: 50%; top: -24px; transform: translateX(-50%); background: var(--holz); color: #FFF3DC; font: 600 22px 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; padding: 8px 26px; border-radius: 12px; box-shadow: 0 4px 0 var(--holz-d); white-space: nowrap; }
+  .modal .zu { position: absolute; right: 12px; top: 12px; width: 40px; height: 40px; }
+  .toast { position: absolute; left: 50%; bottom: 24px; transform: translate(-50%, 12px); z-index: 20; display: flex; align-items: center; gap: 10px; padding: 10px 18px; background: var(--perg); border: 2px solid var(--rand); border-radius: 999px; box-shadow: var(--schatten); font-weight: 800; opacity: 0; transition: opacity 160ms, transform 200ms; pointer-events: none; white-space: nowrap; max-width: calc(100% - 24px); }
+  .toast span { white-space: normal; }
+  .toast.zeigen { opacity: 1; transform: translate(-50%, 0); }
+  .toast .ic { color: var(--moos-h); }
+  .handy .toast { bottom: 92px; border-radius: 20px; }
+
+  /* Vorbereiten */
+  .modal.vorb { width: min(820px, calc(100% - 32px)); padding: 36px 20px 16px; }
+  .lage { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin: 0 0 14px; }
+  .vorb-raster { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 22px; }
+  .vorb-raster > section { display: grid; gap: 14px; align-content: start; }
+  .band-huelle { position: relative; }
+  .band { display: flex; height: 36px; border-radius: 10px; overflow: hidden; border: 2px solid var(--rand); background: var(--perg-2); }
+  .band i { display: grid; place-items: center; font-style: normal; font-weight: 900; font-size: 13px; color: #fff; transition: flex-grow 320ms ease; min-width: 0; overflow: hidden; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .b-miss { background: #B4532A; } .b-muehsam { background: #B98A4A; } .b-ordentlich { background: #5E9440; } .b-glueck { background: #E2A93A; color: #3A2A1C !important; }
+  .band.gelandet i:not(.treffer-band) { filter: saturate(.3) brightness(.8); opacity: .6; }
+  .legende { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 12px; margin-top: 6px; font-size: 12px; font-weight: 800; color: var(--tinte-2); }
+  .legende span { display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+  .legende span i { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+  .nadel { position: absolute; top: -9px; height: 54px; width: 0; left: 0; opacity: 0; pointer-events: none; }
+  .nadel::before { content: ''; position: absolute; left: -3px; top: 0; width: 6px; height: 54px; border-radius: 3px; background: var(--tinte); box-shadow: 0 0 0 2px var(--perg); }
+  .nadel::after { content: ''; position: absolute; left: -8px; top: -8px; border: 8px solid transparent; border-top-color: var(--tinte); }
+  .faktoren { display: grid; gap: 2px; }
+  .faktor { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: center; min-height: 32px; font-weight: 700; font-size: 14px; line-height: 1.25; }
+  .vz { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-weight: 900; font-size: 15px; line-height: 1; }
+  .vz.plus { background: color-mix(in srgb, var(--moos) 22%, var(--perg)); color: var(--gruen-text); }
+  .vz.minus { background: color-mix(in srgb, var(--warnung) 22%, var(--perg)); color: var(--warnung); }
+  .vz.null { background: var(--perg-2); color: var(--tinte-2); }
+  .vorb-notiz { display: flex; gap: 8px; align-items: center; font-size: 13px; font-weight: 700; color: var(--tinte-2); }
+  .vorb-notiz .ic { width: 16px; height: 16px; color: var(--honig-d); }
+  .trupp-wahl { display: flex; gap: 2px; justify-content: space-between; }
+  .wahl-reihe { display: flex; gap: 6px; flex-wrap: wrap; }
+  .wahl { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 4px 12px 4px 4px; border-radius: 12px; border: 2px solid var(--rand); background: var(--perg); font-weight: 800; font-size: 13px; cursor: pointer; text-align: left; line-height: 1.2; }
+  .wahl .rund-ic { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--perg-2); }
+  .wahl .rund-ic .ic { width: 16px; height: 16px; }
+  .wahl small { display: block; font-weight: 700; color: var(--tinte-2); font-size: 12px; }
+  .wahl[aria-pressed="true"] { border-color: var(--moos); background: color-mix(in srgb, var(--moos) 14%, var(--perg)); box-shadow: 0 2px 0 var(--moos-d); }
+  .kiepe { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+  .fach { width: 52px; height: 52px; border-radius: 14px; border: 2px dashed var(--rand); display: grid; place-items: center; background: none; cursor: pointer; padding: 0; color: var(--tinte-2); }
+  .fach.voll { border-style: solid; background: var(--perg-2); box-shadow: 0 3px 0 var(--rand); color: var(--holz); }
+  .abend .fach.voll { color: #E2B98A; }
+  .kiepe .kiepe-text { font-size: 13px; font-weight: 700; color: var(--tinte-2); }
+  .gegenstaende { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .ggst { display: grid; grid-template-columns: 28px 1fr; align-items: center; gap: 6px; padding: 4px 6px 4px 4px; min-height: 42px; border-radius: 12px; border: 2px solid var(--rand); background: var(--perg); font-size: 13px; font-weight: 800; text-align: left; cursor: pointer; line-height: 1.15; }
+  .ggst .rund-ic { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--perg-2); color: var(--holz); }
+  .abend .ggst .rund-ic { color: #E2B98A; }
+  .ggst .rund-ic .ic { width: 16px; height: 16px; }
+  .ggst small { display: block; font-weight: 700; color: var(--tinte-2); font-size: 11px; }
+  .ggst:disabled { opacity: .45; cursor: not-allowed; }
+  .vorb-fuss { display: flex; align-items: center; gap: 10px; margin-top: 18px; padding-top: 14px; border-top: 2px dashed var(--rand); }
+  .vorb-fuss .summe { margin-right: auto; font-weight: 800; }
+  .vorb-fuss .summe small { display: block; font-weight: 700; color: var(--tinte-2); font-size: 12px; }
+  .verlauf { display: grid; gap: 14px; justify-items: center; text-align: center; padding-top: 6px; }
+  .verlauf .satz { font: 600 22px/1.3 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; max-width: 520px; }
+  .folgen { display: grid; gap: 2px; width: min(420px, 100%); background: var(--perg-2); border-radius: 14px; padding: 6px 12px; text-align: left; }
+  .band-chip { padding: 6px 14px; border-radius: 999px; color: #fff; font-weight: 900; }
+  .verlauf .fest { font-size: 13px; font-weight: 700; color: var(--tinte-2); }
+  /* Handy: Bogen von unten statt Fenster */
+  .handy .modal.vorb { position: absolute; left: 0; right: 0; bottom: 0; top: 40px; width: auto; border-radius: 22px 22px 0 0; padding: 0; display: flex; flex-direction: column; transform: translateY(40px); }
+  .handy .ueberlage.offen .modal.vorb { transform: none; }
+  .bogen-kopf { display: flex; align-items: center; gap: 8px; padding: 14px 12px 8px 16px; }
+  .bogen-kopf h3 { margin: 0; flex: 1; font: 600 22px/1.15 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; }
+  .bogen-rumpf { flex: 1; min-height: 0; overflow: auto; padding: 0 16px 16px; display: grid; gap: 14px; align-content: start; }
+  .bogen-rumpf .aussicht { position: sticky; top: 0; z-index: 1; background: var(--perg); padding: 4px 0 8px; }
+  .handy .lage { justify-content: flex-start; margin: 0; }
+  .handy .gegenstaende { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .handy .vorb-fuss { margin: 0; padding: 12px 16px 16px; flex-wrap: wrap; }
+  .handy .vorb-fuss .summe { flex-basis: 100%; }
+  .handy .vorb-fuss .knopf { flex: 1; }
+  .handy .verlauf { padding: 16px; }
+  .handy .verlauf .satz { font-size: 20px; }
+
+  /* Tagwerk */
+  .tw { position: absolute; inset: 0; display: flex; flex-direction: column; z-index: 2; }
+  .tw-schleier { position: absolute; inset: 0; background: linear-gradient(color-mix(in srgb, var(--bg-oben) 88%, transparent) 0, color-mix(in srgb, var(--bg-oben) 55%, transparent) 120px, color-mix(in srgb, var(--bg-unten) 50%, transparent) 60%, color-mix(in srgb, var(--bg-unten) 88%, transparent) 100%); z-index: 1; }
+  .leiste { height: 72px; flex: none; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; padding: 0 20px; }
+  .leiste .links { display: flex; align-items: center; gap: 16px; }
+  .leiste .rechts { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+  .titel { display: grid; justify-items: center; min-width: 0; }
+  .titel h2 { margin: 0; font: 600 26px/1.15 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; }
+  .tagzeile { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--tinte-2); white-space: nowrap; }
+  .tagzeile .ic { width: 16px; height: 16px; }
+  .tw-raster { flex: 1; min-height: 0; display: grid; grid-template-columns: 240px minmax(0, 1fr) 250px; gap: 16px; padding: 0 20px 20px; }
+  .spalte { display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+  .spalte .knopf.unten { margin-top: auto; }
+  .mitte { display: flex; flex-direction: column; min-height: 0; min-width: 0; }
+  .brett-platz { flex: 1; min-height: 0; display: grid; place-items: center; }
+  .brett-platz svg { width: 100%; height: 100%; display: block; }
+  .matte { fill: var(--matte); stroke: var(--holz); stroke-width: 10; }
+  .pfad-s { fill: none; stroke: rgba(40, 24, 10, .5); stroke-width: 14; stroke-linecap: round; stroke-linejoin: round; }
+  .pfad { fill: none; stroke: #FFF3D6; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+  .gewaehlt .koerper { stroke: #FFF6E2; stroke-width: 5; }
+  .kiepe-dock { display: flex; gap: 8px; }
+  .k-ggst { position: relative; display: grid; justify-items: center; gap: 2px; width: 64px; padding: 6px 2px 4px; border-radius: 14px; border: 2px solid var(--rand); background: var(--perg); box-shadow: 0 3px 0 var(--rand); cursor: pointer; font-size: 11px; font-weight: 800; }
+  .k-ggst .ic { color: var(--holz); }
+  .abend .k-ggst .ic { color: #E2B98A; }
+  .k-ggst.aktiv { border-color: var(--honig); background: #FFE6A6; color: #3A2A1C; box-shadow: 0 3px 0 var(--honig-d); }
+  .k-ggst.aktiv .ic { color: #6E4422; }
+  .karte .kiepe-dock { flex-wrap: wrap; }
+  .kopf { height: 64px; flex: none; display: flex; align-items: center; gap: 8px; padding: 8px 12px 0; }
+  .kopf .titel { flex: 1; }
+  .kopf .titel h2 { font-size: 22px; }
+  .hud { display: flex; align-items: center; gap: 12px; padding: 8px 16px 0; flex: none; justify-content: space-between; }
+  .handy .brett-platz { padding: 0 10px; }
+  .beutel { display: flex; justify-content: center; gap: 6px; padding: 6px 12px 0; flex: none; }
+  .trupp-reihe { display: flex; justify-content: space-around; align-items: flex-start; padding: 8px 8px 14px; flex: none; }
+  .liste { display: grid; gap: 4px; }
+
+  /* Dorf-Bilder */
+  .bild { width: 320px; height: 230px; border-radius: 14px; }
+  .t-brot { --k: #D9A55A; --kk: #9A6B22; --sym: #4A2F0C; }
+  .t-brei { --k: #B85A7A; --kk: #7E3050; --sym: #FFF0F3; }
+  .token.s { width: 20px; height: 20px; }
+  .pille.leer { border-color: var(--warnung); color: var(--warnung); }
+
+  /* Baustelle, Zeichen in der Welt */
+  .bau-schild { position: absolute; transform: translate(-50%, -100%); display: inline-grid; grid-template-columns: auto auto; align-items: center; column-gap: 6px; row-gap: 3px; padding: 3px 9px 4px 4px; border-radius: 12px; background: var(--perg); border: 2px solid var(--honig); font-weight: 800; font-size: 12px; line-height: 1.15; white-space: nowrap; box-shadow: var(--schatten-k); pointer-events: auto; cursor: pointer; color: var(--tinte); }
+  .bau-schild .rund-ic { grid-row: 1 / 3; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: #FFE6A6; color: #6E4422; }
+  .bau-schild .rund-ic .ic { width: 14px; height: 14px; }
+  .bau-schild.warn { border-color: var(--warnung); }
+  .bau-schild.unten { transform: translate(-50%, 0); }
+  .bau-schild.warn .rund-ic { background: color-mix(in srgb, var(--warnung) 22%, var(--perg)); color: var(--warnung); }
+  .mini-balken { display: block; width: 100%; min-width: 48px; height: 5px; border-radius: 999px; background: var(--perg-2); overflow: hidden; }
+  .mini-balken b { display: block; height: 100%; border-radius: 999px; background: var(--moos-h); }
+  .zeichen-schild { position: absolute; transform: translate(-50%, -100%); width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--perg); border: 2px solid var(--rand); box-shadow: var(--schatten-k); color: var(--tinte-2); pointer-events: auto; cursor: help; }
+  .zeichen-schild .ic { width: 15px; height: 15px; }
+  .zeichen-schild.warn { border-color: var(--warnung); color: var(--warnung); }
+  .stufen { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; margin-bottom: 10px; }
+  .stufe { display: grid; justify-items: center; gap: 4px; font-size: 11px; font-weight: 800; color: var(--tinte-2); text-align: center; line-height: 1.15; }
+  .stufe i { width: 100%; height: 6px; border-radius: 999px; background: var(--perg-2); }
+  .stufe.fertig i { background: var(--moos-h); }
+  .stufe.jetzt { color: var(--tinte); }
+  .stufe.jetzt i { background: linear-gradient(90deg, var(--honig) 50%, var(--perg-2) 50%); box-shadow: 0 0 0 2px color-mix(in srgb, var(--honig) 40%, transparent); }
+  .stufen.dorf .stufe.jetzt i { background: var(--honig); }
+  .platz.bau { background: color-mix(in srgb, var(--honig) 16%, var(--perg)); }
+  .platz.bau .mini-balken { min-width: 0; width: 80%; margin-top: 2px; }
+  .schalter-reihe { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .kosten { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .kosten > span { display: inline-flex; align-items: center; gap: 3px; }
+  .etikett .kosten { font-size: 14px; color: var(--tinte); }
+
+  /* Warenliste (Lager, Baustelle, Bedarf) */
+  .waren { display: grid; gap: 2px; }
+  .ware { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; column-gap: 10px; row-gap: 4px; align-items: center; width: 100%; padding: 6px 6px; border: 0; border-radius: 12px; background: none; text-align: left; font-weight: 800; font-size: 14px; line-height: 1.2; }
+  button.ware { cursor: pointer; }
+  button.ware:hover { background: var(--perg-2); }
+  .ware .name small { display: block; font-weight: 700; font-size: 12px; color: var(--tinte-2); }
+  .ware .name small.gut { color: var(--gruen-text); }
+  .ware .name small.warn { color: var(--warnung); }
+  .ware .zahl { font-variant-numeric: tabular-nums; }
+  .ware .zahl small { color: var(--tinte-2); font-weight: 700; }
+  .ware .balken { grid-column: 2 / 4; }
+  .balken { display: flex; height: 7px; border-radius: 999px; background: var(--perg-2); overflow: hidden; }
+  .balken b { display: block; height: 100%; background: var(--moos-h); }
+  .balken b.vor { background: repeating-linear-gradient(135deg, var(--honig) 0 4px, var(--honig-d) 4px 7px); }
+  .balken.voll b { background: var(--honig); }
+  .balken.leer { box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--warnung) 50%, transparent); }
+
+  /* Leute im Dorf */
+  .leute { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .person { display: grid; justify-items: center; gap: 1px; font-size: 13px; font-weight: 800; text-align: center; line-height: 1.2; }
+  .person .portrait { width: 44px; height: 44px; margin-bottom: 2px; }
+  .person .gesicht { font-size: 17px; }
+  .person small { font-weight: 700; color: var(--tinte-2); font-size: 11px; }
+  .person.frei .portrait { border: 2px dashed var(--rand); border-radius: 50%; }
+  .zeile .portrait { width: 36px; height: 36px; }
+  .zeile .portrait .gesicht { font-size: 15px; }
+
+  /* Rückkehr */
+  .modal.rueck { width: min(480px, calc(100% - 32px)); display: grid; gap: 12px; }
+  .rueck-zeit { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0; font-weight: 800; color: var(--tinte-2); }
+  .rueck .folgen { width: auto; }
+  .vorschlag { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; background: color-mix(in srgb, var(--honig) 18%, var(--perg)); border: 2px solid var(--honig); font-weight: 800; font-size: 14px; }
+  .vorschlag > .ic { color: var(--honig-d); }
+  .abend .vorschlag > .ic { color: var(--honig); }
+  .vorschlag span { flex: 1; }
+  .rueck-fuss { display: flex; justify-content: flex-end; }
+  .handy .modal.rueck { padding: 0 0 16px; gap: 10px; }
+  .handy .modal.rueck > :not(.bogen-kopf) { margin: 0 16px; }
+  .handy .rueck .vorschlag { flex-wrap: wrap; }
+  .handy .rueck-fuss .knopf { flex: 1; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .geraet *, .geraet *::before, .geraet *::after { animation: none !important; transition-duration: 100ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Lichtung – Mockup MVP</h1>
+<p class="erkl">Das MVP aus <code>docs/konzept.md</code>: die Siedlung in Fluren mit dem Dorf auf der Lichtung,
+  Bauen als Baustelle mit Trägern, das Lager, die Rückkehr nach einer Pause, dazu Vorbereiten und Tagwerk aus der
+  ersten Fassung. Die Welt ist als flache Zeichnung nachgestellt – im Spiel steht dort die 3D-Welt aus dem Prototyp.
+  Alles ist anklickbar: <b>Fluren und Schilder</b>, <b>Spieluhr</b> (springt im Mockup zwischen Tag, Dämmerung und
+  Nacht), <b>Bauen → Hier bauen</b> (die Baustelle läuft dann im Zeitraffer), <b>Lager</b> in der Navigation, eine
+  <b>Ware im Lager</b>, <b>Zum Dorf ausbauen</b>, Zuerst und Abbrechen an Baustellen.</p>
+<p class="erkl"><b>Neu in dieser Fassung:</b> das Dorf statt einzelner Hütten (4), Baustellen mit Ole als Träger (3),
+  die Lager-Ansicht (5) und „Während du weg warst“ (6).</p>
+
+<h1>1 · Siedlung mit Fluren – Tag</h1>
+<p class="erkl">Abgesteckt sind Lichtung, Nordwald und Ostufer (feste helle Grenze). Birkenhang und Südwiese sind
+  erkundet, aber noch nicht abgesteckt (gestrichelt). Dahinter liegt Nebel. In der Mitte der Lichtung steht das Dorf,
+  noch ein Weiler mit drei Hütten. Am Ostufer entsteht der Fischer: Ole trägt mit seinem Korb das Material hin. Der
+  Holzfäller im Nordwald hat sein Fach voll und wartet, bis Ole wieder Zeit hat – ein Träger reicht knapp.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Tag</figcaption><div class="geraet laptop" data-ansicht="siedlung" data-flur="nordwald" data-uhr="tag"></div></figure>
+  <figure><figcaption>Handy 390 px · Tag</figcaption><div class="geraet handy" data-ansicht="siedlung" data-flur="nordwald" data-uhr="tag"></div></figure>
+</div>
+
+<h1>2 · Siedlung – Abend und Nacht</h1>
+<p class="erkl">Oberfläche in der Stimmung „Abend“, die Welt folgt der Spieluhr: Nacht. Lagerfeuer, Fackel und Fenster
+  halten das Dunkel zurück. Das Ostufer hat kein Licht – es verwildert über Nacht. „Fackel setzen“ ändert das.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Abend · Nacht</figcaption><div class="geraet laptop abend" data-ansicht="siedlung" data-flur="ostufer" data-uhr="nacht"></div></figure>
+  <figure><figcaption>Handy 390 px · Abend · Nacht</figcaption><div class="geraet handy abend" data-ansicht="siedlung" data-flur="ostufer" data-uhr="nacht"></div></figure>
+</div>
+
+<h1>3 · Bauen und Baustelle</h1>
+<p class="erkl">Im Baumodus leuchten die Fluren je nach Eignung von blass bis golden, die Prozentzahl steht auf dem
+  Schild. In der gewählten Flur zeigen feine Umrisse die freien Waben; wo genau man baut, ist fast egal. Das Etikett
+  nennt, was die Baustelle braucht. <b>„Hier bauen“</b> steckt sofort Pflöcke und Band ab, und Ole läuft los – im
+  Mockup im Zeitraffer, im Spiel dauert ein kleines Gebäude etwa einen halben Spieltag.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Tag · Baumodus Sammler (die Wiese wäre besser, ist aber noch nicht abgesteckt)</figcaption><div class="geraet laptop" data-ansicht="bauen" data-bauart="sammler" data-flur="nordwald" data-uhr="tag"></div></figure>
+  <figure><figcaption>Handy 390 px · Abend · Dämmerung · Baumodus</figcaption><div class="geraet handy abend" data-ansicht="bauen" data-flur="nordwald" data-uhr="daemmerung"></div></figure>
+</div>
+<p class="erkl" style="margin-top: 24px">Die Baustelle in der Flur-Karte: vier Stufen, das gelieferte Material, wer
+  gerade trägt. Über der Baustelle in der Welt steht ein kleines Schild. Rechts wartet sie nachts auf Bretter – Ole
+  holt derweil Holz, mit Fackel. Abbrechen trägt alles zurück.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Tag · Baustelle am Ostufer</figcaption><div class="geraet laptop" data-ansicht="siedlung" data-flur="ostufer" data-uhr="tag"></div></figure>
+  <figure><figcaption>Handy 390 px · Abend · Nacht · wartet auf Bretter</figcaption><div class="geraet handy abend" data-ansicht="siedlung" data-flur="ostufer" data-uhr="nacht" data-baustelle="wartet"></div></figure>
+</div>
+
+<h1>4 · Das Dorf</h1>
+<p class="erkl">Gewohnt wird im Dorf auf der Lichtung. Es wächst als Ganzes und sieht in jeder Stufe anders aus – das
+  ist der deutlichste Fortschritt der Siedlung. Im Mockup gezeichnet mit einfachen Formen; die Richtung zählt:</p>
+<div class="reihe">
+  <figure><figcaption>1 · Weiler – Holzhütten mit Reetdach ums Feuer</figcaption><div class="geraet bild" data-ansicht="dorfbild" data-stufe="1" data-uhr="tag" data-baustelle="keine"></div></figure>
+  <figure><figcaption>2 · Dorf – Fachwerk, ein Brunnen</figcaption><div class="geraet bild" data-ansicht="dorfbild" data-stufe="2" data-uhr="tag" data-baustelle="keine"></div></figure>
+  <figure><figcaption>3 · Marktflecken – Stein und Marktstände</figcaption><div class="geraet bild" data-ansicht="dorfbild" data-stufe="3" data-uhr="tag" data-baustelle="keine"></div></figure>
+  <figure><figcaption>4 · Stadt – zweistöckig, Turm und Mauer</figcaption><div class="geraet bild" data-ansicht="dorfbild" data-stufe="4" data-uhr="tag" data-baustelle="keine"></div></figure>
+  <figure><figcaption>Stadt bei Nacht – Fenster und Feuer</figcaption><div class="geraet bild" data-ansicht="dorfbild" data-stufe="4" data-uhr="nacht" data-baustelle="keine"></div></figure>
+</div>
+<p class="erkl" style="margin-top: 24px">Die Lichtung antippen öffnet die Dorf-Karte: Bewohner, laufender Bedarf, Zuzug
+  und die nächste Stufe. Links ist der Weiler voll und versorgt – <b>„Zum Dorf ausbauen“</b> steckt eine Baustelle am
+  Dorf ab (im Lager sind erst 18 der 30 Bretter; die Baustelle wartet dann auf den Rest). Rechts fehlen Beeren: Das
+  Wachstum ruht, niemand hungert.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Tag · voll und versorgt</figcaption><div class="geraet laptop" data-ansicht="siedlung" data-flur="lichtung" data-uhr="tag"></div></figure>
+  <figure><figcaption>Handy 390 px · Abend · Dämmerung · Beeren fehlen</figcaption><div class="geraet handy abend" data-ansicht="siedlung" data-flur="lichtung" data-uhr="daemmerung" data-dorf="mangel"></div></figure>
+</div>
+
+<h1>5 · Lager</h1>
+<p class="erkl">Schlank: je Ware Füllstand, Trend und wann sie voll ist oder ausgeht. Vorgemerktes Material für
+  Baustellen ist gestreift. Darunter, was Ole trägt und welches Gebäude auf ihn wartet. <b>Eine Ware antippen</b>
+  führt in die Welt: Erzeuger leuchten grün, Verbraucher golden. Vor dem Lager stehen die Stapel.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Tag</figcaption><div class="geraet laptop" data-ansicht="lager" data-flur="lichtung" data-uhr="tag"></div></figure>
+  <figure><figcaption>Handy 390 px · Abend · Nacht</figcaption><div class="geraet handy abend" data-ansicht="lager" data-flur="lichtung" data-uhr="nacht"></div></figure>
+</div>
+
+<h1>6 · Während du weg warst</h1>
+<p class="erkl">Beim Öffnen nach drei Stunden: eine kleine Karte mit dem, was passiert ist, und einem Vorschlag. Danach
+  steht die Welt so da: Fischer fertig, Holz voll (der Holzfäller ruht – Zeichen über dem Haus), Beeren alle.</p>
+<div class="reihe">
+  <figure><figcaption>Handy 390 px · Tag</figcaption><div class="geraet handy" data-ansicht="rueckkehr" data-flur="nordwald" data-uhr="tag" data-zustand="nachher"></div></figure>
+  <figure><figcaption>Laptop · Abend · Dämmerung</figcaption><div class="geraet laptop abend" data-ansicht="rueckkehr" data-flur="nordwald" data-uhr="daemmerung" data-zustand="nachher"></div></figure>
+</div>
+
+<h1>7 · Vorbereiten und Losziehen</h1>
+<p class="erkl">Die Aussichten wandern sofort mit, wenn sich Trupp, Proviant oder Kiepe ändern. „Losziehen“ würfelt:
+  Die Nadel läuft über den Balken und bleibt stehen, das Ergebnis steht dann fest. Nachts lohnt die Laterne – in den
+  Abend-Beispielen ist sie noch nicht eingepackt.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Tag</figcaption><div class="geraet laptop" data-ansicht="vorbereiten" data-flur="nordwald" data-uhr="tag" data-seed="5"></div></figure>
+  <figure><figcaption>Handy 390 px · Tag</figcaption><div class="geraet handy" data-ansicht="vorbereiten" data-flur="nordwald" data-uhr="tag" data-seed="9"></div></figure>
+</div>
+<div class="reihe" style="margin-top: 24px">
+  <figure><figcaption>Laptop · Abend · Nacht (nach einem Missgeschick)</figcaption><div class="geraet laptop abend" data-ansicht="vorbereiten" data-flur="nordwald" data-uhr="nacht" data-pech="ja" data-seed="3"></div></figure>
+  <figure><figcaption>Handy 390 px · Abend · Nacht</figcaption><div class="geraet handy abend" data-ansicht="vorbereiten" data-flur="nordwald" data-uhr="nacht" data-seed="4"></div></figure>
+</div>
+
+<h1>8 · Tagwerk in der Flur</h1>
+<p class="erkl">Das Brett liegt über dem Nordwald. Der Holzfäller steht als feste Kachel darauf; Holzketten, die ihn
+  berühren, zählen doppelt (goldene Strichel um ihn). Der Wurf hat drei Felder Gestrüpp gelegt und eine alte Karte
+  versteckt. Die Kiepe liegt griffbereit – jeder Gegenstand wirkt einmal.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Tag</figcaption><div class="geraet laptop" data-ansicht="tagwerk" data-flur="nordwald" data-uhr="tag"></div></figure>
+  <figure><figcaption>Handy 390 px · Abend (Welt: Tag)</figcaption><div class="geraet handy abend" data-ansicht="tagwerk" data-flur="nordwald" data-uhr="tag"></div></figure>
+</div>
+
+<div class="notiz">
+  <h2>Was hier Platzhalter ist</h2>
+  <ul>
+    <li>Die Welt ist eine flache Zeichnung mit einfachen Formen. Im Spiel ist es die 3D-Welt aus
+      <code>apps/web/welt.html</code>; Grenzen, Nebel, Licht und Schilder kommen dort an dieselben Stellen.</li>
+    <li>Symbole von Lucide, Initialen statt Gesichter. Prozente, Kosten, Mengen, Zeiten und Schritte sind Platzhalter
+      fürs Balancing.</li>
+    <li>Die Häuser des Dorfs sind Klötze mit Dach; Stufe für Stufe sollen sie im Spiel deutlich anders aussehen.</li>
+    <li>Der Zeitraffer der Baustelle und die springende Spieluhr gibt es nur im Mockup.</li>
+    <li>Forschung und Menü sind in der Navigation angelegt, aber noch nicht gestaltet. „Lager ausbauen“ ist nur
+      angedeutet.</li>
+  </ul>
+  <h2>Zu entscheiden</h2>
+  <ul>
+    <li>Mengen in Echtzeit („15 je Stunde“, „reicht noch 2 h“) statt je Spieltag – verständlicher?</li>
+    <li>Das Dorf wächst über die Lichtung. Ab dem Dorf werden dort Waben belegt; bei der Stadt bleibt kaum Platz.
+      Sollen die vier Bauplätze der Lichtung dann an den Rand rücken oder entfallen?</li>
+    <li>Der Name über Ole – immer zeigen oder nur beim Antippen?</li>
+    <li>Ole ist Fischer und trägt zugleich. Nimmt man ihn ins Tagwerk mit, ruht der Transport (Hinweis im
+      Vorbereiten). Gut so – oder sollen Träger nie mitgehen?</li>
+    <li>Schilder auf allen Fluren immer sichtbar – oder nur Namen beim Heranzoomen?</li>
+    <li>Spieluhr als Band mit Tag, Dämmerung und Nacht oben rechts – verständlich genug?</li>
+  </ul>
+</div>
+
+<script>
+const ICON = {"axe":"<path d=\"m14 12-8.381 8.38a1 1 0 0 1-3.001-3L11 9\"/><path d=\"M15 15.5a.5.5 0 0 0 .5.5A6.5 6.5 0 0 0 22 9.5a.5.5 0 0 0-.5-.5h-1.672a2 2 0 0 1-1.414-.586l-5.062-5.062a1.205 1.205 0 0 0-1.704 0L9.352 5.648a1.205 1.205 0 0 0 0 1.704l5.062 5.062A2 2 0 0 1 15 13.828z\"/>","backpack":"<path d=\"M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z\"/><path d=\"M8 10h8\"/><path d=\"M8 18h8\"/><path d=\"M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6\"/><path d=\"M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2\"/>","dices":"<rect width=\"12\" height=\"12\" x=\"2\" y=\"10\" rx=\"2\" ry=\"2\"/><path d=\"m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6\"/><path d=\"M6 18h.01\"/><path d=\"M10 14h.01\"/><path d=\"M15 6h.01\"/><path d=\"M18 9h.01\"/>","footprints":"<path d=\"M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z\"/><path d=\"M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z\"/><path d=\"M16 17h4\"/><path d=\"M4 13h4\"/>","lamp":"<path d=\"M12 12v6\"/><path d=\"M4.077 10.615A1 1 0 0 0 5 12h14a1 1 0 0 0 .923-1.385l-3.077-7.384A2 2 0 0 0 15 2H9a2 2 0 0 0-1.846 1.23Z\"/><path d=\"M8 20a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1z\"/>","flag":"<path d=\"M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528\"/>","milestone":"<path d=\"M12 13v8\"/><path d=\"M12 3v3\"/><path d=\"M18.172 6a2 2 0 0 1 1.414.586l2.06 2.06a1.207 1.207 0 0 1 0 1.708l-2.06 2.06a2 2 0 0 1-1.414.586H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z\"/>","warehouse":"<path d=\"M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11\"/><path d=\"M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z\"/><path d=\"M6 13h12\"/><path d=\"M6 17h12\"/>","scroll":"<path d=\"M19 17V5a2 2 0 0 0-2-2H4\"/><path d=\"M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3\"/>","lightbulb":"<path d=\"M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5\"/><path d=\"M9 18h6\"/><path d=\"M10 22h4\"/>","moon":"<path d=\"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401\"/>","sun":"<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2\"/><path d=\"M12 20v2\"/><path d=\"m4.93 4.93 1.41 1.41\"/><path d=\"m17.66 17.66 1.41 1.41\"/><path d=\"M2 12h2\"/><path d=\"M20 12h2\"/><path d=\"m6.34 17.66-1.41 1.41\"/><path d=\"m19.07 4.93-1.41 1.41\"/>","sunset":"<path d=\"M12 10V2\"/><path d=\"m4.93 10.93 1.41 1.41\"/><path d=\"M2 18h2\"/><path d=\"M20 18h2\"/><path d=\"m19.07 10.93-1.41 1.41\"/><path d=\"M22 22H2\"/><path d=\"m16 6-4 4-4-4\"/><path d=\"M16 18a4 4 0 0 0-8 0\"/>","cloud-drizzle":"<path d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\"/><path d=\"M8 19v1\"/><path d=\"M8 14v1\"/><path d=\"M16 19v1\"/><path d=\"M16 14v1\"/><path d=\"M12 21v1\"/><path d=\"M12 16v1\"/>","cloud-fog":"<path d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\"/><path d=\"M16 17H7\"/><path d=\"M17 21H9\"/>","flame":"<path d=\"M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4\"/>","sandwich":"<path d=\"m2.37 11.223 8.372-6.777a2 2 0 0 1 2.516 0l8.371 6.777\"/><path d=\"M21 15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-5.25\"/><path d=\"M3 15a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h9\"/><path d=\"m6.67 15 6.13 4.6a2 2 0 0 0 2.8-.4l3.15-4.2\"/><rect width=\"20\" height=\"4\" x=\"2\" y=\"11\" rx=\"1\"/>","carrot":"<path d=\"M15 16a1 1 0 0 0-7-7q-4 4-5.987 12.385a.5.5 0 0 0 .602.602Q11 20 15 16l-3-3\"/><path d=\"M15 9q4 4 7 0-3-4-7 0 4-4 0-7-4 3 0 7\"/><path d=\"m8 15-2.58-2.58\"/>","sprout":"<path d=\"M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3\"/><path d=\"M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4\"/><path d=\"M5 21h14\"/>","wheat":"<path d=\"M2 22 16 8\"/><path d=\"M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z\"/><path d=\"M7.47 8.53 9 7l1.53 1.53a3.5 3.5 0 0 1 0 4.94L9 15l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z\"/><path d=\"M11.47 4.53 13 3l1.53 1.53a3.5 3.5 0 0 1 0 4.94L13 11l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z\"/><path d=\"M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4Z\"/><path d=\"M11.47 17.47 13 19l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L5 19l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z\"/><path d=\"M15.47 13.47 17 15l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L9 15l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z\"/><path d=\"M19.47 9.47 21 11l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L13 11l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z\"/>","house":"<path d=\"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8\"/><path d=\"M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/>","fish":"<path d=\"M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.47-3.44 6-7 6s-7.56-2.53-8.5-6Z\"/><path d=\"M18 12v.5\"/><path d=\"M16 17.93a9.77 9.77 0 0 1 0-11.86\"/><path d=\"M7 10.67C7 8 5.58 5.97 2.73 5.5c-1 1.5-1 5 .23 6.5-1.24 1.5-1.24 5-.23 6.5C5.58 18.03 7 16 7 13.33\"/><path d=\"M10.46 7.26C10.2 5.88 9.17 4.24 8 3h5.8a2 2 0 0 1 1.98 1.67l.23 1.4\"/><path d=\"m16.01 17.93-.23 1.4A2 2 0 0 1 13.8 21H9.5a5.96 5.96 0 0 0 1.49-3.98\"/>","tree-pine":"<path d=\"m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z\"/><path d=\"M12 22v-3\"/>","tree-deciduous":"<path d=\"M8 19a4 4 0 0 1-2.24-7.32A3.5 3.5 0 0 1 9 6.03V6a3 3 0 1 1 6 0v.04a3.5 3.5 0 0 1 3.24 5.65A4 4 0 0 1 16 19Z\"/><path d=\"M12 19v3\"/>","leaf":"<path d=\"M11 20a10 10 0 0010-10 25.9 25.9 0 00-1.04-7.281 1 1 0 00-1.755-.325C15.833 5.5 13 5.5 9.8 6.1A7 7 0 0011 20\"/><path d=\"M2 21a5 5 0 012.911-4.544C7.613 15.212 8.351 15.24 11 13\"/>","mountain":"<path d=\"m8 3 4 8 5-5 5 15H2L8 3z\"/>","shrub":"<path d=\"M12 22v-5.172a2 2 0 0 0-.586-1.414L9.5 13.5\"/><path d=\"M14.5 14.5 12 17\"/><path d=\"M17 8.8A6 6 0 0 1 13.8 20H10A6.5 6.5 0 0 1 7 8a5 5 0 0 1 10 0z\"/>","plus":"<path d=\"M5 12h14\"/><path d=\"M12 5v14\"/>","check":"<path d=\"M20 6 9 17l-5-5\"/>","x":"<path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/>","chevron-left":"<path d=\"m15 18-6-6 6-6\"/>","menu":"<path d=\"M4 5h16\"/><path d=\"M4 12h16\"/><path d=\"M4 19h16\"/>","coins":"<path d=\"M13.744 17.736a6 6 0 1 1-7.48-7.48\"/><path d=\"M15 6h1v4\"/><path d=\"m6.134 14.768.866-.5 2 3.464\"/><circle cx=\"16\" cy=\"8\" r=\"6\"/>","croissant":"<path d=\"M10.2 18H4.774a1.5 1.5 0 0 1-1.352-.97 11 11 0 0 1 .132-6.487\"/><path d=\"M18 10.2V4.774a1.5 1.5 0 0 0-.97-1.352 11 11 0 0 0-6.486.132\"/><path d=\"M18 5a4 3 0 0 1 4 3 2 2 0 0 1-2 2 10 10 0 0 0-5.139 1.42\"/><path d=\"M5 18a3 4 0 0 0 3 4 2 2 0 0 0 2-2 10 10 0 0 1 1.42-5.14\"/><path d=\"M8.709 2.554a10 10 0 0 0-6.155 6.155 1.5 1.5 0 0 0 .676 1.626l9.807 5.42a2 2 0 0 0 2.718-2.718l-5.42-9.807a1.5 1.5 0 0 0-1.626-.676\"/>","pickaxe":"<path d=\"m14 13-8.381 8.38a1 1 0 0 1-3.001-3L11 9.999\"/><path d=\"M15.973 4.027A13 13 0 0 0 5.902 2.373c-1.398.342-1.092 2.158.277 2.601a19.9 19.9 0 0 1 5.822 3.024\"/><path d=\"M16.001 11.999a19.9 19.9 0 0 1 3.024 5.824c.444 1.369 2.26 1.676 2.603.278A13 13 0 0 0 20 8.069\"/><path d=\"M18.352 3.352a1.205 1.205 0 0 0-1.704 0l-5.296 5.296a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l5.296-5.296a1.205 1.205 0 0 0 0-1.704z\"/>","sparkles":"<path d=\"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z\"/><path d=\"M20 2v4\"/><path d=\"M22 4h-4\"/><circle cx=\"4\" cy=\"20\" r=\"2\"/>","undo-2":"<path d=\"M9 14 4 9l5-5\"/><path d=\"M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11\"/>","lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/>","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m16 9-5.5 5.5L8 12\"/>","triangle-alert":"<path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/>","cherry":"<path d=\"M2 17a5 5 0 0 0 10 0c0-2.76-2.5-5-5-3-2.5-2-5 .24-5 3Z\"/><path d=\"M12 17a5 5 0 0 0 10 0c0-2.76-2.5-5-5-3-2.5-2-5 .24-5 3Z\"/><path d=\"M7 14c3.22-2.91 4.29-8.75 5-12 1.66 2.38 4.94 9 5 12\"/><path d=\"M22 9c-4.29 0-7.14-2.33-10-7 5.71 0 10 4.67 10 7Z\"/>","nut":"<path d=\"M16.847 5.847 20 9a7.23 7.23 0 011.551 7.516C21.241 17.352 21 17.932 21 19v1a1 1 0 01-1 1h-1c-1.069 0-1.648.242-2.485.552A7.2 7.2 0 019.002 20l-3.155-3.153\"/><path d=\"M18.21 5.43c-1.71.69-5.07 1.07-6.71 1.07.46 1.38.91 2.74.61 4.88a.88.88 0 01-.73.74c-1.78.28-3.54-.17-4.88-.62 0 1.64-.38 5-1.07 6.71-.21.52-.82.55-1.17.12A10 10 0 0118.33 4.26c.43.35.4.97-.12 1.17\"/><path d=\"M4.93 4.93 3 3a.7.7 0 010-1\"/>","rabbit":"<path d=\"M13 16a3 3 0 0 1 2.24 5\"/><path d=\"M18 12h.01\"/><path d=\"M18 21h-8a4 4 0 0 1-4-4 7 7 0 0 1 7-7h.2L9.6 6.4a1 1 0 1 1 2.8-2.8L15.8 7h.2c3.3 0 6 2.7 6 6v1a2 2 0 0 1-2 2h-1a3 3 0 0 0-3 3\"/><path d=\"M20 8.54V4a2 2 0 1 0-4 0v3\"/><path d=\"M7.612 12.524a3 3 0 1 0-1.6 4.3\"/>","brick-wall":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M12 9v6\"/><path d=\"M16 15v6\"/><path d=\"M16 3v6\"/><path d=\"M3 15h18\"/><path d=\"M3 9h18\"/><path d=\"M8 15v6\"/><path d=\"M8 3v6\"/>","gem":"<path d=\"M10.5 3 8 9l4 13 4-13-2.5-6\"/><path d=\"M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z\"/><path d=\"M2 9h20\"/>","bird":"<path d=\"M16 7h.01\"/><path d=\"M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20\"/><path d=\"m20 7 2 .5-2 .5\"/><path d=\"M10 18v3\"/><path d=\"M14 17.75V21\"/><path d=\"M7 18a6 6 0 0 0 3.84-10.61\"/>","hammer":"<path d=\"m15 12-9.373 9.373a1 1 0 0 1-3.001-3L12 9\"/><path d=\"m18 15 4-4\"/><path d=\"m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172v-.344a2 2 0 0 0-.586-1.414l-1.657-1.657A6 6 0 0 0 12.516 3H9l1.243 1.243A6 6 0 0 1 12 8.485V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5\"/>","binoculars":"<path d=\"M10 10h4\"/><path d=\"M19 7V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v3\"/><path d=\"M20 21a2 2 0 0 0 2-2v-3.851c0-1.39-2-2.962-2-4.829V8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v11a2 2 0 0 0 2 2z\"/><path d=\"M 22 16 L 2 16\"/><path d=\"M4 21a2 2 0 0 1-2-2v-3.851c0-1.39 2-2.962 2-4.829V8a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v11a2 2 0 0 1-2 2z\"/><path d=\"M9 7V4a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v3\"/>","flower-2":"<path d=\"M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1\"/><circle cx=\"12\" cy=\"8\" r=\"2\"/><path d=\"M12 10v12\"/><path d=\"M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z\"/><path d=\"M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z\"/>","layers":"<path d=\"M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z\"/><path d=\"M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12\"/><path d=\"M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17\"/>","soup":"<path d=\"M11.248 3c.273.1.808.53.747 1.36-.05.83-.938 1.2-.989 2.02-.06.78.333 1.24.727 1.62\"/><path d=\"M16.252 3c.268.1.794.53.745 1.36-.06.83-.923 1.2-.993 2.02-.05.78.338 1.24.725 1.62\"/><path d=\"M19.5 12 22 6\"/><path d=\"M4 12a1 1 0 00-.99 1.133A9 9 0 0012 21a9 9 0 008.99-7.867A1 1 0 0020 12z\"/><path d=\"M6.252 3c.268.1.794.53.745 1.36-.06.83-.923 1.2-.993 2.02-.05.78.338 1.24.735 1.62\"/><path d=\"M7 21h10\"/>","slice":"<path d=\"M11 16.586V19a1 1 0 0 1-1 1H2L18.37 3.63a1 1 0 1 1 3 3l-9.663 9.663a1 1 0 0 1-1.414 0L8 14\"/>"};
+ICON.waves = '<path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>';
+Object.assign(ICON, {"pause":"<rect x=\"14\" y=\"3\" width=\"5\" height=\"18\" rx=\"1\"/><rect x=\"5\" y=\"3\" width=\"5\" height=\"18\" rx=\"1\"/>","hourglass":"<path d=\"M5 22h14\"/><path d=\"M5 2h14\"/><path d=\"M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22\"/><path d=\"M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2\"/>","users":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><path d=\"M16 3.128a4 4 0 0 1 0 7.744\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/>","clock":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 6v6l4 2\"/>","construction":"<rect x=\"2\" y=\"6\" width=\"20\" height=\"8\" rx=\"1\"/><path d=\"M17 14v7\"/><path d=\"M7 14v7\"/><path d=\"M17 3v3\"/><path d=\"M7 3v3\"/><path d=\"M10 14 2.3 6.3\"/><path d=\"m14 6 7.7 7.7\"/><path d=\"m8 6 8 8\"/>","shopping-basket":"<path d=\"m15 11-1 9\"/><path d=\"m19 11-4-7\"/><path d=\"M2 11h20\"/><path d=\"m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4\"/><path d=\"M4.5 15.5h15\"/><path d=\"m5 11 4-7\"/><path d=\"m9 11 1 9\"/>","trending-up":"<path d=\"M16 7h6v6\"/><path d=\"m22 7-8.5 8.5-5-5L2 17\"/>","trending-down":"<path d=\"M16 17h6v-6\"/><path d=\"m22 17-8.5-8.5-5 5L2 7\"/>","door-open":"<path d=\"M10 21H2\"/><path d=\"M10 3H7a2 2 0 00-2 2v16\"/><path d=\"M14 12h.01\"/><path d=\"M19 21V5a2 2 0 00-1.675-1.974l-6.163-1.013A1 1 0 0010 3v18a1 1 0 001.124.992z\"/><path d=\"M22 21h-3\"/>","chevrons-up":"<path d=\"m17 11-5-5-5 5\"/><path d=\"m17 18-5-5-5 5\"/>","sunrise":"<path d=\"M12 2v8\"/><path d=\"m4.93 10.93 1.41 1.41\"/><path d=\"M2 18h2\"/><path d=\"M20 18h2\"/><path d=\"m19.07 10.93-1.41 1.41\"/><path d=\"M22 22H2\"/><path d=\"m8 6 4-4 4 4\"/><path d=\"M16 18a4 4 0 0 0-8 0\"/>","store":"<path d=\"M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5\"/><path d=\"M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244\"/><path d=\"M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05\"/>","castle":"<path d=\"M10 5V3\"/><path d=\"M14 5V3\"/><path d=\"M15 21v-3a3 3 0 0 0-6 0v3\"/><path d=\"M18 3v8\"/><path d=\"M18 5H6\"/><path d=\"M22 11H2\"/><path d=\"M22 9v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9\"/><path d=\"M6 3v8\"/>","house-plus":"<path d=\"M12.35 21H5a2 2 0 0 1-2-2v-9a2 2 0 0 1 .71-1.53l7-6a2 2 0 0 1 2.58 0l7 6A2 2 0 0 1 21 10v2.35\"/><path d=\"M14.8 12.4A1 1 0 0 0 14 12h-4a1 1 0 0 0-1 1v8\"/><path d=\"M15 18h6\"/><path d=\"M18 15v6\"/>","package":"<path d=\"M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z\"/><path d=\"M12 22V12\"/><polyline points=\"3.29 7 12 12 20.71 7\"/><path d=\"m7.5 4.27 9 5.15\"/>"});
+</script>
+<script>
+// Symbole aus Lucide (ISC) – Platzhalter bis zur gemalten Grafik
+const ic = (n, k = 'ic') => `<svg class="${k}" viewBox="0 0 24 24" aria-hidden="true">${ICON[n] || ''}</svg>`;
+const rundIc = n => `<span class="rund-ic">${ic(n)}</span>`;
+const SQ3 = Math.sqrt(3);
+const reduziert = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let naechsteUid = 1;
+
+class Zufall {
+  constructor(s) { this.s = s >>> 0; }
+  next() {
+    const a = this.s = (this.s + 0x6D2B79F5) >>> 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  }
+}
+function streuung(ix, iz, s) {
+  let h = (Math.imul(ix, 374761393) + Math.imul(iz, 668265263) + Math.imul(s, 1442695041)) | 0;
+  h = Math.imul(h ^ (h >>> 13), 1274126177);
+  return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+}
+function rauschen(x, z, s) {
+  const ix = Math.floor(x), iz = Math.floor(z), fx = x - ix, fz = z - iz;
+  const u = fx * fx * (3 - 2 * fx), v = fz * fz * (3 - 2 * fz);
+  const a = streuung(ix, iz, s), b = streuung(ix + 1, iz, s), c = streuung(ix, iz + 1, s), d = streuung(ix + 1, iz + 1, s);
+  return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+}
+function fbm(x, z, s) {
+  let w = 0.5, f = 1, sum = 0, n = 0;
+  for (let i = 0; i < 4; i++) { sum += w * rauschen(x * f, z * f, s + i * 17); n += w; w *= 0.5; f *= 2; }
+  return sum / n;
+}
+
+// ---------- Vektoren und Farben ----------
+const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+const sub = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+const norm = a => { const l = Math.hypot(...a) || 1; return a.map(v => v / l); };
+const hexRgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+const rgbHex = c => '#' + c.map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0')).join('');
+const mische = (a, b, t) => { const A = hexRgb(a), B = hexRgb(b); return rgbHex(A.map((v, i) => v + (B[i] - v) * t)); };
+const faktor = (a, f) => rgbHex(hexRgb(a).map(v => v * f));
+const LICHT = norm([-0.55, 0.78, 0.4]);
+
+// ---------- Welt: Waben, Fluren, Gelände ----------
+const R = 11;
+const zuWelt = (q, r) => [1.5 * q, SQ3 * (r + q / 2)];
+const schl = (q, r) => q + ',' + r;
+const RICHT = [[1, 0], [1, -1], [0, -1], [-1, 0], [-1, 1], [0, 1]];
+function zuWabe(x, z) {
+  const q = x / 1.5, r = z / SQ3 - q / 2, s = -q - r;
+  let rq = Math.round(q), rr = Math.round(r); const rs = Math.round(s);
+  const dq = Math.abs(rq - q), dr = Math.abs(rr - r), ds = Math.abs(rs - s);
+  if (dq > dr && dq > ds) rq = -rr - rs; else if (dr > ds) rr = -rq - rs;
+  return schl(rq, rr);
+}
+const FLUSS = [[11, -21], [8.6, -11], [5.4, -3.5], [6.6, 2.8], [4.6, 9.5], [6.2, 21]];
+function abstandLinie(x, z, pts) {
+  let best = 1e9;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const [ax, az] = pts[i], [bx, bz] = pts[i + 1], dx = bx - ax, dz = bz - az;
+    const t = Math.max(0, Math.min(1, ((x - ax) * dx + (z - az) * dz) / (dx * dx + dz * dz)));
+    best = Math.min(best, Math.hypot(x - ax - t * dx, z - az - t * dz));
+  }
+  return best;
+}
+
+const FLUR_ARTEN = {
+  lichtung: { name: 'Lichtung', icon: 'flame', bonus: 'Dorf und Lager', brett: ['holz', 'beeren', 'kraeuter', 'nuesse', 'gestruepp', 'hase'] },
+  wald:     { name: 'Wald', icon: 'tree-pine', bonus: '+50 % Holzfäller, Köhler', brett: ['holz', 'beeren', 'kraeuter', 'nuesse', 'gestruepp', 'hase'] },
+  ufer:     { name: 'Ufer', icon: 'fish', bonus: '+60 % Fischer, Mühle', brett: ['fisch', 'lehm', 'schilf', 'kiesel', 'schlamm', 'ente'] },
+  wiese:    { name: 'Wiese', icon: 'flower-2', bonus: '+50 % Felder, Sammler', brett: ['korn', 'flachs', 'kraeuter', 'beeren', 'gestruepp', 'hase'] },
+  fels:     { name: 'Fels', icon: 'mountain', bonus: '+60 % Steinbruch, Erzgrube', brett: ['stein', 'kiesel', 'lehm', 'kraeuter'] },
+};
+const FLUREN = [
+  { id: 'lichtung',   name: 'Lichtung',   ort: 'auf der Lichtung', artikel: 'die', art: 'lichtung', x: 0,     z: 0.2,   stand: 'eigen', plaetze: 4 },
+  { id: 'nordwald',   name: 'Nordwald',   ort: 'im Nordwald', artikel: 'der', art: 'wald',     x: 0.6,   z: -6.9,  stand: 'eigen' },
+  { id: 'ostufer',    name: 'Ostufer',    ort: 'am Ostufer', artikel: 'das', art: 'ufer',     x: 6.9,   z: -0.4,  stand: 'eigen' },
+  { id: 'birkenhang', name: 'Birkenhang', ort: 'am Birkenhang', artikel: 'der', art: 'wald',     x: -6.7,  z: -1.6,  stand: 'offen', birke: true },
+  { id: 'suedwiese',  name: 'Südwiese',   ort: 'auf der Südwiese', artikel: 'die', art: 'wiese',    x: -0.8,  z: 6.6,   stand: 'offen' },
+  { id: 'steinhang',  name: 'Steinhang',  art: 'fels',     x: -6.2,  z: -8.8,  stand: 'nebel' },
+  { id: 'furt',       name: 'Furt',       art: 'ufer',     x: 7.4,   z: -9.6,  stand: 'nebel' },
+  { id: 'erlen',      name: 'Erlenbruch', art: 'wald',     x: 6.2,   z: 7.6,   stand: 'nebel', laub: true },
+  { id: 'senke',      name: 'Senke',      art: 'wiese',    x: -7.2,  z: 6.4,   stand: 'nebel' },
+  { id: 'tann',       name: 'Tann',       art: 'wald',     x: 0,     z: -14,   stand: 'nebel' },
+  { id: 'hang',       name: 'Hang',       art: 'fels',     x: 0.4,   z: 13.4,  stand: 'nebel' },
+  { id: 'jenseits',   name: 'Jenseits',   art: 'wiese',    x: 13.4,  z: -3,    stand: 'nebel', bruecke: true },
+  { id: 'west',       name: 'West',       art: 'wald',     x: -13.4, z: 0.5,   stand: 'nebel' },
+  { id: 'nordost',    name: 'Nordost',    art: 'wald',     x: 12.5,  z: -12,   stand: 'nebel', bruecke: true },
+  { id: 'suedost',    name: 'Südost',     art: 'wald',     x: 12.5,  z: 9,     stand: 'nebel', bruecke: true },
+  { id: 'nordwest',   name: 'Nordwest',   art: 'wald',     x: -12.5, z: -11,   stand: 'nebel' },
+  { id: 'suedwest',   name: 'Südwest',    art: 'fels',     x: -12.5, z: 11,    stand: 'nebel' },
+];
+const FLUR = Object.fromEntries(FLUREN.map(f => [f.id, f]));
+const BODEN = { gras: '#90B35B', wiese: '#A9BD5D', wald: '#5E8A3E', platz: '#C9B07C', ufer: '#CDBE8E', wasser: '#BDB58C', fels: '#A29B8C' };
+// Der Fluss als weiches Band über den Waben (die Wasserwaben darunter sind nasser Sand)
+const FLUSS_BAND = (() => {
+  let pts = FLUSS;
+  for (let k = 0; k < 4; k++) {
+    const neu = [pts[0]];
+    for (let i = 0; i < pts.length - 1; i++) { const a = pts[i], b = pts[i + 1]; neu.push([a[0] * 0.75 + b[0] * 0.25, a[1] * 0.75 + b[1] * 0.25], [a[0] * 0.25 + b[0] * 0.75, a[1] * 0.25 + b[1] * 0.75]); }
+    neu.push(pts[pts.length - 1]); pts = neu;
+  }
+  return pts.map((p, i) => {
+    const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)], l = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    const n = [-(b[1] - a[1]) / l, (b[0] - a[0]) / l], breite = 0.78 + rauschen(p[0] * 0.4, p[1] * 0.4, 21) * 0.3;
+    return { p, links: [p[0] + n[0] * breite, p[1] + n[1] * breite], rechts: [p[0] - n[0] * breite, p[1] - n[1] * breite] };
+  });
+})();
+const NEBEL = '#E2E8D8';
+
+function erzeugeWelt() {
+  const waben = new Map();
+  for (let q = -R; q <= R; q++) for (let r = Math.max(-R, -q - R); r <= Math.min(R, -q + R); r++) {
+    const [x, z] = zuWelt(q, r);
+    let flur = null, bd = 1e9;
+    FLUREN.forEach((f, i) => {
+      const d = Math.hypot(x - f.x, z - f.z) + (fbm(x * 0.32, z * 0.32, 11 + i * 7) - 0.5) * 3.4;
+      if (d < bd) { bd = d; flur = f.id; }
+    });
+    waben.set(schl(q, r), { q, r, x, z, flur, wasser: abstandLinie(x, z, FLUSS) < 0.95, n: fbm(x * 0.45, z * 0.45, 3) });
+  }
+  for (const w of waben.values()) {
+    const f = FLUR[w.flur];
+    w.nachbarn = RICHT.map(([dq, dr]) => schl(w.q + dq, w.r + dr));
+    w.amWasser = !w.wasser && w.nachbarn.some(k => waben.get(k)?.wasser);
+    if (w.wasser) w.art = 'wasser';
+    else if (w.amWasser) w.art = 'ufer';
+    else if (f.art === 'lichtung') w.art = Math.hypot(w.x - f.x, w.z - f.z) < 1.4 ? 'platz' : 'gras';
+    else if (f.art === 'wald') w.art = w.n > 0.38 ? 'wald' : 'gras';
+    else if (f.art === 'ufer') w.art = w.n > 0.6 ? 'wald' : 'gras';
+    else if (f.art === 'wiese') w.art = w.n > 0.68 ? 'wald' : 'wiese';
+    else w.art = w.n > 0.44 ? 'fels' : w.n > 0.32 ? 'wald' : 'gras';
+    w.farbe = mische(BODEN[w.art], '#2F3A1E', (rauschen(w.x * 1.3, w.z * 1.3, 5) - 0.5) * 0.22 + 0.05);
+    w.ecken = [0, 1, 2, 3, 4, 5].map(i => { const a = Math.PI / 3 * i; return [w.x + 1.03 * Math.cos(a), w.z + 1.03 * Math.sin(a)]; });
+  }
+  // Dinge je Wabe, fest für alle Ansichten
+  for (const w of waben.values()) {
+    const z = new Zufall(Math.floor(streuung(w.q, w.r, 99) * 4294967296));
+    const f = FLUR[w.flur], d = [];
+    const baum = typ => d.push({ typ, x: w.x + (z.next() - 0.5) * 1.1, z: w.z + (z.next() - 0.5) * 1.1, h: 1.1 + z.next() * 0.7, b: 0.55 + z.next() * 0.25, t: z.next() });
+    const baumArt = () => f.birke ? 'birke' : (f.laub || z.next() < 0.18) ? 'laub' : 'nadel';
+    if (w.art === 'wald') { const n = w.n > 0.5 ? 3 : 2; for (let i = 0; i < n; i++) baum(baumArt()); }
+    else if (w.art === 'gras' && (f.art === 'wald' || f.art === 'ufer') && z.next() < 0.16) baum(baumArt());
+    else if (w.art === 'wiese') {
+      for (let i = 0; i < 4; i++) d.push({ typ: 'bluete', x: w.x + (z.next() - 0.5) * 1.4, z: w.z + (z.next() - 0.5) * 1.4, t: z.next() });
+      if (z.next() < 0.08) d.push({ typ: 'busch', x: w.x, z: w.z, h: 0.5, b: 0.6, t: z.next() });
+    } else if (w.art === 'fels') {
+      d.push({ typ: 'fels', x: w.x + (z.next() - 0.5) * 0.6, z: w.z + (z.next() - 0.5) * 0.6, b: 0.55 + z.next() * 0.35, t: z.next() });
+      if (z.next() < 0.5) d.push({ typ: 'fels', x: w.x + (z.next() - 0.5) * 1.0, z: w.z + (z.next() - 0.5) * 1.0, b: 0.3 + z.next() * 0.2, t: z.next() });
+      if (z.next() < 0.3) baum('nadel');
+    } else if (w.art === 'ufer' && z.next() < 0.55) d.push({ typ: 'schilf', x: w.x + (z.next() - 0.5) * 0.8, z: w.z + (z.next() - 0.5) * 0.8, t: z.next() });
+    w.dinge = d;
+  }
+  // Fluren: Waben, Mitte, Nachbarn, geglätteter Umriss
+  const fluren = {};
+  for (const f of FLUREN) fluren[f.id] = { waben: new Set(), nachbarn: new Set() };
+  for (const w of waben.values()) {
+    fluren[w.flur].waben.add(schl(w.q, w.r));
+    for (const k of w.nachbarn) { const n = waben.get(k); if (n && n.flur !== w.flur) fluren[w.flur].nachbarn.add(n.flur); }
+  }
+  for (const f of FLUREN) {
+    const fl = fluren[f.id], ws = [...fl.waben].map(k => waben.get(k)).filter(w => !w.wasser);
+    fl.mitte = [ws.reduce((s, w) => s + w.x, 0) / ws.length, ws.reduce((s, w) => s + w.z, 0) / ws.length];
+    fl.umriss = umriss(fl.waben, waben).map(l => chaikin(l, 3));
+  }
+  fluren.ostufer.mitte = [4.7, -2.3];
+  fluren.nordwald.mitte = [-0.4, -8.6];
+  fluren.lichtung.mitte = [-0.3, 3.0];
+  return { waben, fluren };
+}
+// Offene Linie weich machen (Endpunkte bleiben)
+function glatt(pts, n = 3) {
+  for (let k = 0; k < n; k++) {
+    const neu = [pts[0]];
+    for (let i = 0; i < pts.length - 1; i++) { const a = pts[i], b = pts[i + 1]; neu.push([a[0] * 0.75 + b[0] * 0.25, a[1] * 0.75 + b[1] * 0.25], [a[0] * 0.25 + b[0] * 0.75, a[1] * 0.25 + b[1] * 0.75]); }
+    neu.push(pts[pts.length - 1]); pts = neu;
+  }
+  return pts;
+}
+
+// Grenze einer Wabenmenge als geschlossene Linienzüge (Weltkoordinaten)
+function umriss(menge, waben) {
+  const kanten = new Map(), pk = p => p[0].toFixed(2) + '|' + p[1].toFixed(2);
+  for (const k of menge) {
+    const w = waben.get(k);
+    RICHT.forEach(([dq, dr]) => {
+      if (menge.has(schl(w.q + dq, w.r + dr))) return;
+      const [nx, nz] = zuWelt(w.q + dq, w.r + dr), a = Math.atan2(nz - w.z, nx - w.x);
+      const p1 = [w.x + Math.cos(a - Math.PI / 6), w.z + Math.sin(a - Math.PI / 6)];
+      const p2 = [w.x + Math.cos(a + Math.PI / 6), w.z + Math.sin(a + Math.PI / 6)];
+      kanten.set(pk(p1), [p1, p2]);
+    });
+  }
+  const schleifen = [], besucht = new Set();
+  for (const k0 of kanten.keys()) {
+    if (besucht.has(k0)) continue;
+    const loop = []; let k = k0;
+    while (kanten.has(k) && !besucht.has(k)) { besucht.add(k); const [a, b] = kanten.get(k); loop.push(a); k = pk(b); }
+    if (loop.length > 2) schleifen.push(loop);
+  }
+  return schleifen;
+}
+function chaikin(pts, n) {
+  for (let k = 0; k < n; k++) {
+    const neu = [];
+    for (let i = 0; i < pts.length; i++) {
+      const a = pts[i], b = pts[(i + 1) % pts.length];
+      neu.push([a[0] * 0.75 + b[0] * 0.25, a[1] * 0.75 + b[1] * 0.25], [a[0] * 0.25 + b[0] * 0.75, a[1] * 0.25 + b[1] * 0.75]);
+    }
+    pts = neu;
+  }
+  return pts;
+}
+const WELT = erzeugeWelt();
+
+// ---------- Kamera ----------
+function kamera({ w, h, cx, cy, ziel: [tx, tz], hoehe = 15, abstand = 13.5, massstab }) {
+  const cam = [tx, hoehe, tz + abstand];
+  const fw = norm([0, -hoehe, -abstand]), re = norm([-fw[2], 0, fw[0]]), ob = cross(re, fw);
+  const f = massstab * Math.hypot(hoehe, abstand);
+  const roh = p => { const v = sub(p, cam); return [dot(v, re), dot(v, ob), dot(v, fw)]; };
+  const P = p => { const [x, y, z] = roh(p), zc = Math.max(0.6, z); return [cx + f * x / zc, cy - f * y / zc, z]; };
+  return { w, h, f, cam, P, roh, massstab };
+}
+const fx = v => v.toFixed(1);
+const punkte = arr => arr.map(p => fx(p[0]) + ',' + fx(p[1])).join(' ');
+
+// ---------- Körper: Häuser als einfache Quader mit Satteldach ----------
+function quader(cx, cz, b, t, h, dreh, farbe, y0 = 0, extra = []) {
+  const c = Math.cos(dreh), s = Math.sin(dreh);
+  const p = (lx, ly, lz) => [cx + lx * c - lz * s, y0 + ly, cz + lx * s + lz * c];
+  const B = b / 2, T = t / 2;
+  const v = [p(-B, 0, -T), p(B, 0, -T), p(B, 0, T), p(-B, 0, T), p(-B, h, -T), p(B, h, -T), p(B, h, T), p(-B, h, T)];
+  const fl = [[4, 5, 6, 7], [0, 1, 5, 4], [1, 2, 6, 5], [2, 3, 7, 6], [3, 0, 4, 7]].map(ix => ({ pts: ix.map(i => v[i]), farbe }));
+  extra.forEach(([x0, y0e, x1, y1e, f]) => fl.push({ pts: [p(x0, y0e, T + 0.01), p(x1, y0e, T + 0.01), p(x1, y1e, T + 0.01), p(x0, y1e, T + 0.01)], farbe: f, flach: true }));
+  return { mitte: p(0, h / 2, 0), fl };
+}
+function satteldach(cx, cz, b, t, y0, hd, dreh, farbe, giebel, ue = 0.1) {
+  const c = Math.cos(dreh), s = Math.sin(dreh);
+  const p = (lx, ly, lz) => [cx + lx * c - lz * s, y0 + ly, cz + lx * s + lz * c];
+  const B = b / 2 + ue, T = t / 2 + ue, Bg = b / 2;
+  const a = p(-B, 0, -T), bb = p(B, 0, -T), cc = p(B, 0, T), d = p(-B, 0, T), e = p(-B, hd, 0), f = p(B, hd, 0);
+  return { mitte: p(0, hd / 3, 0), fl: [
+    { pts: [a, bb, f, e], farbe }, { pts: [d, cc, f, e], farbe },
+    { pts: [p(-Bg, 0, -T + ue), p(-Bg, hd, 0), p(-Bg, 0, T - ue)], farbe: giebel },
+    { pts: [p(Bg, 0, -T + ue), p(Bg, hd, 0), p(Bg, 0, T - ue)], farbe: giebel },
+  ] };
+}
+function zeichneKoerper(k, koerper, opt = {}) {
+  const fl = [];
+  for (const kp of koerper) for (const f of kp.fl) {
+    const m = f.pts.reduce((s, p) => [s[0] + p[0] / f.pts.length, s[1] + p[1] / f.pts.length, s[2] + p[2] / f.pts.length], [0, 0, 0]);
+    let n = cross(sub(f.pts[1], f.pts[0]), sub(f.pts[2], f.pts[0]));
+    if (dot(n, sub(m, kp.mitte)) < 0) n = n.map(v => -v);
+    if (dot(n, sub(k.cam, m)) <= 0) continue;
+    const hell = f.flach ? 1 : 0.62 + 0.45 * Math.max(0, dot(norm(n), LICHT));
+    fl.push({ z: k.roh(m)[2] - (f.flach ? 0.05 : 0), pts: f.pts.map(k.P), farbe: f.flach ? f.farbe : faktor(f.farbe, hell) });
+  }
+  fl.sort((a, b) => b.z - a.z);
+  return fl.map(f => `<polygon points="${punkte(f.pts)}" fill="${f.farbe}" ${opt.geist ? 'stroke="#FFF3D6" stroke-width="1"' : `stroke="${faktor(f.farbe, 0.8)}" stroke-width=".6"`}/>`).join('');
+}
+
+// ---------- Gebäude ----------
+const BAU_NAMEN = { lager: 'Lager', huette: 'Hütte', holzfaeller: 'Holzfäller', saegebock: 'Sägebock', fischer: 'Fischer', sammler: 'Sammler', haus: 'Haus' };
+const BAU_ICON = { lager: 'warehouse', huette: 'house', holzfaeller: 'axe', saegebock: 'hammer', fischer: 'fish', sammler: 'cherry', haus: 'house' };
+function gebaeudeKoerper(b, nacht) {
+  const fenster = nacht ? '#FFD27A' : '#5B3F25', tuer = '#6E4422';
+  const { x, z, dreh = 0 } = b;
+  switch (b.art) {
+    case 'lager': return [
+      quader(x, z, 1.9, 1.15, 0.75, dreh, '#D9C29A', 0, [[-0.25, 0, 0.25, 0.55, tuer], [0.55, 0.3, 0.75, 0.5, fenster]]),
+      satteldach(x, z, 1.9, 1.15, 0.75, 0.6, dreh, '#7B5236', '#D9C29A'),
+    ];
+    case 'sammler': return [
+      quader(x, z, 0.9, 0.75, 0.45, dreh, '#E2CFA6', 0, [[-0.1, 0, 0.1, 0.32, tuer], [0.2, 0.16, 0.34, 0.3, fenster]]),
+      satteldach(x, z, 0.9, 0.75, 0.45, 0.4, dreh, '#8E4A62', '#E2CFA6'),
+      quader(x + 0.75, z + 0.25, 0.32, 0.32, 0.28, 0.2, '#4E7F3A'), quader(x + 0.7, z - 0.3, 0.26, 0.26, 0.22, -0.3, '#5E8F44'),
+    ];
+    case 'huette': return [
+      quader(x, z, 0.95, 0.8, 0.55, dreh, '#E9D6B0', 0, [[-0.12, 0, 0.12, 0.38, tuer], [0.22, 0.2, 0.38, 0.36, fenster]]),
+      satteldach(x, z, 0.95, 0.8, 0.55, 0.48, dreh, '#9C4A2E', '#E9D6B0'),
+    ];
+    case 'holzfaeller': return [
+      quader(x, z, 0.95, 0.85, 0.5, dreh, '#C8A16E', 0, [[-0.12, 0, 0.12, 0.36, tuer], [0.2, 0.18, 0.36, 0.34, fenster]]),
+      satteldach(x, z, 0.95, 0.85, 0.5, 0.42, dreh, '#5E7A3A', '#C8A16E'),
+      quader(x - 0.85, z + 0.2, 0.28, 0.7, 0.2, dreh, '#8A5A33'), quader(x - 0.85, z + 0.2, 0.28, 0.55, 0.36, dreh, '#7E512E', 0.2),
+    ];
+    case 'saegebock': return [
+      quader(x, z, 0.7, 0.5, 0.18, dreh, '#B88A55'), quader(x, z, 0.12, 0.12, 0.42, dreh, '#7E512E'),
+      satteldach(x, z, 0.75, 0.55, 0.42, 0.22, dreh, '#6E7F4A', '#B88A55'),
+    ];
+    case 'fischer': return [
+      quader(x, z, 0.85, 0.7, 0.45, dreh, '#D7C6A0', 0, [[-0.1, 0, 0.1, 0.32, tuer], [0.2, 0.16, 0.32, 0.3, fenster]]),
+      satteldach(x, z, 0.85, 0.7, 0.45, 0.4, dreh, '#4F6E8A', '#D7C6A0'),
+      quader(x + 0.75, z + 0.1, 0.7, 0.2, 0.08, dreh, '#8A6A45'),
+    ];
+    case 'feld': return [quader(x, z, 1.5, 1.3, 0.06, dreh, '#B88E4E'), quader(x, z - 0.3, 1.4, 0.25, 0.14, dreh, '#D8B65A'), quader(x, z + 0.2, 1.4, 0.25, 0.14, dreh, '#D8B65A')];
+    case 'steinbruch': return [quader(x, z, 0.9, 0.8, 0.35, dreh, '#8C8F94'), quader(x + 0.5, z + 0.3, 0.4, 0.35, 0.2, 0.4, '#A2A5AA')];
+    default: return [];
+  }
+}
+
+// ---------- Das Dorf: Häuser je Stufe ----------
+const polar = (r, grad) => [r * Math.cos(grad * Math.PI / 180), r * Math.sin(grad * Math.PI / 180)];
+const DORF_HAEUSER = [
+  [1.75, -50, 0.35, 1], [1.75, 20, -0.25, 1], [1.75, 80, 0.1, 1],
+  [3.0, 40, -0.4, 2], [3.0, 0, 0.5, 2], [3.0, -65, 0.15, 2],
+  [3.0, 75, 0.3, 3, true], [3.0, -40, 0.2, 3, true], [3.0, 110, -0.2, 3],
+  [3.0, -125, -0.3, 4, true],
+].map(([r, g, d, ab, stein], i) => { const [x, z] = polar(r, g); return { x, z, d, ab, stein: !!stein, i }; });
+function hausKoerper(h, stufe, nacht) {
+  const fenster = nacht ? '#FFD27A' : '#5B3F25', tuer = '#6E4422', balken = '#6E4A2C';
+  const { x, z, d } = h, v = streuung(h.i, 3, 17);
+  if (stufe <= 1) return [
+    quader(x, z, 0.9, 0.75, 0.48, d, '#E3CDA4', 0, [[-0.11, 0, 0.11, 0.34, tuer], [0.2, 0.18, 0.34, 0.3, fenster]]),
+    satteldach(x, z, 0.9, 0.75, 0.48, 0.5, d, mische('#B08A4A', '#9A7638', v), '#E3CDA4', 0.12),
+  ];
+  const stein = stufe >= 3 && h.stein, hoch = stufe >= 4, b = 1.05, t = 0.85, h0 = hoch ? 1.0 : 0.62;
+  const wand = stein ? mische('#CFC8BA', '#B9B1A2', v) : mische('#F1E3C4', '#E6D2AE', v);
+  const dach = stein ? '#5D6B78' : mische('#A04A2E', '#8A3F2A', v);
+  const extra = [[-0.12, 0, 0.12, 0.38, tuer], [0.24, 0.2, 0.4, 0.36, fenster], [-0.4, 0.2, -0.26, 0.36, fenster]];
+  if (hoch) extra.push([0.24, 0.66, 0.4, 0.82, fenster], [-0.4, 0.66, -0.26, 0.82, fenster], [-0.08, 0.66, 0.08, 0.82, fenster]);
+  if (!stein) { const y = hoch ? 0.52 : 0.44; extra.push([-b / 2, 0, -b / 2 + 0.05, h0, balken], [b / 2 - 0.05, 0, b / 2, h0, balken], [-b / 2, y, b / 2, y + 0.04, balken]); }
+  return [quader(x, z, b, t, h0, d, wand, 0, extra), satteldach(x, z, b, t, h0, 0.5, d, dach, wand)];
+}
+function dorfExtras(stufe, nacht) {
+  const e = [], holz = '#6E4A2C';
+  if (stufe >= 2) e.push({ x: 0.95, z: -0.45, koerper: [quader(0.95, -0.45, 0.36, 0.36, 0.22, 0.3, '#9A958A'), quader(0.82, -0.45, 0.04, 0.04, 0.58, 0.3, holz), quader(1.08, -0.45, 0.04, 0.04, 0.58, 0.3, holz), satteldach(0.95, -0.45, 0.32, 0.36, 0.58, 0.2, 0.3, '#7B5236', '#7B5236', 0.05)] });
+  if (stufe >= 3) for (const [x, z, d, farbe] of [[-0.95, -0.45, 0.4, '#C4446E'], [0.75, 0.85, -0.3, '#E2AB3C']])
+    e.push({ x, z, koerper: [quader(x, z, 0.6, 0.32, 0.3, d, '#B88A55'), quader(x - 0.27, z - 0.12, 0.04, 0.04, 0.62, d, holz), quader(x + 0.27, z - 0.12, 0.04, 0.04, 0.62, d, holz), satteldach(x, z, 0.66, 0.42, 0.62, 0.14, d, farbe, farbe, 0.04)] });
+  if (stufe >= 4) {
+    const fenster = nacht ? '#FFD27A' : '#5B3F25';
+    e.push({ x: -2.65, z: -0.95, koerper: [quader(-2.65, -0.95, 0.75, 0.75, 1.9, 0.2, '#BDB6A8', 0, [[-0.1, 0, 0.1, 0.42, '#6E4422'], [-0.08, 1.25, 0.08, 1.5, fenster]]), satteldach(-2.65, -0.95, 0.75, 0.75, 1.9, 0.8, 0.2, '#5D6B78', '#BDB6A8', 0.06)] });
+    const luecken = [[-100, -80], [-30, -6], [82, 104]];
+    for (let g = -140; g <= 140; g += 11) {
+      if (luecken.some(([a, b]) => g > a && g < b)) continue;
+      const [x, z] = polar(3.6, g);
+      e.push({ x, z, koerper: [quader(x, z, 0.74, 0.22, 0.42, (g + 90) * Math.PI / 180, '#B7AE9E')] });
+    }
+  }
+  return e;
+}
+// Waren stehen als Stapel vor dem Lager
+function stapelKoerper(lager, L) {
+  const { x, z } = lager, f = w => Math.max(0, Math.min(1, (L[w] || 0) / 60));
+  return [
+    quader(x - 1.0, z + 1.05, 0.6, 0.34, 0.06 + 0.44 * f('holz'), 0.1, '#8A5A33'),
+    quader(x - 0.45, z + 1.1, 0.42, 0.3, 0.05 + 0.4 * f('bretter'), 0.1, '#D8A86A'),
+    quader(x - 1.05, z + 1.55, 0.32, 0.3, 0.05 + 0.36 * f('fisch'), 0.1, '#4F6E8A'),
+    quader(x - 0.6, z + 1.55, 0.32, 0.3, 0.03 + 0.34 * f('beeren'), 0.1, '#9C3A5E'),
+  ];
+}
+// Baustelle in vier Stufen: Pflöcke, Fundament, Gerüst, Dach
+const STUFEN_NAMEN = ['Pflöcke', 'Fundament', 'Gerüst', 'Dach'];
+const BAU_MASSE = { holzfaeller: [0.95, 0.85, 0.5], fischer: [0.85, 0.7, 0.45], sammler: [0.9, 0.75, 0.45], haus: [1.05, 0.85, 0.62] };
+function baustelleKoerper(b, stufe, fertig) {
+  const [B, T, H] = BAU_MASSE[b.art] || BAU_MASSE.haus, { x, z, dreh = 0 } = b;
+  const c = Math.cos(dreh), s = Math.sin(dreh), at = (lx, lz) => [x + lx * c - lz * s, z + lx * s + lz * c];
+  const holz = '#8A5A33', band = '#F4E6C2', k = [];
+  const ecken = [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([a, e]) => at(a * B * 0.55, e * T * 0.55));
+  if (stufe === 0) {
+    ecken.forEach(([px, pz]) => k.push(quader(px, pz, 0.06, 0.06, 0.34, dreh, holz)));
+    k.push(quader(...at(0, -T * 0.55), B * 1.1, 0.03, 0.035, dreh, band, 0.24), quader(...at(0, T * 0.55), B * 1.1, 0.03, 0.035, dreh, band, 0.24),
+      quader(...at(-B * 0.55, 0), 0.03, T * 1.1, 0.035, dreh, band, 0.24), quader(...at(B * 0.55, 0), 0.03, T * 1.1, 0.035, dreh, band, 0.24));
+  }
+  if (stufe === 1 || stufe === 2) k.push(quader(x, z, B, T, 0.1, dreh, '#A99C86'));
+  if (stufe === 2) {
+    k.push(quader(x, z, B * 0.96, T * 0.96, H * 0.55, dreh, '#D9C29A', 0.1));
+    ecken.forEach(([px, pz]) => k.push(quader(px, pz, 0.05, 0.05, H + 0.45, dreh, holz)));
+    k.push(quader(...at(0, T * 0.55), B * 1.1, 0.04, 0.04, dreh, holz, H * 0.62), quader(...at(0, -T * 0.55), B * 1.1, 0.04, 0.04, dreh, holz, H * 0.62));
+  }
+  if (stufe === 3) { k.push(...fertig()); [ecken[0], ecken[1]].forEach(([px, pz]) => k.push(quader(px, pz, 0.05, 0.05, H + 0.55, dreh, holz))); }
+  if (stufe < 3) {
+    const g = b.baustelle.geliefert, [mx, mz] = at(B * 0.55 + 0.4, T * 0.15);
+    if (g.holz) k.push(quader(mx, mz, 0.36, 0.24, 0.07 + Math.min(0.14, g.holz * 0.012), dreh + 0.3, holz));
+    if (g.bretter) k.push(quader(mx + 0.05, mz + 0.32, 0.34, 0.2, 0.05 + Math.min(0.1, g.bretter * 0.012), dreh + 0.3, '#D8A86A'));
+  }
+  return k;
+}
+
+// ---------- Spieldaten ----------
+const ARTEN = {
+  holz: { name: 'Holz', icon: 'tree-pine' }, bretter: { name: 'Bretter', icon: 'layers' },
+  beeren: { name: 'Beeren', icon: 'cherry' }, kraeuter: { name: 'Kräuter', icon: 'leaf' }, nuesse: { name: 'Nüsse', icon: 'nut' },
+  korn: { name: 'Korn', icon: 'wheat' }, flachs: { name: 'Flachs', icon: 'flower-2' },
+  gestruepp: { name: 'Gestrüpp', icon: 'shrub' }, hase: { name: 'Hase', icon: 'rabbit' },
+  fisch: { name: 'Fisch', icon: 'fish' }, lehm: { name: 'Lehm', icon: 'brick-wall' }, schilf: { name: 'Schilf', icon: 'sprout' },
+  kiesel: { name: 'Kiesel', icon: 'gem' }, schlamm: { name: 'Schlamm', icon: 'waves' }, ente: { name: 'Ente', icon: 'bird' },
+  stein: { name: 'Stein', icon: 'mountain' }, bau: { name: 'Holzfäller', icon: 'axe' }, fund: { name: 'Alte Karte', icon: 'scroll' },
+  brot: { name: 'Brot', icon: 'croissant' }, brei: { name: 'Beerenbrei', icon: 'soup' },
+};
+const SIEDLER = [
+  { id: 'ida', name: 'Ida', beruf: 'Holzfällerin', farbe: '#B96B34' },
+  { id: 'jonas', name: 'Jonas', beruf: 'Sammler', farbe: '#C4446E' },
+  { id: 'mara', name: 'Mara', beruf: 'Fallenstellerin', farbe: '#4E9A46' },
+  { id: 'ole', name: 'Ole', beruf: 'Fischer', farbe: '#3F8CC0' },
+];
+const GEGENSTAENDE = {
+  axt:        { name: 'Axt', icon: 'axe', wirkung: 'rodet Gestrüpp in zwei Ringen', vorrat: 2 },
+  laterne:    { name: 'Laterne', icon: 'lamp', wirkung: 'hebt Nebel und Dunkel auf', vorrat: 1 },
+  wegzehrung: { name: 'Wegzehrung', icon: 'sandwich', wirkung: '+4 Schritte', vorrat: 2 },
+  sichel:     { name: 'Sichel', icon: 'slice', wirkung: 'erntet eine ganze Linie', vorrat: 1 },
+  saatbeutel: { name: 'Saatbeutel', icon: 'sprout', wirkung: 'Umkreis +1 Reife', vorrat: 1 },
+  stiefel:    { name: 'Stiefel', icon: 'footprints', wirkung: 'Schlamm wird zu Lehm', vorrat: 0 },
+};
+const BAENDER = [
+  { id: 'miss', name: 'Missgeschick', basis: -0.4, steigung: -1.0 },
+  { id: 'muehsam', name: 'Mühsam', basis: 0.75, steigung: -0.35 },
+  { id: 'ordentlich', name: 'Ordentlich', basis: 0.75, steigung: 0.35 },
+  { id: 'glueck', name: 'Glücksfall', basis: -0.9, steigung: 0.9 },
+];
+const VERLAUF = {
+  miss:       { satz: 'Gestrüpp hat den Pfad zugewuchert.', belegt: 10, schritte: -2 },
+  muehsam:    { satz: 'Nasses Unterholz, mühsames Vorankommen.', belegt: 6, schritte: 0 },
+  ordentlich: { satz: 'Nebel am Morgen, sonst ein guter Tag.', belegt: 3, schritte: 0, fund: ['scroll', 'Alte Karte', '+2 Erkenntnis'] },
+  glueck:     { satz: 'Ein Wildpfad führt mitten hinein.', belegt: 1, schritte: 2, fund: ['flower-2', 'Wilder Bienenstock', 'Wachs für Laternen'] },
+};
+const BAUARTEN = {
+  holzfaeller: { bonus: { wald: 50, ufer: 10, wiese: 10 }, grund: { wald: 'Wald', ufer: 'ein paar Bäume', wiese: 'ein paar Bäume' }, hinweis: 'Wald +50 %', kosten: { holz: 10 } },
+  fischer:     { bonus: { ufer: 60 }, nur: 'ufer', grund: { ufer: 'am Wasser' }, hinweis: 'nur am Ufer', kosten: { holz: 8, bretter: 6 } },
+  sammler:     { bonus: { wiese: 50, wald: 20, lichtung: 10 }, grund: { wiese: 'Beerensträucher', wald: 'Waldrand', lichtung: 'ein paar Sträucher' }, hinweis: 'Wiese +50 %', kosten: { holz: 6, bretter: 2 } },
+};
+const START_BAUTEN = [
+  { id: 'lager', art: 'lager', x: -1.9, z: 0.8, dreh: 0.1 },
+  { id: 'holzfaeller', art: 'holzfaeller', x: 0.3, z: -5.3, dreh: 0.2 },
+  { id: 'saegebock', art: 'saegebock', x: 1.45, z: -5.0, dreh: 0.5, anbau: true },
+];
+// Das Fischer-Haus entsteht am Ostufer auf einer Uferwabe
+const FISCHER_PLATZ = [...WELT.fluren.ostufer.waben].map(k => WELT.waben.get(k)).filter(w => w.amWasser)
+  .sort((a, b) => Math.hypot(a.x - 5.0, a.z - 1.8) - Math.hypot(b.x - 5.0, b.z - 1.8))[0];
+// Stufen des Dorfs: Plätze, laufender Bedarf je Stunde, was die Stufe aufs Brett bringt, Kosten des Ausbaus dorthin
+const DORF_STUFEN = [
+  { name: 'Weiler', der: 'der', icon: 'house', plaetze: 4, radius: 2.4, bedarf: [['fisch', 15], ['beeren', 15]] },
+  { name: 'Dorf', der: 'das', icon: 'house-plus', plaetze: 8, radius: 3.2, bedarf: [['holz', 10, 'Brennholz']], neu: 'Reife', kosten: { holz: 20, bretter: 30 } },
+  { name: 'Marktflecken', der: 'der', icon: 'store', plaetze: 14, radius: 3.4, bedarf: [['bretter', 6, 'Bretter für Ausbesserungen']], neu: 'Ringe', kosten: { holz: 30, bretter: 50 } },
+  { name: 'Stadt', der: 'die', icon: 'castle', plaetze: 20, radius: 3.8, bedarf: [['brot', 10]], neu: 'Fähigkeiten', kosten: { holz: 40, bretter: 80 } },
+];
+// Wege: vom Lager über den Dorfplatz und dann durch eine Gasse hinaus
+const ROUTEN = {
+  platz: [[-1.9, 1.45], [-1.2, 1.6], [-0.55, 0.9], [-0.1, 0.3]],
+  nord: [[-0.1, -0.45], [-0.25, -2.0], [0.0, -3.5]],
+  ost: [[0.45, -0.2], [1.75, -0.5], [2.9, -0.95]],
+  sued: [[-0.3, 1.2], [-0.15, 2.4], [-0.2, 3.6]],
+};
+const zum = s => (s.der === 'die' ? 'zur ' : 'zum ') + s.name, ein = s => (s.der === 'die' ? 'eine ' : 'ein ') + s.name, gross = s => s[0].toUpperCase() + s.slice(1);
+const RATEN = { holz: 12, bretter: 6, fisch: -15, beeren: -15 };
+
+const marke = (art, groesse = '') => {
+  const p = [0, 1, 2, 3, 4, 5].map(i => { const a = Math.PI / 3 * i; return `${(23 * Math.cos(a)).toFixed(1)},${(23 * Math.sin(a)).toFixed(1)}`; }).join(' ');
+  return `<svg class="token ${groesse}" viewBox="-25 -22 50 50" aria-hidden="true"><g class="mk t-${art}">
+    <polygon class="kante" points="${p}" transform="translate(0 3)"/><polygon class="koerper" points="${p}"/>
+    <ellipse class="glanz" cx="0" cy="-10" rx="13" ry="5"/><g class="sym" transform="translate(-11 -11) scale(.92)">${ICON[ARTEN[art].icon]}</g></g></svg>`;
+};
+const pille = (inhalt, wert, max = '', cls = '') => `<span class="pille ${cls}">${inhalt}${wert}${max ? `<small>/${max}</small>` : ''}</span>`;
+const kostenHtml = k => `<span class="kosten">${Object.entries(k).map(([w, n]) => `<span>${marke(w, 's')}${n}</span>`).join('')}</span>`;
+const dauer = h => h >= 1 ? `${Math.floor(h)} h${Math.round((h % 1) * 60) ? ` ${Math.round((h % 1) * 60)} min` : ''}` : `${Math.max(1, Math.round(h * 60))} min`;
+const wortmarke = (schwebend, nurZeichen) => `<span class="wortmarke ${schwebend ? 'schwebend' : ''}"><span class="zeichen">${ic('sprout')}</span>${nurZeichen ? '' : 'Lichtung'}</span>`;
+const portrait = (s, wert = null) => `<span class="portrait ${wert === null ? 'ohne-ring' : ''}">${wert === null ? '' : `<svg class="ladering" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="23.5"/>
+  <circle class="ring-wert" cx="26" cy="26" r="23.5" stroke-dasharray="147.7" stroke-dashoffset="${(147.7 * (1 - wert)).toFixed(1)}"/></svg>`}<span class="gesicht">${s.name[0]}</span></span>`;
+function richtung(x, z) {
+  const a = (Math.atan2(-z, x) * 180 / Math.PI + 360) % 360;
+  return ['Osten', 'Nordosten', 'Norden', 'Nordwesten', 'Westen', 'Südwesten', 'Süden', 'Südosten'][Math.round(a / 45) % 8];
+}
+
+// ---------- Spiel: eine Ansicht je Gerät ----------
+class Spiel {
+  constructor(el) {
+    const d = el.dataset;
+    Object.assign(this, { el, handy: el.classList.contains('handy'), uid: naechsteUid++, uhr: d.uhr || 'tag', pech: d.pech === 'ja' });
+    this.w = el.clientWidth; this.h = el.clientHeight;
+    const nachher = d.zustand === 'nachher', bs = nachher ? 'fertig' : d.baustelle || 'laeuft';
+    this.stand = Object.fromEntries(FLUREN.map(f => [f.id, { stand: f.stand, licht: f.id === 'nordwald' || f.id === 'lichtung' }]));
+    this.zeit = nachher ? { name: 'Sommer · Tag 4', hell: 5, daemm: 1, nacht: 2 } : { name: 'Herbst · Tag 5', hell: 4, daemm: 1, nacht: 3 };
+    this.dorf = { stufe: Number(d.stufe || 1), zustand: nachher ? 'mangel' : d.dorf || 'bereit', ausbau: null };
+    this.dorf.bewohner = this.dorf.stufe === 1 ? 4 : DORF_STUFEN[this.dorf.stufe - 1].plaetze - 1;
+    this.lager = nachher ? { holz: 60, bretter: 26, fisch: 55, beeren: 0, kraeuter: 19, brot: 9, brei: 14, taler: 30 }
+      : { holz: 42, bretter: 18, fisch: 46, beeren: 31, kraeuter: 19, brot: 9, brei: 14, taler: 30 };
+    if (this.dorf.zustand === 'mangel') this.lager.beeren = 0;
+    this.bauten = START_BAUTEN.map(b => ({ ...b, wabe: zuWabe(b.x, b.z) }));
+    if (bs !== 'keine') {
+      const w = FISCHER_PLATZ;
+      this.bauten.push({ id: 'fischer', art: 'fischer', x: w.x, z: w.z, dreh: 0.45, wabe: schl(w.q, w.r), reihe: 1,
+        baustelle: bs === 'fertig' ? null : { geliefert: bs === 'wartet' ? { holz: 8, bretter: 2 } : { holz: 6, bretter: 2 } } });
+      if (bs === 'wartet') this.lager.bretter = 0;
+    }
+    this.naechsteReihe = 2;
+    this.reiter = d.ansicht === 'lager' ? 'lager' : 'siedlung';
+    this.auswahl = d.flur || 'nordwald';
+    this.absteckKosten = 14;
+    this.zufall = new Zufall(Number(d.seed || 7));
+    this.letztes = { trupp: ['ida', 'jonas', 'mara'], proviant: 'brot', kiepe: ['axt', 'wegzehrung'] };
+    this.tw = { band: 'ordentlich', kiepe: ['axt', 'wegzehrung', 'laterne'], trupp: ['ida', 'jonas', 'mara'], schritte: 18 };
+    this.blattStufe = 'halb';
+    this.ansicht = d.ansicht === 'tagwerk' ? 'tagwerk' : d.ansicht === 'dorfbild' ? 'dorfbild' : 'siedlung';
+    if (this.ansicht === 'dorfbild') {
+      el.innerHTML = `<div class="welt-platz"><svg class="welt" viewBox="0 0 ${this.w} ${this.h}" role="img" aria-label="${DORF_STUFEN[this.dorf.stufe - 1].name}"></svg></div>`;
+      this.svg = el.querySelector('svg.welt');
+      this.zeichneWelt();
+      return;
+    }
+    this.verdrahten();
+    this.aufbauen();
+    if (d.ansicht === 'bauen') this.bauenStarten(d.bauart || 'holzfaeller');
+    if (d.ansicht === 'vorbereiten') this.vorbereiten('tagwerk', this.auswahl, d.uhr === 'nacht' ? { trupp: ['ida', 'jonas'], proviant: 'brot', kiepe: ['axt'] } : null);
+    if (d.ansicht === 'rueckkehr') this.rueckkehr();
+  }
+
+  // --- Gerüst ---
+  aufbauen() {
+    this.el.innerHTML = this.ansicht === 'tagwerk' ? this.tagwerkHtml() : this.siedlungHtml();
+    this.svg = this.el.querySelector('svg.welt');
+    this.schilder = this.el.querySelector('.schilder');
+    this.zeichne();
+  }
+  siedlungHtml() {
+    const nav = [['house', 'Siedlung'], ['warehouse', 'Lager'], ['lightbulb', 'Forschung']];
+    const welt = `<div class="welt-platz"><svg class="welt" viewBox="0 0 ${this.w} ${this.h}"></svg><div class="schilder"></div></div>`;
+    const vorrat = `<div class="vorrat schwebend">${this.vorratHtml()}</div>`;
+    const bau = `<nav class="bauleiste karte js-bauleiste" hidden></nav><div class="js-etikett"></div><div class="js-bauhinweis"></div>`;
+    const ende = `<div class="toast" role="status"></div><div class="ueberlage"></div>`;
+    if (!this.handy) return `<div class="spiel">${welt}
+      <header class="oben">${wortmarke(true)}<nav class="reiter-holz">${nav.map(([i, t], n) => `<a ${n === 2 ? 'class="js-bald"' : `data-nav="${n ? 'lager' : 'siedlung'}"`} role="button" tabindex="0">${ic(i)}${t}</a>`).join('')}</nav>
+        <div class="rechts"><span class="js-uhr"></span><button class="rund js-bald" aria-label="Menü" title="Menü">${ic('menu')}</button></div></header>
+      ${vorrat}<aside class="karte detail flur-karte js-detail"></aside>
+      <button class="knopf zweit welt-knopf js-bauen">${ic('hammer')}Bauen</button>${bau}${ende}</div>`;
+    return `<div class="spiel">${welt}
+      <header class="oben">${wortmarke(true)}<div class="rechts"><span class="js-uhr"></span></div></header>
+      ${vorrat}
+      <div class="blatt js-blatt"><button class="rund bauen-rund js-bauen" aria-label="Bauen" title="Bauen">${ic('hammer')}</button>
+        <div class="griff js-griff" role="button" tabindex="0" aria-label="Karte größer oder kleiner"><span></span></div><div class="js-detail detail"></div></div>
+      ${bau}
+      <nav class="holzleiste">${[['house', 'Siedlung', 'siedlung'], ['warehouse', 'Lager', 'lager'], ['lightbulb', 'Forschung'], ['menu', 'Menü']].map(([i, t, nav]) => `<button class="ziel ${nav ? '' : 'js-bald'}" ${nav ? `data-nav="${nav}"` : ''}><span class="kreis">${ic(i)}</span>${t}</button>`).join('')}</nav>
+      ${ende}</div>`;
+  }
+  vorratHtml() {
+    const L = this.lager, p = (w, max) => pille(marke(w), L[w], max, L[w] === 0 ? 'leer' : '');
+    return [p('holz', 60), p('bretter', 60), p('fisch'), p('beeren'), p('brot'), p('brei'), pille(rundIc('coins'), L.taler)].join('');
+  }
+  uhrHtml() {
+    const z = this.zeit, summe = z.hell + z.daemm + z.nacht;
+    const t = { tag: ['sun', 'noch 3 min hell', 30], daemmerung: ['sunset', 'Dämmerung', (z.hell + 0.5) / summe * 100], nacht: ['moon', 'Nacht · noch 2 min', 78] }[this.uhr];
+    return `<button class="uhr ${this.uhr} js-uhr-knopf" title="Spieluhr: ${z.name}, ${z.hell} min hell, ${z.daemm} min Dämmerung, ${z.nacht} min Nacht – im Mockup antippen">
+      <span class="kreis">${ic(t[0])}</span><span>${z.name}${this.handy ? '' : ` <small>· ${t[1]}</small>`}</span>
+      <span class="tagesband"><i class="hell" style="flex: ${z.hell}"></i><i class="daemm" style="flex: ${z.daemm}"></i><i class="nacht" style="flex: ${z.nacht}"></i><b style="left: ${t[2].toFixed(0)}%"></b></span></button>`;
+  }
+
+  verdrahten() {
+    const el = this.el;
+    el.addEventListener('click', e => {
+      const t = e.target.closest('[data-flur], [data-wabe], [data-nav], [data-ware], .js-bald, .js-uhr-knopf, .js-bauen, .js-griff, [data-bauart], .js-bau-aus, .js-hier, .js-vorb, .js-abstecken, .js-fackel, .js-erkunden, .js-zurueck-siedlung, .js-k-ggst, .js-heim, .js-ausbau, .js-zuerst, .js-abbrechen, .js-lager-aus, .js-rueck-zu, .js-rueck-tagwerk');
+      if (!t || !el.contains(t)) return;
+      if (this.hervor && !t.matches('[data-ware]')) this.hervor = null;
+      if (t.matches('[data-ware]')) { this.zeigeWare(t.dataset.ware); return; }
+      if (t.matches('[data-nav]')) { this.reiter = t.dataset.nav; if (this.bauModus) this.bauModus = false; this.zeichne(); return; }
+      if (t.matches('.js-ausbau')) { this.dorfAusbauen(); return; }
+      if (t.matches('.js-zuerst')) { this.zuerst(t.dataset.bau); return; }
+      if (t.matches('.js-abbrechen')) { this.abbrechen(t.dataset.bau); return; }
+      if (t.matches('.js-lager-aus')) { this.toast('warehouse', 'Lager ausbauen würde eine Baustelle am Lager abstecken – im Mockup nur angedeutet'); return; }
+      if (t.matches('.js-rueck-zu')) { this.schliesseUeberlage(); return; }
+      if (t.matches('.js-rueck-tagwerk')) { this.schliesseUeberlage(); this.auswahl = 'nordwald'; this.zeichne(); setTimeout(() => this.vorbereiten('tagwerk', 'nordwald'), 260); return; }
+      if (t.matches('[data-wabe]')) { this.wahlWabe = t.dataset.wabe; this.zeichne(); return; }
+      if (t.matches('[data-flur]')) { this.reiter = 'siedlung'; this.waehle(t.dataset.flur); return; }
+      if (t.matches('.js-bald')) { this.toast('lightbulb', 'Forschung und Menü kommen in einem späteren Mockup'); return; }
+      if (t.matches('.js-uhr-knopf')) { this.uhr = { tag: 'daemmerung', daemmerung: 'nacht', nacht: 'tag' }[this.uhr]; this.zeichne(); return; }
+      if (t.matches('.js-bauen')) { this.bauModus ? this.bauenBeenden() : this.bauenStarten(this.bauart || 'holzfaeller'); return; }
+      if (t.matches('.js-griff')) { this.blattStufe = { klein: 'halb', halb: 'ganz', ganz: 'klein' }[this.blattStufe]; this.zeichne(); return; }
+      if (t.matches('[data-bauart]')) { this.bauenStarten(t.dataset.bauart); return; }
+      if (t.matches('.js-bau-aus')) { this.bauenBeenden(); return; }
+      if (t.matches('.js-hier')) { this.hierBauen(); return; }
+      if (t.matches('.js-vorb')) { this.vorbereiten('tagwerk', this.auswahl); return; }
+      if (t.matches('.js-erkunden')) { this.vorbereiten('erkunden', this.auswahl); return; }
+      if (t.matches('.js-abstecken')) { this.abstecken(); return; }
+      if (t.matches('.js-fackel')) { this.stand[this.auswahl].licht = true; this.toast('flame', `Fackel steht ${FLUR[this.auswahl].ort} – brennt ab heute Nacht`); this.zeichne(); return; }
+      if (t.matches('.js-zurueck-siedlung, .js-heim')) { this.ansicht = 'siedlung'; this.aufbauen(); return; }
+      if (t.matches('.js-k-ggst')) {
+        const an = !t.classList.contains('aktiv');
+        el.querySelectorAll('.js-k-ggst').forEach(k => k.classList.remove('aktiv'));
+        t.classList.toggle('aktiv', an);
+        if (an) { const g = GEGENSTAENDE[t.dataset.g]; this.toast(g.icon, `${g.name} bereit: ${g.wirkung} – eine Wabe antippen. Danach ist sie weg.`); }
+      }
+    });
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && this.bauModus) this.bauenBeenden();
+      if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('a[data-nav], a.js-bald')) { e.preventDefault(); e.target.click(); }
+    });
+  }
+  schliesseUeberlage() {
+    const u = this.el.querySelector('.ueberlage');
+    u.classList.remove('offen');
+    setTimeout(() => { if (!u.classList.contains('offen')) u.innerHTML = ''; }, 250);
+  }
+  toast(icon, text) {
+    const t = this.el.querySelector('.toast');
+    t.innerHTML = `${ic(icon)}<span>${text}</span>`;
+    t.classList.add('zeigen');
+    clearTimeout(t._aus);
+    t._aus = setTimeout(() => t.classList.remove('zeigen'), 4200);
+  }
+
+  // --- Zustand der Fluren ---
+  flurDerWabe(k) { return WELT.waben.get(k)?.flur; }
+  bautenIn(id) { return this.bauten.filter(b => !b.anbau && b.art !== 'lager' && this.flurDerWabe(b.wabe) === id); }
+  plaetze(id) { return FLUR[id].plaetze || 3; }
+  erkundbar(id) {
+    return this.stand[id].stand === 'nebel' && [...WELT.fluren[id].nachbarn].some(n => this.stand[n].stand === 'eigen');
+  }
+  belegt() {
+    const s = new Set(['0,0']), r = DORF_STUFEN[this.dorf.stufe - 1].radius;
+    for (const b of this.bauten) s.add(b.wabe);
+    for (const k of WELT.fluren.lichtung.waben) { const w = WELT.waben.get(k); if (Math.hypot(w.x - 0.4, w.z) < r) s.add(k); }
+    return s;
+  }
+
+  // --- Baustellen, Träger, Lager ---
+  baustellen() {
+    const alle = this.bauten.filter(b => b.baustelle);
+    if (this.dorf.ausbau) alle.push(this.dorf.ausbau);
+    return alle.sort((a, b) => a.reihe - b.reihe);
+  }
+  kostenVon(b) { return b.id === 'dorf' ? DORF_STUFEN[this.dorf.stufe].kosten : BAUARTEN[b.art].kosten; }
+  fortschritt(b) {
+    const k = this.kostenVon(b), g = b.baustelle.geliefert;
+    return Object.keys(k).reduce((s, w) => s + Math.min(g[w] || 0, k[w]), 0) / Object.values(k).reduce((s, n) => s + n, 0);
+  }
+  bauStufe(b) { return Math.min(3, Math.floor(this.fortschritt(b) * 4)); }
+  fehlt(b) { const k = this.kostenVon(b), g = b.baustelle.geliefert; return Object.keys(k).map(w => [w, k[w] - (g[w] || 0)]).filter(([, n]) => n > 0); }
+  wartetAuf(b) { return this.fehlt(b).find(([w]) => (this.lager[w] || 0) <= 0)?.[0] || null; }
+  vorgemerkt(w) { return this.baustellen().reduce((s, b) => s + (this.fehlt(b).find(([x]) => x === w)?.[1] || 0), 0); }
+  ladung(b) {
+    let platz = 5; const teile = [];
+    for (const [w, n] of this.fehlt(b)) { if (!platz || (this.lager[w] || 0) <= 0) continue; const m = Math.min(platz, n, this.lager[w]); teile.push([w, m]); platz -= m; }
+    return teile;
+  }
+  ladungText(b) { return this.ladung(b).map(([w, n]) => `${n} ${ARTEN[w].name}`).join(' und '); }
+  restzeit(b) { return dauer(Math.ceil(this.fehlt(b).reduce((s, [, n]) => s + n, 0) / 5) * 1.5 / 60 + 0.05); }
+  ausbauHaus() { return DORF_HAEUSER.find(h => h.ab === this.dorf.stufe + 1); }
+  routeZu(b) {
+    if (b.id === 'dorf') { const h = this.ausbauHaus(); return glatt([...ROUTEN.platz, [h.x * 0.8, h.z * 0.8 + 0.3]]); }
+    const ziel = [b.x, b.z + 0.5];
+    const anker = Object.values({ nord: ROUTEN.nord, ost: ROUTEN.ost, sued: ROUTEN.sued })
+      .sort((p, q) => Math.hypot(p.at(-1)[0] - ziel[0], p.at(-1)[1] - ziel[1]) - Math.hypot(q.at(-1)[0] - ziel[0], q.at(-1)[1] - ziel[1]))[0];
+    return glatt([...ROUTEN.platz, ...anker, ziel]);
+  }
+  // Was Ole gerade trägt: zuerst Baustellen, dann volle Fächer abholen
+  traegerAuftrag() {
+    const b = this.baustellen().find(x => !this.wartetAuf(x));
+    if (b) return { route: this.routeZu(b), last: this.ladung(b)[0]?.[0] || 'holz', ziel: b };
+    if (this.lager.holz < 60) return { route: this.routeZu(this.bauten.find(x => x.art === 'holzfaeller')), last: 'holz', ziel: null };
+    return null;
+  }
+  holzfaellerZustand() {
+    if (this.lager.holz >= 60) return ['pause', 'Holzfäller ruht – das Lager ist voll'];
+    if (this.baustellen().some(b => !this.wartetAuf(b))) return ['hourglass', 'Holzfäller: Fach voll, wartet auf Ole'];
+    return null;
+  }
+  freieWaben(id) {
+    const belegt = this.belegt(), nur = this.bauModus && BAUARTEN[this.bauart].nur;
+    return [...WELT.fluren[id].waben].filter(k => {
+      const w = WELT.waben.get(k);
+      if (w.wasser || belegt.has(k)) return false;
+      if (nur === 'ufer') return w.amWasser;
+      if (nur === 'fels') return w.art === 'fels';
+      return true;
+    });
+  }
+  eignung(id) {
+    const f = FLUR[id], b = BAUARTEN[this.bauart];
+    if (b.nur && b.nur !== f.art) return null;
+    return b.bonus[f.art] || 0;
+  }
+  waehle(id) {
+    if (this.bauModus) {
+      if (this.stand[id].stand !== 'eigen') { this.toast('flag', `${this.stand[id].stand === 'offen' ? FLUR[id].name : 'Diese Flur'} gehört noch nicht zur Siedlung – erst abstecken`); return; }
+      this.auswahl = id; this.wahlWabe = this.standardWabe(id);
+    } else {
+      this.auswahl = id;
+      if (this.handy && this.blattStufe === 'klein') this.blattStufe = 'halb';
+    }
+    this.zeichne();
+  }
+  abstecken() {
+    const id = this.auswahl;
+    this.stand[id].stand = 'eigen';
+    this.toast('flag', `${FLUR[id].name} gehört jetzt zur Siedlung · −${this.absteckKosten} Proviant`);
+    this.absteckKosten += 6;
+    this.zeichne();
+  }
+
+  // --- Baumodus ---
+  bauenStarten(art) {
+    this.bauModus = true; this.bauart = art;
+    const eigene = FLUREN.filter(f => this.stand[f.id].stand === 'eigen' && this.eignung(f.id) !== null && this.bautenIn(f.id).length < this.plaetze(f.id) && this.freieWaben(f.id).length);
+    if (this.stand[this.auswahl].stand !== 'eigen' || this.eignung(this.auswahl) === null || !eigene.some(f => f.id === this.auswahl))
+      this.auswahl = eigene.sort((a, b) => this.eignung(b.id) - this.eignung(a.id))[0]?.id || this.auswahl;
+    this.wahlWabe = this.standardWabe(this.auswahl);
+    this.zeichne();
+  }
+  bauenBeenden() { this.bauModus = false; this.wahlWabe = null; this.zeichne(); }
+  standardWabe(id) {
+    const frei = this.freieWaben(id), [mx, mz] = WELT.fluren[id].mitte;
+    frei.sort((a, b) => { const A = WELT.waben.get(a), B = WELT.waben.get(b); return Math.hypot(A.x - mx - 0.6, A.z - mz - 1.4) - Math.hypot(B.x - mx - 0.6, B.z - mz - 1.4); });
+    return frei[0] || null;
+  }
+  hierBauen() {
+    const id = this.auswahl, w = WELT.waben.get(this.wahlWabe);
+    if (!w) return;
+    const b = { id: 'bau' + this.naechsteReihe, art: this.bauart, x: w.x, z: w.z, dreh: (streuung(w.q, w.r, 5) - 0.5) * 0.7, wabe: this.wahlWabe,
+      reihe: this.naechsteReihe++, baustelle: { geliefert: {} }, raffer: true };
+    this.bauten.push(b);
+    this.bauModus = false; this.wahlWabe = null;
+    if (this.handy) this.blattStufe = 'halb';
+    const vor = this.baustellen().length > 1 ? ' · Ole bringt erst die Baustelle davor fertig' : ' · Ole läuft los';
+    this.toast('construction', `Baustelle ${BAU_NAMEN[b.art]} abgesteckt${vor}`);
+    this.zeichne();
+    this.zeitraffer();
+  }
+  // Nur im Mockup: Ole liefert alle zwei Sekunden einen Korb
+  zeitraffer() {
+    if (this.takt) return;
+    this.takt = setInterval(() => {
+      const offen = this.baustellen().filter(x => !this.wartetAuf(x)), b = offen[0];
+      if (!offen.some(x => x.raffer)) { clearInterval(this.takt); this.takt = null; this.zeichne(); return; }
+      for (const [w, n] of this.ladung(b)) { b.baustelle.geliefert[w] = (b.baustelle.geliefert[w] || 0) + n; this.lager[w] -= n; }
+      if (!this.fehlt(b).length) {
+        if (b.id === 'dorf') {
+          this.dorf.stufe++; this.dorf.ausbau = null;
+          const st = DORF_STUFEN[this.dorf.stufe - 1];
+          this.toast(st.icon, `Aus dem ${DORF_STUFEN[this.dorf.stufe - 2].name} ist ${ein(st)} geworden · ${st.plaetze} Plätze · neuer Wunsch: ${st.bedarf[0][2] || ARTEN[st.bedarf[0][0]].name}`);
+        } else {
+          b.baustelle = null;
+          const id = this.flurDerWabe(b.wabe);
+          this.toast('circle-check', `${BAU_NAMEN[b.art]} fertig · ${FLUR[id].name} ${this.bautenIn(id).length} von ${this.plaetze(id)} · +${BAUARTEN[b.art].bonus[FLUR[id].art] || 0} %`);
+        }
+      }
+      this.zeichne();
+    }, 2200);
+  }
+  zuerst(id) {
+    const b = this.baustellen().find(x => x.id === id);
+    if (!b) return;
+    b.reihe = Math.min(...this.baustellen().map(x => x.reihe)) - 1;
+    this.toast('chevrons-up', `${b.id === 'dorf' ? 'Der Ausbau' : BAU_NAMEN[b.art]} ist jetzt zuerst dran – Ole bringt als Nächstes ${this.ladungText(b) || 'Material'}`);
+    this.zeichne();
+  }
+  abbrechen(id) {
+    const b = this.baustellen().find(x => x.id === id);
+    if (!b) return;
+    const g = Object.entries(b.baustelle.geliefert).filter(([, n]) => n > 0);
+    g.forEach(([w, n]) => { this.lager[w] += n; });
+    if (b.id === 'dorf') this.dorf.ausbau = null; else this.bauten.splice(this.bauten.indexOf(b), 1);
+    this.toast('undo-2', g.length ? `Baustelle abgebrochen · Ole trägt ${g.map(([w, n]) => `${n} ${ARTEN[w].name}`).join(' und ')} zurück ins Lager` : 'Baustelle abgebrochen – es war noch nichts geliefert');
+    this.zeichne();
+  }
+  dorfAusbauen() {
+    this.dorf.ausbau = { id: 'dorf', art: 'haus', reihe: this.naechsteReihe++, baustelle: { geliefert: {} }, raffer: true };
+    const naechste = DORF_STUFEN[this.dorf.stufe];
+    this.toast('construction', `Ausbau ${zum(naechste)} abgesteckt · Ole bringt das Material, sobald er frei ist`);
+    this.zeichne();
+    this.zeitraffer();
+  }
+  zeigeWare(w) {
+    this.hervor = w; this.reiter = 'siedlung';
+    if (this.handy) this.blattStufe = 'klein';
+    const t = this.hervorDaten(w);
+    const liste = l => l.length > 1 ? l.slice(0, -1).map(x => x[1]).join(', ') + ' und ' + l.at(-1)[1] : l[0][1];
+    this.toast(ARTEN[w].icon, `${ARTEN[w].name}: ${t.plus.length ? `${liste(t.plus)} ${t.plus.length > 1 ? 'liefern' : 'liefert'}` : 'kommt nur aus dem Tagwerk'}${t.minus.length ? ` · ${liste(t.minus)} ${t.minus.length > 1 ? 'brauchen' : 'braucht'}` : ''}`);
+    this.zeichne();
+  }
+  hervorDaten(w) {
+    const plus = [], minus = [], hat = art => this.bauten.find(b => b.art === art && !b.baustelle);
+    if (w === 'holz') { plus.push(['holzfaeller', 'der Holzfäller im Nordwald']); minus.push(['saegebock', 'der Sägebock'], ['feuer', 'das Lagerfeuer']); }
+    if (w === 'bretter') plus.push(['saegebock', 'der Sägebock']);
+    if (w === 'fisch') { if (hat('fischer')) plus.push(['fischer', 'der Fischer']); minus.push(['dorf', 'das Dorf']); }
+    if (w === 'beeren') { if (hat('sammler')) plus.push([hat('sammler').id, 'der Sammler']); minus.push(['dorf', 'das Dorf']); }
+    for (const b of this.baustellen()) if (this.fehlt(b).some(([x]) => x === w)) minus.push([b.id, b.id === 'dorf' ? 'der Ausbau des Dorfs' : `die ${BAU_NAMEN[b.art]}-Baustelle`]);
+    return { plus, minus };
+  }
+
+  // --- Zeichnen ---
+  kamera() {
+    if (this.ansicht === 'dorfbild') return kamera({ w: this.w, h: this.h, cx: this.w / 2, cy: this.h / 2 + 10, ziel: [0.3, 0.1], massstab: 29 });
+    if (this.ansicht === 'tagwerk') return kamera({ w: this.w, h: this.h, cx: this.w / 2, cy: this.h / 2 + 30, ziel: WELT.fluren[this.auswahl].mitte, massstab: this.handy ? 34 : 60 });
+    if (this.reiter === 'lager') return this.handy
+      ? kamera({ w: this.w, h: this.h, cx: this.w / 2, cy: 190, ziel: [-1.2, 0.9], massstab: 36 })
+      : kamera({ w: this.w, h: this.h, cx: (this.w - 356) / 2, cy: this.h / 2 + 40, ziel: [-1.0, 0.6], massstab: 64 });
+    if (!this.handy) return kamera({ w: this.w, h: this.h, cx: (this.w - 356) / 2, cy: this.h / 2 + 40, ziel: [0.8, -1.0], massstab: 42 });
+    return kamera({ w: this.w, h: this.h, cx: this.w / 2 - 6, cy: this.bauModus ? 400 : 300, ziel: [0.5, -0.4], massstab: this.bauModus ? 26 : 22 });
+  }
+  blattHoehe() { return this.reiter === 'lager' && this.blattStufe !== 'klein' ? this.h - 76 - 290 : { klein: 128, halb: 330, ganz: this.h - 76 - 56 }[this.blattStufe]; }
+  zeichne() {
+    if (this.ansicht === 'tagwerk') { this.zeichneWelt(); return; }
+    const uhr = this.el.querySelector('.js-uhr');
+    uhr.innerHTML = this.uhrHtml();
+    this.el.querySelector('.vorrat').innerHTML = this.vorratHtml();
+    this.el.querySelectorAll('[data-nav]').forEach(a => a.classList.toggle('an', a.dataset.nav === this.reiter));
+    this.zeichneWelt();
+    this.zeichneDetail();
+    this.zeichneBaumodus();
+    if (this.handy) {
+      const blatt = this.el.querySelector('.js-blatt');
+      blatt.hidden = !!this.bauModus;
+      blatt.style.height = this.blattHoehe() + 'px';
+      blatt.dataset.stufe = this.blattStufe;
+      blatt.querySelector('.js-bauen').hidden = this.reiter === 'lager' || this.blattStufe === 'ganz';
+    } else {
+      this.el.querySelector('.js-detail').hidden = !!this.bauModus;
+      this.el.querySelector('.welt-knopf').hidden = !!this.bauModus || this.reiter === 'lager';
+    }
+  }
+
+  zeichneWelt() {
+    const k = this.k = this.kamera(), { P, roh } = k;
+    const nacht = this.uhr === 'nacht', daemm = this.uhr === 'daemmerung', tag = this.uhr === 'tag';
+    const belegt = this.belegt();
+    const sichtbar = p => p[0] > -60 && p[0] < k.w + 60 && p[1] > -120 && p[1] < k.h + 60;
+    const uid = this.uid;
+    const boden = [], deko = [], dinge = [], lichter = [];
+    // Boden
+    for (const w of WELT.waben.values()) {
+      if (w.ecken.some(([x, z]) => roh([x, 0, z])[2] < 1.2)) continue;
+      const pts = w.ecken.map(([x, z]) => P([x, 0, z]));
+      if (!pts.some(sichtbar)) continue;
+      boden.push(`<polygon points="${punkte(pts)}" fill="${w.farbe}" stroke="${w.farbe}" stroke-width="1.2"/>`);
+    }
+    // Fluss: nur der Teil vor der Kamera
+    const fluss = FLUSS_BAND.filter(s => roh([s.p[0], 0, s.p[1]])[2] > 1.5);
+    if (fluss.length > 1) {
+      const rand = [...fluss.map(s => P([s.links[0], 0, s.links[1]])), ...fluss.slice().reverse().map(s => P([s.rechts[0], 0, s.rechts[1]]))];
+      const mitte = fluss.map(s => P([s.p[0], 0, s.p[1]]));
+      deko.push(`<polygon points="${punkte(rand)}" fill="#4C8FBE" stroke="#6FA6CC" stroke-width="2" stroke-linejoin="round"/>
+        <polyline points="${punkte(mitte)}" fill="none" stroke="#7DB3D8" stroke-width="${fx(k.massstab * 0.12)}" stroke-dasharray="${fx(k.massstab * 0.5)} ${fx(k.massstab * 0.9)}" stroke-linecap="round" opacity=".7"/>`);
+    }
+    // Wege: vom Lager über den Dorfplatz zu jedem Gebäude
+    const wege = [glatt(ROUTEN.platz)];
+    for (const b of this.bauten) if (!b.anbau && b.art !== 'lager') wege.push(this.routeZu(b));
+    if (this.dorf.ausbau) wege.push(this.routeZu(this.dorf.ausbau));
+    const wegBreite = k.massstab * 0.24;
+    const zuSchirm = pts => pts.filter(([x, z]) => roh([x, 0, z])[2] > 1.2).map(([x, z]) => P([x, 0, z]));
+    wege.map(zuSchirm).forEach(pts => deko.push(`<polyline points="${punkte(pts)}" fill="none" stroke="#D9C69C" stroke-width="${fx(wegBreite)}" stroke-linecap="round" stroke-linejoin="round"/>`));
+    // Dinge
+    for (const w of WELT.waben.values()) {
+      if (belegt.has(schl(w.q, w.r)) || !w.dinge.length) continue;
+      const nebel = this.stand[w.flur].stand === 'nebel';
+      for (const d of w.dinge) {
+        if (nebel && !(d.typ === 'nadel' || d.typ === 'laub' || d.typ === 'birke')) continue;
+        if (roh([d.x, 0, d.z])[2] < 1.5) continue;
+        const fuss = P([d.x, 0, d.z]);
+        if (!sichtbar(fuss)) continue;
+        const s = k.f / fuss[2];
+        dinge.push({ z: fuss[2], svg: this.ding(d, fuss, s, P, nebel, tag) });
+        if (tag && !nebel && (d.typ === 'nadel' || d.typ === 'laub' || d.typ === 'birke'))
+          deko.push(`<ellipse cx="${fx(fuss[0] + s * 0.28)}" cy="${fx(fuss[1] + s * 0.05)}" rx="${fx(s * d.b * 0.55)}" ry="${fx(s * d.b * 0.25)}" fill="#1E2C14" opacity=".2"/>`);
+        if (d.typ === 'bluete' && !nebel) deko.push(`<circle cx="${fx(fuss[0])}" cy="${fx(fuss[1])}" r="${fx(Math.max(1.2, s * 0.06))}" fill="${['#F4E9A0', '#F2B6C8', '#FFFFFF', '#C9B3F0'][Math.floor(d.t * 4)]}"/>`);
+      }
+    }
+    // Gebäude und Baustellen
+    for (const b of this.bauten) {
+      const fuss = P([b.x, 0, b.z]);
+      if (!sichtbar(fuss)) continue;
+      const koerper = b.baustelle ? baustelleKoerper(b, this.bauStufe(b), () => gebaeudeKoerper(b, !tag)) : gebaeudeKoerper(b, !tag);
+      dinge.push({ z: fuss[2], svg: zeichneKoerper(k, koerper) });
+      if (b.art === 'lager') dinge.push({ z: P([b.x - 0.7, 0, b.z + 1.3])[2], svg: zeichneKoerper(k, stapelKoerper(b, this.lager)) });
+      if (!tag && !b.baustelle && b.art !== 'saegebock') lichter.push({ x: b.x, z: b.z + 0.6, r: b.art === 'lager' ? 1.6 : 1.2, st: 0.55 });
+    }
+    // Das Dorf
+    for (const h of DORF_HAEUSER.filter(x => x.ab <= this.dorf.stufe)) {
+      const fuss = P([h.x, 0, h.z]);
+      if (!sichtbar(fuss)) continue;
+      dinge.push({ z: fuss[2], svg: zeichneKoerper(k, hausKoerper(h, this.dorf.stufe, !tag)) });
+      if (!tag) lichter.push({ x: h.x, z: h.z + 0.5, r: 1.15, st: 0.5 });
+    }
+    for (const e of dorfExtras(this.dorf.stufe, !tag)) dinge.push({ z: P([e.x, 0, e.z])[2], svg: zeichneKoerper(k, e.koerper) });
+    if (this.dorf.ausbau) {
+      const h = this.ausbauHaus(), b = { ...this.dorf.ausbau, x: h.x, z: h.z, dreh: h.d };
+      dinge.push({ z: P([h.x, 0, h.z])[2], svg: zeichneKoerper(k, baustelleKoerper(b, this.bauStufe(this.dorf.ausbau), () => hausKoerper(h, this.dorf.stufe + 1, !tag))) });
+    }
+    // Geist im Baumodus
+    if (this.bauModus && this.wahlWabe) {
+      const w = WELT.waben.get(this.wahlWabe);
+      dinge.push({ z: roh([w.x, 0, w.z])[2], svg: `<g opacity=".72">${zeichneKoerper(k, gebaeudeKoerper({ art: this.bauart, x: w.x, z: w.z, dreh: 0 }, false), { geist: true })}</g>` });
+    }
+    // Lagerfeuer
+    {
+      const p = P([0, 0, 0]), s = k.f / p[2];
+      const steine = [0, 1, 2, 3, 4, 5, 6].map(i => { const a = i / 7 * Math.PI * 2, q = P([Math.cos(a) * 0.32, 0, Math.sin(a) * 0.32]); return `<ellipse cx="${fx(q[0])}" cy="${fx(q[1])}" rx="${fx(s * 0.09)}" ry="${fx(s * 0.06)}" fill="#7D7568"/>`; }).join('');
+      const h = s * 0.55;
+      dinge.push({ z: p[2], svg: `${steine}<g class="flamme"><path d="M${fx(p[0] - s * 0.2)} ${fx(p[1])} Q${fx(p[0] - s * 0.18)} ${fx(p[1] - h * 0.6)} ${fx(p[0])} ${fx(p[1] - h)} Q${fx(p[0] + s * 0.18)} ${fx(p[1] - h * 0.6)} ${fx(p[0] + s * 0.2)} ${fx(p[1])} Z" fill="#F08A2C"/>
+        <path d="M${fx(p[0] - s * 0.1)} ${fx(p[1])} Q${fx(p[0] - s * 0.08)} ${fx(p[1] - h * 0.4)} ${fx(p[0])} ${fx(p[1] - h * 0.68)} Q${fx(p[0] + s * 0.08)} ${fx(p[1] - h * 0.4)} ${fx(p[0] + s * 0.1)} ${fx(p[1])} Z" fill="#FFD36A"/></g>` });
+      lichter.push({ x: 0, z: 0, r: tag ? 0 : 3.6, st: 1 });
+    }
+    // Fackeln
+    const fackeln = [];
+    if (this.stand.nordwald.licht) fackeln.push([1.7, -3.9]);
+    if (this.stand.ostufer.licht) fackeln.push([4.6, -1.3]);
+    if (this.stand.birkenhang.stand === 'eigen' && this.stand.birkenhang.licht) fackeln.push([-4.2, -1.2]);
+    for (const [x, z] of fackeln) {
+      const p = P([x, 0, z]), o = P([x, 0.95, z]), s = k.f / p[2];
+      dinge.push({ z: p[2], svg: `<line x1="${fx(p[0])}" y1="${fx(p[1])}" x2="${fx(o[0])}" y2="${fx(o[1])}" stroke="#6E4422" stroke-width="${fx(Math.max(1.5, s * 0.07))}" stroke-linecap="round"/>
+        <g class="flamme"><ellipse cx="${fx(o[0])}" cy="${fx(o[1] - s * 0.1)}" rx="${fx(s * 0.09)}" ry="${fx(s * 0.16)}" fill="#F7A23A"/><ellipse cx="${fx(o[0])}" cy="${fx(o[1] - s * 0.07)}" rx="${fx(s * 0.045)}" ry="${fx(s * 0.09)}" fill="#FFE08A"/></g>` });
+      lichter.push({ x, z, r: tag ? 0 : 2.4, st: 0.85 });
+    }
+    // Ole, der Träger: läuft mit Korb zwischen Lager und Ziel hin und her – nachts mit Fackel
+    const figur = (s, farbe, last, fackel, name) => {
+      const korb = last ? `<rect x="${fx(-s * 0.21)}" y="${fx(-s * 0.37)}" width="${fx(s * 0.15)}" height="${fx(s * 0.17)}" rx="2" fill="#9A6436" stroke="#6E4422" stroke-width="1"/>
+        <rect x="${fx(-s * 0.2)}" y="${fx(-s * 0.45)}" width="${fx(s * 0.13)}" height="${fx(s * 0.09)}" rx="1.5" fill="${last === 'bretter' ? '#E3B57A' : '#7E512E'}"/>` : '';
+      const licht = fackel ? `<line x1="${fx(s * 0.1)}" y1="${fx(-s * 0.2)}" x2="${fx(s * 0.16)}" y2="${fx(-s * 0.48)}" stroke="#6E4422" stroke-width="2" stroke-linecap="round"/>
+        <g class="flamme"><ellipse cx="${fx(s * 0.16)}" cy="${fx(-s * 0.55)}" rx="${fx(s * 0.05)}" ry="${fx(s * 0.09)}" fill="#F7A23A"/><ellipse cx="${fx(s * 0.16)}" cy="${fx(-s * 0.53)}" rx="${fx(s * 0.025)}" ry="${fx(s * 0.05)}" fill="#FFE08A"/></g>` : '';
+      const schrift = name ? `<text y="${fx(-s * 0.62 - 3)}" text-anchor="middle" font-size="11" font-weight="800" font-family="Nunito, sans-serif" fill="#FFF8EA" stroke="#3A2A1C" stroke-width="3" paint-order="stroke">${name}</text>` : '';
+      return `${korb}<ellipse cx="0" cy="${fx(-s * 0.18)}" rx="${fx(s * 0.09)}" ry="${fx(s * 0.17)}" fill="${farbe}"/><circle cx="0" cy="${fx(-s * 0.4)}" r="${fx(s * 0.07)}" fill="#F3D9B8"/>${licht}${schrift}`;
+    };
+    const laeuft = (pts, svg, dur, z) => {
+      const pfad = 'M' + pts.map(p => fx(p[0]) + ' ' + fx(p[1])).join(' L'), m = pts[Math.floor(pts.length / 2)];
+      dinge.push({ z, svg: reduziert ? `<g transform="translate(${fx(m[0])} ${fx(m[1])})">${svg}</g>`
+        : `<g>${svg}<animateMotion dur="${dur}s" repeatCount="indefinite" path="${pfad}" keyPoints="0;1;0" keyTimes="0;.5;1" calcMode="linear"/></g>` });
+      return pfad;
+    };
+    if (!this.bauModus && this.ansicht === 'siedlung') {
+      const auftrag = this.traegerAuftrag(), ole = SIEDLER.find(s => s.id === 'ole');
+      if (auftrag) {
+        const pts = zuSchirm(auftrag.route), m = pts[Math.floor(pts.length / 2)], s = k.f / m[2];
+        const pfad = laeuft(pts, figur(s, ole.farbe, auftrag.last, !tag, 'Ole'), 16, m[2] - 0.1);
+        if (!tag) lichter.push({ r: 1.4, st: 0.9, bahn: { pfad, dur: 16, p: m } });
+      } else {
+        const lager = this.bauten.find(b => b.art === 'lager'), p = P([lager.x + 0.6, 0, lager.z + 1.0]), s = k.f / p[2];
+        dinge.push({ z: p[2] - 0.2, svg: `<g transform="translate(${fx(p[0])} ${fx(p[1])})">${figur(s, ole.farbe, null, false, 'Ole')}</g>` });
+      }
+      if (tag) {
+        const ida = SIEDLER[0], pts = zuSchirm(this.routeZu(this.bauten.find(b => b.art === 'holzfaeller'))).slice(6), s = k.f / pts[Math.floor(pts.length / 2)][2];
+        laeuft(pts.reverse(), figur(s * 0.95, ida.farbe, null, false, ''), 21, pts[Math.floor(pts.length / 2)][2] - 0.1);
+      }
+    }
+    dinge.sort((a, b) => b.z - a.z);
+
+    // Nebel über unerkundeten Fluren
+    const nebelWaben = new Set();
+    for (const f of FLUREN) if (this.stand[f.id].stand === 'nebel') WELT.fluren[f.id].waben.forEach(w => nebelWaben.add(w));
+    const pfadVon = loops => loops.map(l => 'M' + l.map(([x, z]) => { const p = P([x, 0, z]); return fx(p[0]) + ' ' + fx(p[1]); }).join(' L') + ' Z').join(' ');
+    const nebelPfad = pfadVon(umriss(nebelWaben, WELT.waben).map(l => chaikin(l, 3)));
+    const eigenWaben = new Set();
+    for (const f of FLUREN) if (this.stand[f.id].stand === 'eigen') WELT.fluren[f.id].waben.forEach(w => eigenWaben.add(w));
+    const eigenPfad = pfadVon(umriss(eigenWaben, WELT.waben).map(l => chaikin(l, 3)));
+
+    // Nacht: dunkle Decke mit Löchern um die Lichter
+    let nachtSchicht = '';
+    if (!tag) {
+      const lp = lichter.filter(l => l.r > 0).map(l => { const p = l.bahn ? l.bahn.p : P([l.x, 0, l.z]), s = k.f / p[2]; return { p, rx: l.r * s, st: l.st, bahn: l.bahn }; });
+      // Ein wanderndes Licht (Oles Fackel) folgt seinem Weg
+      const ort = (l, dy = 0) => l.bahn && !reduziert ? { pos: `cx="0" cy="${fx(dy)}"`, mit: `<animateMotion dur="${l.bahn.dur}s" repeatCount="indefinite" path="${l.bahn.pfad}" keyPoints="0;1;0" keyTimes="0;.5;1" calcMode="linear"/>` }
+        : { pos: `cx="${fx(l.p[0])}" cy="${fx(l.p[1] + dy)}"`, mit: '' };
+      nachtSchicht = `<defs><radialGradient id="lg${uid}"><stop offset="0" stop-color="#000" stop-opacity="1"/><stop offset=".5" stop-color="#000" stop-opacity=".75"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+        <radialGradient id="gl${uid}"><stop offset="0" stop-color="#FFB45A" stop-opacity="${nacht ? .5 : .28}"/><stop offset="1" stop-color="#FFB45A" stop-opacity="0"/></radialGradient>
+        <mask id="m${uid}" maskUnits="userSpaceOnUse" x="0" y="0" width="${k.w}" height="${k.h}"><rect width="${k.w}" height="${k.h}" fill="#fff"/>${lp.map(l => { const o = ort(l); return `<ellipse ${o.pos} rx="${fx(l.rx)}" ry="${fx(l.rx * 0.72)}" fill="url(#lg${uid})" opacity="${l.st}">${o.mit}</ellipse>`; }).join('')}</mask></defs>
+        <rect width="${k.w}" height="${k.h}" fill="${nacht ? '#0A1530' : '#D9895E'}" opacity="${nacht ? .64 : .55}" mask="url(#m${uid})" style="mix-blend-mode: ${nacht ? 'normal' : 'multiply'}"/>
+        ${lp.map(l => { const o = ort(l, -l.rx * 0.1); return `<ellipse class="glut" ${o.pos} rx="${fx(l.rx * 0.9)}" ry="${fx(l.rx * 0.68)}" fill="url(#gl${uid})" style="mix-blend-mode: screen">${o.mit}</ellipse>`; }).join('')}`;
+      // Fluren ohne Licht: Nebel kriecht hinein
+      for (const f of FLUREN) {
+        if (this.stand[f.id].stand !== 'eigen' || this.stand[f.id].licht) continue;
+        nachtSchicht += `<path d="${pfadVon(WELT.fluren[f.id].umriss)}" fill="#5E7090" opacity="${nacht ? .38 : .2}" filter="url(#nb${uid})"/>`;
+      }
+    }
+
+    // Grenzen
+    let grenzen = '';
+    for (const f of FLUREN) {
+      const st = this.stand[f.id].stand;
+      if (st === 'nebel') continue;
+      const d = pfadVon(WELT.fluren[f.id].umriss);
+      grenzen += `<path d="${d}" fill="none" stroke="#FFF3D6" stroke-width="${st === 'eigen' ? 1.4 : 2}" stroke-dasharray="${st === 'eigen' ? '4 6' : '8 6'}" opacity="${st === 'eigen' ? .7 : .85}"/>`;
+    }
+    grenzen += `<path d="${eigenPfad}" fill="none" stroke="rgba(40,24,10,.35)" stroke-width="5.5" stroke-linejoin="round"/><path d="${eigenPfad}" fill="none" stroke="#FFF3D6" stroke-width="2.6" stroke-linejoin="round"/>`;
+
+    // Auswahl und Baumodus
+    let oben = '', treffer = '';
+    if (this.ansicht === 'siedlung') {
+      if (this.hervor) {
+        // Erzeuger grün, Verbraucher golden – mit ihrem Weg zum Lager
+        const t = this.hervorDaten(this.hervor), ring = (id, farbe) => {
+          let x, z, r = 1.0;
+          if (id === 'dorf') { x = 0.6; z = 0.2; r = 2.6; } else if (id === 'feuer') { x = 0; z = 0; r = 0.7; }
+          else { const b = id === this.dorf.ausbau?.id ? { ...this.ausbauHaus() } : this.bauten.find(x => x.id === id); if (!b) return ''; x = b.x; z = b.z; }
+          const pts = [...Array(36)].map((_, i) => { const a = i / 36 * Math.PI * 2; return P([x + Math.cos(a) * r, 0, z + Math.sin(a) * r]); });
+          const route = id === 'dorf' || id === 'feuer' ? '' : (() => { const b = id === 'dorf' ? null : this.bauten.find(x => x.id === id) || this.dorf.ausbau; return b && b.art !== 'saegebock' ? `<polyline points="${punkte(zuSchirm(this.routeZu(b)))}" fill="none" stroke="${farbe}" stroke-width="${fx(wegBreite * 0.45)}" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>` : ''; })();
+          return `${route}<polygon points="${punkte(pts)}" fill="${farbe}" fill-opacity=".18" stroke="${farbe}" stroke-width="3" filter="url(#gl-f${uid})"/>`;
+        };
+        oben += t.plus.map(([id]) => ring(id, '#8CC45F')).join('') + t.minus.map(([id]) => ring(id, '#FFBE2E')).join('');
+      }
+      if (this.bauModus) {
+        for (const f of FLUREN) {
+          const st = this.stand[f.id].stand;
+          if (st === 'nebel') continue;
+          const d = pfadVon(WELT.fluren[f.id].umriss), e = st === 'eigen' ? this.eignung(f.id) : null;
+          if (st === 'eigen' && e !== null) oben += `<path d="${d}" fill="${mische('#F6E7B0', '#FFBE2E', e / 60)}" opacity="${(0.16 + 0.3 * e / 60).toFixed(2)}"/>`;
+          else oben += `<path d="${d}" fill="#3A2A1C" opacity=".22"/>`;
+        }
+        if (this.auswahl && this.stand[this.auswahl].stand === 'eigen') {
+          oben += `<path d="${pfadVon(WELT.fluren[this.auswahl].umriss)}" fill="none" stroke="#FFBE2E" stroke-width="3.5" filter="url(#gl-f${uid})"/>`;
+          const voll = this.bautenIn(this.auswahl).length >= this.plaetze(this.auswahl);
+          if (!voll) for (const kw of this.freieWaben(this.auswahl)) {
+            const w = WELT.waben.get(kw), pts = [0, 1, 2, 3, 4, 5].map(i => { const a = Math.PI / 3 * i; return P([w.x + 0.84 * Math.cos(a), 0, w.z + 0.84 * Math.sin(a)]); });
+            const an = kw === this.wahlWabe;
+            oben += `<polygon points="${punkte(pts)}" fill="${an ? 'rgba(255,190,46,.5)' : 'none'}" stroke="${an ? '#FFBE2E' : '#FFF8E6'}" stroke-width="${an ? 2.5 : 1.2}" opacity="${an ? 1 : .8}"/>`;
+            treffer += `<polygon points="${punkte(pts)}" data-wabe="${kw}"/>`;
+          }
+        }
+      } else if (this.auswahl && this.reiter !== 'lager' && !this.hervor) {
+        oben += `<path d="${pfadVon(WELT.fluren[this.auswahl].umriss)}" fill="#FFBE2E" fill-opacity=".1" stroke="#F0B54C" stroke-width="3.5" filter="url(#gl-f${uid})"/>`;
+      }
+      for (const f of FLUREN) treffer = `<path d="${pfadVon(WELT.fluren[f.id].umriss)}" data-flur="${f.id}"/>` + treffer;
+    }
+
+    this.svg.innerHTML = `<defs>
+        <filter id="weich${uid}" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="${fx(k.massstab * 0.11)}"/></filter>
+        <filter id="nb${uid}" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="${fx(k.massstab * 0.35)}"/></filter>
+        <filter id="gl-f${uid}" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#FFBE2E" flood-opacity=".8"/></filter>
+      </defs>
+      <rect width="${k.w}" height="${k.h}" fill="${NEBEL}"/>
+      <g filter="url(#weich${uid})">${boden.join('')}</g>
+      <g>${deko.join('')}</g>
+      <path d="${nebelPfad}" fill="${NEBEL}" fill-rule="evenodd" opacity=".9" filter="url(#nb${uid})"/>
+      <g>${dinge.map(d => d.svg).join('')}</g>
+      ${nachtSchicht}
+      <g opacity="${tag ? 1 : .8}">${grenzen}</g>
+      <g>${oben}</g>
+      <g class="treffer">${treffer}</g>`;
+    if (this.ansicht === 'siedlung') this.zeichneSchilder(P);
+  }
+
+  ding(d, p, s, P, nebel, tag) {
+    const geist = nebel ? ' opacity=".28"' : '';
+    const c = nebel ? ['#9EAA92', '#8D9A82'] : null;
+    if (d.typ === 'nadel') {
+      const hw = s * d.b / 2, top = P([d.x, d.h, d.z]), mitte = P([d.x, d.h * 0.55, d.z]);
+      const hell = c ? c[0] : mische('#4C8A3E', '#2F6A30', d.t * 0.6), dunkel = c ? c[1] : mische('#2E5E2C', '#1F4A22', d.t * 0.6);
+      const by = p[1] - s * 0.12;
+      return `<g${geist}><rect x="${fx(p[0] - s * 0.04)}" y="${fx(by)}" width="${fx(s * 0.08)}" height="${fx(s * 0.14)}" fill="#6E4A2C"/>
+        <path d="M${fx(p[0] - hw)} ${fx(by)} L${fx(mitte[0])} ${fx(mitte[1] - s * 0.15)} L${fx(p[0])} ${fx(by + hw * 0.22)} Z" fill="${hell}"/>
+        <path d="M${fx(p[0])} ${fx(by + hw * 0.22)} L${fx(mitte[0])} ${fx(mitte[1] - s * 0.15)} L${fx(p[0] + hw)} ${fx(by)} Z" fill="${dunkel}"/>
+        <path d="M${fx(p[0] - hw * 0.72)} ${fx(mitte[1] + s * 0.12)} L${fx(top[0])} ${fx(top[1])} L${fx(p[0])} ${fx(mitte[1] + s * 0.12 + hw * 0.18)} Z" fill="${hell}"/>
+        <path d="M${fx(p[0])} ${fx(mitte[1] + s * 0.12 + hw * 0.18)} L${fx(top[0])} ${fx(top[1])} L${fx(p[0] + hw * 0.72)} ${fx(mitte[1] + s * 0.12)} Z" fill="${dunkel}"/></g>`;
+    }
+    if (d.typ === 'laub' || d.typ === 'birke' || d.typ === 'busch') {
+      const krone = P([d.x, (d.typ === 'busch' ? 0.25 : d.h * 0.62), d.z]), r = s * d.b * (d.typ === 'busch' ? 0.45 : 0.5);
+      const stamm = d.typ === 'birke' ? '#EDE8DC' : '#6E4A2C';
+      const g1 = c ? c[0] : d.typ === 'birke' ? mische('#9CC45A', '#7DAA45', d.t) : mische('#5E9A44', '#477F36', d.t);
+      const g2 = c ? c[1] : d.typ === 'birke' ? '#6F9A3C' : '#3A6A2E';
+      return `<g${geist}>${d.typ === 'busch' ? '' : `<line x1="${fx(p[0])}" y1="${fx(p[1])}" x2="${fx(krone[0])}" y2="${fx(krone[1])}" stroke="${stamm}" stroke-width="${fx(Math.max(1.5, s * 0.08))}"/>`}
+        <circle cx="${fx(krone[0])}" cy="${fx(krone[1])}" r="${fx(r)}" fill="${g2}"/><circle cx="${fx(krone[0] - r * 0.22)}" cy="${fx(krone[1] - r * 0.22)}" r="${fx(r * 0.72)}" fill="${g1}"/></g>`;
+    }
+    if (d.typ === 'fels') {
+      const b = s * d.b, h = b * 0.55;
+      return `<path d="M${fx(p[0] - b / 2)} ${fx(p[1])} L${fx(p[0] - b * 0.3)} ${fx(p[1] - h)} L${fx(p[0] + b * 0.05)} ${fx(p[1] - h * 1.15)} L${fx(p[0] + b * 0.05)} ${fx(p[1] + b * 0.08)} Z" fill="#B8B2A6"/>
+        <path d="M${fx(p[0] + b * 0.05)} ${fx(p[1] - h * 1.15)} L${fx(p[0] + b * 0.35)} ${fx(p[1] - h * 0.8)} L${fx(p[0] + b / 2)} ${fx(p[1])} L${fx(p[0] + b * 0.05)} ${fx(p[1] + b * 0.08)} Z" fill="#8A8478"/>`;
+    }
+    if (d.typ === 'schilf') {
+      const l = s * 0.38;
+      return `<g stroke="#6F8A3A" stroke-width="${fx(Math.max(1, s * 0.035))}" stroke-linecap="round">${[-0.12, 0, 0.12].map((o, i) => `<line x1="${fx(p[0] + o * s)}" y1="${fx(p[1])}" x2="${fx(p[0] + o * s * 1.6)}" y2="${fx(p[1] - l * (0.8 + i * 0.15))}"/>`).join('')}</g>`;
+    }
+    return '';
+  }
+
+  zeichneSchilder(P) {
+    const html = [];
+    const unten = this.handy ? this.h - 76 - (this.bauModus ? 90 : this.blattHoehe()) - 14 : this.h - 40;
+    const imBild = p => p[0] > 20 && p[0] < this.w - 20 && p[1] > 120 && p[1] < unten && (this.handy || this.bauModus || p[0] < this.w - 372);
+    if (!this.bauModus) {
+      // Schilder über Baustellen und ein Zeichen über ruhenden Gebäuden
+      const schildOrte = FLUREN.filter(f => this.stand[f.id].stand !== 'nebel').map(f => P([WELT.fluren[f.id].mitte[0], 0, WELT.fluren[f.id].mitte[1]]));
+      for (const b of this.baustellen()) {
+        // Über der Baustelle – liegt dort ein Flur-Schild, dann darunter
+        const h = b.id === 'dorf' ? this.ausbauHaus() : b;
+        let p = P([h.x, 1.25, h.z]), unten = false;
+        if (schildOrte.some(q => Math.abs(q[0] - p[0]) < 110 && p[1] - q[1] > -20 && p[1] - q[1] < 56)) { p = P([h.x, 0, h.z + 0.55]); unten = true; }
+        if (!imBild(p)) continue;
+        const wartet = this.wartetAuf(b), flur = b.id === 'dorf' ? 'lichtung' : this.flurDerWabe(b.wabe);
+        html.push(`<button class="bau-schild${wartet ? ' warn' : ''}${unten ? ' unten' : ''}" data-flur="${flur}" style="left: ${fx(p[0])}px; top: ${fx(p[1])}px">${rundIc(wartet ? 'hourglass' : 'construction')}
+          <span>${wartet ? `wartet auf ${ARTEN[wartet].name}` : STUFEN_NAMEN[this.bauStufe(b)]}</span><span class="mini-balken"><b style="width: ${Math.round(this.fortschritt(b) * 100)}%"></b></span></button>`);
+      }
+      const hz = this.holzfaellerZustand(), hf = this.bauten.find(b => b.art === 'holzfaeller');
+      if (hz) {
+        const p = P([hf.x + 0.95, 0.8, hf.z + 0.35]), q = schildOrte.find(q => Math.abs(q[0] - p[0]) < 75 && p[1] - q[1] > -30 && p[1] - q[1] < 45);
+        if (q) p[0] = q[0] + 82;
+        if (imBild(p)) html.push(`<span class="zeichen-schild${hz[0] === 'hourglass' ? ' warn' : ''}" title="${hz[1]}" role="img" aria-label="${hz[1]}" style="left: ${fx(p[0])}px; top: ${fx(p[1])}px">${ic(hz[0])}</span>`); }
+    }
+    for (const f of FLUREN) {
+      const st = this.stand[f.id].stand, fl = WELT.fluren[f.id];
+      const [x, z] = fl.mitte, p = P([x, 0, z]);
+      if (p[0] < 20 || p[0] > this.w - 20 || p[1] < 120 || p[1] > unten) continue;
+      if (!this.handy && p[0] > this.w - 372 && !this.bauModus) continue;
+      const an = f.id === this.auswahl && this.reiter !== 'lager' ? ' an' : '';
+      const pos = `style="left: ${fx(p[0])}px; top: ${fx(p[1])}px"`;
+      const name = st === 'nebel' ? 'Im Nebel' : f.name;
+      if (st === 'nebel') {
+        if (!this.erkundbar(f.id) && f.id !== this.auswahl) continue;
+        const unterwegs = this.unterwegs === f.id;
+        html.push(`<button class="flur-schild nebel${unterwegs ? ' text' : ''}${an}" data-flur="${f.id}" ${pos} title="Im Nebel – erkunden">${rundIc(unterwegs ? 'binoculars' : 'cloud-fog')}${unterwegs ? `<small>${SIEDLER.find(s => s.id === this.unterwegsWer).name} unterwegs</small>` : ''}</button>`);
+        continue;
+      }
+      const art = FLUR_ARTEN[f.art];
+      if (this.bauModus) {
+        if (st !== 'eigen') { html.push(`<button class="flur-schild offen leise" data-flur="${f.id}" ${pos}>${rundIc('flag')}<small>${f.name} · erst abstecken</small></button>`); continue; }
+        if (f.id === this.auswahl && this.wahlWabe) continue;
+        const e = this.eignung(f.id), frei = this.plaetze(f.id) - this.bautenIn(f.id).length;
+        const rest = e === null ? `<small>${f.name} · geht hier nicht</small>` : frei <= 0 ? `<small>${f.name} · voll</small>` : `<span class="prozent">+${e} %</span><small>${f.name} · ${frei} frei</small>`;
+        html.push(`<button class="flur-schild${an}${e === null || frei <= 0 ? ' leise' : ''}" data-flur="${f.id}" ${pos}>${rundIc(art.icon)}${rest}</button>`);
+        continue;
+      }
+      if (st === 'offen') { html.push(`<button class="flur-schild offen${an}" data-flur="${f.id}" ${pos}>${rundIc(art.icon)}${name}${this.handy ? '' : ' <small>· abstecken</small>'}</button>`); continue; }
+      const dunkel = !this.stand[f.id].licht && this.uhr !== 'tag';
+      const belegtN = this.bautenIn(f.id).length;
+      if (f.id === 'lichtung') {
+        const st = DORF_STUFEN[this.dorf.stufe - 1], mangel = this.dorf.zustand === 'mangel';
+        html.push(`<button class="flur-schild${an}" data-flur="${f.id}" ${pos}>${rundIc(mangel ? 'triangle-alert' : st.icon).replace('rund-ic', `rund-ic${mangel ? ' dunkel-ic' : ''}`)}${st.name} <small>${this.dorf.bewohner}/${st.plaetze} Siedler</small></button>`);
+        continue;
+      }
+      html.push(`<button class="flur-schild${an}" data-flur="${f.id}" ${pos}>${rundIc(dunkel ? 'moon' : art.icon)}${name} <small>${belegtN}/${this.plaetze(f.id)}</small></button>`);
+    }
+    this.schilder.innerHTML = html.join('');
+  }
+
+  // --- Flur-Karte ---
+  zeichneDetail() {
+    const d = this.el.querySelector('.js-detail');
+    if (!d) return;
+    const f = FLUR[this.auswahl], st = this.stand[f.id], art = FLUR_ARTEN[f.art];
+    let chips = '', rumpf = '', fuss = '', titel = f.name;
+    const marken = `<div class="marken-raster">${art.brett.map(a => `<span class="mr">${marke(a)}${ARTEN[a].name}</span>`).join('')}</div>`;
+    if (this.reiter === 'lager') ({ titel, chips, rumpf, fuss } = this.lagerTeile());
+    else if (f.id === 'lichtung') ({ titel, chips, rumpf, fuss } = this.dorfTeile());
+    else if (st.stand === 'eigen') {
+      const bauten = this.bautenIn(f.id), n = this.plaetze(f.id);
+      chips = `<span class="chip">${ic(art.icon)}${art.name}</span><span class="chip gut">${art.bonus}</span>`;
+      const holz = bauten.find(b => b.art === 'holzfaeller');
+      rumpf += bauten.filter(b => b.baustelle).map(b => this.baustelleHtml(b)).join('');
+      rumpf += `<div class="abschnitt"><h4>Bauplätze · ${bauten.length} von ${n}</h4>${this.plaetzeHtml(f.id)}</div>`;
+      rumpf += `<div class="abschnitt"><h4>Auf dem Brett</h4>${marken}${holz ? `<div class="bau-zeile">${marke('bau', 'm')}<span>Holzfäller liegt als Kachel darauf: Holzketten daneben zählen doppelt</span></div>` : ''}</div>`;
+      const licht = f.id === 'lichtung' ? ['Lagerfeuer brennt', '2 Holz je Nacht'] : st.licht ? ['Fackel brennt', '1 Holz je Nacht'] : null;
+      rumpf += `<div class="abschnitt"><h4>In der Nacht</h4>${licht
+        ? `<div class="zeile gut">${ic('flame')}<span>${licht[0]}</span><span class="wert">${licht[1]}</span></div>`
+        : `<div class="zeile warn">${ic('moon')}<span>Dunkel – ${f.artikel} ${f.name} verwildert nachts<small>Am Morgen liegt mehr ${f.art === 'ufer' ? 'Schlamm' : 'Gestrüpp'} auf dem Brett.</small></span></div>
+           <button class="knopf zweit klein js-fackel" style="margin-top: 6px">${ic('flame')}Fackel setzen · 4 Holz</button>`}</div>`;
+      fuss = `<button class="knopf haupt js-vorb">${ic('backpack')}Tagwerk vorbereiten</button><span class="hinweis">Zuletzt: Ida, Jonas, Mara · Brot · Axt, Wegzehrung</span>`;
+    } else if (st.stand === 'offen') {
+      chips = `<span class="chip">${ic(art.icon)}${art.name}</span><span class="chip">${ic('flag')}Erkundet</span>`;
+      rumpf = `<div class="abschnitt"><h4>Abstecken</h4><p class="text">Danach gehört die Flur zur Siedlung: ${f.plaetze || 3} Bauplätze, Tagwerke hier, ${art.bonus.toLowerCase().startsWith('+') ? art.bonus : art.bonus}.</p></div>
+        <div class="abschnitt"><h4>Auf dem Brett</h4>${marken}</div>`;
+      fuss = `<button class="knopf haupt js-abstecken">${ic('flag')}Abstecken · ${this.absteckKosten} Proviant</button><span class="hinweis">Jede weitere Flur kostet mehr – die nächste ${this.absteckKosten + 6}.</span>`;
+    } else {
+      titel = 'Im Nebel';
+      chips = `<span class="chip">${ic('cloud-fog')}Unerkundet · im ${richtung(...WELT.fluren[f.id].mitte)}</span>`;
+      if (this.unterwegs === f.id) {
+        rumpf = `<div class="abschnitt"><div class="zeile">${ic('binoculars')}<span>${SIEDLER.find(s => s.id === this.unterwegsWer).name} ist unterwegs<small>Zurück in etwa 2 Spieltagen (16 Minuten).</small></span></div></div>`;
+        fuss = `<button class="knopf zweit" disabled>${ic('binoculars')}Unterwegs</button>`;
+      } else if (f.bruecke && this.erkundbar(f.id)) {
+        rumpf = `<p class="text">Jenseits des Flusses – erreichbar erst mit einer Brücke.</p>`;
+        fuss = `<button class="knopf zweit" disabled>${ic('lock')}Brücke fehlt</button>`;
+      } else if (this.erkundbar(f.id)) {
+        rumpf = `<p class="text">Ein Kundschafter kann die Flur erkunden – ein bis drei Spieltage unterwegs. Er bringt Erkenntnis mit, manchmal auch einen Fund.</p>`;
+        fuss = `<button class="knopf zweit js-erkunden">${ic('binoculars')}Erkunden vorbereiten</button>`;
+      } else {
+        rumpf = `<p class="text">Noch zu weit – erst eine Nachbarflur erkunden und abstecken.</p>`;
+      }
+    }
+    const scroll = d.querySelector('.detail-rumpf')?.scrollTop || 0;
+    d.innerHTML = `<div class="detail-kopf"><h3>${titel}</h3><div class="chips">${chips}</div></div>
+      <div class="detail-rumpf">${rumpf}</div>${fuss ? `<div class="detail-fuss">${fuss}</div>` : ''}`;
+    d.querySelector('.detail-rumpf').scrollTop = scroll;
+  }
+
+  plaetzeHtml(id) {
+    const bauten = this.bautenIn(id), n = this.plaetze(id), kacheln = [];
+    for (let i = 0; i < 4; i++) {
+      const b = bauten[i];
+      if (b && b.baustelle) kacheln.push(`<div class="platz bau">${ic('construction')}${BAU_NAMEN[b.art]}<small>${STUFEN_NAMEN[this.bauStufe(b)]}</small><span class="mini-balken"><b style="width: ${Math.round(this.fortschritt(b) * 100)}%"></b></span></div>`);
+      else if (b) {
+        const anbau = b.art === 'holzfaeller' && this.bauten.find(a => a.anbau);
+        kacheln.push(`<div class="platz">${ic(BAU_ICON[b.art])}${BAU_NAMEN[b.art]}${anbau ? `<small>+ ${BAU_NAMEN[anbau.art]}</small>` : ''}</div>`);
+      } else if (i < n) kacheln.push(`<button class="platz frei js-bauen">${ic('plus')}frei</button>`);
+      else kacheln.push(`<div class="platz mehr" title="Erschließen: Wegstein aus 6 Stein">${ic('milestone')}Erschließen<small>4. Platz</small></div>`);
+    }
+    return `<div class="plaetze">${kacheln.join('')}</div>`;
+  }
+  baustelleHtml(b, titel) {
+    const k = this.kostenVon(b), g = b.baustelle.geliefert, st = this.bauStufe(b), wartet = this.wartetAuf(b);
+    const reihe = this.baustellen(), offen = reihe.filter(x => !this.wartetAuf(x)), dran = offen[0] === b;
+    const ole = SIEDLER.find(s => s.id === 'ole');
+    const stufen = `<div class="stufen">${STUFEN_NAMEN.map((n, i) => `<span class="stufe${i < st ? ' fertig' : i === st ? ' jetzt' : ''}"><i></i>${n}</span>`).join('')}</div>`;
+    const material = `<div class="waren">${Object.entries(k).map(([w, n]) => {
+      const v = Math.min(n, g[w] || 0), fehlt = wartet === w;
+      return `<div class="ware">${marke(w)}<span class="name">${ARTEN[w].name}<small class="${v >= n ? 'gut' : fehlt ? 'warn' : ''}">${v >= n ? 'alles da' : fehlt ? 'fehlt im Lager' : `noch ${n - v}`}</small></span>
+        <span class="zahl">${v}<small>/${n}</small></span><span class="balken${v >= n ? ' voll' : ''}"><b style="width: ${Math.round(v / n * 100)}%"></b></span></div>`;
+    }).join('')}</div>`;
+    const wer = wartet
+      ? `<div class="zeile warn">${ic('hourglass')}<span>Wartet auf ${ARTEN[wartet].name}<small>${wartet === 'bretter' ? 'Der Sägebock macht 6 je Stunde. Ole holt derweil Holz im Nordwald.' : `Im Lager ist kein ${ARTEN[wartet].name} mehr.`}</small></span></div>`
+      : dran ? `<div class="zeile"><span style="--p: ${ole.farbe}">${portrait(ole)}</span><span>Ole bringt ${this.ladungText(b)}<small>Fertig in etwa ${this.restzeit(b)}</small></span></div>`
+      : `<div class="zeile">${ic('hourglass')}<span>Als Nächstes dran<small>Ole trägt erst für ${offen[0].id === 'dorf' ? 'den Ausbau des Dorfs' : `die Baustelle ${BAU_NAMEN[offen[0].art]}`}.</small></span></div>`;
+    const knoepfe = `<div class="schalter-reihe">${reihe[0] !== b ? `<button class="knopf zweit klein js-zuerst" data-bau="${b.id}">${ic('chevrons-up')}Zuerst</button>` : ''}
+      <button class="knopf zweit klein js-abbrechen" data-bau="${b.id}">${ic('x')}Abbrechen</button></div>`;
+    return `<div class="abschnitt"><h4>${titel || `Baustelle · ${BAU_NAMEN[b.art]}`}</h4>${stufen}${material}${wer}${knoepfe}</div>`;
+  }
+  dorfTeile() {
+    const d = this.dorf, st = DORF_STUFEN[d.stufe - 1], next = DORF_STUFEN[d.stufe], L = this.lager;
+    const voll = d.bewohner >= st.plaetze, mangel = d.zustand === 'mangel';
+    const chips = `<span class="chip">${ic(st.icon)}Stufe ${d.stufe} von 4</span><span class="chip">${ic('flame')}Lichtung</span>`;
+    let rumpf = `<div class="stufen dorf">${DORF_STUFEN.map((s, i) => `<span class="stufe${i < d.stufe - 1 ? ' fertig' : i === d.stufe - 1 ? ' jetzt' : ''}"><i></i>${s.name}</span>`).join('')}</div>`;
+    const leute = SIEDLER.slice(0, Math.min(4, d.bewohner)).map(s => `<span class="person" style="--p: ${s.farbe}">${portrait(s)}${s.name}<small>${s.id === 'ole' ? 'trägt' : s.beruf}</small></span>`).join('')
+      + [...Array(Math.max(0, Math.min(4, st.plaetze) - d.bewohner))].map(() => `<span class="person frei"><span class="portrait"></span>frei</span>`).join('');
+    rumpf += `<div class="abschnitt"><h4>Bewohner · ${d.bewohner} von ${st.plaetze}</h4><div class="leute">${leute}</div></div>`;
+    const bedarf = DORF_STUFEN.slice(0, d.stufe).flatMap(s => s.bedarf).map(([w, n, name]) => {
+      const v = L[w] || 0, h = v / n, knapp = v === 0;
+      return `<div class="ware">${marke(w)}<span class="name">${name || ARTEN[w].name}<small>${n} je Stunde</small></span>
+        <span class="zahl">${knapp ? `<small class="warn" style="color: var(--warnung); font-weight: 800">fehlt</small>` : `<small>reicht</small> ${dauer(h)}`}</span></div>`;
+    }).join('');
+    rumpf += `<div class="abschnitt"><h4>Bedarf · laufend aus dem Lager</h4><div class="waren">${bedarf}</div></div>`;
+    rumpf += `<div class="abschnitt"><h4>Zuzug</h4>${mangel
+      ? `<div class="zeile warn">${ic('pause')}<span>Das Wachstum ruht, bis wieder Beeren da sind<small>Niemand hungert, niemand zieht aus.</small></span></div>`
+      : voll ? `<div class="zeile gut">${ic('circle-check')}<span>${gross(st.der)} ${st.name} ist voll und versorgt<small>Mehr Platz gibt der Ausbau.</small></span></div>`
+      : `<div class="zeile">${ic('door-open')}<span>Nächster Siedler in etwa 2 Spieltagen<small>Es ist Platz, und der Bedarf ist gedeckt.</small></span></div>`}</div>`;
+    let fuss;
+    if (d.ausbau) {
+      rumpf += this.baustelleHtml(d.ausbau, `Ausbau ${zum(next)}`);
+      fuss = `<button class="knopf haupt js-vorb">${ic('backpack')}Tagwerk vorbereiten</button><span class="hinweis">Der Ausbau läuft – Ole trägt das Material.</span>`;
+    } else if (next) {
+      const fehlt = Object.entries(next.kosten).filter(([w, n]) => (L[w] || 0) < n);
+      rumpf += `<div class="abschnitt"><h4>Nächste Stufe · ${next.name}</h4>
+        <div class="zeile">${ic('users')}<span>${next.plaetze} Plätze statt ${st.plaetze}</span></div>
+        <div class="zeile">${marke(next.bedarf[0][0])}<span>Neuer Wunsch: ${next.bedarf[0][2] || ARTEN[next.bedarf[0][0]].name}<small>${next.bedarf[0][1]} je Stunde, laufend</small></span></div>
+        <div class="zeile">${ic('sparkles')}<span>Neu auf dem Brett: ${next.neu}</span></div>
+        <div class="zeile">${ic('hammer')}<span>${kostenHtml(next.kosten)}<small>${fehlt.length ? `Im Lager sind erst ${fehlt.map(([w]) => `${L[w]} ${ARTEN[w].name}`).join(' und ')} – die Baustelle wartet dann auf den Rest.` : 'Alles im Lager.'}</small></span></div></div>`;
+      fuss = voll && !mangel
+        ? `<button class="knopf haupt js-ausbau">${ic(next.icon)}${gross(zum(next))} ausbauen</button><button class="knopf zweit js-vorb">${ic('backpack')}Tagwerk vorbereiten</button>`
+        : `<button class="knopf haupt js-vorb">${ic('backpack')}Tagwerk vorbereiten</button><span class="hinweis">Ausbauen geht, wenn ${st.der} ${st.name} voll und versorgt ist.</span>`;
+    }
+    rumpf += `<div class="abschnitt"><h4>Bauplätze der Lichtung · ${this.bautenIn('lichtung').length} von 4</h4>${this.plaetzeHtml('lichtung')}</div>`;
+    return { titel: st.name, chips, rumpf, fuss };
+  }
+  lagerTeile() {
+    const L = this.lager, fischer = this.bauten.find(b => b.art === 'fischer' && !b.baustelle), sammler = this.bauten.some(b => b.art === 'sammler' && !b.baustelle);
+    const rate = { ...RATEN, fisch: RATEN.fisch + (fischer ? 20 : 0), beeren: RATEN.beeren + (sammler ? 20 : 0) };
+    const zeile = w => {
+      const v = L[w], r = rate[w], vor = this.vorgemerkt(w), frei = Math.max(0, v - vor);
+      let text, cls = '';
+      if (r === undefined) text = 'nur aus dem Tagwerk';
+      else if (v >= 60 && r > 0) { text = w === 'holz' ? 'voll – der Holzfäller ruht' : 'voll'; cls = 'warn'; }
+      else if (v === 0 && r < 0) { text = 'fehlt – das Wachstum ruht'; cls = 'warn'; }
+      else if (r > 0) text = `+${r} je Stunde · voll in ${dauer((60 - v) / r)}`;
+      else { text = `${r} je Stunde · reicht noch ${dauer(v / -r)}`; cls = v / -r < 1.5 ? 'warn' : ''; }
+      if (vor) text += ` · ${vor} vorgemerkt`;
+      return `<button class="ware" data-ware="${w}" title="In der Welt zeigen">${marke(w)}<span class="name">${ARTEN[w].name}<small class="${cls}">${text}</small></span>
+        <span class="zahl">${v}<small>/60</small></span><span class="balken${v === 0 ? ' leer' : v >= 60 ? ' voll' : ''}"><b style="width: ${frei / 60 * 100}%"></b><b class="vor" style="width: ${Math.min(v, vor) / 60 * 100}%"></b></span></button>`;
+    };
+    const auftrag = this.traegerAuftrag(), ole = SIEDLER.find(s => s.id === 'ole');
+    const was = !auftrag ? ['Ole hat gerade nichts zu tragen', 'Das Holz ist voll, die Baustellen sind fertig.']
+      : auftrag.ziel ? [`Ole bringt ${this.ladungText(auftrag.ziel)} ${auftrag.ziel.id === 'dorf' ? 'zum Ausbau des Dorfs' : `zum ${BAU_NAMEN[auftrag.ziel.art]}`}`, 'Danach holt er Holz im Nordwald.']
+      : ['Ole holt Holz im Nordwald', this.baustellen().length ? 'Die Baustelle wartet auf Bretter.' : 'Fünf Stück je Gang.'];
+    const hz = this.holzfaellerZustand();
+    const faecher = [
+      hz ? `<div class="zeile ${hz[0] === 'hourglass' ? 'warn' : ''}">${ic(hz[0])}<span>Holzfäller · Nordwald<small>${hz[0] === 'pause' ? 'Ruht – im Lager ist kein Platz für Holz.' : 'Fach 6 von 6 – wartet, bis Ole kommt.'}</small></span></div>`
+         : `<div class="zeile">${ic('axe')}<span>Holzfäller · Nordwald<small>Fach 3 von 6</small></span></div>`,
+      `<div class="zeile gut">${ic('hammer')}<span>Sägebock · Anbau<small>Braucht keinen Träger – das Holz geht direkt hinüber.</small></span></div>`,
+    ].join('');
+    const rumpf = `<div class="abschnitt"><h4>Waren · antippen zeigt sie in der Welt</h4><div class="waren">${['holz', 'bretter', 'fisch', 'beeren', 'kraeuter', 'brot'].map(zeile).join('')}</div></div>
+      <div class="abschnitt"><h4>Träger · 1 von 1</h4><div class="zeile"><span style="--p: ${ole.farbe}">${portrait(ole)}</span><span>${was[0]}<small>${was[1]}</small></span></div>
+        <p class="text" style="font-size: 13px">Ein zweiter Träger kommt mit dem Ausbau des Lagers.</p></div>
+      <div class="abschnitt"><h4>Fächer an den Gebäuden</h4>${faecher}</div>`;
+    const fuss = `<button class="knopf haupt js-lager-aus">${ic('warehouse')}Lager ausbauen</button><span class="hinweis">${kostenHtml({ bretter: 20, holz: 10 })} · 120 je Ware und ein zweiter Träger</span>`;
+    return { titel: 'Lager', chips: `<span class="chip">${ic('warehouse')}60 je Ware</span><span class="chip">${ic('users')}1 Träger</span>`, rumpf, fuss };
+  }
+  rueckkehr() {
+    const u = this.el.querySelector('.ueberlage'), titel = 'Während du weg warst';
+    u.innerHTML = `<div class="scrim"></div><div class="modal rueck" role="dialog" aria-modal="true" aria-label="${titel}">
+      ${this.handy ? `<div class="bogen-kopf"><h3>${titel}</h3></div>` : `<div class="schild">${titel}</div>`}
+      <p class="rueck-zeit">${ic('sunrise')}3 Stunden · inzwischen Sommer, Tag 4</p>
+      <div class="folgen">
+        <div class="zeile gut">${ic('circle-check')}<span>Der Fischer am Ostufer ist fertig<small>Ole hat das Material gebracht. Seitdem 20 Fisch je Stunde.</small></span></div>
+        <div class="zeile">${marke('holz')}<span>Holz seit 1 h 30 min voll<small>Der Holzfäller ruht, bis wieder Platz ist.</small></span><span class="wert">60</span></div>
+        <div class="zeile">${marke('fisch')}<span>54 gefangen, 45 gegessen</span><span class="wert">55</span></div>
+        <div class="zeile warn">${marke('beeren')}<span>Beeren seit 1 h alle<small>Das Wachstum ruht – niemand hungert, niemand zieht aus.</small></span><span class="wert">0</span></div>
+        <div class="zeile">${ic('flame')}<span>Feuer und Fackel brannten jede Nacht<small>30 Holz verbrannt</small></span></div>
+      </div>
+      <div class="vorschlag">${ic('lightbulb')}<span>Beeren gibt es im Wald – ein Tagwerk im Nordwald?</span><button class="knopf zweit klein js-rueck-tagwerk">${ic('backpack')}Vorbereiten</button></div>
+      <div class="rueck-fuss"><button class="knopf haupt js-rueck-zu">Zur Siedlung</button></div></div>`;
+    u.getBoundingClientRect();
+    u.classList.add('offen');
+  }
+
+  zeichneBaumodus() {
+    const leiste = this.el.querySelector('.js-bauleiste'), et = this.el.querySelector('.js-etikett'), hinweis = this.el.querySelector('.js-bauhinweis');
+    leiste.hidden = !this.bauModus;
+    if (!this.bauModus) { et.innerHTML = ''; hinweis.innerHTML = ''; return; }
+    leiste.innerHTML = Object.keys(BAUARTEN).map(a => `<button class="bau-knopf${a === this.bauart ? ' an' : ''}" data-bauart="${a}" aria-pressed="${a === this.bauart}">${ic(BAU_ICON[a])}<span>${BAU_NAMEN[a]}</span><small>${BAUARTEN[a].hinweis}</small></button>`).join('')
+      + `<button class="rund js-bau-aus" aria-label="Baumodus beenden" title="Baumodus beenden (Esc)">${ic('x')}</button>`;
+    const f = FLUR[this.auswahl], voll = this.bautenIn(f.id).length >= this.plaetze(f.id);
+    const moeglich = FLUREN.some(x => this.stand[x.id].stand === 'eigen' && this.eignung(x.id) !== null);
+    const text = moeglich ? `${BAU_NAMEN[this.bauart]} bauen · Flur wählen, dann Wabe` : `${BAU_NAMEN[this.bauart]} braucht eine ${FLUR_ARTEN[BAUARTEN[this.bauart].nur].name}-Flur – erst erkunden und abstecken`;
+    hinweis.innerHTML = `<span class="chip bau-hinweis" style="box-shadow: var(--schatten-k); border: 2px solid var(--rand); background: var(--perg)">${ic(BAU_ICON[this.bauart])}${text}</span>`;
+    if (!this.wahlWabe || voll) {
+      et.innerHTML = voll && this.stand[f.id].stand === 'eigen' ? this.etikettHtml(WELT.fluren[f.id].mitte, `<b>Voll</b><span>${f.name}: alle ${this.plaetze(f.id)} Plätze belegt. Erschließen gibt einen vierten.</span>`) : '';
+      return;
+    }
+    const w = WELT.waben.get(this.wahlWabe), e = this.eignung(f.id), grund = BAUARTEN[this.bauart].grund[f.art];
+    et.innerHTML = this.etikettHtml([w.x, w.z], `<b>+${e} %</b><span>${f.name}${grund ? ` · ${grund}` : ''} · Platz ${this.bautenIn(f.id).length + 1} von ${this.plaetze(f.id)}</span>
+      ${kostenHtml(BAUARTEN[this.bauart].kosten)}<span>Ole trägt es hin · etwa ½ Spieltag</span>
+      <button class="knopf haupt klein js-hier">${ic('hammer')}Hier bauen</button>`);
+  }
+  etikettHtml([x, z], inhalt) {
+    const p = this.k.P([x, 1.0, z]), unten = p[1] < (this.handy ? 300 : 270);
+    return `<div class="etikett${unten ? ' unten' : ''}" style="left: ${fx(Math.max(118, Math.min(this.w - 118, p[0])))}px; top: ${fx(unten ? this.k.P([x, 0, z])[1] + 8 : p[1])}px">${inhalt}</div>`;
+  }
+
+  // --- Vorbereiten ---
+  vorbereiten(modus, flur, start) {
+    const s = start || this.letztes;
+    this.vb = { modus, flur, trupp: new Set(modus === 'erkunden' ? ['mara'] : s.trupp), proviant: s.proviant, kiepe: modus === 'erkunden' ? [] : [...s.kiepe] };
+    this.ueberlage = this.el.querySelector('.ueberlage');
+    this.ueberlage.innerHTML = `<div class="scrim"></div><div class="modal vorb" role="dialog" aria-modal="true"></div>`;
+    this.ueberlage.getBoundingClientRect();
+    this.ueberlage.classList.add('offen');
+    this.modal = this.ueberlage.querySelector('.modal');
+    this.modal.addEventListener('click', e => this.vorbKlick(e));
+    this.zeichneVorb();
+  }
+  vorbSchliessen() { this.ueberlage.classList.remove('offen'); setTimeout(() => { if (!this.ueberlage.classList.contains('offen')) this.ueberlage.innerHTML = ''; }, 250); }
+  faktoren() {
+    const v = this.vb, f = FLUR[v.flur], nacht = this.uhr === 'nacht', daemm = this.uhr === 'daemmerung', dunkel = nacht ? 0.9 : daemm ? 0.4 : 0;
+    const z = [];
+    if (v.modus === 'erkunden') z.push(['minus', 'Unbekanntes Gelände', -0.3]);
+    else z.push(f.art === 'fels' ? ['minus', 'Fels ist ein Wagnis', -0.5] : f.art === 'wald' ? ['plus', `${f.name}: ruhiger Wald`, 0.3] : ['null', f.name, 0]);
+    const zeit = nacht ? 'Nacht und Nieselregen' : daemm ? 'Dämmerung und Nieselregen' : 'Herbst, Nieselregen';
+    z.push(['minus', `${zeit}: ${dunkel ? 'dunkel, ' : ''}${v.modus === 'erkunden' ? 'rutschige Wege' : 'Gestrüpp wuchert'}`, -0.5 - dunkel]);
+    if (v.modus === 'erkunden') z.push(v.trupp.has('mara') ? ['plus', 'Mara liest Fährten', 0.4] : ['null', 'Kundschafter ohne Fährtenkunde', 0]);
+    else z.push(v.trupp.has('ida') ? ['plus', 'Ida kennt den Wald', 0.4] : ['null', 'Niemand im Trupp kennt den Wald', 0]);
+    z.push(v.proviant === 'brot' ? ['plus', 'Brot macht satt', 0.2] : v.proviant === 'brei' ? ['null', 'Beerenbrei reicht', 0] : ['minus', 'Notgang ohne Proviant', -1.6]);
+    const deckt = []; let w = 0;
+    if (v.kiepe.includes('axt') && v.modus === 'tagwerk') { deckt.push('Axt gegen Gestrüpp'); w += 0.4; }
+    if (dunkel && v.kiepe.includes('laterne')) { deckt.push('Laterne gegen das Dunkel'); w += dunkel * 0.85; }
+    z.push(deckt.length ? ['plus', 'Kiepe: ' + deckt.join(', '), w] : ['null', 'Kiepe deckt nichts davon ab', 0]);
+    return z;
+  }
+  aussichten() {
+    const wert = this.faktoren().reduce((s, f) => s + f[2], 0) + (this.pech ? 0.3 : 0);
+    const e = BAENDER.map(b => Math.exp(b.basis + b.steigung * wert)), sum = e.reduce((a, b) => a + b);
+    const p = e.map(v => Math.round(v / sum * 100));
+    p[2] += 100 - p.reduce((a, b) => a + b);
+    return p;
+  }
+  schritte() { const v = this.vb; return v.proviant === 'ohne' ? 4 : v.trupp.size * (v.proviant === 'brot' ? 6 : 5); }
+  zeichneVorb() {
+    const v = this.vb, f = FLUR[v.flur], erk = v.modus === 'erkunden';
+    const nacht = this.uhr === 'nacht', daemm = this.uhr === 'daemmerung';
+    const titel = erk ? `Erkunden im ${richtung(...WELT.fluren[v.flur].mitte)}` : `Tagwerk ${f.ort}`;
+    const p = this.aussichten();
+    const lage = `<div class="lage"><span class="chip">${ic('leaf')}Herbst · Tag 5</span><span class="chip">${ic('cloud-drizzle')}Nieselregen</span>
+      <span class="chip ${nacht || daemm ? 'warn' : ''}">${ic(nacht ? 'moon' : daemm ? 'sunset' : 'sun')}${nacht ? 'Nacht · noch 2 min' : daemm ? 'Dämmerung' : 'Tag · noch 3 min hell'}</span></div>`;
+    const band = `<div class="abschnitt aussicht"><h4>Aussichten</h4><div class="band-huelle"><div class="band">${BAENDER.map((b, i) => `<i class="b-${b.id}" style="flex-grow: ${Math.max(p[i], 0.5)}">${p[i] >= 9 ? p[i] + ' %' : ''}</i>`).join('')}</div><span class="nadel"></span></div>
+      <div class="legende">${BAENDER.map((b, i) => `<span><i class="b-${b.id}"></i>${b.name} ${p[i]} %</span>`).join('')}</div></div>`;
+    const faktoren = `<div class="faktoren">${this.faktoren().map(([vz, text]) => `<div class="faktor"><span class="vz ${vz}">${vz === 'plus' ? '+' : vz === 'minus' ? '−' : '·'}</span><span>${text}</span></div>`).join('')}</div>
+      ${this.pech ? `<div class="vorb-notiz">${ic('sparkles')}Pechausgleich: Nach dem Missgeschick gestern stehen die Aussichten etwas besser.</div>` : ''}
+      ${v.trupp.has('ole') ? `<div class="vorb-notiz">${ic('hourglass')}Ole trägt sonst für das Lager – solange er mitgeht, wartet der Transport.</div>` : ''}
+      ${nacht && v.kiepe.includes('laterne') ? `<div class="vorb-notiz">${ic('sparkles')}Mit Laterne findet man nachts Seltenes – Leuchtpilze, Glühwürmchen.</div>` : ''}`;
+    const notgang = v.proviant === 'ohne';
+    const trupp = `<div class="abschnitt"><h4>${erk ? 'Kundschafter · einer geht' : `Trupp · je Siedler 1 Proviant${notgang ? ' · Notgang: nur einer' : ''}`}</h4><div class="trupp-wahl">${SIEDLER.map(s => {
+      const an = v.trupp.has(s.id), gesperrt = !an && (erk || notgang) && v.trupp.size >= 1 && !erk;
+      return `<button class="mitglied ${an ? '' : 'aus'}" style="--p: ${s.farbe}" data-siedler="${s.id}" aria-pressed="${an}" ${gesperrt ? 'disabled' : ''}>${portrait(s).replace('</span></span>', `</span>${an ? `<span class="abzeichen">${ic('check')}</span>` : ''}</span>`)}<span class="name">${s.name}</span><span class="beruf">${s.beruf}</span></button>`;
+    }).join('')}</div></div>`;
+    const n = Math.max(1, erk ? 2 : notgang ? 0 : v.trupp.size);
+    const proviant = `<div class="abschnitt"><h4>Proviant</h4><div class="wahl-reihe">
+      ${[['brot', 'croissant', `Brot × ${n}`, erk ? 'Vorrat 9' : '6 Schritte je Siedler · Vorrat 9'], ['brei', 'soup', `Beerenbrei × ${n}`, erk ? 'Vorrat 14' : '5 Schritte · Vorrat 14'], ['ohne', 'triangle-alert', 'Ohne', 'Notgang']]
+        .filter(([id]) => !(erk && id === 'ohne')).map(([id, icon, name, klein]) => `<button class="wahl" data-proviant="${id}" aria-pressed="${v.proviant === id}">${rundIc(icon)}<span>${name}<small>${klein}</small></span></button>`).join('')}</div></div>`;
+    const faecher = [0, 1, 2].map(i => { const g = v.kiepe[i]; return g ? `<button class="fach voll" data-fach="${i}" title="${GEGENSTAENDE[g].name} – antippen zum Auspacken">${ic(GEGENSTAENDE[g].icon)}</button>` : `<button class="fach" disabled aria-label="Leerer Platz">${ic('plus')}</button>`; }).join('');
+    const kiepe = `<div class="abschnitt"><h4>Kiepe · 3 Plätze · jeder Gegenstand wirkt einmal</h4><div class="kiepe">${faecher}<span class="kiepe-text">${v.kiepe.length ? v.kiepe.map(g => GEGENSTAENDE[g].name).join(', ') : 'leer'}</span></div>
+      <div class="gegenstaende">${Object.entries(GEGENSTAENDE).map(([id, g]) => { const rest = g.vorrat - v.kiepe.filter(x => x === id).length; return `<button class="ggst" data-ggst="${id}" ${rest <= 0 || v.kiepe.length >= 3 ? 'disabled' : ''} title="${g.wirkung}">${rundIc(g.icon)}<span>${g.name}<small>${g.vorrat ? `noch ${rest}` : 'beim Händler'}</small></span></button>`; }).join('')}</div></div>`;
+    const wz = v.kiepe.filter(x => x === 'wegzehrung').length * 4;
+    const summe = erk ? `<span class="summe">${SIEDLER.find(s => v.trupp.has(s.id))?.name || '–'} geht · 2 ${v.proviant === 'brot' ? 'Brot' : 'Beerenbrei'}<small>1–3 Spieltage unterwegs</small></span>`
+      : `<span class="summe">${this.schritte()} Schritte${wz ? ` <small style="display: inline">+${wz} mit Wegzehrung</small>` : ''}<small>${notgang ? 'Notgang ohne Proviant' : `${v.trupp.size} ${v.proviant === 'brot' ? 'Brot' : 'Beerenbrei'}`}</small></span>`;
+    const fuss = `<div class="vorb-fuss">${summe}${erk ? '' : `<button class="knopf zweit js-wie">${ic('undo-2')}Wie letztes Mal</button>`}
+      <button class="knopf haupt js-los" ${v.trupp.size ? '' : 'disabled'}>${ic(erk ? 'binoculars' : 'dices')}${erk ? 'Losschicken' : 'Losziehen'}</button></div>`;
+    const kopfSchliessen = `<button class="rund zu js-zu" aria-label="Schließen" title="Schließen">${ic('x')}</button>`;
+    const scroll = this.modal.querySelector('.bogen-rumpf')?.scrollTop || 0;
+    if (this.handy) {
+      this.modal.innerHTML = `<div class="bogen-kopf"><h3>${titel}</h3>${kopfSchliessen.replace('rund zu', 'rund')}</div>
+        <div class="bogen-rumpf">${lage}${band}${faktoren}${trupp}${proviant}${erk ? '' : kiepe}</div>${fuss}`;
+      this.modal.querySelector('.bogen-rumpf').scrollTop = scroll;
+    } else {
+      this.modal.innerHTML = `<div class="schild">${titel}</div>${kopfSchliessen}${lage}
+        <div class="vorb-raster"><section>${band}${faktoren}</section><section>${trupp}${proviant}${erk ? '' : kiepe}</section></div>${fuss}`;
+    }
+  }
+  vorbKlick(e) {
+    const v = this.vb, t = e.target.closest('button');
+    if (!t || t.disabled || this.wuerfelt) return;
+    if (t.matches('.js-zu')) { this.vorbSchliessen(); return; }
+    if (t.dataset.siedler) {
+      const id = t.dataset.siedler;
+      if (v.modus === 'erkunden' || v.proviant === 'ohne') v.trupp = new Set([id]);
+      else v.trupp.has(id) ? v.trupp.delete(id) : v.trupp.add(id);
+    } else if (t.dataset.proviant) {
+      v.proviant = t.dataset.proviant;
+      if (v.proviant === 'ohne' && v.trupp.size > 1) v.trupp = new Set([[...v.trupp][0]]);
+    } else if (t.dataset.ggst) { if (v.kiepe.length < 3) v.kiepe.push(t.dataset.ggst); }
+    else if (t.dataset.fach) v.kiepe.splice(Number(t.dataset.fach), 1);
+    else if (t.matches('.js-wie')) { v.trupp = new Set(this.letztes.trupp); v.proviant = this.letztes.proviant; v.kiepe = [...this.letztes.kiepe]; }
+    else if (t.matches('.js-los')) { v.modus === 'erkunden' ? this.losschicken() : this.losziehen(); return; }
+    else if (t.matches('.js-zum-brett')) { this.vorbSchliessen(); this.ansicht = 'tagwerk'; this.aufbauen(); return; }
+    else return;
+    this.zeichneVorb();
+  }
+  losschicken() {
+    const wer = [...this.vb.trupp][0];
+    this.unterwegs = this.vb.flur; this.unterwegsWer = wer;
+    this.vorbSchliessen();
+    this.toast('binoculars', `${SIEDLER.find(s => s.id === wer).name} ist unterwegs – zurück in etwa 2 Spieltagen. Der Wurf steht schon fest.`);
+    this.zeichne();
+  }
+  losziehen() {
+    const v = this.vb, p = this.aussichten();
+    const zahl = this.zufall.next() * 100;
+    let summe = 0, band = 0;
+    for (let i = 0; i < 4; i++) { summe += p[i]; if (zahl < summe) { band = i; break; } band = i; }
+    this.letztes = { trupp: [...v.trupp], proviant: v.proviant, kiepe: [...v.kiepe] };
+    this.wuerfelt = true;
+    this.modal.querySelectorAll('button').forEach(b => { if (!b.matches('.js-zu')) b.disabled = true; });
+    const nadel = this.modal.querySelector('.nadel'), bandEl = this.modal.querySelector('.band');
+    nadel.style.opacity = 1;
+    const ziel = Math.min(98.5, Math.max(1.5, zahl)) + '%';
+    const fertig = () => {
+      bandEl.classList.add('gelandet');
+      bandEl.children[band].classList.add('treffer-band');
+      setTimeout(() => { this.wuerfelt = false; this.zeigeVerlauf(BAENDER[band].id); }, reduziert ? 300 : 650);
+    };
+    if (reduziert) { nadel.style.left = ziel; fertig(); return; }
+    const a = nadel.animate([{ left: '0%' }, { left: '100%', offset: 0.3 }, { left: '12%', offset: 0.55 }, { left: '88%', offset: 0.75 }, { left: ziel }], { duration: 1700, easing: 'cubic-bezier(.25, .7, .25, 1)', fill: 'forwards' });
+    a.onfinish = fertig;
+  }
+  zeigeVerlauf(id) {
+    const v = this.vb, b = BAENDER.find(x => x.id === id), vl = VERLAUF[id], nacht = this.uhr === 'nacht';
+    const fund = nacht && v.kiepe.includes('laterne') && (id === 'ordentlich' || id === 'glueck') ? ['sparkles', 'Leuchtpilze', 'nur nachts zu finden'] : vl.fund;
+    const schritte = Math.max(4, this.schritte() + vl.schritte);
+    this.tw = { band: id, kiepe: [...v.kiepe], trupp: [...v.trupp], schritte, fund: !!fund };
+    const folgen = `<div class="folgen">
+      <div class="zeile">${marke('gestruepp', 'm')}<span>${vl.belegt} ${vl.belegt === 1 ? 'Feld' : 'Felder'} Gestrüpp zu Beginn</span><span class="wert">${Math.round(vl.belegt / 49 * 100)} %</span></div>
+      <div class="zeile">${ic('footprints')}<span>Schritte${vl.schritte ? ` (${vl.schritte > 0 ? '+' : ''}${vl.schritte})` : ''}</span><span class="wert">${schritte}</span></div>
+      ${fund ? `<div class="zeile gut">${ic(fund[0])}<span>Fund: ${fund[1]}<small>${fund[2]} – liegt als Kachel auf dem Brett</small></span></div>` : ''}
+      <div class="zeile">${ic('backpack')}<span>Kiepe: ${v.kiepe.length ? v.kiepe.map(g => GEGENSTAENDE[g].name).join(', ') : 'leer'}</span></div></div>`;
+    const inhalt = `<div class="verlauf">${this.handy ? `<span class="band-chip b-${id}">${b.name}</span>` : ''}<div class="satz">${vl.satz}</div>${folgen}
+      <span class="fest">${ic('lock', 'ic')} Das Ergebnis steht fest – neu laden würfelt nicht neu.</span>
+      <button class="knopf haupt js-zum-brett">Zum Brett</button></div>`;
+    if (this.handy) this.modal.innerHTML = `<div class="bogen-kopf"><h3>Tagwerk ${FLUR[v.flur].ort}</h3></div><div class="bogen-rumpf">${inhalt}</div>`;
+    else this.modal.innerHTML = `<div class="schild">${b.name}</div>${inhalt}`;
+  }
+
+  // --- Tagwerk ---
+  tagwerkHtml() {
+    const t = this.tw, f = FLUR[this.auswahl], b = BAENDER.find(x => x.id === t.band);
+    const welt = `<div class="welt-platz gedimmt"><svg class="welt" viewBox="0 0 ${this.w} ${this.h}"></svg><div class="schilder"></div></div><div class="tw-schleier"></div>`;
+    const kiepe = `<div class="kiepe-dock">${t.kiepe.map(g => `<button class="k-ggst js-k-ggst" data-g="${g}" title="${GEGENSTAENDE[g].wirkung}">${ic(GEGENSTAENDE[g].icon)}${GEGENSTAENDE[g].name}</button>`).join('')}</div>`;
+    const trupp = t.trupp.map(id => SIEDLER.find(s => s.id === id));
+    const lade = { ida: 0.55, jonas: 0.3, mara: 0.2, ole: 0.1 };
+    const blase = `<div class="blase"><div class="blase-inhalt">${marke('holz')}Holz × 4 · am Holzfäller doppelt · +14</div></div>`;
+    const tagzeile = `<span class="tagzeile">${ic('cloud-drizzle')}Herbst · Nieselregen · <span class="band-chip b-${t.band}" style="padding: 1px 8px; font-size: 12px">${b.name}</span></span>`;
+    if (!this.handy) return `${welt}<div class="tw">
+      <header class="leiste"><div class="links"><button class="knopf zweit klein js-zurueck-siedlung">${ic('chevron-left')}Siedlung</button></div>
+        <div class="titel"><h2>${f.name}</h2>${tagzeile}</div>
+        <div class="rechts"><button class="rund" aria-label="Letzte Kette zurücknehmen" title="Letzte Kette zurücknehmen">${ic('undo-2')}</button></div></header>
+      <div class="tw-raster">
+        <aside class="spalte"><div class="karte"><div class="medaille gross"><b>${t.schritte}</b><span>Schritte</span></div></div>
+          <div class="karte"><h3>Kiepe</h3>${kiepe}<p class="text" style="font-size: 13px; margin-top: 8px">Antippen, dann eine Wabe wählen. Jeder Gegenstand wirkt einmal.</p></div></aside>
+        <main class="mitte">${blase}<div class="brett-platz">${this.brettSvg()}</div></main>
+        <aside class="spalte"><div class="karte"><h3>Trupp</h3><div class="liste">${trupp.map(s => `<button class="mitglied zeilig" style="--p: ${s.farbe}">${portrait(s, lade[s.id])}<span class="name">${s.name}</span><span class="beruf">${s.beruf}</span></button>`).join('')}</div></div>
+          <button class="knopf zweit unten js-heim">${ic('house')}Heimkehren</button></aside>
+      </div></div><div class="toast" role="status"></div>`;
+    return `${welt}<div class="tw">
+      <header class="kopf"><button class="rund js-zurueck-siedlung" aria-label="Zur Siedlung" title="Zur Siedlung">${ic('chevron-left')}</button>
+        <div class="titel"><h2>${f.name}</h2>${tagzeile}</div><button class="rund" aria-label="Letzte Kette zurücknehmen">${ic('undo-2')}</button></header>
+      <div class="hud"><div class="medaille"><b>${t.schritte}</b><span>Schritte</span></div>${kiepe}</div>
+      ${blase}<div class="brett-platz">${this.brettSvg()}</div>
+      <div class="beutel">${['holz', 'beeren', 'kraeuter', 'nuesse'].map((a, i) => pille(marke(a), [14, 3, 0, 2][i])).join('')}</div>
+      <div class="trupp-reihe">${trupp.map(s => `<button class="mitglied" style="--p: ${s.farbe}">${portrait(s, lade[s.id])}<span class="name">${s.name}</span></button>`).join('')}</div>
+      </div><div class="toast" role="status"></div>`;
+  }
+  brettSvg() {
+    const S = 50, HH = SQ3 * S, BREITE = 11 * S, HOEHE = 7.5 * HH;
+    const mitte = (c, r) => [S + c * 1.5 * S, HH / 2 + r * HH + (c % 2 ? HH / 2 : 0)];
+    const nb = (c, r) => (c % 2 ? [[0, -1], [0, 1], [-1, 0], [-1, 1], [1, 0], [1, 1]] : [[0, -1], [0, 1], [-1, -1], [-1, 0], [1, -1], [1, 0]]).map(([a, b]) => [c + a, r + b]).filter(([x, y]) => x >= 0 && x < 7 && y >= 0 && y < 7);
+    const z = new Zufall(41 + this.tw.band.length);
+    const g = [];
+    for (let c = 0; c < 7; c++) { g[c] = []; for (let r = 0; r < 7; r++) { const x = z.next(); g[c][r] = { art: x < 0.4 ? 'holz' : x < 0.62 ? 'beeren' : x < 0.82 ? 'kraeuter' : 'nuesse', reife: 1 + Math.floor(z.next() * 3) }; } }
+    const bau = [2, 3], kette = [[3, 2], [3, 3], [4, 3], [4, 4]];
+    g[bau[0]][bau[1]] = { art: 'bau' };
+    [2, 1, 2, 2].forEach((rf, i) => { const [c, r] = kette[i]; g[c][r] = { art: 'holz', reife: rf }; });
+    g[5][1] = { art: 'hase' };
+    const frei = [];
+    for (let c = 0; c < 7; c++) for (let r = 0; r < 7; r++) if (!(c === bau[0] && r === bau[1]) && !kette.some(([a, b]) => a === c && b === r) && !(c === 5 && r === 1)) frei.push([c, r]);
+    const belegt = VERLAUF[this.tw.band].belegt;
+    for (let i = 0; i < belegt; i++) { const j = Math.floor(z.next() * frei.length); const [c, r] = frei.splice(j, 1)[0]; g[c][r] = { art: 'gestruepp' }; }
+    if (this.tw.fund !== false && VERLAUF[this.tw.band].fund) { const [c, r] = frei.splice(Math.floor(z.next() * frei.length), 1)[0]; g[c][r] = { art: 'fund' }; }
+    const P = [0, 1, 2, 3, 4, 5].map(i => { const a = Math.PI / 3 * i; return `${(46 * Math.cos(a)).toFixed(1)},${(46 * Math.sin(a)).toFixed(1)}`; }).join(' ');
+    const PA = [0, 1, 2, 3, 4, 5].map(i => { const a = Math.PI / 3 * i; return `${(43 * Math.cos(a)).toFixed(1)},${(43 * Math.sin(a)).toFixed(1)}`; }).join(' ');
+    let kacheln = '';
+    for (let c = 0; c < 7; c++) for (let r = 0; r < 7; r++) {
+      const k = g[c][r], [x, y] = mitte(c, r), inK = kette.some(([a, b]) => a === c && b === r);
+      const pips = k.reife ? [...Array(k.reife)].map((_, i) => `<circle class="pip" cx="${(i - (k.reife - 1) / 2) * 13}" cy="27" r="5"/>`).join('') : '';
+      kacheln += `<g class="mk t-${k.art}${k.reife === 3 ? ' r3' : ''}${k.art === 'bau' ? ' bau' : ''}${inK ? ' gewaehlt' : ''}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})${inK ? ' translate(0 -5)' : ''}">
+        <polygon class="kante" points="${P}" transform="translate(0 5)"/><polygon class="koerper" points="${P}"/><ellipse class="glanz" cx="0" cy="-22" rx="26" ry="9"/>
+        <g class="sym" transform="translate(-17 -21) scale(1.42)">${ICON[ARTEN[k.art].icon]}</g>${pips}</g>`;
+    }
+    const aura = nb(...bau).map(([c, r]) => { const [x, y] = mitte(c, r); return `<polygon class="aura" points="${PA}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"/>`; }).join('');
+    const pfad = kette.map(([c, r]) => mitte(c, r)).map(([x, y]) => `${x.toFixed(1)},${(y - 5).toFixed(1)}`).join(' ');
+    const m = 26;
+    return `<svg class="brett" viewBox="${-m} ${-m} ${BREITE + 2 * m} ${(HOEHE + 2 * m).toFixed(1)}" role="img" aria-label="Brett ${FLUR[this.auswahl].name}, 7 mal 7 Waben">
+      <rect class="matte" x="-18" y="-18" width="${BREITE + 36}" height="${(HOEHE + 36).toFixed(1)}" rx="30"/>${kacheln}${aura}
+      <polyline class="pfad-s" points="${pfad}"/><polyline class="pfad" points="${pfad}"/></svg>`;
+  }
+}
+document.querySelectorAll('.geraet').forEach(el => { el._spiel = new Spiel(el); });
+</script>
+</body>
+</html>
