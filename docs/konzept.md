@@ -76,8 +76,20 @@ abends heim, die Fenster leuchten, nachts sind nur noch Träger mit Fackeln unte
 
 ## Die Siedlung: Fluren
 
-Die Karte einer Siedlung ist in **Fluren** aufgeteilt: etwa Radius 14, rund 600 Waben, 12–16 Fluren zu je 30–50 Waben.
-Jede Flur hat eine Art und einen Bonus.
+Die Karte einer Siedlung ist in **Fluren** aufgeteilt: Radius 24, rund 1800 Waben, davon gut 1000 in etwa 33 Fluren
+zu je rund 32 Waben (20–50, Inseln kleiner). Jede Flur hat eine Art und einen Bonus.
+
+**Die Karte entsteht aus dem Seed** (Entscheidung 03.11.2026, #9 und #10, Mockup
+[`mockups/weltgenerator.html`](mockups/weltgenerator.html)): ein unregelmäßiges Rund, das in Wildnis und Nebel
+ausläuft; ein Höhenzug am Rand; der Fluss von Rand zu Rand, manchmal mit Gabel und Insel oder Nebenfluss; Seen, Bäche,
+Teiche. Die Art jeder Flur folgt aus ihrer Lage. Derselbe Seed gibt immer dieselbe Karte. **Das Wabenraster ist nur
+Logik und nie zu sehen** – gezeichnet wird auf einem feineren Dreiecksnetz, Wald, Wiese, Fels und Ufer gehen weich
+ineinander über.
+
+**Ort wählen:** Eine neue Siedlung beginnt im Nebel. Frei sind nur drei Orte, die der Generator vorschlägt – die
+besten nach Lage, aber verschieden. Man wählt einen, gibt der Siedlung einen Namen (vorbelegt mit dem Ortsnamen) und
+gründet; passt keiner, würfelt „Andere Gegend“ neu. Danach liegen die beiden anderen Orte wieder im Nebel. In der
+Werkstatt ist der Nebel aus.
 
 | Flur | Bonus | Besonderheit |
 |---|---|---|
@@ -88,10 +100,10 @@ Jede Flur hat eine Art und einen Bonus.
 | Fels | Steinbruch, Erzgrube | Felsgebäude nur auf Felswaben |
 | Selten: Quelle, alter Hain, Moor … | eigene Boni | – |
 
-- **Nebel → Erkunden → Abstecken.** Zu Beginn ist nur die Lichtung sichtbar. Ein Kundschafter aus dem Trupp erkundet
-  eine Nachbarflur (ein Vorhaben, ein bis drei Spieltage unterwegs) und bringt Erkenntnis mit. Abstecken kostet
-  Proviant, jede weitere Flur mehr; danach gehört sie zur Siedlung. Fluren jenseits des Flusses brauchen erst eine
-  Brücke.
+- **Nebel → Erkunden → Abstecken.** Nach der Gründung sind die Lichtung und ihre nächsten Nachbarn sichtbar. Ein
+  Kundschafter aus dem Trupp erkundet eine Nachbarflur (ein Vorhaben, ein bis drei Spieltage unterwegs) und bringt
+  Erkenntnis mit. Abstecken kostet Proviant, jede weitere Flur mehr; danach gehört sie zur Siedlung. Fluren jenseits
+  des Flusses brauchen erst eine Brücke.
 - **Bauplätze:** 3 je Flur. **Erschließen** (z. B. Brunnen oder Wegstein) gibt einen vierten, mehr nicht. Die Grenze
   kommt aus der Regel, nicht aus dem Platz – die Fluren bleiben zum größten Teil Natur.
 - **Innerhalb der Flur ist Bauen frei** auf einem unsichtbaren Wabenraster, der Ort ist fast egal. Ausnahmen: Ufer- und

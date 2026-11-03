@@ -1,0 +1,1602 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup: Lichtung – Weltgenerator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,500..700,0..100&family=Nunito:wght@500..900&display=swap">
+<style>
+  /* ---------- Mockup-Seite ---------- */
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #57534d; font: 15px/1.45 'Nunito', system-ui, sans-serif; color: #fff; }
+  h1 { font: 600 20px 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; margin: 48px 0 4px; }
+  h1:first-of-type { margin-top: 0; }
+  .erkl { margin: 0 0 16px; max-width: 900px; color: #eee; }
+  .erkl b { color: #fff; }
+  .reihe { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+  .reihe + .reihe { margin-top: 24px; }
+  figure { margin: 0; display: grid; gap: 8px; align-content: start; }
+  figcaption { font-size: 13px; color: #eee; font-weight: 700; }
+  figcaption .seed { font-weight: 600; color: #cfc9bf; font-variant-numeric: tabular-nums; }
+  .notiz { background: #FFF8EA; color: #3A2A1C; border-radius: 18px; padding: 24px 32px; max-width: 900px; margin-top: 48px; }
+  .notiz h2 { font: 600 20px 'Fraunces', Georgia, serif; margin: 16px 0 8px; }
+  .notiz h2:first-child { margin-top: 0; }
+  .notiz li { margin: 4px 0; }
+  .notiz code { font-size: 13px; }
+  /* Werkzeug des Mockups: Seed, Größe, Nebel */
+  .werkzeug { position: sticky; top: 0; z-index: 50; display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; padding: 10px 14px; margin: 16px 0 8px; background: #3F3C37; border-radius: 14px; box-shadow: 0 6px 18px rgba(0, 0, 0, .3); max-width: 1100px; }
+  .werkzeug label { font-weight: 800; }
+  .werkzeug input[type=text], .werkzeug select { font: 800 15px 'Nunito', sans-serif; padding: 8px 10px; border-radius: 10px; border: 2px solid #8A847A; background: #FFF8EA; color: #3A2A1C; font-variant-numeric: tabular-nums; }
+  .werkzeug input[type=text] { width: 130px; }
+  .werkzeug button { font: 800 14px 'Nunito', sans-serif; padding: 8px 14px; border-radius: 10px; border: 0; background: #E8A93A; color: #3A2A1C; box-shadow: 0 3px 0 #B97F1E; cursor: pointer; }
+  .werkzeug button.leise { background: #6B665E; color: #fff; box-shadow: 0 3px 0 #4A463F; }
+  .werkzeug .schalter { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+  .werkzeug .schalter input { width: 20px; height: 20px; accent-color: #E8A93A; }
+  .werkzeug .info { color: #d8d2c8; font-size: 13px; font-weight: 700; }
+  .vergleich { display: grid; grid-template-columns: repeat(auto-fill, 400px); gap: 24px; }
+
+  /* ---------- Spiel-Tokens: Tag ---------- */
+  .geraet {
+    --bg-oben: #EAF2DC; --bg-unten: #CFE0AE;
+    --perg: #FFF8EA; --perg-2: #F4E8D0; --rand: #E2CFA9;
+    --holz: #9A6436; --holz-d: #6E4422;
+    --tinte: #3A2A1C; --tinte-2: #7B6550;
+    --moos: #4E7F2F; --moos-d: #3A6222; --moos-h: #7DB453; --gruen-text: #3A6222;
+    --honig: #E8A93A; --honig-d: #B97F1E; --honig-h: #FFE3A1;
+    --warnung: #B4532A;
+    --matte: #2F4A2A;
+    --schatten: 0 6px 18px rgba(84, 56, 26, .18);
+    --schatten-k: 0 2px 6px rgba(84, 56, 26, .14);
+    --fokus: #2F6FB0;
+    background: linear-gradient(180deg, var(--bg-oben), var(--bg-unten));
+    color: var(--tinte);
+    font: 15px/1.45 'Nunito', system-ui, sans-serif;
+    border-radius: 18px; overflow: hidden; position: relative; flex: none;
+  }
+  /* ---------- Spiel-Tokens: Abend ---------- */
+  .geraet.abend {
+    --bg-oben: #22312F; --bg-unten: #141D1C;
+    --perg: #2F2823; --perg-2: #3B322B; --rand: #4E4033;
+    --holz: #7A5030; --holz-d: #4A2F1B;
+    --tinte: #F4E8D2; --tinte-2: #C3B299;
+    --moos-h: #8CC45F; --gruen-text: #A5D47A;
+    --honig: #F0B54C; --honig-d: #B9822A;
+    --warnung: #F09A6B;
+    --matte: #22331A;
+    --schatten: 0 8px 22px rgba(0, 0, 0, .45);
+    --schatten-k: 0 2px 8px rgba(0, 0, 0, .35);
+    --fokus: #8EC5FF;
+  }
+  .laptop { width: 1100px; height: 700px; }
+  .handy { width: 390px; height: 844px; }
+  .kachel { width: 400px; height: 330px; border-radius: 14px; cursor: pointer; }
+  .kachel:hover { outline: 3px solid #E8A93A; outline-offset: 2px; }
+  .geraet button { font-family: inherit; color: inherit; }
+  .geraet [hidden] { display: none !important; }
+  .geraet :focus-visible { outline: 3px solid var(--fokus); outline-offset: 2px; }
+  .ic { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Knöpfe zum Drücken */
+  .knopf { --f: var(--perg); --u: var(--rand); --t: var(--tinte); display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 18px; border: 0; border-radius: 14px; background: var(--f); color: var(--t) !important; font-weight: 800; font-size: 15px; box-shadow: 0 4px 0 var(--u); cursor: pointer; white-space: nowrap; transition: transform 90ms, box-shadow 90ms, filter 120ms; }
+  .knopf.zweit { border: 2px solid var(--rand); box-shadow: 0 3px 0 var(--rand); }
+  .knopf.haupt { --f: var(--moos); --u: var(--moos-d); --t: #fff; }
+  .knopf.klein { min-height: 38px; padding: 0 12px; font-size: 14px; }
+  .knopf:hover:not(:disabled) { filter: brightness(1.06); }
+  .knopf:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 var(--u); }
+
+  /* Pergament, Wortmarke, Chips */
+  .karte { background: var(--perg); border: 2px solid var(--rand); border-radius: 16px; box-shadow: var(--schatten); padding: 16px; }
+  .wortmarke { display: flex; align-items: center; gap: 8px; font: 700 22px 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; white-space: nowrap; }
+  .wortmarke .zeichen { width: 34px; height: 34px; border-radius: 50%; background: var(--moos); color: #fff; display: grid; place-items: center; box-shadow: 0 3px 0 var(--moos-d); }
+  .wortmarke .zeichen .ic { width: 18px; height: 18px; }
+  .wortmarke.schwebend { padding: 4px 14px 4px 4px; background: var(--perg); border: 2px solid var(--rand); border-radius: 999px; box-shadow: var(--schatten-k); font-size: 20px; }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px 3px 7px; border-radius: 999px; background: var(--perg-2); font-weight: 800; font-size: 13px; white-space: nowrap; }
+  .chip .ic { width: 15px; height: 15px; }
+  .chip.extra { background: color-mix(in srgb, var(--honig) 22%, var(--perg)); }
+
+  /* ---------- Welt ---------- */
+  .welt-platz { position: absolute; inset: 0; overflow: hidden; background: #E2E8D8; }
+  .welt-platz > canvas, .welt-platz > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .welt-platz > svg { pointer-events: none; }
+  .schilder { position: absolute; inset: 0; pointer-events: none; }
+  .treffer path, .treffer polygon, .treffer circle, .treffer rect { fill: transparent; stroke: none; cursor: pointer; pointer-events: all; }
+  .treffer [data-vorschlag], .treffer [data-flur] { outline: none; }
+  .laptop .treffer [data-vorschlag]:hover, .treffer [data-vorschlag]:focus-visible { fill: rgba(255, 248, 230, .16); stroke: #FFF3D6; stroke-width: 2; }
+  .laptop .treffer [data-flur]:hover { fill: rgba(255, 248, 230, .1); }
+  .leuchten { animation: leuchten 1.3s ease-in-out infinite alternate; }
+  @keyframes leuchten { from { opacity: .55; } to { opacity: 1; } }
+  .flamme { transform-box: fill-box; transform-origin: 50% 100%; animation: flackern 1.1s ease-in-out infinite alternate; }
+  @keyframes flackern { 0% { transform: scale(1, 1); } 45% { transform: scale(.9, 1.1); } 100% { transform: scale(1.06, .9); } }
+
+  .flur-schild { position: absolute; transform: translate(-50%, -50%); display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 3px; border-radius: 999px; background: var(--perg); border: 2px solid var(--rand); font-weight: 800; font-size: 13px; line-height: 1.2; white-space: nowrap; box-shadow: var(--schatten-k); pointer-events: auto; cursor: pointer; color: var(--tinte); }
+  .flur-schild .rund-ic { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--perg-2); }
+  .flur-schild .rund-ic .ic { width: 15px; height: 15px; }
+  .flur-schild small { font-weight: 700; color: var(--tinte-2); font-size: 12px; }
+  .flur-schild.offen { border-style: dashed; background: color-mix(in srgb, var(--perg) 82%, transparent); }
+  .flur-schild.nebel { padding: 3px; border-style: dashed; background: color-mix(in srgb, var(--perg) 70%, transparent); }
+  .flur-schild.an { border-color: var(--honig); border-style: solid; box-shadow: 0 0 0 3px color-mix(in srgb, var(--honig) 45%, transparent), var(--schatten-k); }
+  .flur-schild.ort-schild { font: 600 15px/1.2 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; padding-right: 12px; transform: translate(-50%, -100%); }
+  .flur-schild.ort-schild .rund-ic { color: #B9561E; }
+  .abend .flur-schild.ort-schild .rund-ic { color: #F59A4A; }
+  .flur-schild.ort-schild.an .rund-ic { background: var(--honig); color: #3A2A1C; }
+  .handy .flur-schild { font-size: 12px; padding: 2px 8px 2px 2px; }
+  .handy .flur-schild .rund-ic { width: 22px; height: 22px; }
+  .handy .flur-schild.ort-schild { font-size: 14px; }
+  /* Werkstatt: Arten und Vorschläge auf der Karte */
+  .art-marke { position: absolute; transform: translate(-50%, -50%); width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--perg); border: 2px solid var(--rand); color: var(--tinte); box-shadow: var(--schatten-k); }
+  .art-marke .ic { width: 13px; height: 13px; }
+  .art-marke.selten { border-color: var(--honig); background: #FFE6A6; color: #6E4422; }
+  .art-marke.insel { border-style: dashed; }
+  .kachel .art-marke { width: 18px; height: 18px; border-width: 1.5px; }
+  .kachel .art-marke .ic { width: 10px; height: 10px; }
+  .platz-nr { position: absolute; transform: translate(-50%, -50%); width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--honig); color: #3A2A1C; border: 2px solid #fff; font: 800 14px/1 'Nunito', sans-serif; box-shadow: var(--schatten-k); }
+  .kachel .platz-nr { width: 20px; height: 20px; font-size: 12px; }
+
+  .oben { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; gap: 12px; padding: 14px 16px 0; pointer-events: none; z-index: 4; }
+  .oben > * { pointer-events: auto; }
+
+  /* Ort wählen: Karte rechts (Laptop) bzw. Blatt unten (Handy) */
+  .wahl-karte { position: absolute; top: 16px; right: 16px; width: 340px; z-index: 3; display: grid; gap: 14px; }
+  .orte { display: grid; gap: 8px; }
+  .ort { display: grid; grid-template-columns: 40px minmax(0, 1fr); align-items: center; column-gap: 12px; row-gap: 6px; width: 100%; padding: 9px 12px 9px 9px; border: 2px solid var(--rand); border-radius: 14px; background: var(--perg); box-shadow: 0 3px 0 var(--rand); cursor: pointer; text-align: left; transition: transform 90ms, box-shadow 90ms; }
+  .ort:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--rand); }
+  .ort .zeichen { grid-row: 1 / 3; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--perg-2); color: #B9561E; }
+  .abend .ort .zeichen { color: #F59A4A; }
+  .ort b { font: 600 18px/1.2 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; }
+  .ort .mini { display: flex; gap: 6px; color: var(--tinte-2); }
+  .ort .mini .ic { width: 16px; height: 16px; }
+  .ort .chips { display: none; }
+  .ort.an { border-color: var(--honig); background: color-mix(in srgb, var(--honig) 13%, var(--perg)); box-shadow: 0 3px 0 var(--honig-d), 0 0 0 3px color-mix(in srgb, var(--honig) 30%, transparent); }
+  .ort.an .zeichen { background: var(--honig); color: #3A2A1C; }
+  .ort.an .mini { display: none; }
+  .ort.an .chips { display: flex; }
+  .wahl-fuss { display: grid; gap: 10px; }
+  .wahl-fuss .knopf { width: 100%; }
+  /* Namen geben */
+  .benennen { display: grid; grid-template-columns: 40px minmax(0, 1fr); align-items: center; gap: 12px; }
+  .benennen .zeichen { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--honig); color: #3A2A1C; }
+  .name-feld { width: 100%; min-height: 48px; padding: 8px 12px; border: 2px solid var(--rand); border-radius: 12px; background: var(--perg-2); color: var(--tinte); font: 600 20px/1.2 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; }
+  .name-feld:focus { outline: 3px solid var(--fokus); outline-offset: 1px; }
+  .laptop .wahl-fuss.zwei { grid-template-columns: auto 1fr; }
+  .laptop .wahl-fuss.zwei .knopf.zweit { width: 52px; padding: 0; }
+  .wahl-fuss .knopf.zweit.nur-ic span { display: none; }
+  .handy .wahl-karte { top: auto; right: 0; left: 0; bottom: 0; width: auto; border-radius: 22px 22px 0 0; border-width: 2px 0 0; padding: 8px 14px 18px; gap: 12px; box-shadow: 0 -8px 24px rgba(40, 24, 10, .2); }
+  .griff { height: 14px; display: grid; place-items: center; }
+  .griff span { width: 40px; height: 5px; border-radius: 999px; background: var(--rand); }
+  .laptop .griff { display: none; }
+  .handy .ort { padding: 7px 10px 7px 7px; }
+  .handy .ort .zeichen { width: 36px; height: 36px; }
+  .handy .ort b { font-size: 17px; }
+  .handy .wahl-fuss { grid-template-columns: auto 1fr; }
+  .handy .wahl-fuss .knopf.zweit { width: 52px; padding: 0; }
+  .handy .wahl-fuss .knopf.zweit span { display: none; }
+  .wahl-fuss .knopf.zweit { order: -1; }
+  .laptop .wahl-fuss:not(.zwei) .knopf.zweit { order: 0; }
+
+  .toast { position: absolute; left: 50%; bottom: 24px; transform: translate(-50%, 12px); z-index: 20; display: flex; align-items: center; gap: 10px; padding: 6px 8px 6px 14px; background: var(--perg); border: 2px solid var(--rand); border-radius: 999px; box-shadow: var(--schatten); font: 600 17px 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; opacity: 0; transition: opacity 160ms, transform 200ms; pointer-events: none; white-space: nowrap; }
+  .toast.zeigen { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+  .toast > .ic { color: #B9561E; }
+  .abend .toast > .ic { color: #F59A4A; }
+  .toast .knopf { font-family: 'Nunito', sans-serif; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .geraet *, .geraet *::before, .geraet *::after { animation: none !important; transition-duration: 1ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Lichtung – Mockup Weltgenerator</h1>
+<p class="erkl">Issue #9. Aus einem Seed entsteht die ganze Karte einer Siedlung: ein Höhenzug, der Fluss – manchmal mit
+  Nebenfluss oder mit Gabel und Insel –, Bäche, Seen und Teiche, dann die Fluren mit ihrer Art und ihrem Namen. Die
+  Karte hat Radius 24 und keinen sichtbaren Rand: Das Land läuft in Wildnis und Nebel aus. <b>Das Wabenraster bleibt
+  unsichtbar.</b> Es trägt nur die Spiellogik; gezeichnet wird auf einem feineren Unterraster aus Dreiecken, und Wald,
+  Wiese, Fels, Moor und Ufer gehen zwischen den Wabenmitten weich ineinander über. Im Spiel liegt vor der Gründung alles
+  im Nebel außer den <b>drei Orten</b>, die man zum Start wählen kann. Hier im Mockup ist der Nebel wie in der Werkstatt
+  aus; der Schalter oben zeigt den Blick im Spiel.</p>
+<div class="werkzeug">
+  <label for="seed">Seed</label><input id="seed" type="text" inputmode="numeric" autocomplete="off">
+  <button id="wuerfeln" type="button">Neu würfeln</button>
+  <button id="zurueck" type="button" class="leise">Seed 1</button>
+  <label for="groesse">Größe</label>
+  <select id="groesse"><option value="14">Radius 14</option><option value="20">Radius 20</option><option value="24" selected>Radius 24</option><option value="28">Radius 28</option></select>
+  <label class="schalter"><input id="nebel" type="checkbox">Nebel wie im Spiel</label>
+  <span class="info js-info"></span>
+</div>
+
+<h1>1 · Ort wählen – Tag</h1>
+<p class="erkl">Vor der Gründung sieht man die Landschaft, aber keine Fluren. An jedem der drei Orte steht das Dorf als
+  Andeutung: Feuer, drei Hütten, ein Kreis für die Lichtung. Der gewählte Ort leuchtet, seine künftige Lichtung ist zart
+  umrissen. Die drei Orte liegen verschieden – anderes Ufer, andere Nachbarschaft – und haben alle Wald, Ufer und Wiese
+  nebenan. Die Zeile nennt, was in der Nähe liegt. <b>Andere Gegend</b> würfelt in diesem Rahmen eine neue Landschaft
+  (der Seed steht in der Bildunterschrift). Mit „Nebel wie im Spiel“ sind nur die drei Orte frei.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Tag <span class="seed js-seed"></span></figcaption><div class="geraet laptop" data-ansicht="wahl"></div></figure>
+  <figure><figcaption>Handy 390 px · Tag <span class="seed js-seed"></span></figcaption><div class="geraet handy" data-ansicht="wahl"></div></figure>
+</div>
+
+<h1>2 · Ort wählen – Abend</h1>
+<p class="erkl">Oberfläche in der Stimmung „Abend“. Die Welt bleibt hell: Vor der Gründung läuft noch keine Spieluhr.
+  Rechts ist der zweite Vorschlag gewählt.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Abend <span class="seed js-seed"></span></figcaption><div class="geraet laptop abend" data-ansicht="wahl"></div></figure>
+  <figure><figcaption>Handy 390 px · Abend · zweiter Ort gewählt <span class="seed js-seed"></span></figcaption><div class="geraet handy abend" data-ansicht="wahl" data-wahl="1"></div></figure>
+</div>
+
+<h1>3 · Namen geben</h1>
+<p class="erkl">Nach „Hier gründen“ bekommt die Siedlung ihren Namen. Das Feld ist mit dem Namen des Ortes vorbelegt;
+  wer nichts ändert, gründet einfach. <b>Gründen</b> setzt das Dorf, der Pfeil führt zurück zur Wahl. Danach steht der
+  Name kurz unten, mit Rückgängig. Ein leeres Feld nimmt wieder den Ortsnamen.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Tag <span class="seed js-seed"></span></figcaption><div class="geraet laptop" data-ansicht="name"></div></figure>
+  <figure><figcaption>Handy 390 px · Abend <span class="seed js-seed"></span></figcaption><div class="geraet handy abend" data-ansicht="name" data-wahl="1"></div></figure>
+</div>
+
+<h1>4 · Nach der Gründung</h1>
+<p class="erkl">So übernimmt #5 die Karte: Die gewählte Flur wird zur Lichtung und trägt den Namen der Siedlung, das Dorf
+  steht in ihrer Mitte, die Bäume dort sind gerodet. Daneben liegen – wie im MVP – je eine Flur Wald, Ufer und Wiese zum
+  Abstecken (gestrichelt), eine weitere als Ausblick im Nebel. Mit „Nebel wie im Spiel“ bleibt alles andere im Nebel,
+  nur der Wald ragt als Kulisse heraus. Fluren und Dorf antippen markiert sie.</p>
+<div class="reihe">
+  <figure><figcaption>Laptop · Tag · erster Ort <span class="seed js-seed"></span></figcaption><div class="geraet laptop" data-ansicht="siedlung" data-wahl="0"></div></figure>
+  <figure><figcaption>Handy 390 px · Abend · Nacht · zweiter Ort <span class="seed js-seed"></span></figcaption><div class="geraet handy abend" data-ansicht="siedlung" data-wahl="1" data-uhr="nacht"></div></figure>
+</div>
+
+<h1>5 · Werkstatt: die ganze Karte</h1>
+<p class="erkl">Was das Spiel verbirgt, zeigt die Werkstatt (<code>?werkstatt</code>), dort ist der Nebel immer aus:
+  Flurgrenzen, die Art jeder Flur (Seltenes mit Honigrand, Inseln gestrichelt) und die drei Vorschläge (1 ist der
+  beste). Eine Flur antippen zeigt Name, Art und Zahl der Waben.</p>
+<div class="reihe">
+  <figure><figcaption>Werkstatt · Laptop <span class="seed js-seed"></span></figcaption><div class="geraet laptop" data-ansicht="werkstatt"></div></figure>
+</div>
+
+<h1>6 · Werkstatt: Seeds vergleichen</h1>
+<p class="erkl">Sechs Seeds ab dem Seed oben, in der eingestellten Größe. Ein Klick auf eine Karte übernimmt ihren Seed
+  für alle Rahmen.</p>
+<div class="vergleich js-vergleich"></div>
+
+<div class="notiz">
+  <h2>So arbeitet der Generator</h2>
+  <ol>
+    <li><b>Raster:</b> Wabenkarte mit Radius 24 (1801 Waben), flache Oberkante, axiale Koordinaten – wie im Prototyp. Das
+      Raster ist nur die Logik; es wird nie gezeichnet.</li>
+    <li><b>Spielfläche:</b> ein unregelmäßiges Rund, im Mittel 86 % des Innenkreises. Was außen liegt, ist Wildnis:
+      dichter Wald und Hügel, keine Fluren. Dahinter liegt immer Nebel, so dass nie ein Sechseck zu sehen ist.</li>
+    <li><b>Fluss:</b> tritt an einer Seite ein und an der gegenüberliegenden aus, mit Versatz zur Mitte und weichen
+      Schleifen; die Breite wechselt. Wo zwei Landwaben über das Wasser hinweg Nachbarn wären, wird eine davon Wasser –
+      der Fluss trennt immer. <b>Nebenfluss</b> (ab Radius 18, 50 %): kommt von der Seite und mündet in den Fluss.
+      <b>Flussgabel</b> (45 % versucht): ein zweiter Arm zweigt ab und kommt wieder zurück; dazwischen liegt eine Insel,
+      Fluren dort brauchen eine Brücke.</li>
+    <li><b>Höhen:</b> sanftes Rauschen, zum Rand hin ansteigend, und ein <b>Höhenzug</b>: ein Bergrücken nah am Rand
+      auf einer Seite, durch den der Fluss ein Tal gräbt. Im MVP nur für das Bild und die Art der Fluren.</li>
+    <li><b>Seen</b> (bis zu zwei) in Senken abseits des Flusses. <b>Bäche</b> (meist zwei bis drei): entspringen am Hang oder
+      fließen aus einem See und münden dort, wo sie zuerst auf den Fluss treffen; über den Bach geht eine Furt, er trennt keine Fluren.
+      <b>Teiche</b>: kleine Gewässer in Mulden, nur für das Bild.</li>
+    <li><b>Fluren:</b> etwa eine je 32 Landwaben, verteilt auf die Ufer nach ihrer Größe. Keime weit auseinander, dann
+      wachsen sie über das Land; Höhenkanten und Bäche bremsen, damit Grenzen dort entlanglaufen. Zweimal ausgleichen,
+      zu kleine Fluren (unter 20 Waben) gehen in der Nachbarflur auf – nur Inselfluren dürfen kleiner bleiben.</li>
+    <li><b>Art aus der Lage</b>, nach Rangfolge mit festen Anteilen: zuerst <b>Ufer</b> – die Fluren mit dem meisten
+      Wasser daneben (mindestens 12 % der Waben), höchstens ein Viertel aller Fluren; dann <b>Fels</b> – die höchsten,
+      meist am Höhenzug (etwa jede achte); dann <b>Wiese</b> – flach, offen, nicht am Rand (gut ein Viertel); der Rest
+      wird <b>Wald</b>. Selten: <b>Quelle</b> dort, wo ein Bach am Hang entspringt, <b>Moor</b> in der feuchtesten
+      Senke, <b>alter Hain</b> tief im Wald – höchstens drei.</li>
+    <li><b>Namen</b> aus zwei Teilen nach Art („Kiesel“ + „ufer“, „Mohn“ + „anger“, Insel: „-werder“), in einer Karte
+      nie doppelt.</li>
+    <li><b>Bild:</b> Jede Wabe bekommt Werte für Walddichte, Wiese, Laub, Fels, Moor und Wildnis – aus ihrer Art und
+      großem Rauschen, dann zweimal mit den Nachbarn gemittelt. Zwischen den Wabenmitten werden die Werte über Dreiecke
+      verteilt (baryzentrisch), dazu feines Rauschen. So fransen Waldränder aus, auf Wiesen stehen Baumgruppen, im Wald
+      liegen Lichtungen. Bäume, Felsen, Schilf und Blumen werden auf einem gestreuten Feinraster gesetzt, nicht je Wabe.</li>
+    <li><b>Vorschläge:</b> siehe Wertung. Gibt es keine drei, rechnet der Generator mit einem Folge-Seed weiter – derselbe
+      Seed führt so immer zur selben Karte.</li>
+  </ol>
+  <h2>Wertung der Orte</h2>
+  <ul>
+    <li><b>In Frage</b> kommt jede Flur, die nicht selten ist, nicht auf einer Insel liegt und höchstens zu 30 % an die
+      Wildnis grenzt, mit mindestens 24 Waben – und die <b>Wald, Ufer und Wiese als direkte Nachbarn diesseits des
+      Wassers</b> hat.</li>
+    <li><b>Punkte:</b> kurze Wege zu Wald, Ufer und Wiese (Abstand der Mitten); Fels oder Seltenes höchstens zwei Fluren
+      weit; Raum (Fluren in zwei Schritten); flaches Land für das Dorf; Bach oder See in der Nähe; nah an der Kartenmitte.
+      Alle Gewichte sind Platzhalter in den Spieldaten.</li>
+    <li><b>Drei Vorschläge in verschiedenen Lagen:</b> der beste Ort, dann je der beste, der nicht angrenzt, mindestens
+      8 Einheiten entfernt liegt und <b>anders liegt</b> als die schon gewählten – anderes Ufer oder andere Nachbarschaft
+      (See, Bach, Fels, Seltenes, Insel). Reicht das nicht, genügen 12 Einheiten Abstand, dann nur noch der Abstand.</li>
+    <li><b>Nach der Gründung</b> (MVP): Die gewählte Flur wird Lichtung, die nächste Flur Wald, Ufer und Wiese wird
+      sichtbar und lässt sich abstecken, die nächste weitere Nachbarflur liegt als Ausblick im Nebel.</li>
+  </ul>
+  <h2>Nebel</h2>
+  <ul>
+    <li><b>Im Spiel</b> immer an: vor der Gründung frei sind nur die drei Vorschlagsfluren (mit dem Wasser gleich daneben),
+      danach die Lichtung und die offenen Fluren; die beiden anderen Orte liegen dann wieder im Nebel (Entscheidung Simon,
+      03.11.2026). Im Nebel ragen nur Bäume als blasse Kulisse heraus.</li>
+    <li><b>Werkstatt:</b> Nebel aus, damit man die ganze Karte sieht; hier im Mockup lässt er sich oben zuschalten.</li>
+    <li>Der Rand der Karte liegt in beiden Fällen im Nebel.</li>
+  </ul>
+  <h2>Was hier Platzhalter ist</h2>
+  <ul>
+    <li>Die Welt ist eine flache Zeichnung wie in <code>fluren.html</code>. Im Spiel ist es die 3D-Welt; Höhen, Wasser,
+      Felder und Fluren kommen dort aus derselben Karte. Das Unterraster wird dort das Geländenetz: feiner als die Waben,
+      mit Farben je Ecke aus denselben Feldern.</li>
+    <li>Chancen, Schwellen und Gewichte sind Schätzungen fürs Balancing und gehören in die Werkstatt.</li>
+    <li>Die Hütten der Andeutung sind die Klötze aus dem MVP-Mockup.</li>
+  </ul>
+  <h2>Zu entscheiden</h2>
+  <ul>
+    <li>Wie oft darf man „Andere Gegend“ drücken – beliebig oft, oder kostet das etwas? Im MVP beliebig oft.</li>
+    <li>Darf die Lichtung am Fluss liegen (Ufer-Waben in der Lichtung)? Im Mockup ja.</li>
+  </ul>
+</div>
+
+<script>
+const ICON = {"flame":"<path d=\"M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4\"/>","tree-pine":"<path d=\"m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z\"/><path d=\"M12 22v-3\"/>","fish":"<path d=\"M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.47-3.44 6-7 6s-7.560-2.53-8.5-6Z\"/><path d=\"M18 12v.5\"/><path d=\"M16 17.93a9.77 9.77 0 0 1 0-11.86\"/><path d=\"M7 10.67C7 8 5.58 5.97 2.73 5.5c-1 1.5-1 5 .23 6.5-1.24 1.5-1.24 5-.23 6.5C5.58 18.03 7 16 7 13.33\"/><path d=\"M10.46 7.26C10.2 5.88 9.17 4.24 8 3h5.8a2 2 0 0 1 1.98 1.670l.23 1.4\"/><path d=\"m16.01 17.93-.23 1.4A2 2 0 0 1 13.8 21H9.5a5.96 5.96 0 0 0 1.49-3.98\"/>","flower-2":"<path d=\"M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1\"/><circle cx=\"12\" cy=\"8\" r=\"2\"/><path d=\"M12 10v12\"/><path d=\"M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z\"/><path d=\"M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z\"/>","mountain":"<path d=\"m8 3 4 8 5-5 5 15H2L8 3z\"/>","waves":"<path d=\"M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1\"/><path d=\"M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1\"/><path d=\"M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1\"/>","dices":"<rect width=\"12\" height=\"12\" x=\"2\" y=\"10\" rx=\"2\" ry=\"2\"/><path d=\"m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6\"/><path d=\"M6 18h.01\"/><path d=\"M10 14h.01\"/><path d=\"M15 6h.01\"/><path d=\"M18 9h.01\"/>","footprints":"<path d=\"M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z\"/><path d=\"M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z\"/><path d=\"M16 17h4\"/><path d=\"M4 13h4\"/>","undo-2":"<path d=\"M9 14 4 9l5-5\"/><path d=\"M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11\"/>","cloud-fog":"<path d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\"/><path d=\"M16 17H7\"/><path d=\"M17 21H9\"/>","check":"<path d=\"M20 6 9 17l-5-5\"/>","tree-deciduous":"<path d=\"M8 19a4 4 0 0 1-2.24-7.32A3.5 3.5 0 0 1 9 6.03V6a3 3 0 1 1 6 0v.04a3.5 3.5 0 0 1 3.24 5.65A4 4 0 0 1 16 19Z\"/><path d=\"M12 19v3\"/>","shrub":"<path d=\"M12 22v-5.172a2 2 0 0 0-.586-1.414L9.5 13.5\"/><path d=\"M14.5 14.5 12 17\"/><path d=\"M17 8.8A6 6 0 0 1 13.8 20H10A6.5 6.5 0 0 1 7 8a5 5 0 0 1 10 0z\"/>","flag":"<path d=\"M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528\"/>","chevron-left":"<path d=\"m15 18-6-6 6-6\"/>","droplet":"<path d=\"M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z\"/>","sprout":"<path d=\"M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3\"/><path d=\"M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4\"/><path d=\"M5 21h14\"/>"};
+</script>
+<script id="generator">
+// ================= Generator: rein, ohne Oberfläche – so kommt er nach packages/spiel =================
+
+// Zufallsstrom mit Startwert (wie packages/spiel/zufall.ts)
+class Zufall {
+  constructor(s) { this.s = s >>> 0; }
+  next() {
+    const a = this.s = (this.s + 0x6D2B79F5) >>> 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  }
+  ganz(n) { return Math.floor(this.next() * n); }
+  wahl(liste) { return liste[this.ganz(liste.length)]; }
+}
+const folgeSeed = (seed, n) => (Math.imul(seed ^ 0x9e3779b9, 0x85ebca6b) ^ Math.imul(n, 0xc2b2ae35)) >>> 0;
+function streuung(ix, iz, s) {
+  let h = (Math.imul(ix, 374761393) + Math.imul(iz, 668265263) + Math.imul(s, 1442695041)) | 0;
+  h = Math.imul(h ^ (h >>> 13), 1274126177);
+  return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+}
+function rauschen(x, z, s) {
+  const ix = Math.floor(x), iz = Math.floor(z), fx = x - ix, fz = z - iz;
+  const u = fx * fx * (3 - 2 * fx), v = fz * fz * (3 - 2 * fz);
+  const a = streuung(ix, iz, s), b = streuung(ix + 1, iz, s), c = streuung(ix, iz + 1, s), d = streuung(ix + 1, iz + 1, s);
+  return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+}
+function fbm(x, z, s) {
+  let w = 0.5, f = 1, sum = 0, n = 0;
+  for (let i = 0; i < 4; i++) { sum += w * rauschen(x * f, z * f, s + i * 17); n += w; w *= 0.5; f *= 2; }
+  return sum / n;
+}
+const stufe = (a, b, t) => { const u = Math.min(1, Math.max(0, (t - a) / (b - a))); return u * u * (3 - 2 * u); };
+const klemme = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+
+// Vektoren und Farben
+const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+const sub = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+const norm = a => { const l = Math.hypot(...a) || 1; return a.map(v => v / l); };
+const hexRgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+const rgbHex = c => '#' + c.map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0')).join('');
+const mische = (a, b, t) => { const A = hexRgb(a), B = hexRgb(b); return rgbHex(A.map((v, i) => v + (B[i] - v) * t)); };
+const faktor = (a, f) => rgbHex(hexRgb(a).map(v => v * f));
+const LICHT = norm([-0.55, 0.78, 0.4]);
+
+// Waben: flache Oberkante, axiale Koordinaten. Nur Logik – gezeichnet wird das Raster nie.
+const SQ3 = Math.sqrt(3);
+const zuWelt = (q, r) => [1.5 * q, SQ3 * (r + q / 2)];
+const schl = (q, r) => q + ',' + r;
+const RICHT = [[1, 0], [1, -1], [0, -1], [-1, 0], [-1, 1], [0, 1]];
+const ringVon = (q, r) => (Math.abs(q) + Math.abs(r) + Math.abs(q + r)) / 2;
+function zuWabe(x, z) {
+  const q = x / 1.5, r = z / SQ3 - q / 2, s = -q - r;
+  let rq = Math.round(q), rr = Math.round(r); const rs = Math.round(s);
+  const dq = Math.abs(rq - q), dr = Math.abs(rr - r), ds = Math.abs(rs - s);
+  if (dq > dr && dq > ds) rq = -rr - rs; else if (dr > ds) rr = -rq - rs;
+  return [rq, rr];
+}
+const abst = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
+// Abstand zu einem Linienzug; mit Grenze: alles weiter weg zählt als „grenze“ (spart Rechenzeit)
+function abstandLinie(x, z, pts, grenze = 1e9) {
+  let best = grenze;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const [ax, az] = pts[i], [bx, bz] = pts[i + 1];
+    if ((ax - x > best && bx - x > best) || (x - ax > best && x - bx > best) || (az - z > best && bz - z > best) || (z - az > best && z - bz > best)) continue;
+    const dx = bx - ax, dz = bz - az;
+    const t = Math.max(0, Math.min(1, ((x - ax) * dx + (z - az) * dz) / (dx * dx + dz * dz || 1)));
+    best = Math.min(best, Math.hypot(x - ax - t * dx, z - az - t * dz));
+  }
+  return best;
+}
+function naechsterPunkt(x, z, pts) {
+  let best = pts[0], bd = 1e9;
+  for (const p of pts) { const d = Math.hypot(p[0] - x, p[1] - z); if (d < bd) { bd = d; best = p; } }
+  return best;
+}
+const schneiden = (a, b, c, d) => {
+  const o = (p, q, r) => (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]);
+  return o(c, d, a) * o(c, d, b) < 0 && o(a, b, c) * o(a, b, d) < 0;
+};
+function kreuztLinie(a, b, pts) {
+  for (let i = 0; i < pts.length - 1; i++) if (schneiden(a, b, pts[i], pts[i + 1])) return true;
+  return false;
+}
+const kreuztZug = (pts, linie) => pts.some((p, i) => i < pts.length - 1 && kreuztLinie(p, pts[i + 1], linie));
+// Offene Linie weich machen (Endpunkte bleiben)
+function glatt(pts, n = 3) {
+  for (let k = 0; k < n; k++) {
+    const neu = [pts[0]];
+    for (let i = 0; i < pts.length - 1; i++) { const a = pts[i], b = pts[i + 1]; neu.push([a[0] * 0.75 + b[0] * 0.25, a[1] * 0.75 + b[1] * 0.25], [a[0] * 0.25 + b[0] * 0.75, a[1] * 0.25 + b[1] * 0.75]); }
+    neu.push(pts[pts.length - 1]); pts = neu;
+  }
+  return pts;
+}
+// Geschlossene Linie weich machen
+function chaikin(pts, n) {
+  for (let k = 0; k < n; k++) {
+    const neu = [];
+    for (let i = 0; i < pts.length; i++) {
+      const a = pts[i], b = pts[(i + 1) % pts.length];
+      neu.push([a[0] * 0.75 + b[0] * 0.25, a[1] * 0.75 + b[1] * 0.25], [a[0] * 0.25 + b[0] * 0.75, a[1] * 0.25 + b[1] * 0.75]);
+    }
+    pts = neu;
+  }
+  return pts;
+}
+// Grenze einer Wabenmenge als geschlossene Linienzüge (Weltkoordinaten)
+function umriss(menge, waben) {
+  const kanten = new Map(), pk = p => Math.round(p[0] * 100) + '|' + Math.round(p[1] * 100); // Math.round statt toFixed: kein „-0.00“
+  for (const k of menge) {
+    const w = waben.get(k);
+    RICHT.forEach(([dq, dr]) => {
+      if (menge.has(schl(w.q + dq, w.r + dr))) return;
+      const [nx, nz] = zuWelt(w.q + dq, w.r + dr), a = Math.atan2(nz - w.z, nx - w.x);
+      const p1 = [w.x + Math.cos(a - Math.PI / 6), w.z + Math.sin(a - Math.PI / 6)];
+      const p2 = [w.x + Math.cos(a + Math.PI / 6), w.z + Math.sin(a + Math.PI / 6)];
+      kanten.set(pk(p1), [p1, p2]);
+    });
+  }
+  const schleifen = [], besucht = new Set();
+  for (const k0 of kanten.keys()) {
+    if (besucht.has(k0)) continue;
+    const loop = []; let k = k0;
+    while (kanten.has(k) && !besucht.has(k)) { besucht.add(k); const [a, b] = kanten.get(k); loop.push(a); k = pk(b); }
+    if (loop.length > 2) schleifen.push(loop);
+  }
+  return schleifen;
+}
+// Unterraster: Ein Punkt liegt in einem Dreieck aus der nächsten Wabenmitte und zwei benachbarten Mitten.
+// Liefert die drei Waben und ihre Gewichte (baryzentrisch) – damit werden Werte weich verteilt.
+function zwischen(waben, x, wz) {
+  const [q, r] = zuWabe(x, wz), w0 = waben.get(schl(q, r));
+  if (!w0) return null;
+  const an = Math.atan2(wz - w0.z, x - w0.x) * 180 / Math.PI;
+  const i = Math.floor((((30 - an) % 360) + 360) % 360 / 60) % 6;
+  const d1 = RICHT[i], d2 = RICHT[(i + 1) % 6];
+  const w1 = waben.get(schl(q + d1[0], r + d1[1])), w2 = waben.get(schl(q + d2[0], r + d2[1]));
+  if (!w1 || !w2) return [w0, 1, w0, 0, w0, 0];
+  const ax = w1.x - w0.x, az = w1.z - w0.z, bx = w2.x - w0.x, bz = w2.z - w0.z, px = x - w0.x, pz = wz - w0.z;
+  const den = ax * bz - bx * az;
+  const k1 = (px * bz - bx * pz) / den, k2 = (ax * pz - px * az) / den;
+  return [w0, 1 - k1 - k2, w1, k1, w2, k2];
+}
+
+// Platzhalter fürs Balancing – im Spiel Teil der Spieldaten
+const KARTE_WERTE = {
+  radius: 24,
+  spielRand: 0.86, randSchwank: 0.1,        // Spielfläche als Anteil des Innenkreises, mit Schwankung
+  wabenJeFlur: 32, flurMin: 20, startMin: 24, startAussenHoechstens: 0.3,
+  uferAb: 0.12, anteil: { ufer: 0.25, fels: 0.13, wiese: 0.27 },
+  chance: { insel: 0.45, nebenfluss: 0.5, see: 0.6, see2: 0.35, bach: 0.85, teich: 0.6, quelle: 0.75, moor: 0.5, hain: 0.45 },
+  wertung: { weg: 0.9, fels: 2, selten: 1, raum: 0.25, flach: 2.5, bach: 0.6, see: 0.6, mitte: 0.9 },
+  abstandVorschlaege: 8, andersAb: 12,
+};
+const WASSER_H = -0.25;
+const SELTEN = new Set(['moor', 'quelle', 'hain']);
+const NAMEN = {
+  wald:   { vor: ['Birken', 'Erlen', 'Eichen', 'Fichten', 'Buchen', 'Moos', 'Dachs', 'Fuchs', 'Hirsch', 'Schatten', 'Tannen', 'Eulen', 'Ahorn', 'Lärchen', 'Specht', 'Kauz'], nach: ['wald', 'holz', 'forst', 'grund'] },
+  ufer:   { vor: ['Kiesel', 'Weiden', 'Schilf', 'Otter', 'Biber', 'Reiher', 'Sand', 'Muschel', 'Erlen', 'Enten', 'Kranich', 'Eisvogel'], nach: ['ufer', 'aue', 'furt', 'strand', 'bucht'] },
+  wiese:  { vor: ['Klee', 'Mohn', 'Lerchen', 'Sonnen', 'Hasen', 'Distel', 'Kamillen', 'Grillen', 'Wiesel', 'Glocken', 'Butter', 'Rehe'], nach: ['wiese', 'anger', 'feld', 'au'] },
+  fels:   { vor: ['Grau', 'Kalk', 'Schiefer', 'Adler', 'Raben', 'Hoch', 'Wolfs', 'Falken', 'Gems', 'Donner'], nach: ['stein', 'fels', 'klippe', 'kuppe', 'hang'] },
+  moor:   { vor: ['Torf', 'Nebel', 'Unken', 'Schwarz', 'Binsen'], nach: ['moor', 'bruch', 'fenn'] },
+  quelle: { vor: ['Silber', 'Kalt', 'Hell', 'Klar'], nach: ['quell', 'born', 'brunn'] },
+  hain:   { vor: ['Alt', 'Eiben', 'Linden', 'Still', 'Ur'], nach: ['hain'] },
+};
+// Ziel der Felder je Art: Walddichte, Wiese, Laubanteil
+const FELD_ZIEL = { wald: [0.9, 0.04, 0.25], hain: [0.96, 0, 0.92], ufer: [0.3, 0.22, 0.72], wiese: [0.06, 1, 0.5], fels: [0.2, 0.04, 0.12], moor: [0.16, 0.18, 0.75], quelle: [0.22, 0.6, 0.55] };
+
+/** Karte aus einem Seed. Findet sie keine drei Orte, rechnet sie mit Folge-Seeds weiter – immer dieselben. */
+function erzeugeKarte(seed, R = KARTE_WERTE.radius) {
+  let karte;
+  for (let versuch = 0; versuch < 24; versuch++) {
+    karte = baueKarte(versuch ? folgeSeed(seed, versuch) : seed >>> 0, R);
+    karte.seed = seed >>> 0; karte.versuch = versuch;
+    if (karte.vorschlaege.length === 3) break;
+  }
+  streueDinge(karte);
+  return karte;
+}
+
+function baueKarte(s, R) {
+  const W = KARTE_WERTE, z = new Zufall(s), ns = (s % 99991) + 11, S = R / 14, RI = 1.5 * R, wS = Math.sqrt(S);
+  const waben = new Map();
+  for (let q = -R; q <= R; q++) for (let r = Math.max(-R, -q - R); r <= Math.min(R, -q + R); r++) {
+    const [x, wz] = zuWelt(q, r);
+    waben.set(schl(q, r), { q, r, x, z: wz, k: schl(q, r), ring: ringVon(q, r) });
+  }
+  const liste = [...waben.values()];
+  liste.forEach((w, i) => { w.i = i; w.nachbarn = RICHT.map(([dq, dr]) => waben.get(schl(w.q + dq, w.r + dr))).filter(Boolean); });
+  const zufallsPunkt = () => [(z.next() - 0.5) * 2 * RI, (z.next() - 0.5) * 2 * RI];
+
+  // 0. Spielfläche: ein unregelmäßiges Rund statt Sechseck. Außen Wildnis als Kulisse.
+  const rph = z.next() * 50;
+  const spielR = (x, wz) => { const an = Math.atan2(wz, x); return RI * (W.spielRand + W.randSchwank * (fbm(Math.cos(an) * 1.4 + rph, Math.sin(an) * 1.4 + rph, ns + 81) - 0.5) * 2); };
+  const randMass = (x, wz) => Math.hypot(x, wz) / spielR(x, wz);
+
+  // 1. Fluss: tritt an einer Seite ein und an der gegenüberliegenden aus
+  const a = z.next() * Math.PI * 2, b = a + Math.PI + (z.next() - 0.5) * 1.1, RA = 2 * R;
+  const A0 = [Math.cos(a) * RA, Math.sin(a) * RA], B0 = [Math.cos(b) * RA, Math.sin(b) * RA];
+  const lang0 = abst(A0, B0), nor = [-(B0[1] - A0[1]) / lang0, (B0[0] - A0[0]) / lang0];
+  const versatz = (z.next() - 0.5) * 12 * S, amp = (2 + z.next() * 2.6) * wS, ph = z.next() * Math.PI * 2, fr = (2 + z.next() * 1.8) * wS;
+  const nP = Math.round(8 * S), roh = [];
+  for (let i = 0; i <= nP; i++) {
+    const t = i / nP, m = versatz + (i === 0 || i === nP ? 0 : amp * Math.sin(ph + t * fr * Math.PI) + (z.next() - 0.5) * 1.4 * wS);
+    roh.push([A0[0] + (B0[0] - A0[0]) * t + nor[0] * m, A0[1] + (B0[1] - A0[1]) * t + nor[1] * m]);
+  }
+  const fluss = glatt(roh, 4);
+  const innen = (x, wz, rest = 0) => randMass(x, wz) < 1 - rest / RI;
+
+  // 2. Flussgabel: ein Arm zweigt ab und kommt wieder zurück, dazwischen eine Insel
+  let arm = null;
+  if (z.next() < W.chance.insel) {
+    const lang = [0];
+    for (let i = 1; i < fluss.length; i++) lang.push(lang[i - 1] + abst(fluss[i], fluss[i - 1]));
+    const starts = fluss.map((p, i) => i).filter(i => innen(fluss[i][0], fluss[i][1], 5));
+    const i1 = starts.length ? starts[z.ganz(starts.length)] : -1, L = (13 + z.next() * 4) * Math.sqrt(wS);
+    const seite = z.next() < 0.5 ? -1 : 1, B = 5.5 + z.next() * 1.5;
+    if (i1 >= 0) {
+      let i2 = i1;
+      while (i2 < fluss.length - 1 && lang[i2] - lang[i1] < L) i2++;
+      const pts = [];
+      for (let i = i1; i <= i2; i++) {
+        const v = fluss[Math.min(fluss.length - 1, i + 1)], u = fluss[Math.max(0, i - 1)], l = abst(v, u) || 1;
+        const t = (lang[i] - lang[i1]) / (lang[i2] - lang[i1] || 1), m = seite * B * Math.sin(Math.PI * t);
+        pts.push([fluss[i][0] - (v[1] - u[1]) / l * m, fluss[i][1] + (v[0] - u[0]) / l * m]);
+      }
+      if (lang[i2] - lang[i1] >= L - 0.5 && innen(fluss[i2][0], fluss[i2][1], 5) && pts.every(p => innen(p[0], p[1], 2))) arm = pts;
+    }
+  }
+
+  // 3. Nebenfluss: kommt von der Seite und mündet in den Fluss (nur auf großen Karten)
+  let neben = null;
+  if (R >= 18 && z.next() < W.chance.nebenfluss) {
+    const c = (a + b) / 2 + (z.next() < 0.5 ? 0 : Math.PI) + (z.next() - 0.5) * 0.7;
+    const E = [Math.cos(c) * RA, Math.sin(c) * RA], J = fluss[Math.floor(fluss.length * (0.35 + z.next() * 0.3))];
+    const L = abst(E, J), d = [(J[0] - E[0]) / L, (J[1] - E[1]) / L], nn = [-d[1], d[0]];
+    const ampN = (1.2 + z.next() * 1.6) * wS, phN = z.next() * Math.PI * 2, pts = [];
+    for (let i = 0; i <= 7; i++) {
+      const t = i / 7, m = i === 0 || i === 7 ? 0 : ampN * Math.sin(phN + t * 2.2 * Math.PI) * Math.sin(Math.PI * t) + (z.next() - 0.5);
+      pts.push([E[0] + d[0] * L * t + nn[0] * m, E[1] + d[1] * L * t + nn[1] * m]);
+    }
+    const kand = glatt(pts, 4), vorMuendung = kand.slice(0, -6);
+    if (!kreuztZug(vorMuendung, fluss) && !(arm && (kreuztZug(kand, arm) || abstandLinie(J[0], J[1], arm) < 5))) neben = kand;
+  }
+  const wasserLinien = [fluss, arm, neben].filter(Boolean);
+  const dWasserLinie = (x, wz, g = 1e9) => { let d = g; for (const l of wasserLinien) d = abstandLinie(x, wz, l, d); return d; };
+
+  // 4. Höhen: sanft, zum Rand hin ansteigend, dazu ein Höhenzug auf einer Seite nah am Rand
+  const hangSeite = (versatz > 0 ? -1 : 1) * (z.next() < 0.7 ? 1 : -1);
+  const theta = Math.atan2(nor[1] * hangSeite, nor[0] * hangSeite) + (z.next() - 0.5) * 0.9;
+  const spann = 0.5 + z.next() * 0.45, kammRoh = [];
+  for (let i = 0; i <= 8; i++) { const an = theta + (i / 8 - 0.5) * 2 * spann, rr = RI * (0.72 + (z.next() - 0.5) * 0.14); kammRoh.push([Math.cos(an) * rr, Math.sin(an) * rr]); }
+  const kamm = glatt(kammRoh, 3), kammB = 2.6 + 0.6 * wS;
+  const H0 = (x, wz) => {
+    const grund = Math.max(0, (fbm(x * 0.075, wz * 0.075, ns + 1) - 0.45) * 2.2);
+    const rd = Math.hypot(x, wz) / RI, seite = 0.5 + 0.5 * Math.cos(Math.atan2(wz, x) - theta);
+    const rand = stufe(0.62, 1.05, rd) * (0.25 + 0.75 * seite * seite) * (1.2 + fbm(x * 0.22, wz * 0.22, ns + 2) * 1.1);
+    const dk = abstandLinie(x, wz, kamm, kammB * 2.6);
+    const berg = dk < kammB * 2.6 ? 1.35 * Math.exp(-((dk / kammB) ** 2)) * (0.6 + fbm(x * 0.28, wz * 0.28, ns + 9)) : 0;
+    return grund + rand + berg;
+  };
+
+  // 5. Seen in Senken abseits des Flusses
+  const seen = [];
+  for (const chance of [W.chance.see, R >= 18 ? W.chance.see2 : 0]) {
+    if (z.next() >= chance) continue;
+    let best = null;
+    for (let i = 0; i < 80; i++) {
+      const [x, wz] = zufallsPunkt();
+      if (randMass(x, wz) > 0.72 || dWasserLinie(x, wz, 7) < 6 || seen.some(sx => abst([x, wz], [sx.x, sx.z]) < 11)) continue;
+      const h = H0(x, wz) + z.next() * 0.2;
+      if (!best || h < best.h) best = { x, z: wz, h };
+    }
+    if (best) seen.push({ x: best.x, z: best.z, r: (1.7 + z.next() * 1.3) * Math.min(1.5, wS), ph: z.next() * 9 });
+  }
+  const seeRand = (see, an) => see.r * (0.78 + 0.45 * rauschen(Math.cos(an) * 1.5 + 5 + see.ph, Math.sin(an) * 1.5 + 5, ns + 61));
+  const seeMass = (see, x, wz) => Math.hypot(x - see.x, wz - see.z) / seeRand(see, Math.atan2(wz - see.z, x - see.x));
+  const imSee = (x, wz) => { let m = 9; for (const see of seen) m = Math.min(m, seeMass(see, x, wz)); return m; };
+
+  // 6. Bäche: vom Hang oder aus einem See bis in den Fluss
+  const baeche = [];
+  for (let n = 0; n < (R >= 18 ? 4 : 1); n++) {
+    if (z.next() >= W.chance.bach * (n ? 0.7 : 1)) continue;
+    let quelle = null, ausSee = null;
+    const freiSee = seen.find(sx => !baeche.some(bx => bx.ausSee === sx));
+    if (freiSee && z.next() < 0.55) { quelle = [freiSee.x, freiSee.z]; ausSee = freiSee; }
+    else {
+      let best = -1e9;
+      for (let i = 0; i < 70; i++) {
+        const [x, wz] = zufallsPunkt();
+        if (randMass(x, wz) > 0.95 || dWasserLinie(x, wz, 8) < 7 || dWasserLinie(x, wz, 30) > 19 * wS || imSee(x, wz) < 1.6 || baeche.some(bx => abstandLinie(x, wz, bx.pts, 8) < 7)) continue;
+        const h = H0(x, wz) + z.next() * 0.3;
+        if (h > best) { best = h; quelle = [x, wz]; }
+      }
+    }
+    if (!quelle) continue;
+    let ziel = null, L = 1e9;
+    for (const l of wasserLinien) { const p = naechsterPunkt(quelle[0], quelle[1], l), d = abst(p, quelle); if (d < L) { L = d; ziel = p; } }
+    if (L < 4 || L > 20 * wS) continue;
+    const d = [(ziel[0] - quelle[0]) / L, (ziel[1] - quelle[1]) / L], nn = [-d[1], d[0]];
+    const w1 = (z.next() < 0.5 ? -1 : 1) * (0.6 + z.next() * 1.0) * L / 10, roh2 = [quelle];
+    for (const [t, f] of [[0.25, 1], [0.5, -0.7], [0.75, 0.5]]) roh2.push([quelle[0] + d[0] * L * t + nn[0] * w1 * f, quelle[1] + d[1] * L * t + nn[1] * w1 * f]);
+    roh2.push([ziel[0] + d[0] * 0.6, ziel[1] + d[1] * 0.6]);
+    let pts = glatt(roh2, 4);
+    if (ausSee) pts = pts.filter(p => seeMass(ausSee, p[0], p[1]) > 0.92);
+    // Der Bach mündet dort, wo er zuerst aufs Wasser trifft
+    const schnitt = pts.findIndex((p, i) => i < pts.length - 1 && wasserLinien.some(l => kreuztLinie(p, pts[i + 1], l)));
+    if (schnitt >= 0) pts = pts.slice(0, schnitt + 2);
+    if (pts.length < 6) continue;
+    const durchSee = pts.some(p => seen.some(sx => sx !== ausSee && seeMass(sx, p[0], p[1]) < 1.15));
+    if (!durchSee && !baeche.some(bx => kreuztZug(pts, bx.pts))) baeche.push({ pts, ausSee, quelle: pts[0] });
+  }
+  const dBach = (x, wz, g = 1e9) => { let d = g; for (const bx of baeche) d = abstandLinie(x, wz, bx.pts, d); return d; };
+
+  // 7. Teiche: kleine Gewässer in Mulden, nur fürs Bild
+  const teiche = [];
+  for (let n = 0; n < Math.round(1.5 * S); n++) {
+    if (z.next() >= W.chance.teich) continue;
+    let best = null;
+    for (let i = 0; i < 40; i++) {
+      const [x, wz] = zufallsPunkt();
+      if (randMass(x, wz) > 0.9 || dWasserLinie(x, wz, 4) < 3.5 || imSee(x, wz) < 2 || teiche.some(t => abst([x, wz], [t.x, t.z]) < 6) || dBach(x, wz, 2) < 2) continue;
+      const h = H0(x, wz) + z.next() * 0.25;
+      if (!best || h < best.h) best = { x, z: wz, h };
+    }
+    if (best) teiche.push({ x: best.x, z: best.z, r: 0.5 + z.next() * 0.5, ph: z.next() * 9 });
+  }
+  const teichMass = (t, x, wz) => Math.hypot(x - t.x, wz - t.z) / (t.r * (0.8 + 0.4 * rauschen(Math.cos(Math.atan2(wz - t.z, x - t.x)) * 1.3 + t.ph, Math.sin(Math.atan2(wz - t.z, x - t.x)) * 1.3, ns + 63)));
+
+  // Endgültige Höhe: Tal am Fluss, Mulde an Seen und Teichen, Rinne am Bach
+  const H = (x, wz) => {
+    let h = H0(x, wz);
+    h = WASSER_H + (h - WASSER_H) * stufe(0.6, 6.5, dWasserLinie(x, wz, 7));
+    for (const see of seen) h = WASSER_H + (h - WASSER_H) * stufe(0.85, 2.4, seeMass(see, x, wz));
+    for (const t of teiche) h -= 0.25 * (1 - stufe(0.6, 1.6, teichMass(t, x, wz)));
+    const db = dBach(x, wz, 1.3);
+    if (db < 1.2) h -= 0.35 * (1 - stufe(0.1, 1.2, db)) * klemme(h + 0.1);
+    return h;
+  };
+
+  // 8. Wasser je Wabe; der Fluss trennt immer – keine Landwaben, die übers Wasser hinweg Nachbarn sind
+  for (const w of liste) {
+    w.dFluss = dWasserLinie(w.x, w.z);
+    w.fluss = abstandLinie(w.x, w.z, fluss, 2) < 0.95 || (arm ? abstandLinie(w.x, w.z, arm, 2) < 0.85 : false) || (neben ? abstandLinie(w.x, w.z, neben, 2) < 0.85 : false);
+    w.see = imSee(w.x, w.z) < 1;
+    w.wasser = w.fluss || w.see;
+    w.amBach = !w.wasser && dBach(w.x, w.z, 1) < 0.95;
+    w.wild = randMass(w.x, w.z) > 1;
+  }
+  for (const w of liste) for (const n of w.nachbarn) {
+    if (w.wasser || n.wasser || Math.min(w.dFluss, n.dFluss) > 1.9) continue;
+    if (wasserLinien.some(l => kreuztLinie([w.x, w.z], [n.x, n.z], l))) { const nass = w.dFluss < n.dFluss ? w : n; nass.wasser = nass.fluss = true; }
+  }
+  for (const w of liste) { w.h = H(w.x, w.z); w.amWasser = !w.wasser && w.nachbarn.some(n => n.wasser); }
+
+  // 9. Landstücke: Flüsse trennen, Bäche nicht. Winzige Stücke werden Kulisse wie die Wildnis.
+  const stuecke = [];
+  for (const w of liste) {
+    if (w.wasser || w.wild || w.stueck !== undefined) continue;
+    const st = { id: stuecke.length, waben: [] }, offen = [w];
+    w.stueck = st.id;
+    while (offen.length) {
+      const v = offen.pop(); st.waben.push(v);
+      for (const n of v.nachbarn) if (!n.wasser && !n.wild && n.stueck === undefined) { n.stueck = st.id; offen.push(n); }
+    }
+    stuecke.push(st);
+  }
+  for (const st of stuecke) {
+    if (st.waben.length < 12) { st.waben.forEach(w => { w.kulisse = true; }); continue; }
+    st.insel = !!arm && st.waben.every(w => abstandLinie(w.x, w.z, arm, 9) < 8 && abstandLinie(w.x, w.z, fluss, 9) < 8);
+  }
+  const land = stuecke.filter(st => st.waben.length >= 12), landN = land.reduce((n, st) => n + st.waben.length, 0);
+  land.forEach(st => { st.k = Math.max(1, Math.round(st.waben.length / W.wabenJeFlur)); });
+  // Abstand zur Wildnis in Waben
+  const randAb = [];
+  for (const w of liste) { w.randAbst = w.wild || w.kulisse ? 0 : 1e9; if (!w.randAbst) randAb.push(w); }
+  for (let i = 0; i < randAb.length; i++) for (const n of randAb[i].nachbarn) if (n.randAbst > randAb[i].randAbst + 1) { n.randAbst = randAb[i].randAbst + 1; randAb.push(n); }
+
+  // 10. Fluren: Keime weit auseinander, dann wachsen sie über das Land. Höhenkanten und Bäche bremsen.
+  const kosten = (v, n) => 1 + 0.9 * fbm(n.x * 0.3, n.z * 0.3, ns + 40) + (v.amBach !== n.amBach ? 0.8 : 0) + Math.abs(v.h - n.h) * 1.2;
+  const wachse = (st, keime) => {
+    const dist = new Map(), zu = new Map(), offen = new Set(keime);
+    keime.forEach((k, i) => { dist.set(k, 0); zu.set(k, i); });
+    while (offen.size) {
+      let best = null, bd = 1e9;
+      for (const v of offen) { const d = dist.get(v); if (d < bd) { bd = d; best = v; } }
+      offen.delete(best);
+      for (const n of best.nachbarn) {
+        if (n.wasser || n.stueck !== st.id) continue;
+        const nd = bd + kosten(best, n);
+        if (nd < (dist.get(n) ?? 1e9)) { dist.set(n, nd); zu.set(n, zu.get(best)); offen.add(n); }
+      }
+    }
+    return zu;
+  };
+  const regionen = [];
+  for (const st of land) {
+    const ws = st.waben;
+    let keime = [ws[z.ganz(ws.length)]];
+    while (keime.length < st.k) {
+      let best = null, bd = -1;
+      for (const w of ws) {
+        let d = 1e9;
+        for (const k of keime) d = Math.min(d, Math.hypot(w.x - k.x, w.z - k.z));
+        d += streuung(w.q, w.r, ns) * 0.5;
+        if (d > bd) { bd = d; best = w; }
+      }
+      keime.push(best);
+    }
+    let zu;
+    for (let it = 0; it < 3; it++) {
+      zu = wachse(st, keime);
+      if (it === 2) break;
+      keime = keime.map((k, i) => {
+        const teil = ws.filter(w => zu.get(w) === i);
+        if (!teil.length) return k;
+        const m = [teil.reduce((s2, w) => s2 + w.x, 0) / teil.length, teil.reduce((s2, w) => s2 + w.z, 0) / teil.length];
+        return teil.reduce((p, w) => Math.hypot(w.x - m[0], w.z - m[1]) < Math.hypot(p.x - m[0], p.z - m[1]) ? w : p);
+      });
+    }
+    keime.forEach((_, i) => { const teil = ws.filter(w => zu.get(w) === i); if (teil.length) regionen.push(teil); });
+  }
+  // Zu kleine Fluren gehen in der kleinsten Nachbarflur auf
+  const allein = new Set();
+  for (let runde = 0; runde < 400; runde++) {
+    regionen.forEach((reg, i) => reg.forEach(w => { w.flur = i; }));
+    const klein = regionen.findIndex((reg, i) => reg.length && reg.length < W.flurMin && !allein.has(i));
+    if (klein < 0) break;
+    const nb = new Set();
+    regionen[klein].forEach(w => w.nachbarn.forEach(n => { if (!n.wasser && !n.kulisse && !n.wild && n.flur !== undefined && n.flur !== klein && n.stueck === w.stueck) nb.add(n.flur); }));
+    if (!nb.size) { allein.add(klein); continue; }
+    const ziel = [...nb].sort((p, q) => regionen[p].length - regionen[q].length)[0];
+    regionen[ziel] = regionen[ziel].concat(regionen[klein]);
+    regionen[klein] = [];
+  }
+  const teile = regionen.filter(reg => reg.length);
+  for (const w of liste) delete w.flur;
+  const fluren = teile.map((ws, id) => {
+    ws.forEach(w => { w.flur = id; });
+    return { id, liste: ws, waben: new Set(ws.map(w => w.k)), stueck: ws[0].stueck, nachbarn: new Set(), ueber: new Set() };
+  });
+  for (const w of liste) if (w.flur !== undefined) for (const n of w.nachbarn) if (n.flur !== undefined && n.flur !== w.flur) fluren[w.flur].nachbarn.add(n.flur);
+  // Nachbarn übers Wasser brauchen eine Brücke
+  for (const w of liste) {
+    if (!w.wasser) continue;
+    const um = new Set();
+    for (const n of w.nachbarn) for (const m of [n, ...n.nachbarn]) if (m.flur !== undefined) um.add(m.flur);
+    for (const p of um) for (const q of um) if (p !== q && fluren[p].stueck !== fluren[q].stueck) fluren[p].ueber.add(q);
+  }
+
+  // 11. Kennzahlen und Art aus der Lage
+  const waldRauschen = w => fbm(w.x * 0.2, w.z * 0.2, ns + 7);
+  for (const f of fluren) {
+    const ws = f.liste, n = ws.length, anteil = fn => ws.filter(fn).length / n;
+    f.n = n;
+    f.mitte = [ws.reduce((s2, w) => s2 + w.x, 0) / n, ws.reduce((s2, w) => s2 + w.z, 0) / n];
+    const innenWaben = ws.filter(w => !w.amWasser && w.nachbarn.every(x => x.flur === f.id));
+    f.anker = (innenWaben.length ? innenWaben : ws).reduce((p, w) => Math.hypot(w.x - f.mitte[0], w.z - f.mitte[1]) < Math.hypot(p.x - f.mitte[0], p.z - f.mitte[1]) ? w : p);
+    f.ufer = anteil(w => w.amWasser);
+    f.hMittel = ws.reduce((s2, w) => s2 + w.h, 0) / n;
+    f.fels = anteil(w => w.h > 1.25);
+    f.wald = ws.reduce((s2, w) => s2 + waldRauschen(w), 0) / n;
+    f.flach = anteil(w => w.nachbarn.every(x => x.wasser || Math.abs(x.h - w.h) < 0.18));
+    f.rand = anteil(w => w.randAbst <= 2);
+    f.aussen = anteil(w => w.randAbst <= 1);
+    f.bach = anteil(w => w.amBach);
+    f.see = ws.some(w => w.nachbarn.some(x => x.see));
+    f.fluss = ws.some(w => w.nachbarn.some(x => x.fluss));
+    f.insel = !!stuecke[f.stueck].insel;
+  }
+  // Art aus der Lage, der Reihe nach: Ufer, wo am meisten Wasser angrenzt; Fels, wo es am höchsten ist; Wiese, wo es
+  // am flachsten und offensten ist; Wald füllt den Rest. Die Anteile halten jede Karte gemischt.
+  const nimm = (art, wert, anteil, darf = () => true) => fluren.filter(f => !f.art && darf(f)).sort((p, q) => wert(q) - wert(p))
+    .slice(0, Math.round(fluren.length * anteil)).forEach(f => { f.art = art; });
+  nimm('ufer', f => f.ufer, W.anteil.ufer, f => f.ufer >= W.uferAb);
+  nimm('fels', f => f.fels * 2.6 + (f.hMittel - 1.0) * 0.8, W.anteil.fels, f => f.fels > 0.12 || f.hMittel > 0.95);
+  nimm('wiese', f => (f.flach - 0.55) * 1.6 + (0.47 - f.wald) * 4 - (f.hMittel > 0.8 ? 0.5 : 0) - f.rand, W.anteil.wiese);
+  fluren.forEach(f => { f.art = f.art || 'wald'; });
+  // Seltenes, höchstens zwei (große Karten drei)
+  const maxSelten = R >= 20 ? 3 : 2;
+  let selten = 0;
+  const hangBach = baeche.find(bx => !bx.ausSee);
+  if (hangBach && z.next() < W.chance.quelle) {
+    const [q, r] = zuWabe(hangBach.quelle[0], hangBach.quelle[1]), w = waben.get(schl(q, r));
+    const f = w && w.flur !== undefined ? fluren[w.flur] : null;
+    if (f && f.art !== 'ufer') { f.art = 'quelle'; selten++; }
+  }
+  if (selten < maxSelten && z.next() < W.chance.moor) {
+    const feucht = f => f.bach * 2 + (f.see ? 0.5 : 0) + f.ufer + (0.8 - f.hMittel);
+    const f = fluren.filter(g => (g.art === 'wiese' || g.art === 'wald') && g.hMittel < 0.8).sort((p, q) => feucht(q) - feucht(p))[0];
+    if (f) { f.art = 'moor'; selten++; }
+  }
+  if (selten < maxSelten && z.next() < W.chance.hain) {
+    const tief = f => dWasserLinie(f.mitte[0], f.mitte[1]) - f.aussen * 20;
+    const f = fluren.filter(g => g.art === 'wald').sort((p, q) => tief(q) - tief(p))[0];
+    if (f) { f.art = 'hain'; selten++; }
+  }
+  // Namen aus zwei Teilen, nie doppelt
+  const zn = new Zufall(folgeSeed(s, 77)), vergeben = new Set(), vorWeg = new Set();
+  for (const f of fluren) {
+    const t = NAMEN[f.art];
+    for (let i = 0; i < 40; i++) {
+      const frei = t.vor.filter(v => !vorWeg.has(v));
+      const vor = zn.wahl(frei.length ? frei : t.vor);
+      let nach = f.insel ? zn.wahl(['werder', 'wörth']) : zn.wahl(t.nach);
+      if ((nach === 'furt' && !f.fluss) || (nach === 'bucht' && !f.see)) nach = t.nach[0];
+      if (!vergeben.has(vor + nach)) { f.name = vor + nach; vergeben.add(f.name); vorWeg.add(vor); break; }
+    }
+    f.name = f.name || NAMEN[f.art].vor[0] + NAMEN[f.art].nach[0] + ' ' + (f.id + 1);
+  }
+
+  // 12. Felder fürs Bild: Walddichte, Wiese, Laub, Fels, Moor, Wildnis – je Wabe, dann mit den Nachbarn gemittelt
+  for (const w of liste) {
+    const f = w.flur !== undefined ? fluren[w.flur] : null;
+    let [wd, wi, lb] = w.wasser ? [0, 0, 0.7] : !f ? [w.h > 1.5 ? 0.45 : 0.95, 0, 0.22] : FELD_ZIEL[f.art];
+    if (!w.wasser) wd = klemme(wd + (fbm(w.x * 0.17, w.z * 0.17, ns + 7) - 0.5) * 0.75);
+    w.feld = [wd, wi, lb, stufe(1.05, 1.8, w.h) + (f?.art === 'fels' ? 0.25 : 0), f?.art === 'moor' ? 1 : 0, f || w.wasser ? 0 : 1];
+  }
+  for (let r2 = 0; r2 < 2; r2++) {
+    const neu = liste.map(w => w.feld.map((v, j) => { let s2 = 0; for (const n of w.nachbarn) s2 += n.feld[j]; return v * 0.5 + 0.5 * s2 / w.nachbarn.length; }));
+    liste.forEach((w, i) => { w.feld = neu[i]; });
+  }
+  const feld = (x, wz) => {
+    const t = zwischen(waben, x, wz);
+    if (!t) return [0.95, 0, 0.25, 0, 0, 1];
+    const [p, kp, q, kq, r, kr] = t, o = [0, 0, 0, 0, 0, 0];
+    for (let j = 0; j < 6; j++) o[j] = p.feld[j] * kp + q.feld[j] * kq + r.feld[j] * kr;
+    return o;
+  };
+  // Nässe am Wasser: Sand am Fluss, an Seen und Teichen; sattes Grün am Bach
+  const nass = (x, wz) => {
+    let sand = 1 - stufe(0.8, 1.85, dWasserLinie(x, wz, 2));
+    for (const see of seen) sand = Math.max(sand, 1 - stufe(1.0, 1.4, seeMass(see, x, wz)));
+    for (const t of teiche) sand = Math.max(sand, 0.7 * (1 - stufe(1.0, 1.5, teichMass(t, x, wz))));
+    return [sand, 1 - stufe(0.2, 0.8, dBach(x, wz, 0.9))];
+  };
+  const hoehe = new Map(), Hc = (x, wz) => { const k = Math.round(x * 64) * 100003 + Math.round(wz * 64); let h = hoehe.get(k); if (h === undefined) { h = H(x, wz); hoehe.set(k, h); } return h; };
+
+  // Dreiecke des Unterrasters zwischen den Wabenmitten
+  const dreiecke = [];
+  for (const w of liste) for (const [i1, i2] of [[0, 1], [1, 2]]) {
+    const p = waben.get(schl(w.q + RICHT[i1][0], w.r + RICHT[i1][1])), q = waben.get(schl(w.q + RICHT[i2][0], w.r + RICHT[i2][1]));
+    if (p && q) dreiecke.push([w, p, q]);
+  }
+
+  // Wasser als weiche Bänder mit wechselnder Breite
+  const bandVon = (pts, breite, var0, sn) => pts.map((p, i) => {
+    const u = pts[Math.max(0, i - 1)], v = pts[Math.min(pts.length - 1, i + 1)], l = abst(u, v) || 1;
+    const n = [-(v[1] - u[1]) / l, (v[0] - u[0]) / l], br = breite + (rauschen(p[0] * 0.25, p[1] * 0.25, sn) - 0.5) * var0 * 2;
+    return { p, links: [p[0] + n[0] * br, p[1] + n[1] * br], rechts: [p[0] - n[0] * br, p[1] - n[1] * br] };
+  });
+  const baender = [bandVon(fluss, 0.8, 0.28, ns + 21)];
+  if (arm) baender.push(bandVon(arm, 0.62, 0.2, ns + 23));
+  if (neben) baender.push(bandVon(neben, 0.64, 0.2, ns + 27));
+  const umrissVon = (m, r, rand) => [...Array(48)].map((_, i) => { const an = i / 48 * Math.PI * 2, rr = rand(an) * r; return [m.x + Math.cos(an) * rr, m.z + Math.sin(an) * rr]; });
+  const seeUmrisse = seen.map(see => umrissVon(see, 0.94, an => seeRand(see, an)));
+  const teichUmrisse = teiche.map(t => umrissVon(t, 0.95, an => t.r * (0.8 + 0.4 * rauschen(Math.cos(an) * 1.3 + t.ph, Math.sin(an) * 1.3, ns + 63))));
+  const bachBaender = baeche.map((bx, i) => bandVon(bx.pts, 0.2, 0.06, ns + 25 + i));
+
+  // 13. Vorschläge: Wald, Ufer und Wiese als direkte Nachbarn diesseits des Wassers, dann nach Punkten
+  const ww = W.wertung, kandidaten = [];
+  for (const f of fluren) {
+    if (SELTEN.has(f.art) || f.insel || f.aussen > W.startAussenHoechstens || f.n < W.startMin) continue;
+    const N1 = [...f.nachbarn].map(i => fluren[i]);
+    const wege = ['wald', 'ufer', 'wiese'].map(art => Math.min(...N1.filter(g => g.art === art).map(g => abst(f.mitte, g.mitte))));
+    if (wege.some(d => !isFinite(d))) continue;
+    const N2 = new Set(N1.map(g => g.id));
+    N1.forEach(g => g.nachbarn.forEach(i => { if (i !== f.id) N2.add(i); }));
+    const nah = [...N2].map(i => fluren[i]);
+    const m = {
+      weg: wege.reduce((p, q) => p + q, 0) / 3,
+      fels: nah.some(g => g.art === 'fels'),
+      selten: nah.some(g => SELTEN.has(g.art)),
+      bach: f.bach > 0 || N1.some(g => g.bach > 0.04),
+      see: f.see || N1.some(g => g.see),
+      insel: [f, ...N1].some(g => [...g.ueber].some(i => fluren[i].insel)),
+      raum: N2.size,
+    };
+    const wert = 10 - ww.weg * m.weg + ww.fels * m.fels + ww.selten * m.selten + ww.raum * Math.min(12, m.raum)
+      + ww.flach * f.flach + ww.bach * m.bach + ww.see * m.see - ww.mitte * Math.hypot(...f.mitte) / RI;
+    kandidaten.push({ flur: f.id, wert, m });
+  }
+  kandidaten.sort((p, q) => q.wert - p.wert);
+  // Drei Orte in verschiedenen Lagen: der beste, dann je der beste, der nicht angrenzt, weit genug weg ist und anders
+  // liegt (anderes Ufer oder andere Nachbarschaft). Reicht das nicht, genügt mehr Abstand, zuletzt nur der Abstand.
+  const merk = c => ['see', 'bach', 'fels', 'selten', 'insel'].filter(x => c.m[x]).join();
+  const anders = (p, q) => fluren[p.flur].stueck !== fluren[q.flur].stueck || merk(p) !== merk(q);
+  const fern = (p, q, d) => abst(fluren[p.flur].mitte, fluren[q.flur].mitte) >= d;
+  const getrennt = (p, q) => !fluren[p.flur].nachbarn.has(q.flur) && !fluren[p.flur].ueber.has(q.flur) && fern(p, q, W.abstandVorschlaege);
+  const vorschlaege = kandidaten.slice(0, 1);
+  for (const passt of [(v, c) => getrennt(v, c) && anders(v, c), (v, c) => getrennt(v, c) && fern(v, c, W.andersAb), getrennt, (v, c) => fern(v, c, W.abstandVorschlaege)])
+    for (const c of kandidaten) if (vorschlaege.length < 3 && !vorschlaege.includes(c) && vorschlaege.every(v => passt(v, c))) vorschlaege.push(c);
+  vorschlaege.sort((p, q) => q.wert - p.wert);
+
+  return { R, RI, S, s, ns, waben, liste, fluren, fluss, arm, neben, kamm, seen, baeche, teiche, baender, seeUmrisse, teichUmrisse, bachBaender,
+    H, Hc, feld, nass, spielR, imSee, teichMass, dWasser: dWasserLinie, dBach, dreiecke, vorschlaege, kandidaten: kandidaten.length, stuecke, landN };
+}
+
+/** Bäume, Felsen, Schilf, Blumen auf einem gestreuten Feinraster – nicht je Wabe. */
+function streueDinge(k) {
+  const { waben, ns, RI, H } = k, d = [], g = 0.62, Rz = SQ3 * k.R + 1;
+  for (let ix = Math.floor(-RI / g) - 2; ix <= RI / g + 2; ix++) for (let iz = Math.floor(-Rz / g); iz <= Rz / g; iz++) {
+    const zf = new Zufall(Math.floor(streuung(ix, iz, ns + 99) * 4294967296));
+    const x = ix * g + (zf.next() - 0.5) * g * 0.9, wz = iz * g + (zf.next() - 0.5) * g * 0.9;
+    if (Math.hypot(x, wz) > RI * 0.97) continue;
+    const [q, r] = zuWabe(x, wz), w = waben.get(schl(q, r));
+    if (!w) continue;
+    if (w.dFluss < 3 && k.dWasser(x, wz, 1.3) < 1.12) continue;
+    if (k.imSee(x, wz) < 1.1 || k.dBach(x, wz, 0.5) < 0.36 || k.teiche.some(t => k.teichMass(t, x, wz) < 1.15)) continue;
+    const [wd, wi, lb, fe, mo] = k.feld(x, wz), y = H(x, wz), t = zf.next();
+    const setze = (typ, gross = 1) => d.push({ typ, x, z: wz, y, h: (1.1 + zf.next() * 0.7) * gross, b: (0.55 + zf.next() * 0.25) * gross, t, w: w.k, flur: w.flur });
+    const p = stufe(0.28, 0.8, wd + (rauschen(x * 0.8, wz * 0.8, ns + 31) - 0.5) * 0.4);
+    if (zf.next() < p) { setze(zf.next() < lb ? 'laub' : 'nadel', fe > 0.5 ? 0.8 : 1); continue; }
+    if (fe > 0.45 && zf.next() < fe * 0.4) { setze('fels', 0.8 + zf.next() * 0.5); continue; }
+    if (mo > 0.4 && zf.next() < 0.12 * mo) { setze('tuempel'); continue; }
+    const [sand] = k.nass(x, wz);
+    if (sand > 0.2 && sand < 0.9 && zf.next() < 0.35) { setze('schilf'); continue; }
+    if (wi > 0.35 && zf.next() < wi * 0.7) {
+      setze('bluete');
+      if (zf.next() < 0.5) d.push({ typ: 'bluete', x: x + (zf.next() - 0.5) * 0.4, z: wz + (zf.next() - 0.5) * 0.4, y, t: zf.next(), w: w.k, flur: w.flur });
+      continue;
+    }
+    if (zf.next() < 0.025) setze('busch');
+  }
+  for (const bx of k.baeche) if (!bx.ausSee) {
+    const [x, wz] = bx.quelle, [q, r] = zuWabe(x, wz), w = waben.get(schl(q, r));
+    for (let i = d.length - 1; i >= 0; i--) if (Math.hypot(d[i].x - x, d[i].z - wz) < 0.9) d.splice(i, 1);
+    d.push({ typ: 'quelle', x, z: wz, y: H(x, wz), t: 0, w: w?.k, flur: w?.flur });
+  }
+  k.dinge = d;
+}
+
+/** Gründen (MVP): die Flur wird Lichtung; die nächste Flur Wald, Ufer und Wiese ist sichtbar, eine weitere liegt als Ausblick im Nebel. */
+function gruende(karte, i) {
+  const v = karte.vorschlaege[i], L = karte.fluren[v.flur];
+  const N1 = [...L.nachbarn].map(id => karte.fluren[id]).sort((p, q) => abst(L.mitte, p.mitte) - abst(L.mitte, q.mitte));
+  const offen = ['wald', 'ufer', 'wiese'].map(art => N1.find(g => g.art === art));
+  // Ausblick: die nächste weitere Nachbarflur, sonst eine Nachbarin der sichtbaren Fluren
+  const weiter = offen.flatMap(g => [...g.nachbarn].map(id => karte.fluren[id])).filter(g => g !== L && !offen.includes(g))
+    .sort((p, q) => abst(L.mitte, p.mitte) - abst(L.mitte, q.mitte));
+  const ausblick = N1.find(g => !offen.includes(g)) || weiter[0];
+  return { lichtung: L.id, offen: new Set(offen.map(g => g.id)), ausblick: ausblick?.id, dorf: [L.anker.x, L.anker.z] };
+}
+</script>
+<script>
+// ================= Oberfläche des Mockups =================
+// Symbole aus Lucide (ISC) – Platzhalter bis zur gemalten Grafik
+const ic = (n, k = 'ic') => `<svg class="${k}" viewBox="0 0 24 24" aria-hidden="true">${ICON[n] || ''}</svg>`;
+const rundIc = n => `<span class="rund-ic">${ic(n)}</span>`;
+const fx = v => v.toFixed(1);
+const punkte = arr => arr.map(p => fx(p[0]) + ',' + fx(p[1])).join(' ');
+const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const ART_ICON = { wald: 'tree-pine', ufer: 'fish', wiese: 'flower-2', fels: 'mountain', moor: 'shrub', quelle: 'droplet', hain: 'tree-deciduous' };
+const ART_NAME = { wald: 'Wald', ufer: 'Ufer', wiese: 'Wiese', fels: 'Fels', moor: 'Moor', quelle: 'Quelle', hain: 'Alter Hain' };
+const NEBEL = '#E2E8D8';
+const DPR = Math.min(2, window.devicePixelRatio || 1);
+let naechsteUid = 1;
+let NEBEL_AN = false;
+
+const KARTEN = new Map();
+function karteFuer(seed, R = KARTE_WERTE.radius) {
+  const key = seed + '|' + R;
+  if (!KARTEN.has(key)) { const t0 = performance.now(), k = erzeugeKarte(seed, R); k.ms = Math.round(performance.now() - t0); KARTEN.set(key, k); }
+  return KARTEN.get(key);
+}
+
+// ---------- Kamera: dieselbe Projektion wie in fluren.html ----------
+function kamera({ w, h, cx, cy, ziel: [tx, tz], hoehe = 15, abstand = 13.5, massstab }) {
+  const cam = [tx, hoehe, tz + abstand];
+  const fw = norm([0, -hoehe, -abstand]), re = norm([-fw[2], 0, fw[0]]), ob = cross(re, fw);
+  const f = massstab * Math.hypot(hoehe, abstand);
+  const roh = p => { const v = sub(p, cam); return [dot(v, re), dot(v, ob), dot(v, fw)]; };
+  const Pr = ([x, y, z]) => { const zc = Math.max(0.6, z); return [cx + f * x / zc, cy - f * y / zc, z]; };
+  const P = p => Pr(roh(p));
+  return { w, h, f, cam, P, Pr, roh, massstab, ziel: [tx, tz] };
+}
+// Geschlossenen Zug an der Nahebene der Kamera abschneiden (Sutherland–Hodgman), dann projizieren
+function projiziereZug(k, welt) {
+  const r = welt.map(k.roh), aus = [], N = 1;
+  for (let i = 0; i < r.length; i++) {
+    const a = r[i], b = r[(i + 1) % r.length], ia = a[2] >= N, ib = b[2] >= N;
+    if (ia) aus.push(a);
+    if (ia !== ib) { const t = (N - a[2]) / (b[2] - a[2]); aus.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, N]); }
+  }
+  return aus.map(k.Pr);
+}
+// Gleicher Blickwinkel, Maßstab und Mitte so, dass die Punkte in den Kasten passen
+function kameraPassend({ w, h, kasten: [x0, y0, x1, y1], ziel, pts, weit = 1 }) {
+  const hoehe = 15 * weit, abstand = 13.5 * weit;
+  const k1 = kamera({ w, h, cx: 0, cy: 0, ziel, hoehe, abstand, massstab: 1 });
+  let u0 = 1e9, v0 = 1e9, u1 = -1e9, v1 = -1e9;
+  for (const p of pts) { const [u, v] = k1.P(p); u0 = Math.min(u0, u); v0 = Math.min(v0, v); u1 = Math.max(u1, u); v1 = Math.max(v1, v); }
+  const s = Math.min((x1 - x0) / (u1 - u0), (y1 - y0) / (v1 - v0));
+  return kamera({ w, h, cx: (x0 + x1) / 2 - s * (u0 + u1) / 2, cy: (y0 + y1) / 2 - s * (v0 + v1) / 2, ziel, hoehe, abstand, massstab: s });
+}
+// Die Spielfläche als Punkte (für die ganze Karte im Bild)
+const flaechenPunkte = karte => [...Array(48)].map((_, i) => { const an = i / 48 * Math.PI * 2, r = karte.RI * 0.9; return [Math.cos(an) * r, 0, Math.sin(an) * r]; });
+
+// ---------- Leinwände für Nebel und Nacht ----------
+const LEINWAENDE = new Map();
+function leinwand(name, w, h) {
+  const key = name + ':' + w + 'x' + h;
+  let l = LEINWAENDE.get(key);
+  if (!l) { const c = document.createElement('canvas'); c.width = Math.ceil(w * DPR); c.height = Math.ceil(h * DPR); l = { c, ctx: c.getContext('2d') }; LEINWAENDE.set(key, l); }
+  const x = l.ctx;
+  x.setTransform(1, 0, 0, 1, 0, 0); x.globalCompositeOperation = 'source-over'; x.globalAlpha = 1; x.filter = 'none';
+  x.clearRect(0, 0, l.c.width, l.c.height); x.setTransform(DPR, 0, 0, DPR, 0, 0);
+  return l;
+}
+
+// ---------- Boden: feines Dreiecksnetz, Farben weich aus den Feldern ----------
+const GRUND = { gras: hexRgb('#8DB25A'), wiese: hexRgb('#ACC15F'), wald: hexRgb('#5A863B'), moor: hexRgb('#7F8A4E'), fels: hexRgb('#A39C8D'), sand: hexRgb('#CDBE8E'), bach: hexRgb('#6E9E4A'), wild: hexRgb('#4D7535'), platz: hexRgb('#C9B07C') };
+const mixA = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+function bodenFarbe(karte, x, wz, o) {
+  const ns = karte.ns;
+  let [wd, wi, , fe, mo, wl] = karte.feld(x, wz);
+  let platz = 0;
+  if (o.lichtung !== null) {
+    // Gerodet: in der Lichtung kaum Waldboden, um das Dorf ein Platz aus Erde
+    const t = zwischen(karte.waben, x, wz);
+    const inL = t ? (t[0].flur === o.lichtung) * t[1] + (t[2].flur === o.lichtung) * t[3] + (t[4].flur === o.lichtung) * t[5] : 0;
+    wd = wd * (1 - 0.8 * inL);
+    platz = 1 - stufe(1.1, 2.0, Math.hypot(x - o.dorf[0], wz - o.dorf[1]) + (rauschen(x * 1.7, wz * 1.7, ns + 51) - 0.5) * 0.6);
+  }
+  let c = GRUND.gras;
+  c = mixA(c, GRUND.wiese, wi * 0.85);
+  c = mixA(c, GRUND.wald, stufe(0.3, 0.85, wd + (rauschen(x * 0.8, wz * 0.8, ns + 33) - 0.5) * 0.35));
+  c = mixA(c, GRUND.moor, mo * 0.8);
+  c = mixA(c, GRUND.wild, wl * 0.5);
+  c = mixA(c, GRUND.fels, stufe(0.4, 0.85, fe + (rauschen(x * 0.9, wz * 0.9, ns + 35) - 0.5) * 0.45));
+  const [sand, bn] = karte.nass(x, wz);
+  c = mixA(c, GRUND.bach, bn * 0.45);
+  c = mixA(c, GRUND.sand, sand);
+  if (platz) c = mixA(c, GRUND.platz, platz * 0.9);
+  const m = 1 + (rauschen(x * 2.2, wz * 2.2, ns + 5) - 0.5) * 0.14;
+  return [c[0] * m, c[1] * m, c[2] * m];
+}
+function zeichneBoden(ctx, k, karte, o) {
+  const { P } = k, n = o.n, rand = 80;
+  const imBild = p => p[0] > -rand && p[0] < k.w + rand && p[1] > -rand && p[1] < k.h + rand;
+  const liste = [];
+  for (const [a, b, c] of karte.dreiecke) {
+    const pa = P([a.x, a.h, a.z]), pb = P([b.x, b.h, b.z]), pc = P([c.x, c.h, c.z]);
+    if (pa[2] < 1.2 || pb[2] < 1.2 || pc[2] < 1.2) continue;
+    if (!imBild(pa) && !imBild(pb) && !imBild(pc)) continue;
+    liste.push({ a, b, c, z: pa[2] + pb[2] + pc[2] });
+  }
+  liste.sort((p, q) => q.z - p.z);
+  const ecken = new Map();
+  const ecke = (x, wz) => {
+    const key = Math.round(x * 64) * 100003 + Math.round(wz * 64);
+    let e = ecken.get(key);
+    if (!e) { const y = karte.Hc(x, wz); e = { p: P([x, y, wz]), v: [x, y, wz], c: bodenFarbe(karte, x, wz, o) }; ecken.set(key, e); }
+    return e;
+  };
+  ctx.lineWidth = 0.7; ctx.lineJoin = 'round';
+  const fuelle = (A, B, C) => {
+    let nv = cross(sub(B.v, A.v), sub(C.v, A.v));
+    if (nv[1] < 0) nv = [-nv[0], -nv[1], -nv[2]];
+    const hell = 0.8 + 0.28 * dot(norm(nv), LICHT) + Math.max(0, (A.v[1] + B.v[1] + C.v[1]) / 3) * 0.035;
+    const f = `rgb(${(A.c[0] + B.c[0] + C.c[0]) / 3 * hell | 0},${(A.c[1] + B.c[1] + C.c[1]) / 3 * hell | 0},${(A.c[2] + B.c[2] + C.c[2]) / 3 * hell | 0})`;
+    ctx.fillStyle = f; ctx.strokeStyle = f;
+    ctx.beginPath(); ctx.moveTo(A.p[0], A.p[1]); ctx.lineTo(B.p[0], B.p[1]); ctx.lineTo(C.p[0], C.p[1]); ctx.closePath(); ctx.fill(); ctx.stroke();
+  };
+  for (const t of liste) {
+    const V = [];
+    for (let i = 0; i <= n; i++) {
+      const zeile = [];
+      for (let j = 0; j <= n - i; j++) { const u = i / n, v = j / n; zeile.push(ecke(t.a.x + (t.b.x - t.a.x) * u + (t.c.x - t.a.x) * v, t.a.z + (t.b.z - t.a.z) * u + (t.c.z - t.a.z) * v)); }
+      V.push(zeile);
+    }
+    for (let i = 0; i < n; i++) for (let j = 0; j < n - i; j++) {
+      fuelle(V[i][j], V[i + 1][j], V[i][j + 1]);
+      if (i + j < n - 1) fuelle(V[i + 1][j], V[i + 1][j + 1], V[i][j + 1]);
+    }
+  }
+}
+
+// ---------- Wasser ----------
+function zeichneWasser(ctx, k, karte, s0) {
+  const { P, roh } = k, WY = WASSER_H + 0.03;
+  const zug = (pts) => { ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]))); ctx.closePath(); };
+  const band = (bd, y, fuell, linie, breite) => {
+    const vorn = bd.filter(sg => roh([sg.p[0], y(sg), sg.p[1]])[2] > 1.5);
+    if (vorn.length < 2) return null;
+    zug([...vorn.map(sg => P([sg.links[0], y(sg), sg.links[1]])), ...vorn.slice().reverse().map(sg => P([sg.rechts[0], y(sg), sg.rechts[1]]))]);
+    ctx.fillStyle = fuell; ctx.fill(); ctx.strokeStyle = linie; ctx.lineWidth = breite; ctx.lineJoin = 'round'; ctx.stroke();
+    return vorn;
+  };
+  for (const bd of karte.baender) {
+    const vorn = band(bd, () => WY, '#4C8FBE', '#6FA6CC', 2);
+    if (!vorn) continue;
+    ctx.save(); ctx.globalAlpha = 0.7; ctx.strokeStyle = '#7DB3D8'; ctx.lineWidth = Math.max(1, s0 * 0.12); ctx.lineCap = 'round';
+    ctx.setLineDash([s0 * 0.5, s0 * 0.9]); ctx.beginPath();
+    vorn.forEach((sg, i) => { const p = P([sg.p[0], WY, sg.p[1]]); i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); });
+    ctx.stroke(); ctx.restore();
+  }
+  for (const u of karte.seeUmrisse) { zug(projiziereZug(k, u.map(([x, wz]) => [x, WY, wz]))); ctx.fillStyle = '#4C8FBE'; ctx.fill(); ctx.strokeStyle = '#6FA6CC'; ctx.lineWidth = 2.5; ctx.stroke(); }
+  karte.teiche.forEach((t, i) => { const y = karte.Hc(t.x, t.z) + 0.02; zug(projiziereZug(k, karte.teichUmrisse[i].map(([x, wz]) => [x, y, wz]))); ctx.fillStyle = '#4E8DB4'; ctx.fill(); ctx.strokeStyle = '#79AACB'; ctx.lineWidth = 1.5; ctx.stroke(); });
+  for (const bd of karte.bachBaender) band(bd, sg => karte.Hc(sg.p[0], sg.p[1]) - 0.05, '#5A9CC8', '#7DB3D8', 1.2);
+}
+
+// ---------- Nebel: Fläche mit Löchern, weich ----------
+function zeichneNebel(ctx, k, karte, loecher, staerke, weich) {
+  const m = Math.ceil(weich * 2.5), W2 = k.w + 2 * m, H2 = k.h + 2 * m, l = leinwand('nebel', W2, H2), oc = l.ctx;
+  oc.translate(m, m);
+  oc.globalAlpha = staerke; oc.fillStyle = NEBEL; oc.fillRect(-m, -m, W2, H2); oc.globalAlpha = 1;
+  oc.globalCompositeOperation = 'destination-out'; oc.fillStyle = '#000'; oc.beginPath();
+  for (const lp of loecher) projiziereZug(k, lp.map(([x, wz]) => [x, karte.Hc(x, wz) + 0.02, wz])).forEach((p, i) => (i ? oc.lineTo(p[0], p[1]) : oc.moveTo(p[0], p[1])));
+  oc.fill('nonzero');
+  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.filter = `blur(${weich * DPR}px)`; ctx.drawImage(l.c, -m * DPR, -m * DPR); ctx.restore();
+}
+const randLoch = karte => [...Array(90)].map((_, i) => { const an = i / 90 * Math.PI * 2, r = karte.RI * (0.9 + 0.05 * (fbm(Math.cos(an) * 2 + 7, Math.sin(an) * 2 + 7, karte.ns + 83) - 0.5) * 2); return [Math.cos(an) * r, Math.sin(an) * r]; });
+
+// ---------- Dinge der Welt ----------
+const NADEL = [...Array(6)].map((_, i) => [mische('#4C8A3E', '#2F6A30', i / 5 * 0.6), mische('#2E5E2C', '#1F4A22', i / 5 * 0.6)]);
+const LAUB = [...Array(6)].map((_, i) => mische('#5E9A44', '#477F36', i / 5));
+const BLUETE = ['#F4E9A0', '#F2B6C8', '#FFFFFF', '#C9B3F0'];
+const dreieck = (ctx, a, b, c, d, e, f, farbe) => { ctx.fillStyle = farbe; ctx.beginPath(); ctx.moveTo(a, b); ctx.lineTo(c, d); ctx.lineTo(e, f); ctx.closePath(); ctx.fill(); };
+const ellipse = (ctx, x, y, rx, ry, farbe) => { ctx.fillStyle = farbe; ctx.beginPath(); ctx.ellipse(x, y, Math.max(0.3, rx), Math.max(0.3, ry), 0, 0, Math.PI * 2); ctx.fill(); };
+function zeichneDing(ctx, k, d, p, geist) {
+  const s = k.f / p[2], P = k.P, ti = Math.min(5, Math.floor(d.t * 6));
+  if (d.typ === 'nadel') {
+    const hw = s * d.b / 2, top = P([d.x, d.y + d.h, d.z]), mitte = P([d.x, d.y + d.h * 0.55, d.z]);
+    const [hell, dunkel] = geist ? ['#9EAA92', '#8D9A82'] : NADEL[ti], by = p[1] - s * 0.12;
+    if (s < 7) { dreieck(ctx, p[0] - hw, by, top[0], top[1], p[0] + hw, by, dunkel); return; }
+    if (!geist) { ctx.fillStyle = '#6E4A2C'; ctx.fillRect(p[0] - s * 0.04, by, s * 0.08, s * 0.14); }
+    dreieck(ctx, p[0] - hw, by, mitte[0], mitte[1] - s * 0.15, p[0], by + hw * 0.22, hell);
+    dreieck(ctx, p[0], by + hw * 0.22, mitte[0], mitte[1] - s * 0.15, p[0] + hw, by, dunkel);
+    const y2 = mitte[1] + s * 0.12;
+    dreieck(ctx, p[0] - hw * 0.72, y2, top[0], top[1], p[0], y2 + hw * 0.18, hell);
+    dreieck(ctx, p[0], y2 + hw * 0.18, top[0], top[1], p[0] + hw * 0.72, y2, dunkel);
+    return;
+  }
+  if (d.typ === 'laub' || d.typ === 'busch') {
+    const busch = d.typ === 'busch', krone = P([d.x, d.y + (busch ? 0.25 : d.h * 0.62), d.z]), r = s * d.b * (busch ? 0.45 : 0.5);
+    const g1 = geist ? '#9EAA92' : LAUB[ti], g2 = geist ? '#8D9A82' : '#3A6A2E';
+    if (!busch && !geist && s >= 7) { ctx.strokeStyle = '#6E4A2C'; ctx.lineWidth = Math.max(1.5, s * 0.08); ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(krone[0], krone[1]); ctx.stroke(); }
+    ellipse(ctx, krone[0], krone[1], r, r, g2);
+    if (s >= 7) ellipse(ctx, krone[0] - r * 0.22, krone[1] - r * 0.22, r * 0.72, r * 0.72, g1);
+    return;
+  }
+  if (d.typ === 'fels') {
+    const b = s * d.b, h = b * 0.55;
+    ctx.fillStyle = '#B8B2A6'; ctx.beginPath(); ctx.moveTo(p[0] - b / 2, p[1]); ctx.lineTo(p[0] - b * 0.3, p[1] - h); ctx.lineTo(p[0] + b * 0.05, p[1] - h * 1.15); ctx.lineTo(p[0] + b * 0.05, p[1] + b * 0.08); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#8A8478'; ctx.beginPath(); ctx.moveTo(p[0] + b * 0.05, p[1] - h * 1.15); ctx.lineTo(p[0] + b * 0.35, p[1] - h * 0.8); ctx.lineTo(p[0] + b / 2, p[1]); ctx.lineTo(p[0] + b * 0.05, p[1] + b * 0.08); ctx.closePath(); ctx.fill();
+    return;
+  }
+  if (d.typ === 'schilf') {
+    const l = s * 0.38; ctx.strokeStyle = '#6F8A3A'; ctx.lineWidth = Math.max(1, s * 0.035); ctx.lineCap = 'round'; ctx.beginPath();
+    [-0.12, 0, 0.12].forEach((o, i) => { ctx.moveTo(p[0] + o * s, p[1]); ctx.lineTo(p[0] + o * s * 1.6, p[1] - l * (0.8 + i * 0.15)); });
+    ctx.stroke(); return;
+  }
+  if (d.typ === 'tuempel') { ellipse(ctx, p[0], p[1], s * 0.34, s * 0.15, '#4F7B80'); return; }
+  if (d.typ === 'quelle') {
+    ellipse(ctx, p[0], p[1], s * 0.42, s * 0.19, '#5DA3D0');
+    [-0.5, 0.45, 0.05].forEach((o, i) => ellipse(ctx, p[0] + o * s, p[1] + (i === 2 ? -0.2 : 0.05) * s, s * 0.1, s * 0.06, '#A8A296'));
+  }
+}
+
+// ---------- Hütten als Quader mit Satteldach ----------
+function quader(cx, cz, b, t, h, dreh, farbe, y0 = 0, extra = []) {
+  const c = Math.cos(dreh), s = Math.sin(dreh);
+  const p = (lx, ly, lz) => [cx + lx * c - lz * s, y0 + ly, cz + lx * s + lz * c];
+  const B = b / 2, T = t / 2;
+  const v = [p(-B, 0, -T), p(B, 0, -T), p(B, 0, T), p(-B, 0, T), p(-B, h, -T), p(B, h, -T), p(B, h, T), p(-B, h, T)];
+  const fl = [[4, 5, 6, 7], [0, 1, 5, 4], [1, 2, 6, 5], [2, 3, 7, 6], [3, 0, 4, 7]].map(ix => ({ pts: ix.map(i => v[i]), farbe }));
+  extra.forEach(([xa, ya, xb, yb, f]) => fl.push({ pts: [p(xa, ya, T + 0.01), p(xb, ya, T + 0.01), p(xb, yb, T + 0.01), p(xa, yb, T + 0.01)], farbe: f, flach: true }));
+  return { mitte: p(0, h / 2, 0), fl };
+}
+function satteldach(cx, cz, b, t, y0, hd, dreh, farbe, giebel, ue = 0.1) {
+  const c = Math.cos(dreh), s = Math.sin(dreh);
+  const p = (lx, ly, lz) => [cx + lx * c - lz * s, y0 + ly, cz + lx * s + lz * c];
+  const B = b / 2 + ue, T = t / 2 + ue, Bg = b / 2;
+  const a = p(-B, 0, -T), bb = p(B, 0, -T), cc = p(B, 0, T), d = p(-B, 0, T), e = p(-B, hd, 0), f = p(B, hd, 0);
+  return { mitte: p(0, hd / 3, 0), fl: [
+    { pts: [a, bb, f, e], farbe }, { pts: [d, cc, f, e], farbe },
+    { pts: [p(-Bg, 0, -T + ue), p(-Bg, hd, 0), p(-Bg, 0, T - ue)], farbe: giebel },
+    { pts: [p(Bg, 0, -T + ue), p(Bg, hd, 0), p(Bg, 0, T - ue)], farbe: giebel },
+  ] };
+}
+function zeichneKoerper(ctx, k, koerper, geist) {
+  const fl = [];
+  for (const kp of koerper) for (const f of kp.fl) {
+    const m = f.pts.reduce((s, p) => [s[0] + p[0] / f.pts.length, s[1] + p[1] / f.pts.length, s[2] + p[2] / f.pts.length], [0, 0, 0]);
+    let n = cross(sub(f.pts[1], f.pts[0]), sub(f.pts[2], f.pts[0]));
+    if (dot(n, sub(m, kp.mitte)) < 0) n = n.map(v => -v);
+    if (dot(n, sub(k.cam, m)) <= 0) continue;
+    const hell = f.flach ? 1 : 0.62 + 0.45 * Math.max(0, dot(norm(n), LICHT));
+    fl.push({ z: k.roh(m)[2] - (f.flach ? 0.05 : 0), pts: f.pts.map(k.P), farbe: f.flach ? f.farbe : faktor(f.farbe, hell) });
+  }
+  fl.sort((a, b) => b.z - a.z);
+  ctx.save(); ctx.lineJoin = 'round';
+  for (const f of fl) {
+    ctx.beginPath(); f.pts.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]))); ctx.closePath();
+    ctx.globalAlpha = geist ? 0.55 : 1; ctx.fillStyle = f.farbe; ctx.fill();
+    ctx.globalAlpha = 1; ctx.strokeStyle = geist ? '#FFF3D6' : faktor(f.farbe, 0.8); ctx.lineWidth = geist ? 1.2 : 0.6; ctx.stroke();
+  }
+  ctx.restore();
+}
+// Der Weiler: drei Hütten mit Reetdach ums Feuer
+const WEILER = [[1.0, -0.55, 0.35], [-0.95, -0.45, -0.3], [0.15, 1.05, 0.08]];
+function weilerKoerper([x, wz], H, nacht) {
+  const fenster = nacht ? '#FFD27A' : '#5B3F25', tuer = '#6E4422';
+  return WEILER.map(([dx, dz, dreh]) => {
+    const hx = x + dx, hz = wz + dz, y = H(hx, hz);
+    return { x: hx, z: hz, y, koerper: [
+      quader(hx, hz, 0.85, 0.7, 0.42, dreh, '#D9C29A', y, [[-0.1, 0, 0.1, 0.3, tuer], [0.2, 0.15, 0.34, 0.29, fenster]]),
+      satteldach(hx, hz, 0.85, 0.7, y + 0.42, 0.48, dreh, '#B7925A', '#D9C29A'),
+    ] };
+  });
+}
+function feuerSvg(p, s) {
+  const steine = [0, 1, 2, 3, 4, 5, 6].map(i => { const a = i / 7 * Math.PI * 2; return `<ellipse cx="${fx(p[0] + Math.cos(a) * s * 0.3)}" cy="${fx(p[1] + Math.sin(a) * s * 0.14)}" rx="${fx(s * 0.08)}" ry="${fx(s * 0.05)}" fill="#7D7568"/>`; }).join('');
+  const h = s * 0.55;
+  return `${steine}<g class="flamme"><path d="M${fx(p[0] - s * 0.2)} ${fx(p[1])} Q${fx(p[0] - s * 0.18)} ${fx(p[1] - h * 0.6)} ${fx(p[0])} ${fx(p[1] - h)} Q${fx(p[0] + s * 0.18)} ${fx(p[1] - h * 0.6)} ${fx(p[0] + s * 0.2)} ${fx(p[1])} Z" fill="#F08A2C"/>
+    <path d="M${fx(p[0] - s * 0.1)} ${fx(p[1])} Q${fx(p[0] - s * 0.08)} ${fx(p[1] - h * 0.4)} ${fx(p[0])} ${fx(p[1] - h * 0.68)} Q${fx(p[0] + s * 0.08)} ${fx(p[1] - h * 0.4)} ${fx(p[0] + s * 0.1)} ${fx(p[1])} Z" fill="#FFD36A"/></g>`;
+}
+const pfadVon = (loops, P, H) => loops.map(l => 'M' + l.map(([x, wz]) => { const p = P([x, H(x, wz) + 0.02, wz]); return fx(p[0]) + ' ' + fx(p[1]); }).join(' L') + ' Z').join(' ');
+
+// ---------- Welt zeichnen: Boden, Wasser, Nebel, Dinge, Rand, Nacht auf Canvas; Linien und Treffer als SVG ----------
+// modus: 'wahl' (vor der Gründung), 'siedlung' (danach), 'werkstatt' (alles offen)
+function zeichneWelt(ctx, k, karte, o) {
+  const { P, roh } = k, H = karte.Hc, nacht = !!o.nacht, st = o.stand, L = st ? karte.fluren[st.lichtung] : null;
+  const s0 = k.f / roh([k.ziel[0], 0, k.ziel[1]])[2];
+  ctx.fillStyle = NEBEL; ctx.fillRect(0, 0, k.w, k.h);
+
+  // Was liegt frei? Im Spiel nur die drei Orte bzw. nach der Gründung Lichtung und offene Fluren
+  let klar = null;
+  if (o.nebel && o.modus !== 'werkstatt') {
+    const ids = st ? [st.lichtung, ...st.offen] : karte.vorschlaege.map(v => v.flur);
+    klar = new Set(karte.liste.filter(w => w.flur !== undefined && ids.includes(w.flur)).map(w => w.k));
+    for (const kk of [...klar]) for (const n of karte.waben.get(kk).nachbarn) if (n.wasser) klar.add(n.k);
+  }
+  const imNebel = wk => !!klar && !klar.has(wk);
+
+  zeichneBoden(ctx, k, karte, { n: klemme(Math.round(s0 / 5), 1, 7), lichtung: L ? L.id : null, dorf: st ? st.dorf : null });
+  zeichneWasser(ctx, k, karte, s0);
+
+  // Dinge sammeln; Blumen liegen flach auf dem Boden
+  const gerodet = d => L && d.flur === L.id && (Math.hypot(d.x - st.dorf[0], d.z - st.dorf[1]) < 3.2 || d.t < 0.75);
+  const dinge = [], lichter = [];
+  for (const d of karte.dinge) {
+    const nebel = imNebel(d.w);
+    if (nebel && d.typ !== 'nadel' && d.typ !== 'laub') continue;
+    if (d.typ !== 'schilf' && d.typ !== 'bluete' && gerodet(d)) continue;
+    const p = P([d.x, d.y, d.z]);
+    if (p[2] < 1.5 || p[0] < -40 || p[0] > k.w + 40 || p[1] < -40 || p[1] > k.h + 90) continue;
+    if (d.typ === 'bluete') { const s = k.f / p[2]; if (s < 14 && (d.t * 7) % 1 > s / 14) continue; ellipse(ctx, p[0], p[1], Math.max(1.1, s * 0.06), Math.max(1.1, s * 0.06), BLUETE[Math.floor(d.t * 4)]); continue; }
+    dinge.push({ z: p[2], male: () => zeichneDing(ctx, k, d, p, nebel), baum: !nebel && (d.typ === 'nadel' || d.typ === 'laub'), d, p });
+  }
+  if (klar) zeichneNebel(ctx, k, karte, umriss(klar, karte.waben).map(l => chaikin(l, 3)), 0.93, Math.max(4, s0 * 0.5));
+
+  // Dorf: nach der Gründung fest, vorher an jedem Vorschlag angedeutet
+  const weiler = (mitte, art) => {
+    for (const h of weilerKoerper(mitte, H, nacht)) {
+      dinge.push({ z: roh([h.x, h.y, h.z])[2], male: () => zeichneKoerper(ctx, k, h.koerper, art !== 'fest') });
+      if (nacht && art === 'fest') lichter.push({ p: P([h.x, h.y, h.z + 0.5]), r: 1.15, st: 0.5 });
+    }
+  };
+  const ueber = [], treffer = [];
+  const kreisUm = ([x, wz], r) => [...Array(40)].map((_, i) => { const a = i / 40 * Math.PI * 2, px = x + Math.cos(a) * r, pz = wz + Math.sin(a) * r; return P([px, H(px, pz) + 0.02, pz]); });
+  const feuerAn = (mitte, art) => {
+    const p = P([mitte[0], H(...mitte), mitte[1]]), s = k.f / p[2];
+    ueber.push(art === 'geist' ? `<g opacity=".75">${feuerSvg(p, s * 0.8)}</g>` : feuerSvg(p, s));
+    if (nacht) lichter.push({ p, r: 3.6, st: 1 });
+    return { p, s };
+  };
+  const unten = [];
+  if (o.modus === 'wahl') {
+    karte.vorschlaege.forEach((v, i) => {
+      const f = karte.fluren[v.flur], mitte = [f.anker.x, f.anker.z], an = i === o.wahl;
+      if (an) unten.push(`<path d="${pfadVon(f.umriss || (f.umriss = umriss(f.waben, karte.waben).map(l => chaikin(l, 3))), P, H)}" fill="#FFBE2E" fill-opacity=".1" stroke="#F0B54C" stroke-width="2" stroke-opacity=".7"/>`);
+      const ring = kreisUm(mitte, 2.3);
+      unten.push(an ? `<polygon class="leuchten" points="${punkte(ring)}" fill="#FFBE2E" fill-opacity=".22" stroke="#FFBE2E" stroke-width="3" filter="url(#gl-f${o.uid})"/>`
+        : `<polygon points="${punkte(ring)}" fill="#FFF3D6" fill-opacity=".14" stroke="#FFF3D6" stroke-width="2" stroke-dasharray="6 5"/>`);
+      weiler(mitte, an ? 'an' : 'geist');
+      const { p, s } = feuerAn(mitte, an ? 'an' : 'geist');
+      treffer.push(`<circle cx="${fx(p[0])}" cy="${fx(p[1] - s * 0.3)}" r="${fx(Math.max(26, s * 2.2))}" data-vorschlag="${i}" tabindex="0" role="button" aria-label="${esc(f.name)}"/>`);
+    });
+  } else if (st) {
+    weiler(st.dorf, 'fest');
+    const { p, s } = feuerAn(st.dorf, 'fest');
+    treffer.push(`<circle cx="${fx(p[0])}" cy="${fx(p[1] - s * 0.3)}" r="${fx(Math.max(26, s * 1.8))}" data-flur="${st.lichtung}" tabindex="0" role="button" aria-label="${esc(o.name || L.name)}"/>`);
+  }
+
+  // Schatten der Bäume, dann alle Dinge von hinten nach vorn
+  if (!nacht) {
+    ctx.save(); ctx.globalAlpha = 0.2;
+    for (const it of dinge) if (it.baum) { const s = k.f / it.p[2]; ellipse(ctx, it.p[0] + s * 0.28, it.p[1] + s * 0.05, s * it.d.b * 0.55, s * it.d.b * 0.25, '#1E2C14'); }
+    ctx.restore();
+  }
+  dinge.sort((a, b) => b.z - a.z);
+  for (const it of dinge) { const geist = it.d && imNebel(it.d.w); if (geist) ctx.globalAlpha = 0.3; it.male(); ctx.globalAlpha = 1; }
+
+  // Der Rand der Karte liegt immer im Nebel – so ist nie ein Sechseck zu sehen
+  zeichneNebel(ctx, k, karte, [randLoch(karte)], 1, Math.max(6, s0 * 1.6));
+
+  // Nacht: dunkle Decke mit Löchern um die Lichter, dazu warme Glut
+  if (nacht) {
+    const l = leinwand('nacht', k.w, k.h), oc = l.ctx;
+    oc.fillStyle = 'rgba(10,21,48,.62)'; oc.fillRect(0, 0, k.w, k.h); oc.globalCompositeOperation = 'destination-out';
+    const glut = [];
+    for (const li of lichter) {
+      const rx = li.r * k.f / li.p[2];
+      oc.save(); oc.translate(li.p[0], li.p[1]); oc.scale(1, 0.72);
+      const g = oc.createRadialGradient(0, 0, 0, 0, 0, rx); g.addColorStop(0, `rgba(0,0,0,${li.st})`); g.addColorStop(0.5, `rgba(0,0,0,${0.75 * li.st})`); g.addColorStop(1, 'rgba(0,0,0,0)');
+      oc.fillStyle = g; oc.beginPath(); oc.arc(0, 0, rx, 0, Math.PI * 2); oc.fill(); oc.restore();
+      glut.push([li.p, rx]);
+    }
+    ctx.drawImage(l.c, 0, 0, k.w, k.h);
+    ctx.save(); ctx.globalCompositeOperation = 'screen';
+    for (const [p, rx] of glut) {
+      ctx.save(); ctx.translate(p[0], p[1] - rx * 0.1); ctx.scale(1, 0.75);
+      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, rx * 0.9); g.addColorStop(0, 'rgba(255,180,90,.5)'); g.addColorStop(1, 'rgba(255,180,90,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, rx * 0.9, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  // Grenzen und Auswahl (SVG darüber)
+  const umr = f => f.umriss || (f.umriss = umriss(f.waben, karte.waben).map(l => chaikin(l, 3)));
+  let grenzen = '';
+  if (o.modus === 'werkstatt') {
+    for (const f of karte.fluren) {
+      grenzen += `<path d="${pfadVon(umr(f), P, H)}" fill="none" stroke="#FFF3D6" stroke-width="1.3" stroke-dasharray="4 4" opacity=".85"/>`;
+      treffer.unshift(`<path d="${pfadVon(umr(f), P, H)}" data-flur="${f.id}" aria-label="${esc(f.name)}"/>`);
+    }
+  } else if (st) {
+    for (const f of karte.fluren) {
+      if (f.id !== st.lichtung && !st.offen.has(f.id)) continue;
+      const eigen = f.id === st.lichtung;
+      grenzen += `<path d="${pfadVon(umr(f), P, H)}" fill="none" stroke="${eigen ? 'rgba(40,24,10,.35)' : '#FFF3D6'}" stroke-width="${eigen ? 5.5 : 2}" stroke-dasharray="${eigen ? '' : '8 6'}" opacity="${eigen ? 1 : 0.85}"/>` +
+        (eigen ? `<path d="${pfadVon(umr(f), P, H)}" fill="none" stroke="#FFF3D6" stroke-width="2.6"/>` : '');
+    }
+    for (const f of karte.fluren) if (f.id === st.lichtung || st.offen.has(f.id) || f.id === st.ausblick) treffer.unshift(`<path d="${pfadVon(umr(f), P, H)}" data-flur="${f.id}" aria-label="${esc(f.name)}"/>`);
+  }
+  if (o.auswahl !== undefined && o.auswahl !== null) grenzen += `<path d="${pfadVon(umr(karte.fluren[o.auswahl]), P, H)}" fill="#FFBE2E" fill-opacity=".12" stroke="#F0B54C" stroke-width="3.5" filter="url(#gl-f${o.uid})"/>`;
+
+  return `<defs><filter id="gl-f${o.uid}" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#FFBE2E" flood-opacity=".8"/></filter></defs>
+    <g>${unten.join('')}</g>
+    <g opacity="${nacht ? 0.8 : 1}">${grenzen}</g>
+    <g>${ueber.join('')}</g>
+    <g class="treffer">${treffer.join('')}</g>`;
+}
+
+// ---------- Zeichnen erst, wenn ein Rahmen ins Bild kommt ----------
+const beobachter = new IntersectionObserver(eintraege => eintraege.forEach(e => {
+  const r = e.target._rahmen; if (!r) return;
+  r.sichtbar = e.isIntersecting;
+  if (r.sichtbar && r.schmutzig) r.zeichne();
+}), { rootMargin: '400px' });
+function leinwandFuer(el, w, h) {
+  const c = el.querySelector('canvas');
+  c.width = Math.ceil(w * DPR); c.height = Math.ceil(h * DPR);
+  const ctx = c.getContext('2d'); ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  return ctx;
+}
+
+// ---------- Ein Rahmen ----------
+class Rahmen {
+  constructor(el) {
+    this.el = el; this.uid = naechsteUid++; el._rahmen = this;
+    this.ansicht = el.dataset.ansicht;
+    this.handy = el.classList.contains('handy');
+    this.w = el.clientWidth; this.h = el.clientHeight;
+    this.startWahl = +(el.dataset.wahl || 0);
+    this.nacht = el.dataset.uhr === 'nacht';
+    this.caption = el.parentElement.querySelector('.js-seed');
+    const kopf = this.ansicht === 'werkstatt' ? '' : `<header class="oben"><span class="wortmarke schwebend"><span class="zeichen">${ic('sprout')}</span>Lichtung</span></header>`;
+    el.innerHTML = `<div class="welt-platz"><canvas></canvas><svg xmlns="http://www.w3.org/2000/svg"></svg></div><div class="schilder"></div>${kopf}
+      <div class="karte wahl-karte js-wahl" hidden></div>
+      <div class="toast mit-knopf js-toast"></div>`;
+    this.svg = el.querySelector('svg');
+    el.addEventListener('click', e => this.klick(e));
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && e.target.classList.contains('name-feld')) { e.preventDefault(); this.tat('fertig'); return; }
+      if ((e.key === 'Enter' || e.key === ' ') && e.target.closest('[data-vorschlag],[data-flur]') && e.target.tagName !== 'BUTTON') { e.preventDefault(); this.klick(e); }
+    });
+    el.addEventListener('input', e => { if (e.target.classList.contains('name-feld')) { this.name = e.target.value; this.nameGeaendert = true; } });
+    beobachter.observe(el);
+  }
+  setzeSeed(seed) {
+    this.seed = seed; this.wuerfe = 0; this.wahl = this.startWahl; this.auswahl = null; this.nameGeaendert = false;
+    this.gegruendet = this.ansicht === 'siedlung' ? this.wahl : null;
+    this.benennen = this.ansicht === 'name';
+    this.name = null;
+    this.zeichne();
+  }
+  get karte() { return karteFuer(this.seed); }
+  ortName() { return this.karte.fluren[this.karte.vorschlaege[this.wahl].flur].name; }
+  klick(e) {
+    const t = e.target.closest('[data-vorschlag],[data-flur],[data-tat]');
+    if (!t) return;
+    if (t.dataset.vorschlag !== undefined) { this.wahl = +t.dataset.vorschlag; if (!this.nameGeaendert) this.name = null; this.zeichne(); return; }
+    if (t.dataset.flur !== undefined) { const id = +t.dataset.flur; this.auswahl = this.auswahl === id ? null : id; this.zeichne(); return; }
+    this.tat(t.dataset.tat);
+  }
+  tat(tat) {
+    if (tat === 'gruenden') { this.benennen = true; this.fokus = true; this.zeichne(); }
+    if (tat === 'zurueck') { this.benennen = false; this.zeichne(); }
+    if (tat === 'fertig') {
+      this.name = (this.name || '').trim() || this.ortName();
+      this.benennen = false; this.gegruendet = this.wahl; this.auswahl = null; this.zeichne(); this.toast();
+    }
+    if (tat === 'rueckgaengig') { this.gegruendet = null; this.zeichne(); this.el.querySelector('.js-toast').classList.remove('zeigen'); }
+    if (tat === 'gegend') { this.seed = folgeSeed(this.seed, 1000 + ++this.wuerfe); this.wahl = 0; this.name = null; this.nameGeaendert = false; this.zeichne(); }
+  }
+  toast() {
+    const t = this.el.querySelector('.js-toast');
+    t.innerHTML = `${ic('flame')}<span>${esc(this.name)}</span><button class="knopf zweit klein" data-tat="rueckgaengig">${ic('undo-2')}Rückgängig</button>`;
+    t.classList.add('zeigen');
+  }
+  kamera() {
+    const karte = this.karte, { w, h } = this;
+    if (this.ansicht === 'werkstatt') return { k: kameraPassend({ w, h, kasten: [20, 20, w - 20, h - 20], ziel: [0, 0], pts: flaechenPunkte(karte), weit: 3.2 }) };
+    if (this.gegruendet !== null) {
+      const st = gruende(karte, this.gegruendet), ids = [st.lichtung, ...st.offen];
+      // Handy: die Lichtung füllt das Bild, die offenen Fluren laufen seitlich hinaus
+      const pts = karte.liste.filter(x => (this.handy ? [st.lichtung] : ids).includes(x.flur)).map(x => [x.x, x.h, x.z]);
+      const kasten = this.handy ? [24, 180, w - 24, h - 150] : [60, 100, w - 60, h - 90];
+      return { st, k: kameraPassend({ w, h, kasten, ziel: [st.dorf[0], st.dorf[1] - 2], pts, weit: 1.15 }) };
+    }
+    // Vor der Gründung: die drei Orte samt etwas Umgebung
+    const pts = karte.vorschlaege.flatMap(v => karte.fluren[v.flur].liste.map(x => [x.x, x.h, x.z]));
+    const mx = pts.reduce((s, p) => s + p[0], 0) / pts.length, mz = pts.reduce((s, p) => s + p[2], 0) / pts.length;
+    const kasten = this.handy ? [24, 110, w - 24, h - (this.benennen ? 250 : 360)] : [40, 90, w - 400, h - 40];
+    return { k: kameraPassend({ w, h, kasten, ziel: [mx, mz], pts, weit: 3.2 }) };
+  }
+  zeichne() {
+    if (!this.sichtbar) { this.schmutzig = true; return; }
+    this.schmutzig = false;
+    const karte = this.karte;
+    if (this.caption) this.caption.textContent = `· Seed ${this.seed}${karte.versuch ? ` (${karte.versuch + 1}. Versuch)` : ''}`;
+    const { k, st } = this.kamera();
+    const modus = this.ansicht === 'werkstatt' ? 'werkstatt' : st ? 'siedlung' : 'wahl';
+    const ctx = leinwandFuer(this.el, this.w, this.h);
+    this.svg.setAttribute('viewBox', `0 0 ${this.w} ${this.h}`);
+    this.svg.innerHTML = zeichneWelt(ctx, k, karte, { uid: this.uid, modus, wahl: this.wahl, stand: st, nacht: this.nacht && !!st, auswahl: this.auswahl, nebel: NEBEL_AN, name: this.name });
+    this.zeichneSchilder(k, karte, st, modus);
+    const wk = this.el.querySelector('.js-wahl');
+    wk.hidden = modus !== 'wahl';
+    if (modus === 'wahl') wk.innerHTML = this.benennen ? this.nameKarte() : this.wahlKarte(karte);
+    if (modus === 'wahl') this.el.querySelector('.js-toast').classList.remove('zeigen');
+    if (this.fokus) { this.fokus = false; const f = this.el.querySelector('.name-feld'); if (f) { f.focus({ preventScroll: true }); f.select(); } }
+  }
+  zeichneSchilder(k, karte, st, modus) {
+    const html = [], pos = p => `style="left: ${fx(p[0])}px; top: ${fx(p[1])}px"`;
+    const imBild = p => p[0] > 20 && p[0] < this.w - 20 && p[1] > 20 && p[1] < this.h - 20 && (this.handy || modus !== 'wahl' || p[0] < this.w - 372);
+    if (modus === 'werkstatt') {
+      for (const f of karte.fluren) {
+        const p = k.P([f.anker.x, f.anker.h, f.anker.z]);
+        if (f.id === this.auswahl) html.push(`<button class="flur-schild an" data-flur="${f.id}" ${pos(p)}>${rundIc(ART_ICON[f.art])}${esc(f.name)} <small>· ${ART_NAME[f.art]} · ${f.n}</small></button>`);
+        else html.push(`<span class="art-marke${SELTEN.has(f.art) ? ' selten' : ''}${f.insel ? ' insel' : ''}" ${pos(p)} title="${esc(f.name)} · ${ART_NAME[f.art]}">${ic(ART_ICON[f.art])}</span>`);
+      }
+      karte.vorschlaege.forEach((v, i) => { const f = karte.fluren[v.flur], p = k.P([f.anker.x, f.anker.h, f.anker.z]); html.push(`<span class="platz-nr" style="left: ${fx(p[0] + 19)}px; top: ${fx(p[1] - 15)}px">${i + 1}</span>`); });
+    } else if (!st) {
+      karte.vorschlaege.forEach((v, i) => {
+        const f = karte.fluren[v.flur], p = k.P([f.anker.x, f.anker.h + 1.9, f.anker.z]);
+        const name = i === this.wahl && this.benennen && this.name ? this.name : f.name;
+        if (imBild(p)) html.push(`<button class="flur-schild ort-schild${i === this.wahl ? ' an' : ''}" data-vorschlag="${i}" ${pos(p)}>${rundIc('flame')}${esc(name)}</button>`);
+      });
+    } else {
+      for (const f of karte.fluren) {
+        const offen = st.offen.has(f.id), eigen = f.id === st.lichtung, ausblick = f.id === st.ausblick;
+        if (!offen && !eigen && !ausblick) continue;
+        const p = k.P([f.anker.x, f.anker.h + (eigen ? 2.4 : 0.3), f.anker.z]);
+        if (!imBild(p)) continue;
+        const an = f.id === this.auswahl ? ' an' : '';
+        if (ausblick) html.push(`<button class="flur-schild nebel${an}" data-flur="${f.id}" ${pos(p)} aria-label="Im Nebel">${rundIc('cloud-fog')}</button>`);
+        else if (eigen) html.push(`<button class="flur-schild${an}" data-flur="${f.id}" ${pos(p)}>${rundIc('flame')}${esc(this.name || f.name)}</button>`);
+        else html.push(`<button class="flur-schild offen${an}" data-flur="${f.id}" ${pos(p)}>${rundIc(ART_ICON[f.art])}${esc(f.name)}${this.handy ? '' : ' <small>· abstecken</small>'}</button>`);
+      }
+    }
+    this.el.querySelector('.schilder').innerHTML = html.join('');
+  }
+  wahlKarte(karte) {
+    const zeile = (v, i) => {
+      const f = karte.fluren[v.flur], m = v.m;
+      const merkmale = [['tree-pine', 'Wald'], ['fish', 'Ufer'], ['flower-2', 'Wiese']];
+      if (m.fels) merkmale.push(['mountain', 'Fels']);
+      if (m.bach) merkmale.push(['waves', 'Bach', true]);
+      if (m.see) merkmale.push(['droplet', 'See', true]);
+      if (m.insel) merkmale.push(['tree-deciduous', 'Insel', true]);
+      const weg = m.weg < WEG_KURZ ? 'kurz' : m.weg < WEG_MITTEL ? 'mittel' : 'weit';
+      return `<button class="ort${i === this.wahl ? ' an' : ''}" data-vorschlag="${i}" aria-pressed="${i === this.wahl}">
+        <span class="zeichen">${ic('flame')}</span><b>${esc(f.name)}</b>
+        <span class="mini" aria-hidden="true">${merkmale.map(([n]) => ic(n)).join('')}</span>
+        <span class="chips">${merkmale.map(([n, t, x]) => `<span class="chip${x ? ' extra' : ''}">${ic(n)}${t}</span>`).join('')}<span class="chip">${ic('footprints')}${weg}</span></span>
+      </button>`;
+    };
+    return `<div class="griff"><span></span></div><div class="orte">${karte.vorschlaege.map(zeile).join('')}</div>
+      <div class="wahl-fuss"><button class="knopf haupt" data-tat="gruenden">${ic('flag')}Hier gründen</button>
+        <button class="knopf zweit" data-tat="gegend" aria-label="Andere Gegend">${ic('dices')}<span>Andere Gegend</span></button></div>`;
+  }
+  nameKarte() {
+    const name = this.name ?? this.ortName();
+    return `<div class="griff"><span></span></div>
+      <div class="benennen"><span class="zeichen">${ic('flame')}</span><input class="name-feld" value="${esc(name)}" maxlength="24" aria-label="Name der Siedlung" spellcheck="false" autocomplete="off"></div>
+      <div class="wahl-fuss zwei"><button class="knopf zweit nur-ic" data-tat="zurueck" aria-label="Zurück">${ic('chevron-left')}<span>Zurück</span></button>
+        <button class="knopf haupt" data-tat="fertig">${ic('check')}Gründen</button></div>`;
+  }
+}
+// Wegestufen für den Chip „kurz · mittel · weit“ (mittlerer Abstand der Flurmitten)
+const WEG_KURZ = 9.2, WEG_MITTEL = 10;
+
+// ---------- Werkstatt: kleine Karten zum Vergleichen ----------
+class Kachel {
+  constructor(el, seed) {
+    this.el = el; this.seed = seed; el._rahmen = this; this.w = el.clientWidth; this.h = el.clientHeight;
+    el.innerHTML = `<div class="welt-platz"><canvas></canvas><svg xmlns="http://www.w3.org/2000/svg"></svg></div><div class="schilder"></div>`;
+    this.schmutzig = true; beobachter.observe(el);
+  }
+  zeichne() {
+    if (!this.sichtbar) { this.schmutzig = true; return; }
+    this.schmutzig = false;
+    const { w, h } = this, karte = karteFuer(this.seed);
+    const k = kameraPassend({ w, h, kasten: [8, 10, w - 8, h - 8], ziel: [0, 0], pts: flaechenPunkte(karte), weit: 3.2 });
+    const ctx = leinwandFuer(this.el, w, h);
+    this.el.querySelector('svg').setAttribute('viewBox', `0 0 ${w} ${h}`);
+    this.el.querySelector('svg').innerHTML = zeichneWelt(ctx, k, karte, { uid: naechsteUid++, modus: 'werkstatt' }).replace(/<g class="treffer">[\s\S]*<\/g>/, '');
+    const html = [];
+    for (const f of karte.fluren) { const p = k.P([f.anker.x, f.anker.h, f.anker.z]); html.push(`<span class="art-marke${SELTEN.has(f.art) ? ' selten' : ''}${f.insel ? ' insel' : ''}" style="left: ${fx(p[0])}px; top: ${fx(p[1])}px" title="${esc(f.name)} · ${ART_NAME[f.art]}">${ic(ART_ICON[f.art])}</span>`); }
+    karte.vorschlaege.forEach((v, i) => { const f = karte.fluren[v.flur], p = k.P([f.anker.x, f.anker.h, f.anker.z]); html.push(`<span class="platz-nr" style="left: ${fx(p[0] + 14)}px; top: ${fx(p[1] - 12)}px">${i + 1}</span>`); });
+    this.el.querySelector('.schilder').innerHTML = html.join('');
+    this.el.parentElement.querySelector('.js-kt').textContent = kachelText(karte);
+  }
+}
+function kachelText(karte) {
+  const z = [`${karte.fluren.length} Fluren`];
+  if (karte.neben) z.push('Nebenfluss');
+  if (karte.arm) z.push('Insel');
+  if (karte.seen.length) z.push(karte.seen.length > 1 ? `${karte.seen.length} Seen` : 'See');
+  if (karte.baeche.length) z.push(karte.baeche.length > 1 ? `${karte.baeche.length} Bäche` : 'Bach');
+  const selten = karte.fluren.filter(f => SELTEN.has(f.art)).map(f => ART_NAME[f.art]);
+  if (selten.length) z.push(selten.join(', '));
+  if (karte.versuch) z.push(`${karte.versuch + 1}. Versuch`);
+  return z.join(' · ');
+}
+
+// ---------- Seite ----------
+const RAHMEN = [...document.querySelectorAll('.geraet[data-ansicht]')].map(el => new Rahmen(el));
+const eingabe = document.getElementById('seed');
+const zuSeed = text => /^\d+$/.test(text.trim()) ? (+text.trim()) >>> 0 : [...text].reduce((h, c) => Math.imul(h ^ c.charCodeAt(0), 16777619) >>> 0, 2166136261);
+let aktuellerSeed = 1;
+function setze(seed) {
+  aktuellerSeed = seed;
+  eingabe.value = seed;
+  RAHMEN.forEach(r => r.setzeSeed(seed));
+  const ziel = document.querySelector('.js-vergleich');
+  ziel.querySelectorAll('.kachel').forEach(el => beobachter.unobserve(el));
+  ziel.innerHTML = [0, 1, 2, 3, 4, 5].map(i => `<figure><div class="geraet kachel" data-seed="${(seed + i) >>> 0}" role="button" tabindex="0" aria-label="Seed ${(seed + i) >>> 0} übernehmen"></div><figcaption>Seed ${(seed + i) >>> 0} · <span class="seed js-kt"></span></figcaption></figure>`).join('');
+  ziel.querySelectorAll('.kachel').forEach(el => new Kachel(el, +el.dataset.seed));
+  const karte = karteFuer(seed);
+  document.querySelector('.js-info').textContent = `${karte.fluren.length} Fluren · ${karte.landN} Waben Land · ${karte.kandidaten} Orte kämen in Frage · ${karte.ms} ms`;
+}
+eingabe.addEventListener('change', () => setze(zuSeed(eingabe.value)));
+document.getElementById('wuerfeln').addEventListener('click', () => setze(Math.floor(Math.random() * 1e6)));
+document.getElementById('zurueck').addEventListener('click', () => setze(1));
+document.getElementById('groesse').addEventListener('change', e => { KARTE_WERTE.radius = +e.target.value; setze(aktuellerSeed); });
+document.getElementById('nebel').addEventListener('change', e => { NEBEL_AN = e.target.checked; RAHMEN.forEach(r => r.zeichne()); });
+document.querySelector('.js-vergleich').addEventListener('click', e => { const el = e.target.closest('.kachel'); if (el) { setze(+el.dataset.seed); window.scrollTo({ top: 0, behavior: 'smooth' }); } });
+document.querySelector('.js-vergleich').addEventListener('keydown', e => { const el = e.target.closest('.kachel'); if (el && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); setze(+el.dataset.seed); } });
+setze(1);
+</script>
+</body>
+</html>
