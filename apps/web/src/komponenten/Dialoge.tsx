@@ -1,12 +1,18 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { BookOpen, MapPin, Moon, RotateCcw, Sun, SunMoon, Trophy } from 'lucide-react';
-import { ARTEN, ROHSTOFFE, gesamtErtrag, istVorbei, type Tagwerk } from '@lichtung/spiel';
+import { ARTEN, ROHSTOFFE, WAREN, WAREN_LISTE, gesamtErtrag, istVorbei, type Lager, type Tagwerk } from '@lichtung/spiel';
+import { zahl } from '../anzeige';
 import { Marke } from '../symbole';
 import { wenigerBewegung, type Stimmung } from '../umgebung';
 
 /** Dunkler Hintergrund und Pergamentkarte mit Holzschild. */
-function Modal({ titel, children, onEsc }: { titel: string; children: ReactNode; onEsc?: () => void }) {
+export function Modal({ titel, children, onEsc }: { titel: string; children: ReactNode; onEsc?: () => void }) {
   const [offen, setOffen] = useState(false);
+  // Beim Schließen kehrt der Fokus dorthin zurück, wo der Dialog aufging
+  useEffect(() => {
+    const vorher = document.activeElement as HTMLElement | null;
+    return () => vorher?.focus?.({ preventScroll: true });
+  }, []);
   useEffect(() => {
     const r = requestAnimationFrame(() => setOffen(true));
     const taste = (e: KeyboardEvent) => e.key === 'Escape' && onEsc?.();
@@ -46,6 +52,8 @@ function Hochzaehlen({ wert, plus }: { wert: number; plus?: boolean }) {
 
 interface EndeProps {
   tagwerk: Tagwerk;
+  /** Name des Flecks, an dem das Tagwerk lief. */
+  ort: string;
   tag: number;
   bester: number;
   kannZurueck: boolean;
@@ -54,7 +62,7 @@ interface EndeProps {
   onEinbringen: () => void;
 }
 
-export function EndeDialog({ tagwerk, tag, bester, kannZurueck, onWeiter, onZurueck, onEinbringen }: EndeProps) {
+export function EndeDialog({ tagwerk, ort, tag, bester, kannZurueck, onWeiter, onZurueck, onEinbringen }: EndeProps) {
   const fertig = istVorbei(tagwerk);
   const gesamt = gesamtErtrag(tagwerk);
   const [bringt, setBringt] = useState(false);
@@ -66,7 +74,7 @@ export function EndeDialog({ tagwerk, tag, bester, kannZurueck, onWeiter, onZuru
   };
   return (
     <Modal titel="Tagwerk beendet" onEsc={fertig ? undefined : onWeiter}>
-      <div className="unterzeile">Nordwald · Tag {tag}</div>
+      <div className="unterzeile">{ort} · Tag {tag}</div>
       <div className="ertrag-raster">
         {[...ROHSTOFFE, 'hase' as const].map((art) => (
           <div className="er" key={art}>
@@ -118,6 +126,34 @@ export function RegelnDialog({ onSchliessen }: { onSchliessen: () => void }) {
   );
 }
 
+const GRUPPEN: [string, 'rohstoff' | 'ware' | 'proviant'][] = [['Rohstoffe', 'rohstoff'], ['Waren', 'ware'], ['Proviant', 'proviant']];
+
+/** Alles im Lager, nach Rohstoffen, Waren und Proviant geordnet. */
+export function LagerDialog({ lager, tag, onSchliessen }: { lager: Lager; tag: number; onSchliessen: () => void }) {
+  const knopf = useRef<HTMLButtonElement>(null);
+  useEffect(() => knopf.current?.focus(), []);
+  return (
+    <Modal titel="Lager" onEsc={onSchliessen}>
+      <div className="unterzeile">Tag {tag}</div>
+      <div className="modal-scroll">
+        {GRUPPEN.map(([name, gruppe]) => (
+          <section key={gruppe}>
+            <h4 className="gr">{name}</h4>
+            <div className="liste vertieft lg">
+              {WAREN_LISTE.filter((w) => WAREN[w].gruppe === gruppe).map((w) => (
+                <div className="zeile" key={w}><Marke art={w} groesse="m" /><span>{WAREN[w].mehrzahl}</span><span className="wert">{zahl(lager[w])}</span></div>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+      <div className="modal-fuss">
+        <button ref={knopf} className="knopf zweit" onClick={onSchliessen}>Schließen</button>
+      </div>
+    </Modal>
+  );
+}
+
 interface MenueProps {
   stimmung: Stimmung;
   bester: number;
@@ -155,7 +191,7 @@ export function Menue({ stimmung, bester, onStimmung, onRegeln, onNeu, onSchlies
         ))}
       </div>
       <button className="menue-zeile" role="menuitem" onClick={() => { onSchliessen(); onRegeln(); }}><BookOpen className="ic" />Spielregeln</button>
-      <button className="menue-zeile" role="menuitem" onClick={() => { onSchliessen(); onNeu(); }}><RotateCcw className="ic" />Neu beginnen</button>
+      <button className="menue-zeile" role="menuitem" onClick={() => { onSchliessen(); onNeu(); }}><RotateCcw className="ic" />Neues Spiel</button>
       {bester > 0 && <div className="menue-fuss"><Trophy className="ic" />Bester Tag: {bester}</div>}
     </div>
   );

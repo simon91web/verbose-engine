@@ -1,0 +1,1249 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup: Lichtung – Kreislauf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,500..700,0..100&family=Nunito:wght@500..800&display=swap">
+<style>
+  /* ---------- Mockup-Seite ---------- */
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: #57534d; font: 15px/1.45 'Nunito', system-ui, sans-serif; color: #fff; }
+  h1 { font: 600 20px 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; margin: 48px 0 4px; }
+  h1:first-child { margin-top: 0; }
+  .erkl { margin: 0 0 16px; max-width: 900px; color: #eee; }
+  .erkl code { font-size: 13px; }
+  .reihe { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+  figure { margin: 0; display: grid; gap: 8px; }
+  figcaption { font-size: 13px; color: #eee; font-weight: 700; }
+  .notiz { background: #FFF8EA; color: #3A2A1C; border-radius: 18px; padding: 24px 32px; max-width: 900px; margin-top: 48px; }
+  .notiz h2 { font: 600 20px 'Fraunces', Georgia, serif; margin: 0 0 8px; }
+  .notiz li { margin: 4px 0; }
+
+  /* ---------- Spiel-Tokens: Tag ---------- */
+  .geraet {
+    --bg-oben: #EAF2DC; --bg-unten: #CFE0AE;
+    --perg: #FFF8EA; --perg-2: #F4E8D0; --rand: #E2CFA9;
+    --holz: #9A6436; --holz-d: #6E4422;
+    --tinte: #3A2A1C; --tinte-2: #7B6550;
+    --moos: #4E7F2F; --moos-d: #3A6222; --moos-h: #7DB453; --gruen-text: #3A6222;
+    --honig: #E8A93A; --honig-d: #B97F1E; --honig-h: #FFE3A1;
+    --warnung: #B4532A;
+    --matte: #2F4A2A;
+    --schatten: 0 6px 18px rgba(84, 56, 26, .18);
+    --schatten-k: 0 2px 6px rgba(84, 56, 26, .14);
+    --scrim: rgba(40, 28, 14, .45);
+    --fokus: #2F6FB0;
+    --nebel-f: rgba(255, 255, 255, .45); --nebel-r: rgba(255, 255, 255, .9);
+    background: linear-gradient(180deg, var(--bg-oben), var(--bg-unten));
+    color: var(--tinte);
+    font: 15px/1.45 'Nunito', system-ui, sans-serif;
+    border-radius: 18px; overflow: hidden; position: relative; flex: none;
+  }
+  /* ---------- Spiel-Tokens: Abend ---------- */
+  .geraet.abend {
+    --bg-oben: #22312F; --bg-unten: #141D1C;
+    --perg: #2F2823; --perg-2: #3B322B; --rand: #4E4033;
+    --holz: #7A5030; --holz-d: #4A2F1B;
+    --tinte: #F4E8D2; --tinte-2: #C3B299;
+    --moos-h: #8CC45F; --gruen-text: #A5D47A;
+    --honig: #F0B54C; --honig-d: #B9822A;
+    --warnung: #F09A6B;
+    --matte: #22331A;
+    --schatten: 0 8px 22px rgba(0, 0, 0, .45);
+    --schatten-k: 0 2px 8px rgba(0, 0, 0, .35);
+    --scrim: rgba(0, 0, 0, .6);
+    --fokus: #8EC5FF;
+    --nebel-f: rgba(255, 255, 255, .06); --nebel-r: rgba(255, 255, 255, .38);
+  }
+  .laptop { width: 1100px; height: 700px; }
+  .handy { width: 390px; height: 844px; }
+  .geraet button { font-family: inherit; color: inherit; }
+  .geraet :focus-visible { outline: 3px solid var(--fokus); outline-offset: 2px; }
+  .ic { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Knöpfe zum Drücken */
+  .knopf { --f: var(--perg); --u: var(--rand); --t: var(--tinte); display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 18px; border: 0; border-radius: 14px; background: var(--f); color: var(--t) !important; font-weight: 800; font-size: 15px; box-shadow: 0 4px 0 var(--u); cursor: pointer; white-space: nowrap; transition: transform 90ms, box-shadow 90ms, filter 120ms; }
+  .knopf.zweit { border: 2px solid var(--rand); box-shadow: 0 3px 0 var(--rand); }
+  .knopf.haupt { --f: var(--moos); --u: var(--moos-d); --t: #fff; }
+  .knopf.klein { min-height: 44px; padding: 0 14px; font-size: 14px; }
+  .knopf:hover:not(:disabled) { filter: brightness(1.06); }
+  .knopf:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 var(--u); }
+  .knopf:disabled { opacity: .5; cursor: not-allowed; }
+  .rund { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--perg); border: 2px solid var(--rand); box-shadow: 0 3px 0 var(--rand); cursor: pointer; padding: 0; flex: none; transition: transform 90ms, box-shadow 90ms; }
+  .rund:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 var(--rand); }
+  .rund:disabled { opacity: .45; cursor: not-allowed; }
+
+  /* Pergament, Wortmarke, Tag */
+  .karte { background: var(--perg); border: 2px solid var(--rand); border-radius: 16px; box-shadow: var(--schatten); padding: 16px; }
+  .karte h3 { font: 600 18px/1.2 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; margin: 0 0 8px; }
+  .wortmarke { display: flex; align-items: center; gap: 8px; font: 700 22px 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; white-space: nowrap; }
+  .wortmarke .zeichen { width: 34px; height: 34px; border-radius: 50%; background: var(--moos); color: #fff; display: grid; place-items: center; box-shadow: 0 3px 0 var(--moos-d); }
+  .wortmarke .zeichen .ic { width: 18px; height: 18px; }
+  .tagzeile { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--tinte-2); white-space: nowrap; }
+  .tagzeile .ic { width: 16px; height: 16px; }
+  .tag-abzeichen { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: var(--perg); border: 2px solid var(--rand); border-radius: 999px; font-weight: 800; font-size: 13px; white-space: nowrap; box-shadow: var(--schatten-k); }
+  .tag-abzeichen .ic { width: 16px; height: 16px; }
+
+  /* Spielmarken (Brett, Beutel, Ertrag) */
+  .token { width: 28px; height: 28px; flex: none; overflow: visible; }
+  .token.m { width: 34px; height: 34px; }
+  .token.g { width: 48px; height: 48px; }
+  .mk .kante { fill: var(--kk); }
+  .mk .koerper { fill: var(--k); stroke: var(--kk); stroke-width: 1.5; transition: stroke 120ms, stroke-width 120ms; }
+  .mk .glanz { fill: #fff; opacity: .18; }
+  .mk .sym { fill: none; stroke: var(--sym); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .mk .pip { fill: #FFE7A3; stroke: var(--kk); stroke-width: 1.5; }
+  .mk.r3 .koerper { stroke: #FFD978; stroke-width: 3.5; }
+  .t-holz     { --k: #B96B34; --kk: #7E4218; --sym: #FFF4DE; }
+  .t-beeren   { --k: #C4446E; --kk: #8A2647; --sym: #FFF0F3; }
+  .t-kraeuter { --k: #63AE4F; --kk: #3C7A30; --sym: #F4FFEC; }
+  .t-nuesse   { --k: #E2AB3C; --kk: #A57417; --sym: #4A2F0C; }
+  .t-gestruepp{ --k: #5D6150; --kk: #3B3F33; --sym: #D9DDC6; }
+  .t-hase     { --k: #F3E6CC; --kk: #C2A97E; --sym: #7A5236; }
+  .t-fisch    { --k: #3F8CC0; --kk: #2A6690; --sym: #F0F8FF; }
+  .t-lehm     { --k: #B5784E; --kk: #80502E; --sym: #FFF1E0; }
+  .t-schilf   { --k: #86A84C; --kk: #5A7A2E; --sym: #F6FFE8; }
+  .t-kiesel   { --k: #D9B356; --kk: #A0801F; --sym: #4A3A0C; }
+  .t-schlamm  { --k: #6B5A48; --kk: #463A2D; --sym: #E8DAC6; }
+  .t-ente     { --k: #F2EEDC; --kk: #C3BA97; --sym: #3E6E8C; }
+  .t-stein    { --k: #8C8F94; --kk: #5E6166; --sym: #FFFFFF; }
+
+  /* ---------- Brett ---------- */
+  .brett-platz { flex: 1; min-height: 0; display: grid; place-items: center; }
+  .brett-platz svg { width: 100%; height: 100%; display: block; touch-action: none; user-select: none; -webkit-user-select: none; }
+  .matte { fill: var(--matte); stroke: var(--holz); stroke-width: 10; }
+  .kachel { transition: transform 280ms cubic-bezier(.34, 1.3, .64, 1); }
+  .kachel.ohne { transition: none; }
+  .kachel .innen { transition: transform 140ms ease-out, opacity 170ms ease-out; }
+  .kachel.gewaehlt .innen { transform: translateY(-5px); }
+  .kachel.gewaehlt .koerper { stroke: #FFF6E2; stroke-width: 5; }
+  .kachel.weg .innen { transform: scale(1.25); opacity: 0; }
+  .pfad-s { fill: none; stroke: rgba(40, 24, 10, .5); stroke-width: 14; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+  .pfad { fill: none; stroke: #FFF3D6; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+  .ring polygon { fill: rgba(255, 214, 120, .35); stroke: #FFD978; stroke-width: 4; stroke-dasharray: 10 7; pointer-events: none; }
+
+  /* Blase: Rückmeldung an festem Platz */
+  .blase { height: 44px; flex: none; display: flex; align-items: center; justify-content: center; }
+  .blase-inhalt { display: inline-flex; align-items: center; gap: 8px; padding: 4px 14px 4px 6px; background: var(--perg); border: 2px solid var(--rand); border-radius: 999px; font-weight: 800; box-shadow: var(--schatten-k); white-space: nowrap; max-width: 100%; overflow: hidden; transition: opacity 160ms, transform 160ms; }
+  .blase-inhalt.leer { opacity: 0; transform: translateY(4px); }
+  .handy .blase { padding: 0 12px; }
+  .handy .blase-inhalt { white-space: normal; line-height: 1.25; font-size: 14px; border-radius: 20px; }
+  .blase-inhalt.gold { background: #FFE6A6; border-color: var(--honig); color: #3A2A1C; }
+  .blase-inhalt.leise { color: var(--tinte-2); }
+  .blase-inhalt > .ic { color: var(--moos-h); margin-left: 4px; }
+  .blase-inhalt.gold > .ic { color: var(--honig-d); }
+
+  /* Schritte, Ziel, Beutel */
+  .medaille { width: 72px; height: 72px; border-radius: 50%; flex: none; display: grid; place-items: center; align-content: center; background: radial-gradient(circle at 35% 30%, var(--honig-h), var(--honig) 72%); border: 4px solid var(--holz); box-shadow: 0 4px 0 var(--holz-d), var(--schatten-k); color: #3A2A1C; transition: background 300ms; }
+  .medaille b { font: 700 30px/1 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; font-variant-numeric: tabular-nums; }
+  .medaille span { font: 800 11px/1.2 'Nunito', sans-serif; margin-top: 2px; }
+  .medaille.gross { width: 100px; height: 100px; margin: 0 auto; }
+  .medaille.gross b { font-size: 42px; }
+  .medaille.gross span { font-size: 13px; }
+  .medaille.knapp { background: radial-gradient(circle at 35% 30%, #FFD4B4, #E98A4A 72%); }
+  .zielband { flex: 1; min-width: 0; background: var(--perg); border: 2px solid var(--rand); border-radius: 14px; padding: 8px 12px 10px; box-shadow: var(--schatten-k); display: grid; gap: 6px; }
+  .karte .zielband { border: 0; box-shadow: none; padding: 0; background: none; margin-top: 12px; }
+  .zielband .z1 { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 14px; }
+  .wert { margin-left: auto; font-weight: 800; font-variant-numeric: tabular-nums; display: inline-block; }
+  .spur { height: 12px; border-radius: 999px; background: var(--perg-2); border: 1.5px solid var(--rand); overflow: hidden; }
+  .spur i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(var(--moos-h), var(--moos)); transition: width 400ms ease-out; }
+  .beutel { display: flex; justify-content: center; gap: 6px; padding: 6px 12px 0; flex: none; }
+  .pille { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px 2px 2px; background: var(--perg); border: 2px solid var(--rand); border-radius: 999px; font-weight: 800; font-variant-numeric: tabular-nums; box-shadow: var(--schatten-k); white-space: nowrap; flex: none; }
+  .pille .rund-ic { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--perg-2); }
+  .pille .rund-ic .ic { width: 16px; height: 16px; }
+  .stoss { animation: stoss 240ms cubic-bezier(.34, 1.5, .64, 1); }
+  @keyframes stoss { 50% { transform: scale(1.18); } }
+  .liste { display: grid; gap: 4px; }
+  .zeile { display: flex; align-items: center; gap: 10px; min-height: 36px; font-weight: 700; }
+
+  /* Trupp: Porträt mit Ladering */
+  .mitglied { display: grid; justify-items: center; gap: 2px; background: none; border: 0; padding: 4px; border-radius: 14px; cursor: pointer; min-width: 76px; text-align: center; transition: background-color 120ms; }
+  .mitglied:hover { background: color-mix(in srgb, var(--perg) 60%, transparent); }
+  .mitglied .name { font-weight: 800; font-size: 13px; line-height: 1.3; }
+  .mitglied .beruf { font-weight: 700; color: var(--tinte-2); }
+  .mitglied .faeh { font-size: 12px; font-weight: 800; padding: 1px 8px; border-radius: 999px; background: var(--perg-2); color: var(--tinte-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .mitglied.bereit .faeh { background: var(--honig); color: #3A2A1C; }
+  .portrait { position: relative; width: 60px; height: 60px; flex: none; display: block; }
+  .portrait .ladering { position: absolute; inset: 0; transform: rotate(-90deg); }
+  .portrait .ring-bg { fill: none; stroke: var(--perg-2); stroke-width: 5; }
+  .portrait .ring-wert { fill: none; stroke: var(--moos-h); stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset 300ms ease-out, stroke 200ms; }
+  .bereit .portrait .ring-wert { stroke: var(--honig); }
+  .portrait .gesicht { position: absolute; inset: 7px; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--p) 55%, white), var(--p) 75%); color: #FFF6E2; font: 700 22px 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .18); }
+  .bereit .portrait .gesicht { animation: leuchten 1.8s ease-in-out infinite; }
+  @keyframes leuchten { 50% { box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .18), 0 0 14px 4px rgba(240, 181, 76, .75); } }
+  .portrait.heim .gesicht { background: var(--perg); border: 2px solid var(--rand); color: var(--tinte); box-shadow: 0 3px 0 var(--rand); }
+  .portrait .abzeichen { position: absolute; right: -2px; top: -2px; width: 22px; height: 22px; border-radius: 50%; background: var(--moos); color: #fff; display: grid; place-items: center; border: 2px solid var(--perg); }
+  .portrait .abzeichen .ic { width: 12px; height: 12px; stroke-width: 3.2; }
+  .mitglied.aus .portrait { opacity: .45; filter: grayscale(.7); }
+  .mitglied.zeilig { display: grid; grid-template-columns: 60px 1fr; grid-template-rows: auto auto; column-gap: 12px; row-gap: 2px; justify-items: start; align-items: center; text-align: left; width: 100%; padding: 6px; }
+  .mitglied.zeilig .portrait { grid-row: 1 / 3; }
+  .mitglied.zeilig .name { align-self: end; font-size: 15px; }
+  .mitglied.zeilig .faeh { align-self: start; }
+  .mitglied.klein { min-width: 0; flex: 1; }
+  .mitglied.klein .portrait { width: 52px; height: 52px; }
+  .mitglied.klein .gesicht { inset: 2px; font-size: 20px; }
+  .mitglied.klein .faeh { background: none; padding: 0; font-size: 12px; font-weight: 700; line-height: 1.2; white-space: normal; hyphens: auto; -webkit-hyphens: auto; max-width: 76px; }
+
+  /* ---------- Rahmen der Ansichten ---------- */
+  .spiel { position: relative; height: 100%; display: flex; flex-direction: column; }
+  .leiste { height: 72px; flex: none; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; padding: 0 20px; }
+  .leiste .links { display: flex; align-items: center; gap: 16px; }
+  .leiste .rechts { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+  .titel { display: grid; justify-items: center; min-width: 0; }
+  .titel h2 { margin: 0; font: 600 26px/1.15 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; }
+  .tw-raster { flex: 1; min-height: 0; display: grid; grid-template-columns: 240px minmax(0, 1fr) 250px; gap: 16px; padding: 0 20px 20px; }
+  .spalte { display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+  .spalte .knopf { margin-top: auto; }
+  .mitte { display: flex; flex-direction: column; min-height: 0; min-width: 0; }
+  .reiter-holz { display: flex; gap: 4px; padding: 4px; background: var(--holz); border-radius: 14px; box-shadow: 0 3px 0 var(--holz-d); }
+  .reiter-holz a { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 10px; color: #F6E3C4; font-weight: 800; cursor: pointer; }
+  .reiter-holz a .ic { width: 18px; height: 18px; }
+  .reiter-holz a.an { background: var(--honig); color: #3A2A1C; }
+  .kopf { height: 64px; flex: none; display: flex; align-items: center; gap: 8px; padding: 8px 12px 0; }
+  .kopf .titel { flex: 1; }
+  .kopf .titel h2 { font-size: 22px; }
+  .kopf .wortmarke { flex: 1; }
+  .hud { display: flex; align-items: center; gap: 12px; padding: 8px 16px 0; flex: none; }
+  .handy .brett-platz { padding: 0 10px; }
+  .trupp-reihe { display: flex; justify-content: space-around; align-items: flex-start; padding: 8px 8px 14px; flex: none; }
+
+  /* Siedlung */
+  .vorrat { display: flex; gap: 6px; padding: 2px 12px 8px; overflow-x: auto; scrollbar-width: none; flex: none; }
+  .laptop .vorrat { justify-content: center; padding: 0 0 8px; }
+  .sd-raster { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; padding: 0 20px 20px; }
+  .sd-links { display: flex; flex-direction: column; min-height: 0; }
+  .karte-platz { flex: 1; min-height: 0; display: grid; place-items: center; }
+  .handy .karte-platz { place-items: start center; }
+  .fleck { cursor: pointer; outline: none; }
+  .fleck .kante { fill: var(--fk); }
+  .fleck .koerper { fill: var(--f); stroke: var(--fk); stroke-width: 2; transition: stroke 120ms, stroke-width 120ms; }
+  .fleck .glanz { fill: #fff; opacity: .14; }
+  .fleck .sym { fill: none; stroke: var(--fs, #FFF6E2); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .fleck text { fill: var(--fs, #FFF6E2); font: 800 13px 'Nunito', sans-serif; paint-order: stroke; stroke: var(--fk); stroke-width: 3px; stroke-linejoin: round; }
+  .handy .fleck text { font-size: 12px; }
+  .fl-wald { --f: #4F8F3F; --fk: #336528; }
+  .fl-bach { --f: #3F8CC0; --fk: #2A6690; }
+  .fl-wiese { --f: #B8B04A; --fk: #85802A; }
+  .fl-fels { --f: #9C8266; --fk: #6F5A44; }
+  .fleck.gerodet { --f: #D2B57E; --fk: #A0824C; --fs: #5A3A1E; }
+  .fleck.bebaut { --f: #F4E6C8; --fk: #C2A574; --fs: #6E4422; }
+  .fleck.gerodet text, .fleck.bebaut text { stroke: none; }
+  .fleck.gesperrt { opacity: .62; }
+  .fleck.nebel .kante, .fleck.nebel .glanz { display: none; }
+  .fleck.nebel .koerper { fill: var(--nebel-f); stroke: var(--nebel-r); stroke-dasharray: 7 6; }
+  .fleck.nebel .sym { stroke: var(--nebel-r); }
+  .fleck:hover .koerper { stroke: #FFF6E2; }
+  .fleck.gewaehlt .koerper { stroke: var(--honig); stroke-width: 5; stroke-dasharray: none; }
+  .fleck.gewaehlt { filter: drop-shadow(0 0 8px rgba(240, 181, 76, .85)); }
+  .fleck:focus-visible .koerper { stroke: var(--fokus); stroke-width: 5; }
+  .detail { display: flex; flex-direction: column; min-height: 0; padding: 0; }
+  .detail-kopf { padding: 16px 16px 8px; display: grid; gap: 8px; }
+  .detail-kopf h3 { font: 600 26px/1.15 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; margin: 0; }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px 2px 4px; border-radius: 999px; background: var(--perg-2); font-weight: 800; font-size: 13px; white-space: nowrap; }
+  .chip.text { padding: 4px 10px; }
+  .chip.gut { background: color-mix(in srgb, var(--moos) 18%, var(--perg)); color: var(--gruen-text); }
+  .chip .ic { width: 16px; height: 16px; }
+  .detail-rumpf { flex: 1; min-height: 0; overflow: auto; padding: 4px 16px 16px; display: grid; gap: 16px; align-content: start; }
+  .abschnitt h4 { margin: 0 0 6px; font: 800 13px 'Nunito', sans-serif; color: var(--tinte-2); }
+  .marken-raster { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px 8px; }
+  .mr { display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 14px; white-space: nowrap; }
+  .trupp-wahl { display: flex; gap: 4px; justify-content: space-between; }
+  .detail-fuss { padding: 12px 16px 16px; border-top: 2px dashed var(--rand); display: grid; gap: 10px; }
+  .summe { display: flex; justify-content: space-between; gap: 8px; font-weight: 800; font-size: 14px; }
+  .summe span:last-child { color: var(--tinte-2); }
+  .bau { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; align-items: center; padding: 8px; background: var(--perg-2); border-radius: 14px; }
+  .bau .bild { width: 44px; height: 44px; border-radius: 12px; background: var(--perg); display: grid; place-items: center; color: var(--holz); border: 2px solid var(--rand); }
+  .bau b { display: block; font-weight: 800; }
+  .bau .kosten { display: flex; gap: 4px; font-size: 13px; font-weight: 800; color: var(--tinte-2); align-items: center; }
+  .bau .kosten .token { width: 22px; height: 22px; }
+  .bau .kosten.fehlt { color: var(--warnung); }
+  .blatt { position: absolute; left: 0; right: 0; bottom: 76px; background: var(--perg); border-top: 2px solid var(--rand); border-radius: 22px 22px 0 0; box-shadow: 0 -8px 24px rgba(40, 24, 10, .2); display: flex; flex-direction: column; transition: height 280ms cubic-bezier(.2, 0, 0, 1); z-index: 2; }
+  .blatt.ziehen { transition: none; }
+  .blatt[data-stufe="klein"] .detail-rumpf { overflow: hidden; }
+  .griff { height: 22px; flex: none; display: grid; place-items: center; cursor: grab; touch-action: none; }
+  .griff span { width: 40px; height: 5px; border-radius: 999px; background: var(--rand); }
+  .blatt .detail-kopf { padding-top: 0; }
+  .holzleiste { position: absolute; left: 0; right: 0; bottom: 0; height: 76px; background: linear-gradient(var(--holz), var(--holz-d)); border-top: 3px solid var(--holz-d); display: grid; grid-template-columns: repeat(4, 1fr); padding-bottom: 6px; z-index: 3; }
+  .ziel { display: grid; justify-items: center; align-content: center; gap: 2px; color: #F6E3C4; font-weight: 800; font-size: 12px; cursor: pointer; background: none; border: 0; }
+  .ziel .kreis { width: 44px; height: 34px; border-radius: 999px; display: grid; place-items: center; }
+  .ziel.an { color: #FFF6E2; }
+  .ziel.an .kreis { background: var(--honig); color: #3A2A1C; box-shadow: 0 3px 0 var(--honig-d); }
+
+  /* ---------- Überlagerungen ---------- */
+  .ueberlage { position: absolute; inset: 0; z-index: 10; pointer-events: none; display: grid; place-items: center; }
+  .ueberlage.offen { pointer-events: auto; }
+  .scrim { position: absolute; inset: 0; background: var(--scrim); opacity: 0; transition: opacity 200ms; }
+  .ueberlage.offen .scrim { opacity: 1; }
+  .modal { position: relative; width: min(440px, calc(100% - 32px)); background: var(--perg); border: 2px solid var(--rand); border-radius: 22px; box-shadow: 0 18px 40px rgba(40, 24, 10, .35); padding: 44px 20px 20px; transform: scale(.92); opacity: 0; transition: transform 260ms cubic-bezier(.34, 1.4, .64, 1), opacity 180ms; }
+  .ueberlage.offen .modal { transform: none; opacity: 1; }
+  .schild { position: absolute; left: 50%; top: -24px; transform: translateX(-50%); background: var(--holz); color: #FFF3DC; font: 600 22px 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; padding: 8px 26px; border-radius: 12px; box-shadow: 0 4px 0 var(--holz-d); white-space: nowrap; }
+  .modal .unterzeile { text-align: center; color: var(--tinte-2); font-weight: 700; margin: -8px 0 14px; }
+  .ertrag-raster { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin-bottom: 14px; }
+  .er { display: grid; justify-items: center; gap: 2px; }
+  .er b { font: 700 24px/1.1 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; font-variant-numeric: tabular-nums; }
+  .er span { font-size: 12px; font-weight: 700; color: var(--tinte-2); }
+  .modal .liste { background: var(--perg-2); border-radius: 14px; padding: 6px 12px; margin-bottom: 18px; }
+  .modal .zeile .ic { color: var(--tinte-2); width: 22px; }
+  .modal-fuss { display: flex; gap: 10px; }
+  .modal-fuss .knopf { flex: 1; }
+  .toast { position: absolute; left: 50%; bottom: 24px; transform: translate(-50%, 12px); z-index: 20; display: flex; align-items: center; gap: 10px; padding: 10px 18px; background: var(--perg); border: 2px solid var(--rand); border-radius: 999px; box-shadow: var(--schatten); font-weight: 800; opacity: 0; transition: opacity 160ms, transform 200ms; pointer-events: none; white-space: nowrap; }
+  .toast.zeigen { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+  .toast .ic { color: var(--moos-h); }
+  .toast a { color: var(--gruen-text); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .handy .toast { bottom: 92px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .geraet *, .geraet *::before, .geraet *::after { animation: none !important; transition-duration: 100ms !important; transition-timing-function: ease !important; }
+  }
+
+  /* ---------- Kreislauf: Ergänzungen ---------- */
+  [hidden] { display: none !important; }
+  h1 + .erkl { margin-top: 0; }
+  .steuerung { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin: 0 0 18px; padding: 10px 14px; border: 2px dashed #8d877d; border-radius: 14px; max-width: 1100px; color: #eee; }
+  .steuerung .lbl { font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #c9c3b8; }
+  .steuerung .gruppe { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; font-weight: 700; }
+  .steuerung .seg { display: inline-flex; gap: 4px; flex-wrap: wrap; background: rgba(0, 0, 0, .22); padding: 3px; border-radius: 12px; }
+  .steuerung button { font: inherit; font-weight: 700; color: #eee; background: none; border: 0; border-radius: 9px; min-height: 38px; padding: 0 14px; cursor: pointer; }
+  .steuerung button[aria-pressed="true"] { background: #F6E3C4; color: #3A2A1C; }
+  .steuerung button:focus-visible { outline: 3px solid #8EC5FF; outline-offset: 1px; }
+  .steuerung .solo { background: rgba(0, 0, 0, .22); }
+  .reihe + .reihe { margin-top: 24px; }
+
+  /* Marken für Waren und Proviant */
+  .token.k { width: 22px; height: 22px; }
+  .t-brett { --k: #C98A4B; --kk: #8A5424; --sym: #FFF4DE; }
+  .t-trockenkraeuter { --k: #8E9B4C; --kk: #5E6B2A; --sym: #F8FFE6; }
+  .t-beerenbrei { --k: #A63A5E; --kk: #702240; --sym: #FFF0F3; }
+  .t-roestnuesse { --k: #C9803A; --kk: #8A5018; --sym: #FFF4DE; }
+  .t-waldeintopf { --k: #6F8A3E; --kk: #46601F; --sym: #F6FFE8; }
+
+  /* Kopf, Reiter, Leiste */
+  .reiter-holz button { display: flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 16px; border: 0; border-radius: 10px; background: none; color: #F6E3C4; font-weight: 800; font-size: 15px; cursor: pointer; }
+  .reiter-holz button .ic { width: 18px; height: 18px; }
+  .reiter-holz button.an { background: var(--honig); color: #3A2A1C; }
+  .reiter-holz button:focus-visible { outline-color: #fff; }
+  .holzleiste { grid-template-columns: repeat(3, 1fr); }
+  .ansicht { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+  .vslot { display: contents; }
+  .vorrat { cursor: pointer; border-radius: 14px; }
+  .vorrat.wrap { flex-wrap: wrap; overflow: visible; justify-content: center; padding: 2px 12px 8px; }
+  .pille.leer { opacity: .55; }
+  .tag-abzeichen { min-height: 32px; }
+
+  /* Fleck-Detail */
+  .fleck .fl-in { transition: opacity 200ms; }
+  .fleck .badge circle { stroke: var(--holz-d); stroke-width: 2; }
+  .fleck .badge.lauf circle { fill: var(--honig); }
+  .fleck .badge.fertig circle { fill: var(--moos); stroke: #fff; }
+  .fleck .badge text { fill: #3A2A1C; stroke: none; font: 700 13px 'Fraunces', Georgia, serif; font-variant-numeric: tabular-nums; }
+  .fleck .badge .chk { fill: none; stroke: #fff; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+  .fleck.neu .fl-in { animation: auftauchen 700ms cubic-bezier(.2, .8, .3, 1) both; animation-delay: var(--d, 0ms); }
+  .fleck.wandel .fl-in { animation: stoss 520ms cubic-bezier(.34, 1.5, .64, 1); }
+  @keyframes auftauchen { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: none; } }
+  @keyframes blenden { from { opacity: 0; } to { opacity: 1; } }
+  .hinweis { display: flex; gap: 8px; align-items: flex-start; padding: 10px 12px; border-radius: 12px; background: var(--perg-2); border-left: 4px solid var(--honig); font-weight: 700; font-size: 14px; line-height: 1.35; }
+  .hinweis .ic { flex: none; color: var(--honig-d); margin-top: 1px; width: 18px; height: 18px; }
+  .abschnitt .hinweis { margin-bottom: 10px; }
+  .lauf { display: flex; gap: 14px; align-items: center; }
+  .lauf b { font-weight: 800; }
+  .lauf p { margin: 2px 0 0; font-weight: 700; color: var(--tinte-2); font-size: 14px; }
+  .text-hinweis { margin: 0; font-weight: 700; color: var(--tinte-2); }
+  .textknopf { background: none; border: 0; min-height: 44px; padding: 0 10px; font-weight: 800; font-size: 14px; color: var(--gruen-text) !important; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; justify-self: center; border-radius: 10px; }
+  .textknopf:hover { filter: brightness(1.12); }
+
+  /* Trupp mit Proviant */
+  .pz { display: flex; align-items: center; gap: 6px; padding: 2px 0; }
+  .pz .wahl { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; min-height: 52px; padding: 2px 6px 2px 2px; border: 0; border-radius: 12px; background: none; text-align: left; cursor: pointer; }
+  .pz .wahl:hover:not(:disabled) { background: color-mix(in srgb, var(--perg-2) 70%, transparent); }
+  .pz .wahl:disabled { cursor: not-allowed; }
+  .pz .wahl b { display: block; font-weight: 800; line-height: 1.2; }
+  .pz .wahl small { display: block; font-size: 13px; font-weight: 700; color: var(--tinte-2); font-variant-numeric: tabular-nums; }
+  .pz .portrait { width: 44px; height: 44px; }
+  .pz .gesicht { inset: 2px; font-size: 18px; }
+  .pz .abzeichen { width: 18px; height: 18px; right: -4px; top: -4px; }
+  .pz .abzeichen .ic { width: 11px; height: 11px; }
+  .pz.aus .portrait { opacity: .45; filter: grayscale(.7); }
+  .pz.aus .prov { visibility: hidden; }
+  .prov { display: flex; gap: 4px; flex: none; align-items: center; }
+  .pv { width: 48px; min-height: 48px; display: grid; justify-items: center; align-content: center; gap: 1px; padding: 2px; border-radius: 12px; border: 2px solid var(--rand); background: var(--perg); box-shadow: 0 2px 0 var(--rand); cursor: pointer; transition: transform 90ms, box-shadow 90ms; }
+  .pv:active:not(:disabled) { transform: translateY(1px); box-shadow: 0 1px 0 var(--rand); }
+  .pv[aria-checked="true"] { background: color-mix(in srgb, var(--honig) 30%, var(--perg)); border-color: var(--honig); box-shadow: 0 2px 0 var(--honig-d); }
+  .pv:disabled { opacity: .38; cursor: not-allowed; }
+  .pv .anz { font-weight: 800; font-size: 12px; line-height: 1; font-variant-numeric: tabular-nums; color: var(--tinte-2); }
+  .legende { margin-top: 8px; }
+  .legende .chip { font-size: 12px; }
+  .legende + .text-hinweis { margin-top: 6px; font-size: 13px; }
+
+  /* Werkstatt */
+  .werk { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+  .werk-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 4px 20px 20px; display: grid; gap: 18px; align-content: start; }
+  .handy .werk-scroll { padding: 2px 14px 96px; }
+  .werk-scroll h2 { margin: 0; font: 600 22px/1.2 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; }
+  .werk-scroll .kopfzeile { display: grid; gap: 2px; }
+  .werk-scroll .neben { margin: 0; text-align: left; }
+  .werk-raster { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 16px; align-items: start; }
+  .gb-kopf { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .gb-kopf .bild { width: 44px; height: 44px; border-radius: 12px; background: var(--perg-2); display: grid; place-items: center; color: var(--holz); border: 2px solid var(--rand); flex: none; }
+  .gb-kopf h3 { margin: 0; }
+  .gb-kopf .ort { font-size: 13px; font-weight: 700; color: var(--tinte-2); }
+  .gb-kopf .chip { margin-left: auto; padding: 4px 10px; }
+  .rezepte { display: grid; gap: 6px; }
+  .rez { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 58px; padding: 6px 10px; border-radius: 14px; border: 2px solid var(--rand); background: var(--perg); text-align: left; cursor: pointer; }
+  .rez:hover { border-color: var(--honig-d); }
+  .rez[aria-checked="true"] { border-color: var(--honig); background: color-mix(in srgb, var(--honig) 22%, var(--perg)); }
+  .rez .punkt { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--rand); display: grid; place-items: center; flex: none; background: var(--perg); }
+  .rez[aria-checked="true"] .punkt { background: var(--honig); border-color: var(--honig-d); color: #3A2A1C; }
+  .rez .punkt .ic { width: 12px; height: 12px; stroke-width: 3.4; opacity: 0; }
+  .rez[aria-checked="true"] .punkt .ic { opacity: 1; }
+  .rez-t { min-width: 0; }
+  .rez-t b { display: block; font-weight: 800; line-height: 1.25; }
+  .formel { display: flex; align-items: center; flex-wrap: wrap; gap: 3px 5px; font-weight: 800; font-size: 14px; font-variant-numeric: tabular-nums; }
+  .formel .fi { display: inline-flex; align-items: center; gap: 2px; }
+  .formel .pf { color: var(--tinte-2); }
+  .formel .ic { width: 16px; height: 16px; color: var(--tinte-2); }
+  .menge { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 14px; }
+  .menge .zahl { display: grid; justify-items: center; min-width: 84px; }
+  .menge .zahl b { font: 700 34px/1 'Fraunces', Georgia, serif; font-variation-settings: 'SOFT' 100; font-variant-numeric: tabular-nums; }
+  .menge .zahl span { font-size: 13px; font-weight: 700; color: var(--tinte-2); }
+  .neben { margin: 6px 0 0; text-align: center; font-size: 13px; font-weight: 700; color: var(--tinte-2); }
+  .vorschau { display: flex; align-items: center; gap: 8px; margin-top: 10px; padding: 8px 12px; border-radius: 12px; background: var(--perg-2); font-weight: 800; font-size: 14px; min-height: 44px; font-variant-numeric: tabular-nums; }
+  .vorschau .ic { flex: none; color: var(--tinte-2); }
+  .hinweis-platz { min-height: 54px; margin-top: 8px; }
+  .kost { display: inline-flex; align-items: center; gap: 4px; font-weight: 800; font-size: 13px; color: var(--tinte-2); font-variant-numeric: tabular-nums; }
+  .kost .token { width: 22px; height: 22px; }
+  .kost.fehlt { color: var(--warnung); text-decoration: underline dotted; text-underline-offset: 3px; }
+  .kost.fehlt .token { opacity: .6; }
+  .bau .kosten { flex-wrap: wrap; gap: 4px 10px; }
+  .bau .chip { margin-top: 2px; }
+  .bau-liste { display: grid; gap: 8px; }
+  .werk-scroll .bau-liste { grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); }
+
+  /* Überlagerungen */
+  .modal-scroll { max-height: 560px; overflow: auto; }
+  .laptop .modal-scroll { max-height: 440px; }
+  .modal h4.gr { margin: 8px 0 4px; font: 800 13px 'Nunito', sans-serif; color: var(--tinte-2); }
+  .modal .liste.lg { margin-bottom: 8px; padding-top: 2px; padding-bottom: 2px; gap: 0; }
+  .modal .liste.lg .zeile { min-height: 32px; }
+  .segm { display: flex; gap: 6px; margin-bottom: 18px; }
+  .segm button { flex: 1; min-height: 48px; border-radius: 14px; border: 2px solid var(--rand); background: var(--perg); font-weight: 800; cursor: pointer; padding: 0 6px; }
+  .segm button[aria-pressed="true"] { background: color-mix(in srgb, var(--honig) 30%, var(--perg)); border-color: var(--honig); }
+  .toast { max-width: calc(100% - 24px); padding: 4px 8px 4px 18px; visibility: hidden; transition: opacity 160ms, transform 200ms, visibility 0s 200ms; }
+  .toast.zeigen { visibility: visible; transition-delay: 0s; }
+  .toast span { white-space: normal; }
+  .toast button { background: none; border: 0; min-height: 44px; padding: 0 10px; font-weight: 800; font-size: 15px; color: var(--gruen-text); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; flex: none; border-radius: 12px; }
+  .handy .toast { width: calc(100% - 24px); border-radius: 22px; white-space: normal; }
+  .handy .toast span { flex: 1; line-height: 1.3; padding: 6px 0; }
+  .toast .ic { flex: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .geraet .fleck.neu .fl-in { animation: blenden 400ms ease both !important; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Lichtung – Meilenstein 2 · Kreislauf</h1>
+<p class="erkl">Siedlung, Werkstatt und Nacht in einem Kreislauf: Fleck wählen, Proviant mitnehmen, Tagwerk spielen, Ertrag
+  einbringen, über Nacht verarbeiten, bauen. Alle Ansichten sind bedienbar. Die gestrichelten Felder über den Geräten
+  gehören nur zum Mockup und stellen Zustände ein.</p>
+
+<h1>1 · Siedlung, Fleck-Detail und Proviant</h1>
+<p class="erkl">19 Flecken in zwei Ringen. Fleck antippen zeigt seine Karte: Ziel, Trupp und Proviant je Siedler, darunter
+  die Summe der Schritte. Südwald ist gerodet und bebaubar. Bachufer und Felshang sind gesperrt.</p>
+<div class="steuerung" data-sek="s1">
+  <span class="lbl">Mockup</span>
+  <span class="gruppe">Zustand
+    <span class="seg">
+      <button data-m="zustand:normal">Normal</button>
+      <button data-m="zustand:leer">Kein Proviant</button>
+      <button data-m="zustand:laeuft">Tagwerk läuft</button>
+    </span></span>
+  <span class="gruppe">Fleck
+    <span class="seg">
+      <button data-m="fleck:1,-1">Nordwald</button>
+      <button data-m="fleck:0,-1">Hain</button>
+      <button data-m="fleck:-1,1">Südwald</button>
+      <button data-m="fleck:1,0">Bachufer</button>
+      <button data-m="fleck:0,-2">Nebel</button>
+    </span></span>
+</div>
+<div class="reihe">
+  <figure><figcaption>Laptop · Tag</figcaption><div class="geraet laptop" data-sek="s1" data-start='{"ansicht":"siedlung","gewaehlt":"1,-1"}'></div></figure>
+  <figure><figcaption>Handy 390 px · Tag</figcaption><div class="geraet handy" data-sek="s1" data-start='{"ansicht":"siedlung","gewaehlt":"1,-1"}'></div></figure>
+</div>
+<div class="reihe">
+  <figure><figcaption>Laptop · Abend</figcaption><div class="geraet laptop abend" data-sek="s1" data-start='{"ansicht":"siedlung","gewaehlt":"1,-1"}'></div></figure>
+  <figure><figcaption>Handy 390 px · Abend</figcaption><div class="geraet handy abend" data-sek="s1" data-start='{"ansicht":"siedlung","gewaehlt":"1,-1"}'></div></figure>
+</div>
+
+<h1>2 · Werkstatt</h1>
+<p class="erkl">Je Gebäude eine Karte: Rezept wählen, Menge von 0 bis zur Tagesleistung, Vorschau für die Nacht. Der Auftrag
+  bleibt stehen. Mit „Lager: knapp“ fehlen Beeren im Lagerfeuer und Bretter für das Trockengestell; mit „reichlich“
+  lässt sich das Trockengestell bauen (mit Rückgängig).</p>
+<div class="steuerung" data-sek="s2">
+  <span class="lbl">Mockup</span>
+  <span class="gruppe">Lager
+    <span class="seg">
+      <button data-m="lager:knapp">Knapp</button>
+      <button data-m="lager:reichlich">Reichlich</button>
+    </span></span>
+</div>
+<div class="reihe">
+  <figure><figcaption>Laptop · Tag</figcaption><div class="geraet laptop" data-sek="s2" data-start='{"ansicht":"werkstatt","lager":"knapp"}'></div></figure>
+  <figure><figcaption>Handy 390 px · Tag</figcaption><div class="geraet handy" data-sek="s2" data-start='{"ansicht":"werkstatt","lager":"knapp"}'></div></figure>
+</div>
+<div class="reihe">
+  <figure><figcaption>Laptop · Abend</figcaption><div class="geraet laptop abend" data-sek="s2" data-start='{"ansicht":"werkstatt","lager":"knapp"}'></div></figure>
+  <figure><figcaption>Handy 390 px · Abend</figcaption><div class="geraet handy abend" data-sek="s2" data-start='{"ansicht":"werkstatt","lager":"knapp"}'></div></figure>
+</div>
+
+<h1>3 · Nach dem Einbringen</h1>
+<p class="erkl">Die Nacht läuft, sobald die Geräte im Bild sind: Gebäude arbeiten ihre Aufträge ab, der Nordwald ist gerodet
+  und Nachbarn tauchen aus dem Nebel auf. Das Lager zeigt der Hinweis.</p>
+<div class="steuerung" data-sek="s3">
+  <span class="lbl">Mockup</span>
+  <button class="solo" data-m="nacht:1">Nacht noch einmal zeigen</button>
+</div>
+<div class="reihe">
+  <figure><figcaption>Laptop · Tag</figcaption><div class="geraet laptop" data-sek="s3" data-start='{"ansicht":"siedlung","gewaehlt":"1,-1","nachtVor":true,"nacht":true}'></div></figure>
+  <figure><figcaption>Handy 390 px · Tag</figcaption><div class="geraet handy" data-sek="s3" data-start='{"ansicht":"siedlung","gewaehlt":"1,-1","nachtVor":true,"nacht":true}'></div></figure>
+</div>
+<div class="reihe">
+  <figure><figcaption>Laptop · Abend</figcaption><div class="geraet laptop abend" data-sek="s3" data-start='{"ansicht":"siedlung","gewaehlt":"1,-1","nachtVor":true,"nacht":true}'></div></figure>
+  <figure><figcaption>Handy 390 px · Abend</figcaption><div class="geraet handy abend" data-sek="s3" data-start='{"ansicht":"siedlung","gewaehlt":"1,-1","nachtVor":true,"nacht":true}'></div></figure>
+</div>
+
+<h1>4 · Bauen mit Rückgängig</h1>
+<p class="erkl">Südwald ist gerodet. „Bauen“ belegt den Fleck, die Kosten gehen aus dem Lager, der Hinweis bietet „Rückgängig“.
+  Im Detail des frisch bebauten Flecks steht außerdem „Bau zurücknehmen“.</p>
+<div class="steuerung" data-sek="s4">
+  <span class="lbl">Mockup</span>
+  <button class="solo" data-m="reset:1">Zurücksetzen</button>
+</div>
+<div class="reihe">
+  <figure><figcaption>Laptop · Tag</figcaption><div class="geraet laptop" data-sek="s4" data-start='{"ansicht":"siedlung","gewaehlt":"-1,1"}'></div></figure>
+  <figure><figcaption>Handy 390 px · Tag</figcaption><div class="geraet handy" data-sek="s4" data-start='{"ansicht":"siedlung","gewaehlt":"-1,1"}'></div></figure>
+</div>
+<div class="reihe">
+  <figure><figcaption>Laptop · Abend</figcaption><div class="geraet laptop abend" data-sek="s4" data-start='{"ansicht":"siedlung","gewaehlt":"-1,1"}'></div></figure>
+  <figure><figcaption>Handy 390 px · Abend</figcaption><div class="geraet handy abend" data-sek="s4" data-start='{"ansicht":"siedlung","gewaehlt":"-1,1"}'></div></figure>
+</div>
+
+<div class="notiz">
+  <h2>Was hier noch Platzhalter ist und was bewusst fehlt</h2>
+  <ul>
+    <li>Symbole auf den Marken (Lucide bzw. einfache eigene Striche für Bretter, Schale und Topf), Initialen statt Gesichter,
+      einfarbige Waben auf der Karte – später gemalte Grafiken an genau diesen Plätzen (siehe <code>docs/design.md</code> › Grafik).</li>
+    <li>Der Spielfluss zum Brett (Tagwerk beginnen, fortsetzen) ist hier nur angedeutet; das Brett selbst zeigt <code>lichtung.html</code>.</li>
+    <li>Bewusst nicht in Meilenstein 2: Wetter, Händler und Taler, Chronik und Kapitel, Bachufer und weitere Biome, neue
+      Siedler, Hütte (kommt in Meilenstein 4). Gesperrte Flecken sind sichtbar, aber „Noch nicht erreichbar“.</li>
+    <li>Das Menü ist nur für die Darstellung (Tag, Abend, Wie das Gerät) angelegt.</li>
+  </ul>
+</div>
+<script>
+// Symbole aus Lucide 0.469.0 (ISC) – Platzhalter bis zur gemalten Grafik
+const ICON = {"sprout":"<path d=\"M7 20h10\" /><path d=\"M10 20c5.5-2.5.8-6.4 3-10\" /><path d=\"M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z\" /><path d=\"M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z\" />","house":"<path d=\"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8\" /><path d=\"M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\" />","hammer":"<path d=\"m15 12-8.373 8.373a1 1 0 1 1-3-3L12 9\" /><path d=\"m18 15 4-4\" /><path d=\"m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172V7l-2.26-2.26a6 6 0 0 0-4.202-1.756L9 2.96l.92.82A6.18 6.18 0 0 1 12 8.4V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5\" />","book-open":"<path d=\"M12 7v14\" /><path d=\"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z\" />","menu":"<line x1=\"4\" x2=\"20\" y1=\"12\" y2=\"12\" /><line x1=\"4\" x2=\"20\" y1=\"6\" y2=\"6\" /><line x1=\"4\" x2=\"20\" y1=\"18\" y2=\"18\" />","chevron-left":"<path d=\"m15 18-6-6 6-6\" />","undo-2":"<path d=\"M9 14 4 9l5-5\" /><path d=\"M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11\" />","cloud-rain":"<path d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\" /><path d=\"M16 14v6\" /><path d=\"M8 14v6\" /><path d=\"M12 16v6\" />","sun":"<circle cx=\"12\" cy=\"12\" r=\"4\" /><path d=\"M12 2v2\" /><path d=\"M12 20v2\" /><path d=\"m4.93 4.93 1.41 1.41\" /><path d=\"m17.66 17.66 1.41 1.41\" /><path d=\"M2 12h2\" /><path d=\"M20 12h2\" /><path d=\"m6.34 17.66-1.41 1.41\" /><path d=\"m19.07 4.93-1.41 1.41\" />","tree-pine":"<path d=\"m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z\" /><path d=\"M12 22v-3\" />","cherry":"<path d=\"M2 17a5 5 0 0 0 10 0c0-2.76-2.5-5-5-3-2.5-2-5 .24-5 3Z\" /><path d=\"M12 17a5 5 0 0 0 10 0c0-2.76-2.5-5-5-3-2.5-2-5 .24-5 3Z\" /><path d=\"M7 14c3.22-2.91 4.29-8.75 5-12 1.66 2.38 4.94 9 5 12\" /><path d=\"M22 9c-4.29 0-7.14-2.33-10-7 5.71 0 10 4.67 10 7Z\" />","leaf":"<path d=\"M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z\" /><path d=\"M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12\" />","nut":"<path d=\"M12 4V2\" /><path d=\"M5 10v4a7.004 7.004 0 0 0 5.277 6.787c.412.104.802.292 1.102.592L12 22l.621-.621c.3-.3.69-.488 1.102-.592A7.003 7.003 0 0 0 19 14v-4\" /><path d=\"M12 4C8 4 4.5 6 4 8c-.243.97-.919 1.952-2 3 1.31-.082 1.972-.29 3-1 .54.92.982 1.356 2 2 1.452-.647 1.954-1.098 2.5-2 .595.995 1.151 1.427 2.5 2 1.31-.621 1.862-1.058 2.5-2 .629.977 1.162 1.423 2.5 2 1.209-.548 1.68-.967 2-2 1.032.916 1.683 1.157 3 1-1.297-1.036-1.758-2.03-2-3-.5-2-4-4-8-4Z\" />","shrub":"<path d=\"M12 22v-7l-2-2\" /><path d=\"M17 8v.8A6 6 0 0 1 13.8 20H10A6.5 6.5 0 0 1 7 8a5 5 0 0 1 10 0Z\" /><path d=\"m14 14-2 2\" />","rabbit":"<path d=\"M13 16a3 3 0 0 1 2.24 5\" /><path d=\"M18 12h.01\" /><path d=\"M18 21h-8a4 4 0 0 1-4-4 7 7 0 0 1 7-7h.2L9.6 6.4a1 1 0 1 1 2.8-2.8L15.8 7h.2c3.3 0 6 2.7 6 6v1a2 2 0 0 1-2 2h-1a3 3 0 0 0-3 3\" /><path d=\"M20 8.54V4a2 2 0 1 0-4 0v3\" /><path d=\"M7.612 12.524a3 3 0 1 0-1.6 4.3\" />","fish":"<path d=\"M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.47-3.44 6-7 6s-7.56-2.53-8.5-6Z\" /><path d=\"M18 12v.5\" /><path d=\"M16 17.93a9.77 9.77 0 0 1 0-11.86\" /><path d=\"M7 10.67C7 8 5.58 5.97 2.73 5.5c-1 1.5-1 5 .23 6.5-1.24 1.5-1.24 5-.23 6.5C5.58 18.03 7 16 7 13.33\" /><path d=\"M10.46 7.26C10.2 5.88 9.17 4.24 8 3h5.8a2 2 0 0 1 1.98 1.67l.23 1.4\" /><path d=\"m16.01 17.93-.23 1.4A2 2 0 0 1 13.8 21H9.5a5.96 5.96 0 0 0 1.49-3.98\" />","brick-wall":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" /><path d=\"M12 9v6\" /><path d=\"M16 15v6\" /><path d=\"M16 3v6\" /><path d=\"M3 15h18\" /><path d=\"M3 9h18\" /><path d=\"M8 15v6\" /><path d=\"M8 3v6\" />","gem":"<path d=\"M6 3h12l4 6-10 13L2 9Z\" /><path d=\"M11 3 8 9l4 13 4-13-3-6\" /><path d=\"M2 9h20\" />","waves":"<path d=\"M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1\" /><path d=\"M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1\" /><path d=\"M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1\" />","bird":"<path d=\"M16 7h.01\" /><path d=\"M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20\" /><path d=\"m20 7 2 .5-2 .5\" /><path d=\"M10 18v3\" /><path d=\"M14 17.75V21\" /><path d=\"M7 18a6 6 0 0 0 3.84-10.61\" />","flame":"<path d=\"M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z\" />","warehouse":"<path d=\"M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35Z\" /><path d=\"M6 18h12\" /><path d=\"M6 14h12\" /><rect width=\"12\" height=\"12\" x=\"6\" y=\"10\" />","lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\" /><path d=\"M7 11V7a5 5 0 0 1 10 0v4\" />","cloud-fog":"<path d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\" /><path d=\"M16 17H7\" /><path d=\"M17 21H9\" />","croissant":"<path d=\"m4.6 13.11 5.79-3.21c1.89-1.05 4.79 1.78 3.71 3.71l-3.22 5.81C8.8 23.16.79 15.23 4.6 13.11Z\" /><path d=\"m10.5 9.5-1-2.29C9.2 6.48 8.8 6 8 6H4.5C2.79 6 2 6.5 2 8.5a7.71 7.71 0 0 0 2 4.83\" /><path d=\"M8 6c0-1.55.24-4-2-4-2 0-2.5 2.17-2.5 4\" /><path d=\"m14.5 13.5 2.29 1c.73.3 1.21.7 1.21 1.5v3.5c0 1.71-.5 2.5-2.5 2.5a7.71 7.71 0 0 1-4.83-2\" /><path d=\"M18 16c1.55 0 4-.24 4 2 0 2-2.17 2.5-4 2.5\" />","coins":"<circle cx=\"8\" cy=\"8\" r=\"6\" /><path d=\"M18.09 10.37A6 6 0 1 1 10.34 18\" /><path d=\"M7 6h1v4\" /><path d=\"m16.71 13.88.7.71-2.82 2.82\" />","check":"<path d=\"M20 6 9 17l-5-5\" />","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\" /><path d=\"m9 12 2 2 4-4\" />","sparkles":"<path d=\"M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z\" /><path d=\"M20 3v4\" /><path d=\"M22 5h-4\" /><path d=\"M4 17v2\" /><path d=\"M5 18H3\" />","map-pin":"<path d=\"M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0\" /><circle cx=\"12\" cy=\"10\" r=\"3\" />","x":"<path d=\"M18 6 6 18\" /><path d=\"m6 6 12 12\" />","mountain":"<path d=\"m8 3 4 8 5-5 5 15H2L8 3z\" />","wheat":"<path d=\"M2 22 16 8\" /><path d=\"M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z\" /><path d=\"M7.47 8.53 9 7l1.53 1.53a3.5 3.5 0 0 1 0 4.94L9 15l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z\" /><path d=\"M11.47 4.53 13 3l1.53 1.53a3.5 3.5 0 0 1 0 4.94L13 11l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z\" /><path d=\"M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4Z\" /><path d=\"M11.47 17.47 13 19l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L5 19l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z\" /><path d=\"M15.47 13.47 17 15l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L9 15l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z\" /><path d=\"M19.47 9.47 21 11l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L13 11l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z\" />","tree-deciduous":"<path d=\"M8 19a4 4 0 0 1-2.24-7.32A3.5 3.5 0 0 1 9 6.03V6a3 3 0 1 1 6 0v.04a3.5 3.5 0 0 1 3.24 5.65A4 4 0 0 1 16 19Z\" /><path d=\"M12 19v3\" />"};
+</script>
+<script>
+const NS = 'http://www.w3.org/2000/svg';
+const ic = (n, k = 'ic') => `<svg class="${k}" viewBox="0 0 24 24" aria-hidden="true">${ICON[n]}</svg>`;
+let naechsteUid = 1;
+const ecken = s => [0, 1, 2, 3, 4, 5].map(i => { const a = Math.PI / 3 * i; return `${(s * Math.cos(a)).toFixed(1)},${(s * Math.sin(a)).toFixed(1)}`; }).join(' ');
+const MARKE = ecken(23);
+function marke(art, groesse = '') {
+  return `<svg class="token ${groesse}" viewBox="-25 -22 50 50" aria-hidden="true"><g class="mk t-${art}">
+    <polygon class="kante" points="${MARKE}" transform="translate(0 3)"/><polygon class="koerper" points="${MARKE}"/>
+    <ellipse class="glanz" cx="0" cy="-10" rx="13" ry="5"/><g class="sym" transform="translate(-11 -11) scale(.92)">${ICON[ARTEN[art].icon]}</g></g></svg>`;
+}
+const pille = (inhalt, wert, art = '') => `<span class="pille" ${art ? `data-art="${art}"` : ''}>${inhalt}<span class="js-w">${wert}</span></span>`;
+const wortmarke = () => `<span class="wortmarke"><span class="zeichen">${ic('sprout')}</span>Lichtung</span>`;
+const portrait = (s, ladering = true) => `<span class="portrait">${ladering ? `<svg class="ladering" viewBox="0 0 60 60"><circle class="ring-bg" cx="30" cy="30" r="27.5"/>
+  <circle class="ring-wert" cx="30" cy="30" r="27.5" stroke-dasharray="172.8" stroke-dashoffset="172.8"/></svg>` : ''}<span class="gesicht">${s.name[0]}</span></span>`;
+function anstossen(e) { e.classList.remove('stoss'); void e.offsetWidth; e.classList.add('stoss'); }
+
+// Blatt von unten in drei Höhen: Griff antippen wechselt, Ziehen rastet ein
+function blattHoehen(blatt, hoehen, start) {
+  let stufe = start;
+  const setze = () => { blatt.style.height = hoehen[stufe]() + 'px'; blatt.dataset.stufe = stufe; };
+  setze();
+  const griff = blatt.querySelector('.griff');
+  let y0 = null, h0 = 0, bewegt = false;
+  const weiter = () => { stufe = { klein: 'halb', halb: 'ganz', ganz: 'klein' }[stufe]; setze(); };
+  griff.addEventListener('pointerdown', e => { griff.setPointerCapture(e.pointerId); y0 = e.clientY; h0 = blatt.getBoundingClientRect().height; bewegt = false; blatt.classList.add('ziehen'); });
+  griff.addEventListener('pointermove', e => {
+    if (y0 === null) return;
+    const dy = e.clientY - y0;
+    if (Math.abs(dy) > 4) bewegt = true;
+    if (bewegt) blatt.style.height = Math.max(hoehen.klein(), Math.min(hoehen.ganz(), h0 - dy)) + 'px';
+  });
+  griff.addEventListener('pointerup', () => {
+    blatt.classList.remove('ziehen');
+    if (!bewegt) { y0 = null; weiter(); return; }
+    const h = blatt.getBoundingClientRect().height;
+    stufe = Object.keys(hoehen).reduce((a, b) => Math.abs(hoehen[a]() - h) < Math.abs(hoehen[b]() - h) ? a : b);
+    y0 = null; setze();
+  });
+  griff.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); weiter(); } });
+}
+Object.assign(ICON, {
+  minus: '<path d="M5 12h14"/>',
+  plus: '<path d="M5 12h14"/><path d="M12 5v14"/>',
+  'arrow-right': '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+  moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
+  info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
+  planken: '<rect width="18" height="4" x="3" y="3" rx="1"/><rect width="18" height="4" x="3" y="10" rx="1"/><rect width="18" height="4" x="3" y="17" rx="1"/>',
+  schale: '<path d="M3 12h18a9 9 0 0 1-18 0Z"/><path d="M8 8c0-1.5 1.2-2 1.2-3.5"/><path d="M13 8c0-1.5 1.2-2 1.2-3.5"/>',
+  topf: '<path d="M4 11h16v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-6Z"/><path d="M2 11h20"/><path d="M9 3v4"/><path d="M15 3v4"/>',
+});
+
+// ---------- Daten ----------
+const ARTEN = {
+  holz: { name: 'Holz', icon: 'tree-pine' },
+  beeren: { name: 'Beeren', icon: 'cherry' },
+  kraeuter: { name: 'Kräuter', icon: 'leaf' },
+  nuesse: { name: 'Nüsse', icon: 'nut' },
+  gestruepp: { name: 'Gestrüpp', icon: 'shrub' },
+  hase: { name: 'Hasen', icon: 'rabbit' },
+  brett: { name: 'Bretter', icon: 'planken' },
+  trockenkraeuter: { name: 'Trockenkräuter', icon: 'leaf' },
+  beerenbrei: { name: 'Beerenbrei', icon: 'schale' },
+  roestnuesse: { name: 'Röstnüsse', icon: 'nut' },
+  waldeintopf: { name: 'Waldeintopf', icon: 'topf' },
+};
+const SIEDLER = [
+  { id: 'ida', name: 'Ida', beruf: 'Holzfällerin', farbe: '#B96B34' },
+  { id: 'jonas', name: 'Jonas', beruf: 'Sammler', farbe: '#C4446E' },
+  { id: 'mara', name: 'Mara', beruf: 'Fallenstellerin', farbe: '#4E9A46' },
+];
+const PROV = ['waldeintopf', 'roestnuesse', 'beerenbrei'];           // bester zuerst
+const SCHRITTE = { beerenbrei: 5, roestnuesse: 6, waldeintopf: 7 };
+const ALLE = ['holz', 'beeren', 'kraeuter', 'nuesse', 'hase', 'brett', 'trockenkraeuter', 'beerenbrei', 'roestnuesse', 'waldeintopf'];
+const GRUPPEN = [['Rohstoffe', ['holz', 'beeren', 'kraeuter', 'nuesse', 'hase']], ['Waren', ['brett', 'trockenkraeuter']], ['Proviant', ['beerenbrei', 'roestnuesse', 'waldeintopf']]];
+const REZEPTE = {
+  beerenbrei: { name: 'Beerenbrei', ein: { beeren: 3 }, aus: 'beerenbrei' },
+  roestnuesse: { name: 'Röstnüsse', ein: { nuesse: 3 }, aus: 'roestnuesse' },
+  waldeintopf: { name: 'Waldeintopf', ein: { beeren: 2, roestnuesse: 1, trockenkraeuter: 1 }, aus: 'waldeintopf' },
+  brett: { name: 'Brett', ein: { holz: 3 }, aus: 'brett' },
+  trockenkraeuter: { name: 'Trockenkräuter', ein: { kraeuter: 2 }, aus: 'trockenkraeuter' },
+};
+const GEBAEUDE = {
+  lagerfeuer: { name: 'Lagerfeuer', icon: 'flame', leistung: 6, rezepte: ['beerenbrei', 'roestnuesse', 'waldeintopf'], kosten: null },
+  zimmerei: { name: 'Zimmerei', icon: 'hammer', leistung: 4, rezepte: ['brett'], kosten: { holz: 30 } },
+  trockengestell: { name: 'Trockengestell', icon: 'sun', leistung: 4, rezepte: ['trockenkraeuter'], kosten: { brett: 6, kraeuter: 10 } },
+};
+const REIHE = ['lagerfeuer', 'zimmerei', 'trockengestell'];
+const BIOME = {
+  wald: { name: 'Wald', icon: 'tree-deciduous', kacheln: ['holz', 'beeren', 'kraeuter', 'nuesse', 'gestruepp', 'hase'] },
+  bach: { name: 'Bachufer', icon: 'fish' },
+  wiese: { name: 'Wiese', icon: 'wheat' },
+  fels: { name: 'Felshang', icon: 'mountain' },
+};
+const fid = (q, r) => q + ',' + r;
+const FLECKEN0 = [
+  { q: 0, r: 0, name: 'Lichtung', typ: 'bebaut', icon: 'flame', bau: 'lagerfeuer' },
+  { q: 1, r: -1, name: 'Nordwald', typ: 'erkundet', biom: 'wald', stand: 28, ziel: 40 },
+  { q: 1, r: 0, name: 'Bachufer', typ: 'gesperrt', biom: 'bach' },
+  { q: 0, r: 1, name: 'Hütten', typ: 'bebaut', icon: 'house' },
+  { q: -1, r: 1, name: 'Südwald', typ: 'gerodet', biom: 'wald', stand: 40, ziel: 40 },
+  { q: -1, r: 0, name: 'Holzplatz', typ: 'bebaut', icon: 'warehouse', bau: 'zimmerei' },
+  { q: 0, r: -1, name: 'Hain', typ: 'erkundet', biom: 'wald', stand: 5, ziel: 40 },
+  { q: 2, r: -2, name: 'Moor', typ: 'nebel', biom: 'bach' },
+  { q: 2, r: -1, name: 'Eichenhang', typ: 'nebel', biom: 'wald' },
+  { q: 2, r: 0, name: 'Flussbett', typ: 'nebel', biom: 'bach' },
+  { q: 1, r: 1, name: 'Teich', typ: 'nebel', biom: 'bach' },
+  { q: 0, r: 2, name: 'Senke', typ: 'nebel', biom: 'wald' },
+  { q: -1, r: 2, name: 'Dickicht', typ: 'erkundet', biom: 'wald', stand: 0, ziel: 60 },
+  { q: -2, r: 2, name: 'Quelle', typ: 'gesperrt', biom: 'bach' },
+  { q: -2, r: 1, name: 'Birken', typ: 'erkundet', biom: 'wald', stand: 0, ziel: 60 },
+  { q: -2, r: 0, name: 'Wiese', typ: 'nebel', biom: 'wiese' },
+  { q: -1, r: -1, name: 'Felshang', typ: 'gesperrt', biom: 'fels' },
+  { q: 0, r: -2, name: 'Eschen', typ: 'nebel', biom: 'wald' },
+  { q: 1, r: -2, name: 'Kiefernrand', typ: 'nebel', biom: 'wald' },
+].map(f => ({ ...f, id: fid(f.q, f.r) }));
+const NB = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, -1], [-1, 1]];
+const FL = (st, id) => st.flecken.find(f => f.id === id);
+const nachbarn = (st, f) => NB.map(([dq, dr]) => FL(st, fid(f.q + dq, f.r + dr))).filter(Boolean);
+const fleckName = f => f.typ === 'nebel' ? 'Unerkundet' : f.name;
+
+function neuerStand(o) {
+  const knapp = o.lager === 'knapp';
+  const st = {
+    tag: 4,
+    lager: { holz: 94, beeren: knapp ? 15 : 24, kraeuter: 19, nuesse: 11, hase: 2, brett: knapp ? 4 : 7, trockenkraeuter: 0, beerenbrei: 4, roestnuesse: 5, waldeintopf: 1 },
+    flecken: FLECKEN0.map(f => ({ ...f })),
+    auftraege: { lagerfeuer: { rezept: 'beerenbrei', menge: 6 }, zimmerei: { rezept: 'brett', menge: 4 }, trockengestell: { rezept: 'trockenkraeuter', menge: 0 } },
+    gebaut: { lagerfeuer: '0,0', zimmerei: '-1,0', trockengestell: null },
+    unterwegs: null,
+  };
+  if (o.nachtVor) FL(st, '1,-1').stand = 38;
+  if (o.zustand === 'leer') PROV.forEach(p => { st.lager[p] = 0; });
+  if (o.zustand === 'laeuft') {
+    st.lager.waldeintopf = 0; st.lager.roestnuesse = 3;
+    st.unterwegs = { fleck: '1,-1', schritte: 11, trupp: ['ida', 'jonas', 'mara'] };
+  }
+  return st;
+}
+
+// Was ein Gebäude über Nacht schafft (so viel, wie das Lager hergibt)
+function plan(st, g) {
+  const a = st.auftraege[g], r = REZEPTE[a.rezept], l = st.lager;
+  let moeglich = a.menge;
+  for (const [w, n] of Object.entries(r.ein)) moeglich = Math.min(moeglich, Math.floor(l[w] / n));
+  const fehlt = Object.entries(r.ein).map(([w, n]) => [w, Math.max(0, n * a.menge - l[w])]).filter(([, x]) => x > 0);
+  return { menge: a.menge, moeglich, fehlt, r };
+}
+function naechtlich(st) {
+  const res = [];
+  for (const g of REIHE) {
+    if (!st.gebaut[g]) continue;
+    const p = plan(st, g);
+    if (p.moeglich > 0) {
+      for (const [w, n] of Object.entries(p.r.ein)) st.lager[w] -= n * p.moeglich;
+      st.lager[p.r.aus] += p.moeglich;
+      res.push([g, p.r.aus, p.moeglich]);
+    }
+  }
+  return res;
+}
+function aufdecken(st, f) {
+  return nachbarn(st, f).filter(n => n.typ === 'nebel').map(n => {
+    if (n.biom === 'wald') { n.typ = 'erkundet'; n.stand = 0; n.ziel = 60; } else n.typ = 'gesperrt';
+    n.neu = true;
+    return n;
+  });
+}
+const aufzaehlung = l => l.length > 1 ? l.slice(0, -1).join(', ') + ' und ' + l[l.length - 1] : l[0];
+const vorratPille = (a, n, l) => `<span class="pille ${n === 0 ? 'leer' : ''}" data-art="${a}" title="${ARTEN[a].name}" aria-label="${ARTEN[a].name} ${n}">${marke(a)}<span class="js-w">${n}</span></span>`;
+const formel = r => Object.entries(r.ein).map(([w, n]) => `<span class="fi">${n}${marke(w, 'k')}</span>`).join('<span class="pf">+</span>')
+  + `${ic('arrow-right')}<span class="fi">1${marke(r.aus, 'k')}</span>`;
+const formelText = r => Object.entries(r.ein).map(([w, n]) => `${n} ${ARTEN[w].name}`).join(', ') + ` ergeben 1 ${ARTEN[r.aus].name}`;
+
+// ---------- Ansicht ----------
+class App {
+  constructor(el, o) {
+    this.el = el;
+    this.handy = el.classList.contains('handy');
+    this.opt = { lager: 'reichlich', zustand: 'normal', ...o };
+    this.ansicht = o.ansicht || 'siedlung';
+    this.gewaehlt = o.gewaehlt || '1,-1';
+    this.darst = 'geraet';
+    this.sv = this.handy ? 38 : 58;
+    this.stand = neuerStand(this.opt);
+    this.trupp = new Set(SIEDLER.map(s => s.id));
+    this.wahl = {};
+    this.vz = null;
+    this.zuteilen();
+    this.rahmen();
+    this.verdrahten();
+    this.alles();
+  }
+
+  rahmen() {
+    const tag = '<span class="tag-abzeichen js-tag"></span>';
+    const ziele = [['house', 'Siedlung', 'siedlung'], ['hammer', 'Werkstatt', 'werkstatt'], ['menu', 'Menü', 'menue']];
+    const slot = w => `<div class="vslot" data-wrap="${w}"></div>`;
+    const werk = `<div class="werk js-werk" hidden>${slot(1)}<div class="werk-scroll js-ws"></div></div>`;
+    if (this.handy) {
+      this.el.innerHTML = `<div class="spiel">
+        <header class="kopf">${wortmarke()}${tag}</header>
+        <div class="ansicht js-siedl">${slot(0)}
+          <div class="karte-platz"><svg class="landkarte" role="group" aria-label="Karte der Flecken"></svg></div>
+          <div class="blatt"><div class="griff" role="button" tabindex="0" aria-label="Karte größer oder kleiner"><span></span></div><div class="js-detail detail" style="flex: 1"></div></div>
+        </div>
+        ${werk}
+        <nav class="holzleiste" aria-label="Bereiche">${ziele.map(([i, t, z]) => `<button class="ziel" data-a="ziel" data-z="${z}"><span class="kreis">${ic(i)}</span>${t}</button>`).join('')}</nav>
+        <div class="toast" role="status"></div><div class="ueberlage"></div></div>`;
+      const hoehe = () => this.el.getBoundingClientRect().height;
+      blattHoehen(this.el.querySelector('.blatt'), { klein: () => 120, halb: () => 420, ganz: () => hoehe() - 76 - 72 }, 'halb');
+    } else {
+      this.el.innerHTML = `<div class="spiel">
+        <header class="leiste">
+          <div class="links">${wortmarke()}</div>
+          <nav class="reiter-holz" aria-label="Bereiche">${ziele.map(([i, t, z]) => `<button data-a="ziel" data-z="${z}">${ic(i)}${t}</button>`).join('')}</nav>
+          <div class="rechts">${tag}</div>
+        </header>
+        <div class="sd-raster js-siedl">
+          <div class="sd-links">${slot(1)}<div class="karte-platz"><svg class="landkarte" role="group" aria-label="Karte der Flecken"></svg></div></div>
+          <aside class="karte detail js-detail"></aside>
+        </div>
+        ${werk}
+        <div class="toast" role="status"></div><div class="ueberlage"></div></div>`;
+    }
+    this.svg = this.el.querySelector('svg.landkarte');
+    this.detail = this.el.querySelector('.js-detail');
+    this.ws = this.el.querySelector('.js-ws');
+  }
+
+  verdrahten() {
+    this.el.addEventListener('click', e => {
+      const fl = e.target.closest('.fleck');
+      if (fl) { this.waehle(fl.dataset.id); return; }
+      const a = e.target.closest('[data-a]');
+      if (a && !a.disabled) this.aktion(a.dataset.a, a);
+    });
+    this.el.addEventListener('keydown', e => {
+      const ok = e.key === 'Enter' || e.key === ' ';
+      const fl = e.target.closest('.fleck');
+      if (fl && ok) { e.preventDefault(); this.waehle(fl.dataset.id); return; }
+      if (ok && e.target.classList.contains('vorrat')) { e.preventDefault(); this.lagerModal(); }
+      if (e.key === 'Escape') this.modalZu();
+    });
+  }
+
+  aktion(a, b) {
+    const d = b.dataset;
+    if (a === 'ziel') this.nav(d.z);
+    else if (a === 'wahl') this.toggleSiedler(d.id);
+    else if (a === 'prov') this.setzeProv(d.id, d.p);
+    else if (a === 'start') this.starte();
+    else if (a === 'fortsetzen') this.toast(`${ic('circle-check')}<span>${FL(this.stand, this.stand.unterwegs.fleck).name}: Tagwerk geht weiter · noch ${this.stand.unterwegs.schritte} Schritte</span>`);
+    else if (a === 'hin') this.waehle(d.id);
+    else if (a === 'bau') this.baue(d.g, d.f);
+    else if (a === 'abbau') this.abbau(d.f);
+    else if (a === 'lager') this.lagerModal();
+    else if (a === 'modalzu') this.modalZu();
+    else if (a === 'rezept') { const au = this.stand.auftraege[d.g]; au.rezept = d.r; this.alles(); }
+    else if (a === 'menge') { const au = this.stand.auftraege[d.g]; au.menge = Math.max(0, Math.min(GEBAEUDE[d.g].leistung, au.menge + Number(d.d))); this.alles(); }
+    else if (a === 'darst') { this.darst = d.w; this.el.classList.toggle('abend', d.w === 'abend' || (d.w === 'geraet' && matchMedia('(prefers-color-scheme: dark)').matches)); this.menueModal(); }
+  }
+
+  // --- Rahmen: Anzeige und Navigation ---
+  nav(z) {
+    if (z === 'menue') { this.menueModal(); return; }
+    this.ansicht = z;
+    this.anzeigen();
+  }
+  anzeigen() {
+    const w = this.ansicht === 'werkstatt';
+    this.el.querySelector('.js-siedl').hidden = w;
+    this.el.querySelector('.js-werk').hidden = !w;
+    this.el.querySelectorAll('[data-a="ziel"]').forEach(b => {
+      const an = b.dataset.z === this.ansicht;
+      b.classList.toggle('an', an);
+      if (an) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+    });
+  }
+  alles() {
+    this.zeichneKarte();
+    this.zeigeDetail();
+    this.zeichneVorrat();
+    this.renderWerk();
+    this.anzeigen();
+    this.el.querySelector('.js-tag').textContent = `Tag ${this.stand.tag}`;
+    if (this.onAender) this.onAender();
+  }
+  fokus() { const a = document.activeElement; return a && this.el.contains(a) && a.dataset.fk ? a.dataset.fk : null; }
+  fokusZurueck(fk) { if (fk) this.el.querySelector(`[data-fk="${fk}"]`)?.focus({ preventScroll: true }); }
+
+  toast(html, aktion, dauer = 5000) {
+    const t = this.el.querySelector('.toast');
+    t.innerHTML = html + (aktion ? `<button type="button">${aktion.text}</button>` : '');
+    t.classList.add('zeigen');
+    const b = t.querySelector('button');
+    if (b) b.onclick = () => { t.classList.remove('zeigen'); aktion.fn(); };
+    clearTimeout(t._aus);
+    if (dauer) t._aus = setTimeout(() => t.classList.remove('zeigen'), dauer);
+  }
+  modal(html) {
+    const u = this.el.querySelector('.ueberlage');
+    if (!u.classList.contains('offen')) this.vorherFokus = document.activeElement;
+    u.innerHTML = `<div class="scrim" data-a="modalzu"></div><div class="modal" role="dialog" aria-modal="true">${html}</div>`;
+    u.getBoundingClientRect();
+    u.classList.add('offen');
+    u.querySelector('.modal [data-a="modalzu"]')?.focus();
+  }
+  modalZu() {
+    const u = this.el.querySelector('.ueberlage');
+    if (!u.classList.contains('offen')) return;
+    u.classList.remove('offen');
+    setTimeout(() => { if (!u.classList.contains('offen')) u.innerHTML = ''; }, 300);
+    this.vorherFokus?.focus?.({ preventScroll: true });
+  }
+  lagerModal() {
+    const l = this.stand.lager;
+    this.modal(`<div class="schild">Lager</div><div class="unterzeile">Tag ${this.stand.tag}</div>
+      <div class="modal-scroll">${GRUPPEN.map(([t, arr]) => `<h4 class="gr">${t}</h4><div class="liste lg">${arr.map(a => `<div class="zeile">${marke(a, 'm')}<span>${ARTEN[a].name}</span><span class="wert">${l[a]}</span></div>`).join('')}</div>`).join('')}</div>
+      <div class="modal-fuss"><button class="knopf zweit" data-a="modalzu">Schließen</button></div>`);
+  }
+  menueModal() {
+    const opt = [['tag', 'Tag'], ['abend', 'Abend'], ['geraet', 'Wie das Gerät']];
+    this.modal(`<div class="schild">Menü</div><div class="unterzeile">Darstellung</div>
+      <div class="segm" role="group" aria-label="Darstellung">${opt.map(([w, t]) => `<button data-a="darst" data-w="${w}" aria-pressed="${this.darst === w}">${t}</button>`).join('')}</div>
+      <div class="modal-fuss"><button class="knopf zweit" data-a="modalzu">Schließen</button></div>`);
+  }
+
+  // --- Vorrat ---
+  zeichneVorrat() {
+    const l = this.stand.lager;
+    this.el.querySelectorAll('.vslot').forEach(s => {
+      const wrap = s.dataset.wrap === '1';
+      s.innerHTML = `<div class="vorrat ${wrap ? 'wrap' : ''}" role="button" tabindex="0" data-a="lager" aria-label="Lager öffnen" title="Lager öffnen">${ALLE.map(a => vorratPille(a, l[a])).join('')}</div>`;
+    });
+    if (this.vz) this.el.querySelectorAll('.pille[data-art]').forEach(p => { if (l[p.dataset.art] !== this.vz[p.dataset.art]) anstossen(p); });
+    this.vz = { ...l };
+  }
+
+  // --- Karte ---
+  zeichneKarte() {
+    const s = this.sv, h = Math.sqrt(3) * s, gr = this.handy ? 0.85 : 1.25, st = this.stand, lauf = st.unterwegs;
+    this.svg.setAttribute('viewBox', `${-4 * s} ${-2.5 * h - 4} ${8 * s} ${5 * h + 12}`);
+    this.svg.setAttribute('width', 8 * s);
+    this.svg.setAttribute('height', (5 * h + 12).toFixed(0));
+    const poly = ecken(s - 3);
+    let n = 0;
+    this.svg.innerHTML = st.flecken.map(f => {
+      const x = s * 1.5 * f.q, y = h * (f.r + f.q / 2), nebel = f.typ === 'nebel';
+      const icon = nebel ? 'cloud-fog' : f.typ === 'gesperrt' ? 'lock' : f.bau === 'trockengestell' ? 'sun' : f.icon || BIOME[f.biom].icon;
+      const sy = nebel ? -12 * gr : -12 * gr - (this.handy ? 8 : 11);
+      const zustand = { nebel: 'unerkundet', gesperrt: 'noch nicht erreichbar', erkundet: 'erkundet', gerodet: 'gerodet', bebaut: 'bebaut' }[f.typ];
+      const bx = s * 0.52, by = -s * 0.6;
+      let badge = '';
+      if (lauf && lauf.fleck === f.id) badge = `<g class="badge lauf" transform="translate(${bx.toFixed(1)} ${by.toFixed(1)})"><circle r="13"/><text y="5" text-anchor="middle">${lauf.schritte}</text></g>`;
+      else if (f.typ === 'gerodet') badge = `<g class="badge fertig" transform="translate(${bx.toFixed(1)} ${by.toFixed(1)})"><circle r="12"/><g class="chk" transform="translate(-6.5 -6.5) scale(.55)">${ICON.check}</g></g>`;
+      const delay = f.neu ? n++ * 180 : 0;
+      return `<g class="fleck ${f.typ} ${nebel ? '' : 'fl-' + f.biom} ${f.id === this.gewaehlt ? 'gewaehlt' : ''} ${f.neu ? 'neu' : ''} ${f.wandel ? 'wandel' : ''}" data-id="${f.id}" style="--d: ${delay}ms" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})" tabindex="0" role="button" aria-label="${fleckName(f)}, ${zustand}">
+        <g class="fl-in"><polygon class="kante" points="${poly}" transform="translate(0 5)"/><polygon class="koerper" points="${poly}"/>
+        <ellipse class="glanz" cx="0" cy="${(-s * 0.45).toFixed(1)}" rx="${(s * 0.55).toFixed(1)}" ry="${(s * 0.2).toFixed(1)}"/>
+        <g class="sym" transform="translate(${(-12 * gr).toFixed(1)} ${sy.toFixed(1)}) scale(${gr})">${ICON[icon]}</g>
+        ${nebel ? '' : `<text y="${this.handy ? 16 : 27}" text-anchor="middle">${f.name}</text>`}${badge}</g></g>`;
+    }).join('');
+    st.flecken.forEach(f => { f.neu = false; f.wandel = false; });
+  }
+  waehle(id) {
+    this.gewaehlt = id;
+    this.svg.querySelectorAll('.fleck').forEach(g => g.classList.toggle('gewaehlt', g.dataset.id === id));
+    this.zeigeDetail();
+    if (this.onAender) this.onAender();
+  }
+
+  // --- Trupp und Proviant ---
+  proviantGesamt() { return PROV.reduce((a, p) => a + this.stand.lager[p], 0); }
+  zuteilen() {
+    const l = this.stand.lager, gesamt = this.proviantGesamt(), leer = gesamt === 0, max = leer ? 1 : Math.min(3, gesamt);
+    let ids = SIEDLER.map(s => s.id).filter(id => this.trupp.has(id));
+    while (ids.length > max) this.trupp.delete(ids.pop());
+    const rest = {}; PROV.forEach(p => { rest[p] = l[p]; });
+    const neu = {};
+    if (leer) ids.forEach(id => { neu[id] = 'leer'; });
+    else {
+      ids.forEach(id => { const p = this.wahl[id]; if (p && p !== 'leer' && rest[p] > 0) { neu[id] = p; rest[p]--; } });
+      ids.forEach(id => { if (!neu[id]) { const p = PROV.find(x => rest[x] > 0); neu[id] = p; rest[p]--; } });
+    }
+    this.wahl = neu;
+  }
+  toggleSiedler(id) {
+    if (this.trupp.has(id)) this.trupp.delete(id);
+    else { if (this.proviantGesamt() === 0) this.trupp.clear(); this.trupp.add(id); }
+    this.zuteilen();
+    this.zeigeDetail();
+  }
+  belegt(p, ohne) { return SIEDLER.filter(s => s.id !== ohne && this.trupp.has(s.id) && this.wahl[s.id] === p).length; }
+  setzeProv(id, p) {
+    if (this.belegt(p, id) < this.stand.lager[p]) this.wahl[id] = p;
+    this.zeigeDetail();
+  }
+  schritteGesamt() {
+    const ids = SIEDLER.filter(s => this.trupp.has(s.id));
+    return ids.reduce((a, s) => a + (this.wahl[s.id] === 'leer' ? 3 : SCHRITTE[this.wahl[s.id]]), 0);
+  }
+  summeText() {
+    const ids = SIEDLER.filter(s => this.trupp.has(s.id));
+    if (!ids.length) return 'Mindestens ein Siedler';
+    if (this.wahl[ids[0].id] === 'leer') return '3 Schritte · leerer Magen';
+    const teile = PROV.map(p => [p, ids.filter(s => this.wahl[s.id] === p).length]).filter(([, n]) => n).map(([p, n]) => `${n} ${ARTEN[p].name}`);
+    return `${this.schritteGesamt()} Schritte · ${teile.join(', ')}`;
+  }
+  truppBlock() {
+    const l = this.stand.lager, leer = this.proviantGesamt() === 0, max = leer ? 1 : Math.min(3, this.proviantGesamt());
+    const zeilen = SIEDLER.map(s => {
+      const an = this.trupp.has(s.id), p = this.wahl[s.id];
+      const voll = !an && this.trupp.size >= max && max > 1;
+      const sub = an ? `${leer ? 3 : SCHRITTE[p]} Schritte` : voll ? 'kein Proviant mehr' : 'bleibt zu Hause';
+      const prov = leer ? (an ? '<span class="chip text">leerer Magen</span>' : '')
+        : PROV.map(q => {
+          const mein = an && p === q, dis = !an || (!mein && this.belegt(q, s.id) >= l[q]);
+          return `<button class="pv" role="radio" aria-checked="${mein}" data-a="prov" data-id="${s.id}" data-p="${q}" data-fk="pv-${s.id}-${q}" ${dis ? 'disabled' : ''}
+            aria-label="${s.name}: ${ARTEN[q].name}, ${SCHRITTE[q]} Schritte, ${l[q]} im Lager" title="${ARTEN[q].name} · ${SCHRITTE[q]} Schritte">${marke(q, 'k')}<span class="anz">${l[q]}</span></button>`;
+        }).join('');
+      return `<div class="pz ${an ? '' : 'aus'}" style="--p: ${s.farbe}">
+        <button class="wahl" data-a="wahl" data-id="${s.id}" data-fk="w-${s.id}" aria-pressed="${an}" ${voll ? 'disabled' : ''} title="${s.beruf}">
+          <span class="portrait"><span class="gesicht">${s.name[0]}</span>${an ? `<span class="abzeichen">${ic('check')}</span>` : ''}</span>
+          <span><b>${s.name}</b><small>${sub}</small></span></button>
+        <div class="prov" role="radiogroup" aria-label="Proviant für ${s.name}">${prov}</div></div>`;
+    }).join('');
+    const legende = leer ? '' : `<div class="chips legende">${PROV.map(p => `<span class="chip">${marke(p, 'k')}${ARTEN[p].name} ${SCHRITTE[p]}</span>`).join('')}</div><p class="text-hinweis">Schritte je Proviant · Zahl am Knopf: im Lager</p>`;
+    return `<div class="abschnitt"><h4>Wer kommt mit?</h4>
+      ${leer ? `<div class="hinweis">${ic('info')}<span>Kein Proviant – einer geht mit leerem Magen (3 Schritte)</span></div>` : ''}
+      ${zeilen}${legende}</div>`;
+  }
+
+  // --- Detail ---
+  zielHtml(f) {
+    return `<div class="abschnitt"><h4>Rodung</h4><div class="zielband" style="box-shadow: none">
+      <div class="z1">${marke('gestruepp')}<span>Gestrüpp roden</span><span class="wert">${f.stand} / ${f.ziel}</span></div>
+      <div class="spur"><i style="width: ${f.stand / f.ziel * 100}%"></i></div></div></div>`;
+  }
+  waechstHtml(f) {
+    return `<div class="abschnitt"><h4>Wächst hier</h4><div class="marken-raster">${BIOME[f.biom].kacheln.filter(a => f.typ !== 'gerodet' || a !== 'gestruepp').map(a => `<span class="mr">${marke(a)}${ARTEN[a].name}</span>`).join('')}</div></div>`;
+  }
+  auftragZeile(g) {
+    const a = this.stand.auftraege[g], r = REZEPTE[a.rezept];
+    return `<div class="zeile">${marke(r.aus, 'm')}<span>${a.menge ? r.name : 'Kein Auftrag'}</span><span class="wert">${a.menge} je Nacht</span></div>`;
+  }
+  kostenHtml(g) {
+    const l = this.stand.lager;
+    return Object.entries(GEBAEUDE[g].kosten).map(([w, n]) => {
+      const fehlt = l[w] < n;
+      return `<span class="kost ${fehlt ? 'fehlt' : ''}" title="${fehlt ? `${l[w]} von ${n} vorhanden` : `${n} nötig`}">${marke(w, 'k')}${fehlt ? `${l[w]}/${n}` : n}</span>`;
+    }).join('');
+  }
+  bauReihe(g, fleckId) {
+    const st = this.stand, G = GEBAEUDE[g], ort = st.gebaut[g] && FL(st, st.gebaut[g]);
+    const ok = fleckId && Object.entries(G.kosten).every(([w, n]) => st.lager[w] >= n);
+    const rechts = ort ? `<span class="chip gut text">${ic('check')}Steht</span>`
+      : `<button class="knopf klein ${ok ? 'haupt' : 'zweit'}" data-a="bau" data-g="${g}" data-f="${fleckId || ''}" data-fk="bau-${g}" ${ok ? '' : 'disabled'} aria-label="${G.name} bauen">Bauen</button>`;
+    return `<div class="bau"><span class="bild">${ic(G.icon)}</span>
+      <div><b>${G.name}</b><span class="kosten">${this.kostenHtml(g)}</span>${ort ? `<span class="neben" style="text-align:left;display:block;margin:0">am ${ort.name}</span>` : ''}</div>${rechts}</div>`;
+  }
+  detailTeile(f) {
+    const st = this.stand, lauf = st.unterwegs, laufF = lauf && FL(st, lauf.fleck), b = f.biom && BIOME[f.biom];
+    let chips = '', rumpf = '', fuss = '';
+    const chip = (i, t, k = '') => `<span class="chip text ${k}">${ic(i)}${t}</span>`;
+    if (b && b.name !== f.name && f.typ !== 'nebel') chips += `<span class="chip">${ic(b.icon)}${b.name}</span>`;
+    const lauftHier = lauf && lauf.fleck === f.id;
+    const fremd = `<div class="hinweis">${ic('info')}<span>Erst das Tagwerk im ${laufF ? laufF.name : ''} beenden</span></div>`;
+    const zumLauf = lauf ? `<button class="knopf zweit" data-a="hin" data-id="${lauf.fleck}" data-fk="zum-lauf">${ic('map-pin')}Zum ${laufF.name}</button>` : '';
+
+    if (f.typ === 'erkundet') {
+      const nebelN = nachbarn(st, f).filter(x => x.typ === 'nebel').length;
+      if (nebelN) chips += chip('map-pin', `Deckt ${nebelN} ${nebelN === 1 ? 'Fleck' : 'Flecken'} auf`);
+      if (lauftHier) {
+        const namen = SIEDLER.filter(s => lauf.trupp.includes(s.id)).map(s => s.name).join(', ');
+        rumpf = `<div class="abschnitt"><h4>Tagwerk</h4><div class="lauf"><div class="medaille"><b>${lauf.schritte}</b><span>Schritte</span></div>
+          <div><b>Läuft</b><p>${namen} sind unterwegs</p></div></div></div>${this.zielHtml(f)}${this.waechstHtml(f)}`;
+        fuss = `<button class="knopf haupt" data-a="fortsetzen" data-fk="fort">Tagwerk fortsetzen</button>`;
+      } else if (lauf) {
+        rumpf = `<div class="abschnitt">${fremd}</div>${this.zielHtml(f)}${this.waechstHtml(f)}`;
+        fuss = zumLauf;
+      } else {
+        rumpf = `${this.zielHtml(f)}${this.truppBlock()}${this.waechstHtml(f)}`;
+        fuss = `<div class="summe"><span class="js-summe">${this.summeText()}</span></div>
+          <button class="knopf haupt" data-a="start" data-fk="start" ${this.trupp.size ? '' : 'disabled'}>Tagwerk beginnen</button>`;
+      }
+    } else if (f.typ === 'gerodet') {
+      chips += chip('check', 'Gerodet', 'gut');
+      const frei = REIHE.filter(g => GEBAEUDE[g].kosten && !st.gebaut[g]);
+      rumpf = `<div class="abschnitt"><h4>Bauen</h4>${frei.length ? `<div class="liste" style="gap: 8px">${frei.map(g => this.bauReihe(g, f.id)).join('')}</div>` : '<p class="text-hinweis">Nichts mehr zu bauen.</p>'}</div>`;
+      if (lauf) { rumpf = `<div class="abschnitt">${fremd}</div>` + rumpf; fuss = zumLauf; }
+      else {
+        rumpf += this.truppBlock();
+        fuss = `<div class="summe"><span class="js-summe">${this.summeText()}</span></div>
+          <button class="knopf zweit" data-a="start" data-fk="start" ${this.trupp.size ? '' : 'disabled'}>Tagwerk beginnen</button>`;
+      }
+    } else if (f.typ === 'bebaut') {
+      const werkstatt = `<button class="knopf zweit" data-a="ziel" data-z="werkstatt" data-fk="zur-werkstatt">${ic('hammer')}Werkstatt öffnen</button>`;
+      if (f.bau === 'lagerfeuer') {
+        chips += chip('flame', 'Lagerfeuer');
+        rumpf = `<div class="abschnitt"><h4>Am Feuer</h4><div class="liste">${this.siedlerListe()}</div></div>
+          <div class="abschnitt"><h4>Auftrag für die Nacht</h4>${this.auftragZeile('lagerfeuer')}</div>`;
+        fuss = werkstatt;
+      } else if (f.bau === 'zimmerei') {
+        chips += chip('warehouse', 'Lager') + chip('hammer', 'Zimmerei');
+        rumpf = `<div class="abschnitt"><h4>Auftrag für die Nacht</h4>${this.auftragZeile('zimmerei')}</div>
+          <button class="textknopf" data-a="lager">Lager ansehen</button>`;
+        fuss = werkstatt;
+      } else if (f.bau === 'trockengestell') {
+        chips += chip('sun', 'Trockengestell');
+        rumpf = `<div class="abschnitt"><h4>Auftrag für die Nacht</h4>${this.auftragZeile('trockengestell')}</div>`;
+        fuss = werkstatt + (f.gebautAm === st.tag ? `<button class="textknopf" data-a="abbau" data-f="${f.id}" data-fk="abbau">Bau zurücknehmen (bis zum Einbringen)</button>` : '');
+      } else {
+        chips += chip('house', '2 Hütten');
+        rumpf = `<div class="abschnitt"><h4>Bewohner</h4><div class="liste">${this.siedlerListe()}</div></div>`;
+      }
+    } else if (f.typ === 'gesperrt') {
+      chips += chip('lock', 'Noch nicht erreichbar');
+      rumpf = '<p class="text-hinweis">Hier geht es noch nicht weiter.</p>';
+    } else {
+      const t = nachbarn(st, f).filter(x => x.typ === 'erkundet').sort((x, y) => y.stand / y.ziel - x.stand / x.ziel)[0];
+      if (t) {
+        chips += chip('cloud-fog', 'Unerkundet');
+        rumpf = `<div class="abschnitt"><h4>Wird sichtbar durch ${t.name}</h4><div class="zielband" style="box-shadow: none">
+          <div class="z1">${marke('gestruepp')}<span>Gestrüpp roden</span><span class="wert">${t.stand} / ${t.ziel}</span></div>
+          <div class="spur"><i style="width: ${t.stand / t.ziel * 100}%"></i></div></div></div>`;
+        fuss = `<button class="knopf zweit" data-a="hin" data-id="${t.id}" data-fk="hin">${ic('map-pin')}Zum ${t.name}</button>`;
+      } else {
+        chips += chip('lock', 'Noch nicht erreichbar');
+        rumpf = '<p class="text-hinweis">Hier geht es noch nicht weiter.</p>';
+      }
+    }
+    return { chips, rumpf, fuss };
+  }
+  siedlerListe() {
+    return SIEDLER.map(s => `<div class="zeile" style="--p: ${s.farbe}"><span class="portrait" style="width: 44px; height: 44px"><span class="gesicht" style="inset: 2px; font-size: 18px">${s.name[0]}</span></span><span>${s.name} <span style="color: var(--tinte-2)">· ${s.beruf}</span></span></div>`).join('');
+  }
+  zeigeDetail() {
+    const f = FL(this.stand, this.gewaehlt), { chips, rumpf, fuss } = this.detailTeile(f);
+    const fk = this.fokus(), scroll = this.detail.querySelector('.detail-rumpf')?.scrollTop || 0;
+    this.detail.innerHTML = `<div class="detail-kopf"><h3>${fleckName(f)}</h3>${chips ? `<div class="chips">${chips}</div>` : ''}</div>
+      <div class="detail-rumpf">${rumpf}</div>${fuss ? `<div class="detail-fuss">${fuss}</div>` : ''}`;
+    this.detail.querySelector('.detail-rumpf').scrollTop = scroll;
+    this.fokusZurueck(fk);
+  }
+
+  // --- Tagwerk, Bauen ---
+  starte() {
+    const st = this.stand, f = FL(st, this.gewaehlt), ids = SIEDLER.filter(s => this.trupp.has(s.id));
+    if (!ids.length || st.unterwegs) return;
+    const n = this.schritteGesamt();
+    ids.forEach(s => { const p = this.wahl[s.id]; if (p !== 'leer') st.lager[p]--; });
+    st.unterwegs = { fleck: f.id, schritte: n, trupp: ids.map(s => s.id) };
+    this.zuteilen();
+    this.alles();
+    this.toast(`${ic('circle-check')}<span>${f.name}: Tagwerk beginnt · ${n} Schritte</span>`);
+  }
+  baue(g, fleckId) {
+    const st = this.stand, G = GEBAEUDE[g], f = FL(st, fleckId);
+    if (!f || f.typ !== 'gerodet' || !Object.entries(G.kosten).every(([w, n]) => st.lager[w] >= n)) return;
+    const vorher = structuredClone(st);
+    Object.entries(G.kosten).forEach(([w, n]) => { st.lager[w] -= n; });
+    f.typ = 'bebaut'; f.bau = g; f.gebautAm = st.tag; f.wandel = true;
+    st.gebaut[g] = f.id;
+    this.zuteilen();
+    this.alles();
+    this.toast(`${ic('hammer')}<span>${G.name} gebaut${this.ansicht === 'werkstatt' ? ' · ' + f.name : ''}</span>`,
+      { text: 'Rückgängig', fn: () => { this.stand = vorher; this.zuteilen(); this.alles(); this.toast(`${ic('undo-2')}<span>${G.name} nicht gebaut</span>`); } }, 8000);
+  }
+  abbau(fleckId) {
+    const st = this.stand, f = FL(st, fleckId), g = f.bau, G = GEBAEUDE[g];
+    Object.entries(G.kosten).forEach(([w, n]) => { st.lager[w] += n; });
+    st.gebaut[g] = null; st.auftraege[g].menge = 0;
+    f.typ = 'gerodet'; delete f.bau; delete f.gebautAm; f.wandel = true;
+    this.zuteilen();
+    this.alles();
+    this.toast(`${ic('undo-2')}<span>${G.name} zurückgenommen · Kosten zurück im Lager</span>`);
+  }
+
+  // --- Werkstatt ---
+  renderWerk() {
+    const st = this.stand, fk = this.fokus(), scroll = this.ws.scrollTop;
+    const frei = st.flecken.filter(f => f.typ === 'gerodet');
+    const karten = REIHE.filter(g => st.gebaut[g]).map(g => this.gebKarte(g)).join('');
+    const hinweis = frei.length ? `Braucht einen gerodeten Fleck – frei: ${frei.map(f => f.name).join(', ')}` : 'Kein gerodeter Fleck frei';
+    this.ws.innerHTML = `<div class="kopfzeile"><h2>Werkstatt</h2><p class="neben">Aufträge für die Nacht</p></div>
+      <div class="werk-raster">${karten}</div>
+      <div class="kopfzeile"><h2>Bauen</h2><p class="neben" aria-live="polite">${ic('map-pin', 'ic" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px')}${hinweis}</p></div>
+      <div class="bau-liste">${['zimmerei', 'trockengestell'].map(g => this.bauReihe(g, frei[0] && frei[0].id)).join('')}</div>`;
+    this.ws.scrollTop = scroll;
+    this.fokusZurueck(fk);
+  }
+  gebKarte(g) {
+    const st = this.stand, G = GEBAEUDE[g], a = st.auftraege[g], p = plan(st, g), ort = FL(st, st.gebaut[g]).name;
+    const rez = G.rezepte.map(rid => {
+      const r = REZEPTE[rid];
+      return `<button class="rez" role="radio" aria-checked="${a.rezept === rid}" data-a="rezept" data-g="${g}" data-r="${rid}" data-fk="rez-${g}-${rid}" aria-label="${r.name}: ${formelText(r)}">
+        <span class="punkt">${ic('check')}</span><span class="rez-t"><b>${r.name}</b><span class="formel">${formel(r)}</span></span></button>`;
+    }).join('');
+    const teile = p.moeglich > 0 ? [...Object.entries(p.r.ein).map(([w, n]) => `−${n * p.moeglich} ${ARTEN[w].name}`), `+${p.moeglich * 1} ${ARTEN[p.r.aus].name}`] : [];
+    let hint = '';
+    if (p.menge > 0 && p.moeglich < p.menge) {
+      const liste = aufzaehlung(p.fehlt.map(([w, n]) => `${n} ${ARTEN[w].name}`));
+      const verb = p.fehlt.length === 1 && p.fehlt[0][1] === 1 ? 'fehlt' : 'fehlen';
+      hint = `${p.moeglich > 0 ? `Nur ${p.moeglich} möglich` : 'Heute nichts möglich'} – es ${verb} ${liste}`;
+    }
+    return `<section class="karte" aria-label="${G.name}">
+      <div class="gb-kopf"><span class="bild">${ic(G.icon)}</span><div><h3>${G.name}</h3><span class="ort">am ${ort}</span></div><span class="chip text">${G.leistung} je Tag</span></div>
+      <div class="rezepte" role="radiogroup" aria-label="Rezept ${G.name}">${rez}</div>
+      <div class="menge"><button class="rund" data-a="menge" data-g="${g}" data-d="-1" data-fk="minus-${g}" aria-label="Eine weniger" ${a.menge <= 0 ? 'disabled' : ''}>${ic('minus')}</button>
+        <div class="zahl" role="status" aria-label="Menge ${a.menge} von ${G.leistung}"><b>${a.menge}</b><span>von ${G.leistung}</span></div>
+        <button class="rund" data-a="menge" data-g="${g}" data-d="1" data-fk="plus-${g}" aria-label="Eine mehr" ${a.menge >= G.leistung ? 'disabled' : ''}>${ic('plus')}</button></div>
+      <p class="neben">Bleibt stehen, bis du ihn änderst</p>
+      <div class="vorschau">${ic('moon')}<span>Über Nacht: ${teile.length ? teile.join(' · ') : 'nichts'}</span></div>
+      <div class="hinweis-platz" aria-live="polite">${hint ? `<div class="hinweis">${ic('info')}<span>${hint}</span></div>` : ''}</div>
+    </section>`;
+  }
+
+  // --- Nacht ---
+  nachtAbspielen() {
+    this.stand = neuerStand({ ...this.opt, nachtVor: true });
+    this.ansicht = 'siedlung'; this.gewaehlt = '1,-1';
+    this.zuteilen();
+    this.modalZu();
+    this.el.querySelector('.toast').classList.remove('zeigen');
+    this.alles();
+    clearTimeout(this._nacht);
+    this._nacht = setTimeout(() => this.nacht(), 900);
+  }
+  nacht() {
+    const st = this.stand, nw = FL(st, '1,-1');
+    st.tag++;
+    const res = naechtlich(st);
+    nw.stand = nw.ziel; nw.typ = 'gerodet'; nw.wandel = true;
+    aufdecken(st, nw);
+    this.zuteilen();
+    this.alles();
+    this.toast(`${ic('moon')}<span>Tag ${st.tag} · ${res.map(([g, w, n]) => `${GEBAEUDE[g].name}: ${n} ${ARTEN[w].name}`).join(' · ')}</span>`,
+      { text: 'Lager', fn: () => this.lagerModal() }, 12000);
+  }
+
+  // --- Mockup-Steuerung ---
+  mock(art, w) {
+    if (art === 'zustand') { this.opt.zustand = w; this.reset(); }
+    else if (art === 'lager') { this.opt.lager = w; this.reset(); }
+    else if (art === 'fleck') { this.ansicht = 'siedlung'; this.modalZu(); this.anzeigen(); this.waehle(w); }
+    else if (art === 'reset') this.reset();
+    else if (art === 'nacht') this.nachtAbspielen();
+  }
+  mockWert(art) {
+    if (art === 'zustand') return this.stand.unterwegs ? 'laeuft' : this.proviantGesamt() === 0 ? 'leer' : 'normal';
+    if (art === 'fleck') return this.gewaehlt;
+    if (art === 'lager') return this.opt.lager;
+    return null;
+  }
+  reset() {
+    this.stand = neuerStand(this.opt);
+    this.vz = null;
+    this.zuteilen();
+    this.modalZu();
+    this.el.querySelector('.toast').classList.remove('zeigen');
+    this.alles();
+  }
+}
+
+// ---------- Start ----------
+const sektionen = {};
+document.querySelectorAll('.geraet').forEach(el => {
+  const app = new App(el, JSON.parse(el.dataset.start || '{}'));
+  (sektionen[el.dataset.sek] = sektionen[el.dataset.sek] || []).push(app);
+  el._app = app;
+});
+document.querySelectorAll('.steuerung').forEach(box => {
+  const apps = sektionen[box.dataset.sek], knoepfe = [...box.querySelectorAll('button[data-m]')];
+  const sync = () => knoepfe.forEach(k => {
+    const i = k.dataset.m.indexOf(':'), art = k.dataset.m.slice(0, i), w = k.dataset.m.slice(i + 1), ist = apps[0].mockWert(art);
+    if (ist !== null) k.setAttribute('aria-pressed', String(ist === w));
+  });
+  apps.forEach(a => { a.onAender = sync; });
+  box.addEventListener('click', e => {
+    const k = e.target.closest('button[data-m]');
+    if (!k) return;
+    const i = k.dataset.m.indexOf(':');
+    apps.forEach(a => a.mock(k.dataset.m.slice(0, i), k.dataset.m.slice(i + 1)));
+    sync();
+  });
+  sync();
+});
+// Die Nacht läuft, sobald die Geräte im Bild sind
+if (sektionen.s3) {
+  const lauf = new Set();
+  const io = 'IntersectionObserver' in window ? new IntersectionObserver(eintraege => eintraege.forEach(e => {
+    if (e.isIntersecting && !lauf.has(e.target)) { lauf.add(e.target); e.target._app.nachtAbspielen(); }
+  }), { threshold: 0.35 }) : null;
+  sektionen.s3.forEach(a => { if (io) io.observe(a.el); else a.nachtAbspielen(); });
+}
+</script>
+</body>
+</html>

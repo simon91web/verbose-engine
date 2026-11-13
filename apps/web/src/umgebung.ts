@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const BREIT = '(min-width: 960px) and (min-height: 620px)';
 
@@ -47,3 +47,19 @@ export function useStimmung(): [Stimmung, (s: Stimmung) => void] {
 }
 
 export const wenigerBewegung = (): boolean => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/** Höhe eines Elements, die mitwächst; 0, bis sie gemessen ist. */
+export function useHoehe<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const [hoehe, setHoehe] = useState(0);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const messen = () => setHoehe(el.clientHeight);
+    messen();
+    const beobachter = new ResizeObserver(messen);
+    beobachter.observe(el);
+    return () => beobachter.disconnect();
+  }, []);
+  return [ref, hoehe] as const;
+}

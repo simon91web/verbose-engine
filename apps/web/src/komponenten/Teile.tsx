@@ -1,5 +1,5 @@
 import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react';
-import { Check, CircleCheck, House, Sparkles, Sprout, Trophy, Undo2 } from 'lucide-react';
+import { Check, CircleCheck, Hammer, House, Info, Moon, Sparkles, Sprout, Trophy, Undo2 } from 'lucide-react';
 import { ARTEN, SIEDLER, faehigkeitPruefen, type SiedlerId, type Tagwerk } from '@lichtung/spiel';
 import { Marke, SIEDLER_FARBE } from '../symbole';
 import type { Hinweis, Meldung } from '../useSpiel';
@@ -22,6 +22,20 @@ export function Medaille({ schritte, gross = false }: { schritte: number; gross?
   );
 }
 
+/** Gestrüpp-Ziel eines Flecks: Marke, Stand und Leiste. */
+export function GestruepZiel({ stand, gesamt, eben = false }: { stand: number; gesamt: number; eben?: boolean }) {
+  return (
+    <div className={`zielband${eben ? ' eben' : ''}`}>
+      <div className="z1">
+        <Marke art="gestruepp" />
+        <span>Gestrüpp roden</span>
+        <span className="wert">{gesamt > 0 && stand >= gesamt ? <><Check className="ic klein" /> {gesamt}</> : `${stand} / ${gesamt}`}</span>
+      </div>
+      <div className="spur"><i style={{ width: `${gesamt > 0 ? Math.min(100, (stand / gesamt) * 100) : 0}%` }} /></div>
+    </div>
+  );
+}
+
 export function Zielband({ tagwerk, flach = false }: { tagwerk: Tagwerk; flach?: boolean }) {
   const { stand, gesamt } = tagwerk.ziel;
   return (
@@ -34,6 +48,22 @@ export function Zielband({ tagwerk, flach = false }: { tagwerk: Tagwerk; flach?:
       <div className="spur"><i style={{ width: `${(stand / gesamt) * 100}%` }} /></div>
     </div>
   );
+}
+
+/** Zahl, die kurz anstößt, wenn sie steigt. */
+export function useAnstoss<T extends HTMLElement>(wert: number) {
+  const ref = useRef<T>(null);
+  const vorher = useRef(wert);
+  useEffect(() => {
+    const el = ref.current;
+    if (el && wert > vorher.current) {
+      el.classList.remove('stoss');
+      void el.offsetWidth;
+      el.classList.add('stoss');
+    }
+    vorher.current = wert;
+  }, [wert]);
+  return ref;
 }
 
 const SYMBOL_MELDUNG = { haken: Check, zurueck: Undo2, funken: Sparkles, pokal: Trophy };
@@ -99,19 +129,22 @@ export function HeimKnopf({ onClick }: { onClick: () => void }) {
   );
 }
 
-/** Kurze Nachricht unten in der Mitte; schließt nach 4 s. */
+const SYMBOL_TOAST = { haken: CircleCheck, mond: Moon, hammer: Hammer, zurueck: Undo2, info: Info };
+
+/** Kurze Nachricht unten in der Mitte; schließt nach 4 s, wenn nichts anderes gilt. */
 export function Toast({ hinweis, onSchliessen }: { hinweis: Hinweis | null; onSchliessen: () => void }) {
   const zuletzt = useRef(hinweis);
   if (hinweis) zuletzt.current = hinweis;
   useEffect(() => {
     if (!hinweis) return;
-    const t = setTimeout(onSchliessen, 4000);
+    const t = setTimeout(onSchliessen, hinweis.dauer ?? 4000);
     return () => clearTimeout(t);
   }, [hinweis, onSchliessen]);
   const h = zuletzt.current;
+  const Symbol = SYMBOL_TOAST[h?.symbol ?? 'haken'];
   return (
     <div className={`toast${hinweis ? ' zeigen' : ''}`} role="status">
-      <CircleCheck className="ic" />
+      <Symbol className="ic" />
       <span>{h?.text}</span>
       {h?.aktion && <button className="link" onClick={h.aktion.tun}>{h.aktion.text}</button>}
     </div>

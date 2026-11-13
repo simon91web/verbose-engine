@@ -1,21 +1,33 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Menu, Undo2 } from 'lucide-react';
-import { ARTEN, ROHSTOFFE, kannStarten, pfadErweitern, vorschau, type Zelle } from '@lichtung/spiel';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { ChevronLeft, Menu, Undo2 } from 'lucide-react';
+import { ARTEN, BIOME, ROHSTOFFE, fleckDaten, kannStarten, pfadErweitern, vorschau, type FleckId, type Tagwerk, type Zelle } from '@lichtung/spiel';
 import { Brett } from './komponenten/Brett';
-import { EndeDialog, Menue, RegelnDialog } from './komponenten/Dialoge';
-import { Blase, HeimKnopf, Medaille, Mitglied, Toast, Wortmarke, Zielband } from './komponenten/Teile';
+import { EndeDialog } from './komponenten/Dialoge';
+import { Blase, HeimKnopf, Medaille, Mitglied, Wortmarke, Zielband, useAnstoss } from './komponenten/Teile';
 import { Marke } from './symbole';
-import { useBreit, useStimmung } from './umgebung';
-import { useSpiel, type Meldung } from './useSpiel';
+import { useSpiel, type Hinweis, type Meldung } from './useSpiel';
 
 const anzahl = (n: number, eins: string, viele: string) => `${n} ${n === 1 ? eins : viele}`;
 
-export function TagwerkAnsicht() {
-  const spiel = useSpiel();
-  const breit = useBreit();
-  const [stimmung, setStimmung] = useStimmung();
-  const [menueOffen, setMenueOffen] = useState(false);
-  const [regelnOffen, setRegelnOffen] = useState(spiel.ersterStart);
+interface Props {
+  fleck: FleckId;
+  tag: number;
+  bester: number;
+  tagwerk: Tagwerk;
+  breit: boolean;
+  menueOffen: boolean;
+  /** Ein Dialog der App (Regeln) ist offen. */
+  fremderDialog: boolean;
+  onTagwerk: (t: Tagwerk) => void;
+  onEinbringen: (t: Tagwerk) => void;
+  onZurueck: () => void;
+  onMenue: () => void;
+  setHinweis: (h: Hinweis | null) => void;
+}
+
+export function TagwerkAnsicht({ fleck, tag, bester, tagwerk, breit, menueOffen, fremderDialog, onTagwerk, onEinbringen, onZurueck, onMenue, setHinweis }: Props) {
+  const spiel = useSpiel(tagwerk, onTagwerk, onEinbringen, setHinweis);
+  const ort = fleckDaten(fleck);
   const [pfad, setPfad] = useState<Zelle[]>([]);
   const pfadRef = useRef<Zelle[]>([]);
   const t = spiel.tagwerk;
@@ -54,35 +66,41 @@ export function TagwerkAnsicht() {
   };
   const onAbbruch = () => setzePfad([]);
 
-  const offenerDialog = spiel.endeOffen || regelnOffen;
+  const offenerDialog = spiel.endeOffen || fremderDialog;
   const zurueck = spiel.zurueck;
   useEffect(() => {
     const taste = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !regelnOffen) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !fremderDialog) {
         e.preventDefault();
         zurueck();
       }
     };
     window.addEventListener('keydown', taste);
     return () => window.removeEventListener('keydown', taste);
-  }, [zurueck, regelnOffen]);
+  }, [zurueck, fremderDialog]);
 
-  const schliesseMenue = useCallback(() => setMenueOffen(false), []);
-  const { setHinweis } = spiel;
-  const schliesseHinweis = useCallback(() => setHinweis(null), [setHinweis]);
+  const zurSiedlung = () => {
+    spiel.vorziehen();
+    onZurueck();
+  };
 
   const titel = (
     <div className="titel">
-      <h1>Nordwald</h1>
-      <span className="tagzeile">Wald · Tag {spiel.stand.tag}</span>
+      <h1>{ort.name}</h1>
+      <span className="tagzeile">{BIOME.wald.name} · Tag {tag}</span>
     </div>
+  );
+  const zurueckKnopf = (
+    <button className="rund" onClick={zurSiedlung} aria-label="Zur Siedlung" title="Zur Siedlung – das Tagwerk wartet">
+      <ChevronLeft className="ic" />
+    </button>
   );
   const knoepfe = (
     <>
       <button className="rund" onClick={spiel.zurueck} disabled={!spiel.kannZurueck} title={spiel.kannZurueck ? 'Letzte Kette zurücknehmen (Strg Z)' : 'Noch keine Kette'} aria-label="Letzte Kette zurücknehmen">
         <Undo2 className="ic" />
       </button>
-      <button className="rund js-menue" onClick={() => setMenueOffen((o) => !o)} aria-expanded={menueOffen} aria-label="Menü" title="Menü">
+      <button className="rund js-menue" onClick={onMenue} aria-expanded={menueOffen} aria-label="Menü" title="Menü">
         <Menu className="ic" />
       </button>
     </>
@@ -99,7 +117,7 @@ export function TagwerkAnsicht() {
         {breit ? (
           <>
             <header className="leiste">
-              <div className="links"><Wortmarke /></div>
+              <div className="links">{zurueckKnopf}<Wortmarke /></div>
               {titel}
               <div className="rechts">{knoepfe}</div>
             </header>
@@ -136,6 +154,7 @@ export function TagwerkAnsicht() {
         ) : (
           <>
             <header className="kopf">
+              {zurueckKnopf}
               <Wortmarke nurZeichen />
               {titel}
               {knoepfe}
@@ -159,40 +178,20 @@ export function TagwerkAnsicht() {
         )}
       </div>
 
-      {menueOffen && (
-        <Menue stimmung={stimmung} bester={spiel.stand.bester} onStimmung={setStimmung} onRegeln={() => setRegelnOffen(true)} onNeu={spiel.neuBeginnen} onSchliessen={schliesseMenue} />
-      )}
-      <Toast hinweis={spiel.hinweis} onSchliessen={schliesseHinweis} />
       {spiel.endeOffen && (
         <EndeDialog
           tagwerk={t}
-          tag={spiel.stand.tag}
-          bester={spiel.stand.bester}
+          ort={ort.name}
+          tag={tag}
+          bester={bester}
           kannZurueck={spiel.kannZurueck}
           onWeiter={spiel.schliesseEnde}
           onZurueck={spiel.zurueck}
           onEinbringen={spiel.einbringen}
         />
       )}
-      {regelnOffen && <RegelnDialog onSchliessen={() => setRegelnOffen(false)} />}
     </>
   );
-}
-
-/** Beutel-Eintrag, der kurz anstößt, wenn sein Wert steigt. */
-function useAnstoss<T extends HTMLElement>(wert: number) {
-  const ref = useRef<T>(null);
-  const vorher = useRef(wert);
-  useEffect(() => {
-    const el = ref.current;
-    if (el && wert > vorher.current) {
-      el.classList.remove('stoss');
-      void el.offsetWidth;
-      el.classList.add('stoss');
-    }
-    vorher.current = wert;
-  }, [wert]);
-  return ref;
 }
 
 function Pille({ art, wert }: { art: keyof typeof ARTEN; wert: number }) {
