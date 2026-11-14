@@ -162,23 +162,31 @@ Dockerfile, compose.yaml
 - **Spieldaten als Tabellen** (Biome, Kacheln, Rezepte, Gebäude, Kapitel) – Balancing ohne Code.
 - **Brett als SVG.** 49 Waben sind für SVG wenig; scharf auf jedem Bildschirm, leicht zu animieren, Tastatur und
   Screenreader möglich.
-- **PWA:** auf Android „Zum Startbildschirm hinzufügen“, spielt offline, speichert später auf dem Server.
+- **PWA:** auf den Startbildschirm legen, spielt offline, gleicht beim nächsten Kontakt mit dem Server ab.
 
 ### Server und Speichern
 
-- Konten mit Name und Passwort (argon2), Sitzung per Cookie. Erster Start legt den Admin an, weitere Konten per
-  Einladungslink (z. B. Familie).
-- Spielstand als JSON mit Versionsnummer, gespeichert nach jedem Tagwerk und jeder Werkstatt-Aktion.
-- Offline: Stand in IndexedDB, beim nächsten Kontakt hochladen. Zwei Geräte mit verschiedenem Stand: der neuere gilt,
-  der ältere bleibt als Sicherung erhalten.
-- Der Client rechnet das Spiel, der Server speichert nur. Für ein Spiel auf dem eigenen Server reicht das.
+Umgesetzt in Meilenstein 3, Einzelheiten in [`meilenstein-3.md`](meilenstein-3.md).
+
+- **Ein Konto** (nur ein Spieler), Passwort mit `scrypt`, Sitzung per Cookie. Der erste Start schreibt einen
+  Einrichtungscode ins Protokoll; `npm run passwort` erzeugt bei Bedarf einen neuen. Die Tabellen haben schon eine
+  Konto-Spalte, mehrere Konten ließen sich nachrüsten.
+- SQLite über das in Node eingebaute `node:sqlite` – keine nativen Pakete, damit das Image für amd64 und arm64 ohne
+  Kompilieren baut.
+- Spielstand als JSON mit Revision, gespeichert 2 s nach jeder Änderung und beim Wechsel in den Hintergrund.
+- Offline: Stand in `localStorage` (wenige KB), beim nächsten Kontakt hochladen. Zwei Geräte mit verschiedenem Stand:
+  der neuere gilt, der ältere bleibt als Sicherung erhalten.
+- Der Client rechnet das Spiel, der Server speichert nur.
 
 | Methode | Pfad | Wofür |
 |---|---|---|
+| GET | `/api/ich` | eingerichtet? angemeldet? |
+| POST | `/api/einrichten` | Code und neues Passwort |
 | POST | `/api/anmelden`, `/api/abmelden` | Sitzung |
-| POST | `/api/einladung`, `/api/registrieren` | weitere Konten |
-| GET | `/api/spielstand` | Stand laden |
-| PUT | `/api/spielstand` | Stand speichern (mit Version, sonst 409) |
+| GET | `/api/spielstand` | Stand mit Revision |
+| PUT | `/api/spielstand` | Stand speichern (mit `basis`, sonst 409; `?erzwingen=1` sichert den alten) |
+| GET, POST | `/api/sicherungen` | Liste; eine Sicherung ablegen |
+| POST | `/api/sicherungen/:id/wiederherstellen` | alten Stand zurückholen |
 | GET | `/api/gesund` | Healthcheck für Docker |
 
 ### Docker
@@ -194,11 +202,11 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./data:/data
+      - lichtung-daten:/data
     environment:
       TZ: Europe/Berlin
-      LICHTUNG_URL: https://lichtung.example.de
-      LICHTUNG_REGISTRIERUNG: einladung   # offen | einladung | aus
+volumes:
+  lichtung-daten:
 ```
 
 - Mehrstufiges Dockerfile auf `node:24-slim`: Tests und Build im ersten Schritt, im Image nur Server und gebautes
@@ -212,7 +220,7 @@ services:
    dazu schon die drei Wald-Siedler mit Fähigkeiten. Regeln mit Tests.
 2. **Kreislauf** (fertig) – Flecken-Karte, Lager, Werkstatt mit fünf Rezepten, Speichern im Browser. Plan und
    Abweichungen in [`meilenstein-2.md`](meilenstein-2.md).
-3. **Server** – Docker-Image und `compose.yaml` (vorgezogen, fertig), Konten, Speichern auf dem Server, PWA.
+3. **Server** (fertig) – Docker-Image und `compose.yaml`, Konto, Speichern auf dem Server, Sicherungen, PWA.
 4. **Inhalt** – Siedler und Fähigkeiten, Wetter, Händler, Kapitel 1–3, drei Biome.
 5. **Feinschliff** – Jahreszeiten, Kapitel 4–6, Einführung, Klang.
 6. **Grafik** – gemalter, warmer Stil für Kacheln, Porträts, Karte und Hintergründe (siehe `design.md` › Grafik).
@@ -220,5 +228,6 @@ services:
 ## Offene Fragen
 
 1. Name „Lichtung“ – passt der?
-2. Wer spielt: nur du oder mehrere Konten (Familie)?
-3. Server: läuft dort schon ein Reverse-Proxy mit HTTPS? amd64 oder arm64?
+
+Geklärt (14.11.2026): nur ein Spieler, ein Konto; auf dem Server läuft schon ein Reverse-Proxy mit HTTPS; das Image
+wird für amd64 und arm64 gebaut.

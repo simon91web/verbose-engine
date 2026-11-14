@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { ChevronLeft, Menu, Undo2 } from 'lucide-react';
 import { ARTEN, BIOME, ROHSTOFFE, fleckDaten, kannStarten, pfadErweitern, vorschau, type FleckId, type Tagwerk, type Zelle } from '@lichtung/spiel';
 import { Brett } from './komponenten/Brett';
@@ -18,6 +18,10 @@ interface Props {
   menueOffen: boolean;
   /** Ein Dialog der App (Regeln) ist offen. */
   fremderDialog: boolean;
+  /** Platz für die Offline-Wolke im Kopf. */
+  sync: ReactNode;
+  /** Wird gemeldet, solange eine Kette gezogen wird. */
+  onZiehen: (offen: boolean) => void;
   onTagwerk: (t: Tagwerk) => void;
   onEinbringen: (t: Tagwerk) => void;
   onZurueck: () => void;
@@ -25,7 +29,7 @@ interface Props {
   setHinweis: (h: Hinweis | null) => void;
 }
 
-export function TagwerkAnsicht({ fleck, tag, bester, tagwerk, breit, menueOffen, fremderDialog, onTagwerk, onEinbringen, onZurueck, onMenue, setHinweis }: Props) {
+export function TagwerkAnsicht({ fleck, tag, bester, tagwerk, breit, menueOffen, fremderDialog, sync, onZiehen, onTagwerk, onEinbringen, onZurueck, onMenue, setHinweis }: Props) {
   const spiel = useSpiel(tagwerk, onTagwerk, onEinbringen, setHinweis);
   const ort = fleckDaten(fleck);
   const [pfad, setPfad] = useState<Zelle[]>([]);
@@ -35,7 +39,10 @@ export function TagwerkAnsicht({ fleck, tag, bester, tagwerk, breit, menueOffen,
   const setzePfad = (p: Zelle[]) => {
     pfadRef.current = p;
     setPfad(p);
+    onZiehen(p.length > 0);
   };
+  // Verlässt man die Ansicht mitten im Zug, ist er vorbei
+  useEffect(() => () => onZiehen(false), [onZiehen]);
 
   const vs = useMemo(() => vorschau(t, pfad), [t, pfad]);
 
@@ -119,7 +126,7 @@ export function TagwerkAnsicht({ fleck, tag, bester, tagwerk, breit, menueOffen,
             <header className="leiste">
               <div className="links">{zurueckKnopf}<Wortmarke /></div>
               {titel}
-              <div className="rechts">{knoepfe}</div>
+              <div className="rechts">{sync}{knoepfe}</div>
             </header>
             <div className="tw-raster">
               <aside className="spalte">
@@ -157,6 +164,7 @@ export function TagwerkAnsicht({ fleck, tag, bester, tagwerk, breit, menueOffen,
               {zurueckKnopf}
               <Wortmarke nurZeichen />
               {titel}
+              {sync}
               {knoepfe}
             </header>
             <div className="hud">

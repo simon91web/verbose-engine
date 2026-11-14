@@ -20,13 +20,15 @@ interface RahmenProps {
   menueOffen: boolean;
   /** Ein Dialog liegt darüber: der Rahmen ist dann nicht bedienbar. */
   gesperrt: boolean;
+  /** Platz für die Offline-Wolke im Kopf. */
+  sync: ReactNode;
   onGehe: (b: Bereich) => void;
   onMenue: () => void;
   children: ReactNode;
 }
 
 /** Kopf mit Holzreitern (Laptop) oder Holzleiste unten (Handy) um Siedlung und Werkstatt. */
-export function Rahmen({ ansicht, breit, tag, menueOffen, gesperrt, onGehe, onMenue, children }: RahmenProps) {
+export function Rahmen({ ansicht, breit, tag, menueOffen, gesperrt, sync, onGehe, onMenue, children }: RahmenProps) {
   const ziel = (id: (typeof ZIELE)[number]['id']) => (id === 'menue' ? onMenue() : onGehe(id));
   const knoepfe = ZIELE.map(({ id, text, Symbol }) => {
     const an = id === ansicht;
@@ -48,11 +50,12 @@ export function Rahmen({ ansicht, breit, tag, menueOffen, gesperrt, onGehe, onMe
         <header className="leiste">
           <div className="links"><Wortmarke /></div>
           <nav className="reiter-holz" aria-label="Bereiche">{knoepfe}</nav>
-          <div className="rechts">{tagAbzeichen}</div>
+          <div className="rechts">{sync}{tagAbzeichen}</div>
         </header>
       ) : (
         <header className="kopf">
           <Wortmarke />
+          {sync}
           {tagAbzeichen}
         </header>
       )}

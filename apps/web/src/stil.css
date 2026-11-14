@@ -429,3 +429,129 @@ h1, h2, h3, h4, p { margin: 0; }
   /* Neue Flecken blenden nur ein, statt aufzutauchen */
   .fleck.neu .fl-in { animation: blenden 400ms ease both !important; }
 }
+
+/* ---------- Server: Anmelden, Abgleich, Sicherungen (Mockup server.html) ---------- */
+/* Menü und Hinweis stehen außerhalb von .spiel und brauchen die Höhe der Holzleiste auch */
+.app { --leiste: calc(76px + env(safe-area-inset-bottom)); }
+.versteckt { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; overflow: hidden; }
+input { font-family: inherit; }
+
+/* Anmelden und Einrichten */
+.auth { height: 100%; overflow-y: auto; display: flex; flex-direction: column; align-items: center; padding: calc(20px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) calc(20px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left)); }
+.auth > * { margin-block: auto; }
+.auth-karte { position: relative; width: min(440px, 100%); padding: 26px 28px 22px; }
+.app[data-schmal] .auth { padding-left: calc(12px + env(safe-area-inset-left)); padding-right: calc(12px + env(safe-area-inset-right)); }
+.app[data-schmal] .auth-karte { padding: 22px 18px 18px; }
+.kopfblock { display: grid; justify-items: center; gap: 4px; text-align: center; margin-bottom: 16px; }
+.kopfblock:last-child { margin-bottom: 0; }
+.auth-karte .wortmarke { font-size: 28px; gap: 10px; }
+.auth-karte .wortmarke .zeichen, .kopfblock .wortmarke .zeichen { width: 40px; height: 40px; }
+.auth-karte .wortmarke .zeichen svg, .kopfblock .wortmarke .zeichen svg { width: 22px; height: 22px; }
+.kopfblock h1 { margin: 8px 0 0; font: 600 22px/1.2 var(--titel); font-variation-settings: 'SOFT' 100; }
+.kopfblock p { color: var(--tinte-2); font-weight: 700; }
+.feld { display: grid; gap: 6px; }
+.feld + .feld { margin-top: 12px; }
+.feld label { font: 800 13px var(--text); color: var(--tinte-2); }
+.eingabe { position: relative; }
+.eingabe input { width: 100%; min-height: 50px; padding: 0 14px; border: 2px solid var(--rand); border-radius: 12px; background: var(--perg-2); color: var(--tinte); font: 700 18px var(--text); }
+.eingabe input.code { font-size: 24px; letter-spacing: .16em; }
+.eingabe input.code::placeholder { letter-spacing: .16em; }
+.eingabe input::placeholder { color: var(--tinte-2); opacity: .55; }
+.eingabe.pw input { padding-right: 54px; }
+.eingabe input[aria-invalid="true"] { border-color: var(--warnung); }
+.eingabe .auge { position: absolute; right: 3px; top: 3px; width: 44px; height: 44px; border: 0; border-radius: 10px; background: none; display: grid; place-items: center; cursor: pointer; color: var(--tinte-2); }
+.eingabe .auge:hover { background: color-mix(in srgb, var(--perg) 70%, transparent); }
+.hilfe { min-height: 22px; display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--tinte-2); }
+.hilfe .ic { width: 16px; height: 16px; }
+.hilfe.fehler { color: var(--warnung); }
+.hilfe.gut { color: var(--gruen-text); }
+.code-hinweis { display: grid; gap: 6px; margin-top: 2px; font-size: 13px; font-weight: 700; color: var(--tinte-2); }
+.schnipsel { display: flex; align-items: center; gap: 6px; background: var(--perg-2); border-radius: 12px; padding: 1px 1px 1px 12px; color: var(--tinte); }
+.schnipsel code { flex: 1; min-width: 0; font: 700 13px ui-monospace, SFMono-Regular, Menlo, monospace; overflow-wrap: anywhere; padding: 6px 0; }
+.schnipsel .kopier { flex: none; width: 44px; height: 44px; border: 0; border-radius: 10px; background: none; display: grid; place-items: center; cursor: pointer; color: var(--tinte-2); }
+.schnipsel .kopier:hover { background: color-mix(in srgb, var(--perg) 70%, transparent); }
+.schnipsel .kopier.ok { color: var(--gruen-text); }
+.knopf.gross { width: 100%; min-height: 52px; font-size: 16px; }
+.auth-karte .knopf.haupt { margin-top: 10px; }
+.zweit-platz { min-height: 60px; margin-top: 8px; }
+.fuss-hinweis { margin-top: 10px; padding-top: 14px; border-top: 2px dashed var(--rand); display: grid; gap: 8px; font-size: 13px; font-weight: 700; color: var(--tinte-2); }
+.meldung { min-height: 46px; display: flex; gap: 8px; align-items: flex-start; font-weight: 800; font-size: 14px; line-height: 1.35; padding-top: 2px; color: var(--tinte-2); }
+.meldung .ic { width: 18px; height: 18px; margin-top: 1px; }
+.meldung.fehler { color: var(--warnung); }
+
+/* Kopf: Platz für die Offline-Wolke, immer reserviert, damit nichts springt */
+.sync-platz { display: inline-block; width: 44px; height: 44px; flex: none; }
+.sync-knopf { width: 44px; height: 44px; border: 0; border-radius: 50%; background: none; display: grid; place-items: center; cursor: pointer; color: var(--tinte-2); }
+.sync-knopf:hover { background: color-mix(in srgb, var(--perg) 60%, transparent); }
+.sync-knopf .ic { width: 22px; height: 22px; }
+.leiste .rechts .sync-platz { margin-right: -6px; }
+.kopf .sync-platz { margin-right: -4px; }
+.kopf .titel h1 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+@media (max-width: 380px) { .tagwerk .kopf .wortmarke { display: none; } }
+
+/* Menü: feste Statuszeile, Gerätename, Konto */
+.menue { max-height: calc(100dvh - 84px - env(safe-area-inset-top)); overflow-y: auto; }
+.app[data-schmal]:not([data-ansicht="tagwerk"]) .menue { max-height: calc(100dvh - var(--leiste) - 16px - env(safe-area-inset-top)); }
+.status { display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 10px; border-radius: 10px; background: var(--perg-2); font-weight: 800; font-size: 14px; color: var(--tinte-2); white-space: nowrap; overflow: hidden; flex: none; }
+.status span { overflow: hidden; text-overflow: ellipsis; }
+.status .ic { width: 18px; height: 18px; }
+.status.gespeichert { color: var(--gruen-text); }
+.ic.dreht { animation: drehen 1.1s linear infinite; }
+@keyframes drehen { to { transform: rotate(360deg); } }
+.menue-zeile { width: 100%; }
+.menue-zeile .ende { margin-left: auto; color: var(--tinte-2); display: inline-flex; }
+.menue-zeile .ende .ic { width: 18px; height: 18px; }
+.menue-zeile b { font-weight: 800; color: var(--tinte-2); }
+.menue-trenn { border-top: 2px dashed var(--rand); margin: 2px 0; }
+.umb { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 0 0 8px; }
+.umb > .ic { color: var(--tinte-2); }
+.umb input { flex: 1; min-width: 0; min-height: 44px; padding: 0 10px; border: 2px solid var(--rand); border-radius: 10px; background: var(--perg-2); color: var(--tinte); font: 800 15px var(--text); }
+
+/* Überlagerungen: Größen, Blatt von unten */
+.ueberlage.mittel { grid-template-columns: minmax(0, 520px); }
+.ueberlage.breit { grid-template-columns: minmax(0, 700px); }
+.ueberlage.blatt-unten { grid-template-columns: minmax(0, 560px); align-content: end; padding: 0; }
+.modal.sheet { border-radius: 22px 22px 0 0; border-bottom: 0; padding: 10px 16px calc(18px + env(safe-area-inset-bottom)); transform: translateY(40px); max-height: 90dvh; display: flex; flex-direction: column; }
+.ueberlage.offen .modal.sheet { transform: none; }
+.sheet .halter { width: 40px; height: 5px; border-radius: 999px; background: var(--rand); margin: 0 auto 6px; flex: none; }
+.sheet .sheet-kopf { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.sheet .sheet-kopf h2 { font: 600 22px/1.2 var(--titel); font-variation-settings: 'SOFT' 100; }
+.sheet .neben { margin: 0 0 10px; }
+.sheet .modal-scroll { max-height: none; min-height: 0; padding-bottom: 4px; }
+.text-hinweis.zentriert { text-align: center; padding: 14px 0; }
+.modal .neben { margin-top: 10px; }
+.modal .meldung { min-height: 30px; margin-top: 8px; padding-top: 0; align-items: center; }
+
+/* Welchen Stand behalten? */
+.staende { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+@media (max-width: 640px) { .staende { grid-template-columns: 1fr; gap: 10px; margin-bottom: 14px; } }
+.stand { display: grid; gap: 10px; align-content: start; text-align: left; padding: 12px; border-radius: 16px; border: 2px solid var(--rand); background: var(--perg); cursor: pointer; color: var(--tinte); min-width: 0; }
+.stand:hover { border-color: var(--honig-d); }
+.stand[aria-checked="true"] { border-color: var(--honig); background: color-mix(in srgb, var(--honig) 22%, var(--perg)); }
+.stand .kopf-z { display: grid; grid-template-columns: 44px minmax(0, 1fr) 22px; gap: 10px; align-items: center; }
+.stand .bild { width: 44px; height: 44px; border-radius: 12px; background: var(--perg-2); display: grid; place-items: center; color: var(--holz); border: 2px solid var(--rand); }
+.stand b { display: block; font-weight: 800; line-height: 1.25; }
+.stand small { display: block; font-size: 13px; font-weight: 700; color: var(--tinte-2); }
+.stand .punkt { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--rand); display: grid; place-items: center; background: var(--perg); }
+.stand[aria-checked="true"] .punkt { background: var(--honig); border-color: var(--honig-d); color: #3A2A1C; }
+.stand .punkt .ic { width: 12px; height: 12px; stroke-width: 3.4; opacity: 0; }
+.stand[aria-checked="true"] .punkt .ic { opacity: 1; }
+.stand .pillen { display: flex; flex-wrap: wrap; gap: 4px; }
+.stand .pille { font-size: 14px; padding: 2px 9px 2px 3px; box-shadow: none; }
+.stand .pille .token { width: 22px; height: 22px; }
+.stand .chips .chip { font-size: 13px; }
+.chip.text .ic { width: 16px; height: 16px; }
+
+/* Sicherungen */
+.sich-liste { display: grid; gap: 8px; }
+.sich { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; align-items: center; padding: 10px 10px 10px 12px; background: var(--perg-2); border-radius: 14px; }
+.sich b { display: block; font-weight: 800; }
+.sich .sub { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--tinte-2); margin-bottom: 4px; }
+.sich .sub .ic { width: 15px; height: 15px; }
+.sich .chip { background: var(--perg); }
+
+/* Toast, der stehen bleibt (Konflikt, neue Version) */
+.toast.fest { border-color: var(--honig); }
+.toast .link.zu { width: 44px; padding: 0; display: grid; place-items: center; color: var(--tinte-2); text-decoration: none; margin-left: 0; }
+.toast .link.zu .ic { color: inherit; }
+.app[data-ansicht="auth"] .toast, .app[data-schmal][data-ansicht="auth"] .toast { bottom: calc(20px + env(safe-area-inset-bottom)); }

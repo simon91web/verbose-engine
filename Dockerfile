@@ -17,7 +17,8 @@ FROM node:24-slim
 ARG LICHTUNG_VERSION=dev
 ENV NODE_ENV=production \
     PORT=8080 \
-    LICHTUNG_VERSION=$LICHTUNG_VERSION
+    LICHTUNG_VERSION=$LICHTUNG_VERSION \
+    LICHTUNG_DATEN=/data
 WORKDIR /app
 COPY package.json package-lock.json ./
 COPY packages/spiel/package.json packages/spiel/
@@ -26,6 +27,9 @@ COPY apps/server/package.json apps/server/
 RUN npm ci --omit=dev --workspace=@lichtung/server --no-audit --no-fund && npm cache clean --force
 COPY apps/server/src apps/server/src
 COPY --from=bauen /app/apps/web/dist apps/web/dist
+# Datenbank und Sicherungen; gehört node, damit auch ein neues benanntes Volume beschreibbar ist
+RUN mkdir -p /data && chown node:node /data
+VOLUME /data
 USER node
 EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \

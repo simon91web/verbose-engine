@@ -12,8 +12,8 @@ export interface Meldung {
 }
 export interface Hinweis {
   text: string;
-  symbol?: 'haken' | 'mond' | 'hammer' | 'zurueck' | 'info';
-  /** Wie lange der Hinweis steht (ms); sonst 4 s. */
+  symbol?: 'haken' | 'mond' | 'hammer' | 'zurueck' | 'info' | 'wolke' | 'wolkeAus' | 'verlauf' | 'neu';
+  /** Wie lange der Hinweis steht (ms); sonst 4 s. 0 = bleibt stehen, bis er geschlossen wird. */
   dauer?: number;
   aktion?: { text: string; tun: () => void };
 }
