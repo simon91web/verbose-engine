@@ -1,12 +1,24 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { BookOpen, MapPin, Moon, RotateCcw, Sun, SunMoon, Trophy } from 'lucide-react';
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react';
+import { BookOpen, Check, ChevronRight, CloudCheck, CloudOff, HardDrive, History, Laptop, LogIn, LogOut, MapPin, Moon, Pencil, RefreshCw, RotateCcw, Smartphone, Sun, SunMoon, Tablet, Trophy, Lock } from 'lucide-react';
 import { ARTEN, ROHSTOFFE, WAREN, WAREN_LISTE, gesamtErtrag, istVorbei, type Lager, type Tagwerk } from '@lichtung/spiel';
-import { zahl } from '../anzeige';
+import { zahl, vorZeit } from '../anzeige';
+import { NAME_MAX, geraetSymbolName } from '../geraet';
+import type { Status } from '../useAbgleich';
 import { Marke } from '../symbole';
 import { wenigerBewegung, type Stimmung } from '../umgebung';
 
+interface ModalProps {
+  titel: string;
+  children: ReactNode;
+  /** Escape und Klick daneben; fehlt es, schließt der Dialog nur über seine Knöpfe. */
+  onEsc?: () => void;
+  groesse?: 'mittel' | 'breit';
+  /** Blatt von unten (Handy) statt Karte mit Holzschild; der Inhalt bringt seine Kopfzeile mit. */
+  blatt?: boolean;
+}
+
 /** Dunkler Hintergrund und Pergamentkarte mit Holzschild. */
-export function Modal({ titel, children, onEsc }: { titel: string; children: ReactNode; onEsc?: () => void }) {
+export function Modal({ titel, children, onEsc, groesse, blatt = false }: ModalProps) {
   const [offen, setOffen] = useState(false);
   // Beim Schließen kehrt der Fokus dorthin zurück, wo der Dialog aufging
   useEffect(() => {
@@ -23,10 +35,10 @@ export function Modal({ titel, children, onEsc }: { titel: string; children: Rea
     };
   }, [onEsc]);
   return (
-    <div className={`ueberlage${offen ? ' offen' : ''}`}>
+    <div className={`ueberlage${offen ? ' offen' : ''}${groesse ? ` ${groesse}` : ''}${blatt ? ' blatt-unten' : ''}`}>
       <div className="scrim" onClick={onEsc} />
-      <div className="modal" role="dialog" aria-modal="true" aria-label={titel}>
-        <div className="schild">{titel}</div>
+      <div className={`modal${blatt ? ' sheet' : ''}`} role="dialog" aria-modal="true" aria-label={titel}>
+        {blatt ? <div className="halter" /> : <div className="schild">{titel}</div>}
         {children}
       </div>
     </div>
@@ -157,16 +169,53 @@ export function LagerDialog({ lager, tag, onSchliessen }: { lager: Lager; tag: n
 interface MenueProps {
   stimmung: Stimmung;
   bester: number;
+  status: Status;
+  gespeichertUm: number | null;
+  geraet: string;
   onStimmung: (s: Stimmung) => void;
   onRegeln: () => void;
+  onSicherungen: () => void;
+  onGeraet: (name: string) => void;
+  onAbmelden: () => void;
+  onAnmelden: () => void;
   onNeu: () => void;
   onSchliessen: () => void;
 }
 
 const STIMMUNGEN: [Stimmung, string, typeof Sun][] = [['tag', 'Tag', Sun], ['abend', 'Abend', Moon], ['geraet', 'Gerät', SunMoon]];
 
-export function Menue({ stimmung, bester, onStimmung, onRegeln, onNeu, onSchliessen }: MenueProps) {
+/** Text zum Speicherstatus; derselbe in der festen Zeile im Menü und im Hinweis der Wolke im Kopf. */
+export function statusText(status: Status, um: number | null, jetzt: number): string {
+  switch (status) {
+    case 'gespeichert': return um === null ? 'Gespeichert' : `Gespeichert · ${vorZeit(um, jetzt)}`;
+    case 'speichert': return 'Speichert …';
+    case 'offline': return 'Offline – wird später hochgeladen';
+    case 'abgemeldet': return 'Nicht angemeldet';
+    case 'fehler': return 'Nicht gespeichert – neuer Versuch folgt';
+    case 'lokal': return 'Nur auf diesem Gerät';
+  }
+}
+
+const STATUS_SYMBOL = { gespeichert: CloudCheck, speichert: RefreshCw, offline: CloudOff, abgemeldet: Lock, fehler: CloudOff, lokal: HardDrive };
+const GERAET_SYMBOL = { smartphone: Smartphone, tablet: Tablet, laptop: Laptop };
+
+/** Alle 20 s neu, damit „vor 3 Min.“ stimmt, solange das Menü offen ist. */
+function useJetzt(): number {
+  const [jetzt, setJetzt] = useState(() => Date.now());
+  useEffect(() => {
+    const t = setInterval(() => setJetzt(Date.now()), 20_000);
+    return () => clearInterval(t);
+  }, []);
+  return jetzt;
+}
+
+export function Menue({ stimmung, bester, status, gespeichertUm, geraet, onStimmung, onRegeln, onSicherungen, onGeraet, onAbmelden, onAnmelden, onNeu, onSchliessen }: MenueProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const [umbenennen, setUmbenennen] = useState(false);
+  const jetzt = useJetzt();
+  const eingabe = useRef<HTMLInputElement>(null);
+  const umbenennenKnopf = useRef<HTMLButtonElement>(null);
+  const nachUmbenennen = useRef(false);
   useEffect(() => {
     ref.current?.querySelector<HTMLButtonElement>('button')?.focus();
     const weg = (e: PointerEvent) => {
@@ -180,8 +229,32 @@ export function Menue({ stimmung, bester, onStimmung, onRegeln, onNeu, onSchlies
       window.removeEventListener('keydown', taste);
     };
   }, [onSchliessen]);
+  useEffect(() => {
+    if (umbenennen) {
+      eingabe.current?.focus();
+      eingabe.current?.select();
+    } else if (nachUmbenennen.current) {
+      nachUmbenennen.current = false;
+      umbenennenKnopf.current?.focus();
+    }
+  }, [umbenennen]);
+
+  const speichern = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const n = eingabe.current?.value.trim();
+    if (n) onGeraet(n);
+    nachUmbenennen.current = true;
+    setUmbenennen(false);
+  };
+  const StatusSymbol = STATUS_SYMBOL[status];
+  const GeraetSymbol = GERAET_SYMBOL[geraetSymbolName(geraet)];
+  const imKonto = status === 'gespeichert' || status === 'speichert' || status === 'fehler';
   return (
     <div className="menue karte" ref={ref} role="menu" aria-label="Menü">
+      <div className={`status ${status}`} role="status">
+        <StatusSymbol className={`ic${status === 'speichert' ? ' dreht' : ''}`} />
+        <span>{statusText(status, gespeichertUm, jetzt)}</span>
+      </div>
       <h4>Stimmung</h4>
       <div className="segment" role="radiogroup" aria-label="Stimmung">
         {STIMMUNGEN.map(([wert, name, Symbol]) => (
@@ -191,8 +264,27 @@ export function Menue({ stimmung, bester, onStimmung, onRegeln, onNeu, onSchlies
         ))}
       </div>
       <button className="menue-zeile" role="menuitem" onClick={() => { onSchliessen(); onRegeln(); }}><BookOpen className="ic" />Spielregeln</button>
+      {status !== 'lokal' && (
+        <button className="menue-zeile" role="menuitem" onClick={() => { onSchliessen(); onSicherungen(); }}>
+          <History className="ic" />Sicherungen<span className="ende"><ChevronRight className="ic" /></span>
+        </button>
+      )}
+      {umbenennen ? (
+        <form className="umb" onSubmit={speichern} onKeyDown={(e) => { if (e.key === 'Escape') { e.stopPropagation(); nachUmbenennen.current = true; setUmbenennen(false); } }}>
+          <GeraetSymbol className="ic" />
+          <input ref={eingabe} name="geraet" defaultValue={geraet} maxLength={NAME_MAX} aria-label="Name dieses Geräts" autoComplete="off" />
+          <button className="rund" type="submit" aria-label="Name übernehmen"><Check className="ic" /></button>
+        </form>
+      ) : (
+        <button ref={umbenennenKnopf} className="menue-zeile" role="menuitem" aria-label={`Dieses Gerät: ${geraet}, Namen ändern`} onClick={() => setUmbenennen(true)}>
+          <GeraetSymbol className="ic" /><span>Dieses Gerät: <b>{geraet}</b></span><span className="ende"><Pencil className="ic" /></span>
+        </button>
+      )}
+      {(imKonto || status === 'abgemeldet') && <div className="menue-trenn" />}
+      {imKonto && <button className="menue-zeile" role="menuitem" onClick={() => { onSchliessen(); onAbmelden(); }}><LogOut className="ic" />Abmelden</button>}
+      {status === 'abgemeldet' && <button className="menue-zeile" role="menuitem" onClick={() => { onSchliessen(); onAnmelden(); }}><LogIn className="ic" />Anmelden</button>}
       <button className="menue-zeile" role="menuitem" onClick={() => { onSchliessen(); onNeu(); }}><RotateCcw className="ic" />Neues Spiel</button>
-      {bester > 0 && <div className="menue-fuss"><Trophy className="ic" />Bester Tag: {bester}</div>}
+      {bester > 0 && <div className="menue-fuss"><Trophy className="ic" />Bester Tag: {zahl(bester)}</div>}
     </div>
   );
 }

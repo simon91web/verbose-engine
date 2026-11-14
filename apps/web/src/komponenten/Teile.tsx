@@ -1,5 +1,5 @@
 import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react';
-import { Check, CircleCheck, Hammer, House, Info, Moon, Sparkles, Sprout, Trophy, Undo2 } from 'lucide-react';
+import { Check, CircleCheck, CloudCheck, CloudOff, Hammer, History, House, Info, Moon, Sparkles, Sprout, Trophy, Undo2, X } from 'lucide-react';
 import { ARTEN, SIEDLER, faehigkeitPruefen, type SiedlerId, type Tagwerk } from '@lichtung/spiel';
 import { Marke, SIEDLER_FARBE } from '../symbole';
 import type { Hinweis, Meldung } from '../useSpiel';
@@ -129,24 +129,38 @@ export function HeimKnopf({ onClick }: { onClick: () => void }) {
   );
 }
 
-const SYMBOL_TOAST = { haken: CircleCheck, mond: Moon, hammer: Hammer, zurueck: Undo2, info: Info };
+const SYMBOL_TOAST = { haken: CircleCheck, mond: Moon, hammer: Hammer, zurueck: Undo2, info: Info, wolke: CloudCheck, wolkeAus: CloudOff, verlauf: History, neu: Sparkles };
 
-/** Kurze Nachricht unten in der Mitte; schließt nach 4 s, wenn nichts anderes gilt. */
+/** Kurze Nachricht unten in der Mitte; schließt nach 4 s, wenn nichts anderes gilt. Mit `dauer: 0` bleibt sie stehen und hat ein Kreuz. */
 export function Toast({ hinweis, onSchliessen }: { hinweis: Hinweis | null; onSchliessen: () => void }) {
   const zuletzt = useRef(hinweis);
   if (hinweis) zuletzt.current = hinweis;
   useEffect(() => {
-    if (!hinweis) return;
+    if (!hinweis || hinweis.dauer === 0) return;
     const t = setTimeout(onSchliessen, hinweis.dauer ?? 4000);
     return () => clearTimeout(t);
   }, [hinweis, onSchliessen]);
   const h = zuletzt.current;
   const Symbol = SYMBOL_TOAST[h?.symbol ?? 'haken'];
   return (
-    <div className={`toast${hinweis ? ' zeigen' : ''}`} role="status">
+    <div className={`toast${hinweis ? ' zeigen' : ''}${h?.dauer === 0 ? ' fest' : ''}`} role="status">
       <Symbol className="ic" />
       <span>{h?.text}</span>
-      {h?.aktion && <button className="link" onClick={h.aktion.tun}>{h.aktion.text}</button>}
+      {h?.aktion && <button className="link" onClick={() => { h.aktion?.tun(); if (h.dauer === 0) onSchliessen(); }}>{h.aktion.text}</button>}
+      {h?.dauer === 0 && <button className="link zu" onClick={onSchliessen} aria-label="Hinweis schließen" title="Schließen"><X className="ic" /></button>}
     </div>
+  );
+}
+
+/** Reservierter Platz im Kopf: die Wolke erscheint nur, wenn nicht gespeichert werden kann; Antippen nennt den Grund. */
+export function SyncPlatz({ zeigen, text, onKlick }: { zeigen: boolean; text: string; onKlick: () => void }) {
+  return (
+    <span className="sync-platz">
+      {zeigen && (
+        <button type="button" className="sync-knopf" onClick={onKlick} title={text} aria-label={text}>
+          <CloudOff className="ic" />
+        </button>
+      )}
+    </span>
   );
 }

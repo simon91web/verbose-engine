@@ -4,13 +4,16 @@ Ein ruhiges Ketten-Puzzle mit Siedlungsaufbau: Ketten über ein Wabenbrett ziehe
 Lichtung im Wald ein Dorf machen. Konzept in [`docs/konzept.md`](docs/konzept.md), Gestaltung in
 [`docs/design.md`](docs/design.md).
 
-## Stand: Meilenstein 2 – der Kreislauf
+## Stand: Meilenstein 3 – Server
 
-Die Siedlung ist der Startbildschirm: Fleck auf der Wabenkarte wählen, Trupp und Proviant mitnehmen, Tagwerk spielen
-(Ketten, Ringe, Reife, Gestrüpp, Hasen, Fähigkeiten, Rückgängig), Ertrag einbringen. Über Nacht verarbeiten Lagerfeuer,
-Zimmerei und Trockengestell das Lager nach stehenden Aufträgen aus der Werkstatt. Gerodete Flecken decken ihre
-Nachbarn auf und lassen sich bebauen. Der Spielstand bleibt im Browser gespeichert; ein Stand aus Meilenstein 1 wird
-übernommen. Plan: [`docs/meilenstein-2.md`](docs/meilenstein-2.md), Mockup: [`docs/mockups/kreislauf.html`](docs/mockups/kreislauf.html).
+Ein Spielstand für alle Geräte: Lichtung läuft als Container auf dem eigenen Server, mit einem Konto (Passwort,
+Einrichtungscode beim ersten Start). Gespeichert wird automatisch; ohne Netz spielt man weiter, beim nächsten Kontakt
+wird hochgeladen. Haben zwei Geräte verschiedene Stände, gilt der neuere, der andere liegt unter Menü › Sicherungen.
+Am Handy lässt sich Lichtung als App auf den Startbildschirm legen (HTTPS nötig).
+
+Darunter der Kreislauf aus Meilenstein 2: Siedlung mit Wabenkarte, Tagwerk mit Ketten und Ringen, Werkstatt mit
+Aufträgen für die Nacht, Bauen auf gerodeten Flecken. Pläne: [`docs/meilenstein-2.md`](docs/meilenstein-2.md),
+[`docs/meilenstein-3.md`](docs/meilenstein-3.md).
 
 ## Starten
 
@@ -28,16 +31,17 @@ im Handy-Browser öffnen.
 
 | Befehl | Was |
 |---|---|
-| `npm run dev` | Spiel lokal starten |
+| `npm run dev` | Spiel (Vite, Port 5173) und Server (Port 8080, Daten in `./daten`) zusammen starten |
 | `npm run handy` | wie oben, aber im WLAN erreichbar |
-| `npm test` | Tests der Spielregeln |
+| `npm run passwort` | Passwort zurücksetzen, neuen Einrichtungscode ausgeben |
+| `npm test` | Tests der Spielregeln und des Servers |
 | `npm run typecheck` | Typen prüfen |
 | `npm run build` | Fertige Dateien nach `apps/web/dist` |
 | `npm start` | Gebautes Spiel über den Server ausliefern (Port 8080) |
 
 ## Auf dem eigenen Server (Docker)
 
-Ein Container, Port 8080. Beim Bauen laufen die Tests mit; schlägt einer fehl, entsteht kein Image.
+Ein Container, Port 8080, ein Volume `/data` für Konto, Spielstand und Sicherungen. Beim Bauen laufen die Tests mit; schlägt einer fehl, entsteht kein Image.
 
 **Auf dem Server bauen** – geht sofort, braucht nur Git und Docker:
 
@@ -56,19 +60,62 @@ Dann `http://<server>:8080` öffnen – am Handy im selben Netz genauso. Aktuali
 privat, ist das Image es auch: auf dem Server einmal `docker login ghcr.io` mit einem GitHub-Token (Recht
 `read:packages`).
 
+**Einrichten** – beim ersten Start schreibt der Server einen sechsstelligen Code ins Protokoll:
+
+```bash
+docker compose logs lichtung      # → Einrichtungscode: 482 913 – im Browser eingeben
+```
+
+Im Browser Code und ein Passwort (mindestens 10 Zeichen) eingeben, danach ist der Code verbraucht. Es gibt nur
+dieses eine Konto, keinen Benutzernamen. Ohne Konto gibt es nach jedem Neustart einen neuen Code.
+
+**Passwort vergessen** – neuer Code, altes Passwort und alle Anmeldungen verfallen, Spielstand und Sicherungen bleiben:
+
+```bash
+docker compose exec lichtung npm run passwort
+```
+
+**Daten und Sicherungen** – alles liegt im Volume `lichtung-daten` (`/data`):
+
+- `lichtung.db` – Konto und Spielstand (SQLite)
+- `sicherungen/lichtung-JJJJ-MM-TT.db` – nachts eine Kopie der Datenbank, die letzten 7 bleiben (Zeit nach `TZ`)
+
+Alte Spielstände lassen sich im Spiel unter Sicherungen wiederherstellen. Für eine eigene Sicherung das Volume
+kopieren, etwa `docker run --rm -v lichtung-daten:/data -v "$PWD":/ziel alpine tar czf /ziel/lichtung-daten.tgz -C /data .`.
+Lieber ein Ordner statt Volume: in `compose.yaml` steht die Anleitung (Ordner anlegen, `chown 1000:1000`).
+
+**Hinter einem Reverse-Proxy** – für Zugriff von unterwegs und die App am Handy ist **HTTPS Pflicht**. Der Proxy
+leitet nur Port 8080 weiter; eine weitere Einstellung braucht Lichtung nicht (`X-Forwarded-For` und `-Proto` werden
+für Sperre und Cookie ausgewertet).
+
+Caddy (`Caddyfile`, holt das Zertifikat selbst):
+
+```
+lichtung.example.de {
+    reverse_proxy localhost:8080
+}
+```
+
+Nginx Proxy Manager:
+
+- Proxy Host anlegen, Domain `lichtung.example.de`
+- Scheme `http`, Forward Hostname/IP die des Servers, Forward Port `8080`
+- Reiter SSL: neues Let's-Encrypt-Zertifikat, „Force SSL“ an
+- Läuft der Proxy im selben Docker-Netz, den Dienstnamen `lichtung` statt der IP nehmen und `ports:` in `compose.yaml` weglassen
+
 **Gut zu wissen**
 
-- Der Spielstand liegt noch im Browser des jeweiligen Geräts. Speichern auf dem Server kommt mit Meilenstein 3.
-- Im Heimnetz reicht HTTP. Für Zugriff von unterwegs und die App auf dem Startbildschirm (Meilenstein 3) gehört ein
-  Reverse-Proxy mit HTTPS davor (Caddy, Traefik oder Nginx Proxy Manager).
-- `GET /api/gesund` antwortet mit `{ "ok": true, "version": … }` – der Healthcheck des Containers nutzt das.
+- Jedes Gerät hält eine Kopie des Stands im Browser und gleicht sie mit dem Server ab. Beim ersten Anmelden auf einem
+  Gerät, das schon einen anderen Stand hat, fragt Lichtung einmal, welcher bleiben soll.
+- `GET /api/gesund` antwortet mit `{ "ok": true, "version": …, "datenbank": true }` – der Healthcheck des Containers
+  nutzt das.
 
 ## Aufbau
 
 ```
 packages/spiel   Spielregeln und Spieldaten in reinem TypeScript, mit Tests
 apps/web         Oberfläche: React, Vite, Spiel-Look aus docs/design.md
-apps/server      Fastify-Server: liefert das Spiel aus, später Konten und Spielstände
+apps/server      Fastify-Server: liefert das Spiel aus, verwaltet das Konto, speichert Spielstand und Sicherungen
 docs/            Konzept, Gestaltung, Mockups
 Dockerfile, compose.yaml, .github/workflows/docker.yml
 ```
