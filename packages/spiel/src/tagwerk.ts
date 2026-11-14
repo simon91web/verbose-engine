@@ -71,13 +71,15 @@ export interface Optionen {
   seed: number;
   biom?: BiomId;
   trupp?: SiedlerId[];
+  /** Schritte des Tages; ohne Angabe 5 je Siedler (nur Vorgabe, im Spiel bestimmt der Proviant sie). */
+  schritte?: number;
   ladung?: Partial<Record<SiedlerId, number>>;
   ziel?: { stand: number; gesamt: number };
 }
 
 export function neuesTagwerk(o: Optionen): Tagwerk {
   const trupp = o.trupp ?? ['ida', 'jonas', 'mara'];
-  const schritte = trupp.length * REGELN.schritteProSiedler;
+  const schritte = o.schritte ?? trupp.length * REGELN.schritteProSiedler;
   const t: Tagwerk = {
     biom: o.biom ?? 'wald',
     zufall: o.seed >>> 0,
@@ -100,7 +102,7 @@ export function neuesTagwerk(o: Optionen): Tagwerk {
 
 /** Nächster Tag auf demselben Fleck: Trupp, Ladung und Ziel bleiben, das Brett ist neu. */
 export function folgeTagwerk(vorher: Tagwerk, seed: number): Tagwerk {
-  return neuesTagwerk({ seed, biom: vorher.biom, trupp: vorher.trupp, ladung: vorher.ladung, ziel: vorher.ziel });
+  return neuesTagwerk({ seed, biom: vorher.biom, trupp: vorher.trupp, schritte: vorher.maxSchritte, ladung: vorher.ladung, ziel: vorher.ziel });
 }
 
 // ---------- Kette ziehen ----------

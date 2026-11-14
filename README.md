@@ -4,10 +4,13 @@ Ein ruhiges Ketten-Puzzle mit Siedlungsaufbau: Ketten über ein Wabenbrett ziehe
 Lichtung im Wald ein Dorf machen. Konzept in [`docs/konzept.md`](docs/konzept.md), Gestaltung in
 [`docs/design.md`](docs/design.md).
 
-## Stand: Meilenstein 1 – das Brett
+## Stand: Meilenstein 2 – der Kreislauf
 
-Ein Tagwerk im Nordwald ist spielbar: Ketten, Ringe, Reife, Gestrüpp, Hasen, drei Siedler mit Fähigkeiten,
-Rückgängig, Ertrag und nächster Tag. Der Spielstand bleibt im Browser gespeichert.
+Die Siedlung ist der Startbildschirm: Fleck auf der Wabenkarte wählen, Trupp und Proviant mitnehmen, Tagwerk spielen
+(Ketten, Ringe, Reife, Gestrüpp, Hasen, Fähigkeiten, Rückgängig), Ertrag einbringen. Über Nacht verarbeiten Lagerfeuer,
+Zimmerei und Trockengestell das Lager nach stehenden Aufträgen aus der Werkstatt. Gerodete Flecken decken ihre
+Nachbarn auf und lassen sich bebauen. Der Spielstand bleibt im Browser gespeichert; ein Stand aus Meilenstein 1 wird
+übernommen. Plan: [`docs/meilenstein-2.md`](docs/meilenstein-2.md), Mockup: [`docs/mockups/kreislauf.html`](docs/mockups/kreislauf.html).
 
 ## Starten
 
@@ -71,5 +74,5 @@ Dockerfile, compose.yaml, .github/workflows/docker.yml
 ```
 
 Die Regeln (`packages/spiel`) kennen keine Oberfläche: Brett erzeugen, Kette prüfen, Ring finden, nachfallen,
-reifen, Hasen bewegen. Zufall läuft über einen Startwert, darum ist jeder Zug wiederholbar und Rückgängig würfelt
+reifen, Hasen bewegen; dazu Karte, Lager, Proviant, Nacht und Bauen (`siedlung.ts`, `karte.ts`). Zufall läuft über einen Startwert, darum ist jeder Zug wiederholbar und Rückgängig würfelt
 nicht neu. Balancing steht in `packages/spiel/src/daten.ts`.

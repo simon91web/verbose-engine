@@ -71,7 +71,9 @@ Jeder Tag hat ein Wetter; die Siedlung zeigt das von morgen.
 ## Trupp und Siedler
 
 - Jeder Siedler im Trupp bringt **5 Schritte** und braucht **1 Proviant**. Höchstens 4 im Trupp.
-- Besserer Proviant bringt mehr: Beerenbrei 5, Brot 6, Eintopf 7 Schritte.
+- Besserer Proviant bringt mehr: Beerenbrei 5, Röstnüsse 6, Brot 6, Waldeintopf 7 Schritte. Gibt es weniger
+  Proviant als Siedler, gehen nur so viele mit; ohne jeden Proviant geht einer „mit leerem Magen“ (3 Schritte) – so
+  fährt das Spiel nie fest.
 - Jeder Beruf hat eine **Fähigkeit**. Sie lädt sich durch passende Ketten auf und wird einmal eingesetzt, ohne
   Schritt:
 
@@ -93,9 +95,10 @@ Tagwerke zur Verfügung: Platz zum Ernten oder Platz zum Bauen.
 
 | Gebäude | Braucht | Macht | Nach Kapitel |
 |---|---|---|---|
-| Lagerfeuer | – | Beeren → Beerenbrei | Start |
+| Lagerfeuer | – | Beeren → Beerenbrei, Nüsse → Röstnüsse, Beeren + Röstnüsse + Trockenkräuter → Waldeintopf | Start |
+| Zimmerei | Holz (steht ab Start am Holzplatz) | Holz → Bretter | Start |
+| Trockengestell | Bretter, Kräuter | Kräuter → Trockenkräuter | Start |
 | Hütte | Holz | Platz für 2 Siedler | 1 |
-| Zimmerei | Holz, Stein | Holz → Bretter | 1 |
 | Mühle | am Bachufer | Getreide → Mehl | 2 |
 | Backhaus | Bretter, Lehm | Mehl → Brot | 2 |
 | Steinmetz | am Felshang | Stein → Quader | 3 |
@@ -105,7 +108,8 @@ Tagwerke zur Verfügung: Platz zum Ernten oder Platz zum Bauen.
 | Brücke | Quader, Eisen | macht Flecken jenseits des Flusses erreichbar | 4 |
 | Markt | Quader, Tuch | Händler kommt öfter, mehr Aufträge | 5 |
 
-Gebäude arbeiten **pro Tag** (z. B. Mühle: 4 Mehl je Tag), nicht in Echtzeit.
+Gebäude arbeiten **pro Tag** (z. B. Mühle: 4 Mehl je Tag), nicht in Echtzeit: über Nacht beim Einbringen, nach
+Aufträgen, die in der Werkstatt stehen bleiben, bis man sie ändert.
 
 **Hilfsmittel** aus der Schmiede, einmal je Tagwerk, ohne Schritt: Gießkanne (eine Art +1 Reife), Laterne (Nebel weg),
 Sichel (erntet eine Reihe), Lockfutter (alle Tiere in die Mitte).
@@ -206,7 +210,8 @@ services:
 
 1. **Brett** (fertig) – ein Tagwerk im Wald spielbar im Browser: Ketten, Ringe, Reife, Gestrüpp, Hasen, Rückgängig,
    dazu schon die drei Wald-Siedler mit Fähigkeiten. Regeln mit Tests.
-2. **Kreislauf** – Flecken-Karte, Lager, Werkstatt mit fünf Rezepten, Speichern im Browser.
+2. **Kreislauf** (fertig) – Flecken-Karte, Lager, Werkstatt mit fünf Rezepten, Speichern im Browser. Plan und
+   Abweichungen in [`meilenstein-2.md`](meilenstein-2.md).
 3. **Server** – Docker-Image und `compose.yaml` (vorgezogen, fertig), Konten, Speichern auf dem Server, PWA.
 4. **Inhalt** – Siedler und Fähigkeiten, Wetter, Händler, Kapitel 1–3, drei Biome.
 5. **Feinschliff** – Jahreszeiten, Kapitel 4–6, Einführung, Klang.

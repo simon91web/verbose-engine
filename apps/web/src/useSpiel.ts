@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  ARTEN, SIEDLER, ernten, faehigkeit, folgeSeed, folgeTagwerk, gesamtErtrag, istVorbei,
+  ARTEN, SIEDLER, ernten, faehigkeit, istVorbei,
   type Art, type Bericht, type SiedlerId, type Tagwerk, type Zelle, type Zug,
 } from '@lichtung/spiel';
-import { laden, neuerSpielstand, speichern, type Spielstand } from './spielstand';
 
 export type Ton = '' | 'gold' | 'leise';
 export interface Meldung {
@@ -13,6 +12,9 @@ export interface Meldung {
 }
 export interface Hinweis {
   text: string;
+  symbol?: 'haken' | 'mond' | 'hammer' | 'zurueck' | 'info';
+  /** Wie lange der Hinweis steht (ms); sonst 4 s. */
+  dauer?: number;
   aktion?: { text: string; tun: () => void };
 }
 
@@ -39,35 +41,40 @@ function meldungZu(b: Bericht): Meldung {
   return { symbol: 'haken', text: teile.join(' · '), ton: b.ring || b.hasen ? 'gold' : '' };
 }
 
-/** Spielstand, Rückgängig, Animationsdaten und Rückmeldungen eines Tagwerks. */
-export function useSpiel() {
-  const [ersterStart] = useState(() => laden() === null);
-  const [stand, setStand] = useState<Spielstand>(() => laden() ?? neuerSpielstand());
+/** Verlauf, Animationsdaten und Rückmeldungen eines Tagwerks. Das Tagwerk selbst gehört der Siedlung. */
+export function useSpiel(
+  tagwerk: Tagwerk,
+  onTagwerk: (t: Tagwerk) => void,
+  onEinbringen: (t: Tagwerk) => void,
+  setHinweis: (h: Hinweis | null) => void,
+) {
   const [verlauf, setVerlauf] = useState<Tagwerk[]>([]);
   const [geister, setGeister] = useState<Zug['entfernt']>([]);
   const [herkunft, setHerkunft] = useState<Record<number, number>>({});
   const [meldung, setMeldung] = useState<Meldung | null>(null);
-  const [hinweis, setHinweis] = useState<Hinweis | null>(null);
-  const [endeOffen, setEndeOffen] = useState(false);
+  const [endeOffen, setEndeOffen] = useState(() => istVorbei(tagwerk));
 
   // Aktueller Stand für Handlungen direkt nach einem Zeitgeber, bevor React neu gezeichnet hat
-  const aktuell = useRef(stand);
+  const aktuell = useRef(tagwerk);
   const nachlauf = useRef<{ timer: number; danach: Tagwerk } | null>(null);
   const geisterTimer = useRef(0);
   const endeTimer = useRef(0);
+  const nachOben = useRef(onTagwerk);
+  nachOben.current = onTagwerk;
 
-  const setze = useCallback((s: Spielstand) => {
-    aktuell.current = s;
-    setStand(s);
+  const setzeTagwerk = useCallback((t: Tagwerk) => {
+    aktuell.current = t;
+    nachOben.current(t);
   }, []);
-  const setzeTagwerk = useCallback((t: Tagwerk) => setze({ ...aktuell.current, tagwerk: t }), [setze]);
-
-  useEffect(() => {
-    if (!speichern(stand)) setHinweis({ text: 'Nicht gespeichert – der Browser erlaubt keinen Speicher' });
-  }, [stand]);
 
   useEffect(() => () => {
-    clearTimeout(nachlauf.current?.timer);
+    // Wer die Ansicht verlässt, verliert keinen wartenden Zug
+    const n = nachlauf.current;
+    if (n) {
+      clearTimeout(n.timer);
+      nachlauf.current = null;
+      nachOben.current(n.danach);
+    }
     clearTimeout(geisterTimer.current);
     clearTimeout(endeTimer.current);
   }, []);
@@ -93,18 +100,18 @@ export function useSpiel() {
     clearTimeout(geisterTimer.current);
     geisterTimer.current = window.setTimeout(() => setGeister([]), 260);
     setMeldung(meldungZu(zug.bericht));
-    if (zug.bericht.gemischt) setHinweis({ text: 'Keine Kette mehr möglich – neu gemischt' });
+    if (zug.bericht.gemischt) setHinweis({ text: 'Keine Kette mehr möglich – neu gemischt', symbol: 'info' });
     if (zug.danach === zug.zwischen) {
       uebernehmen(zug.danach);
       return;
     }
     setzeTagwerk(zug.zwischen);
     nachlauf.current = { timer: window.setTimeout(() => uebernehmen(zug.danach), NACHLAUF), danach: zug.danach };
-  }, [setzeTagwerk, uebernehmen]);
+  }, [setzeTagwerk, uebernehmen, setHinweis]);
 
   const ernte = useCallback((pfad: Zelle[]) => {
     vorziehen();
-    const vorher = aktuell.current.tagwerk;
+    const vorher = aktuell.current;
     const e = ernten(vorher, pfad);
     if (!e.ok) return setMeldung({ symbol: 'haken', text: e.grund, ton: 'leise' });
     anwenden(e.wert, vorher);
@@ -112,7 +119,7 @@ export function useSpiel() {
 
   const setzeEin = useCallback((id: SiedlerId) => {
     vorziehen();
-    const vorher = aktuell.current.tagwerk;
+    const vorher = aktuell.current;
     const e = faehigkeit(vorher, id);
     if (!e.ok) return setMeldung({ symbol: SIEDLER[id].laedt, text: e.grund, ton: 'leise' });
     anwenden(e.wert, vorher);
@@ -137,33 +144,16 @@ export function useSpiel() {
   }, [vorziehen]);
 
   const einbringen = useCallback(() => {
-    const s = aktuell.current;
-    const tag = s.tag + 1;
-    setze({ ...s, tag, bester: Math.max(s.bester, gesamtErtrag(s.tagwerk)), tagwerk: folgeTagwerk(s.tagwerk, folgeSeed(s.seed, tag)) });
-    setVerlauf([]);
-    setHerkunft({});
-    setEndeOffen(false);
-    setMeldung(null);
-    setHinweis({ text: `Ertrag eingebracht · Tag ${tag} beginnt` });
-  }, [setze]);
-
-  const neuBeginnen = useCallback(() => {
     vorziehen();
-    const alt = aktuell.current;
-    setze(neuerSpielstand());
-    setVerlauf([]);
-    setHerkunft({});
-    setEndeOffen(false);
-    setMeldung(null);
-    setHinweis({ text: 'Neues Spiel – Tag 1', aktion: { text: 'Rückgängig', tun: () => { setze(alt); setHinweis(null); } } });
-  }, [vorziehen, setze]);
+    onEinbringen(aktuell.current);
+  }, [vorziehen, onEinbringen]);
 
   return {
-    stand, tagwerk: stand.tagwerk, ersterStart, geister, herkunft, meldung, hinweis, endeOffen,
+    tagwerk, geister, herkunft, meldung, endeOffen,
     kannZurueck: verlauf.length > 0,
-    aktuellesTagwerk: () => aktuell.current.tagwerk,
-    vorziehen, ernte, setzeEin, zurueck, heimkehren, einbringen, neuBeginnen,
-    setMeldung, setHinweis, schliesseEnde: () => setEndeOffen(false),
+    aktuellesTagwerk: () => aktuell.current,
+    vorziehen, ernte, setzeEin, zurueck, heimkehren, einbringen,
+    setMeldung, schliesseEnde: () => setEndeOffen(false),
   };
 }
 

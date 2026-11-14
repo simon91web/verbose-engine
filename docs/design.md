@@ -34,6 +34,8 @@ Einstellungen: „Tag“, „Abend“, „Wie das Gerät“.
 | `--moos` / `--moos-d` | #4E7F2F / #3A6222 | gleich | Hauptknopf, Fortschritt |
 | `--honig` / `--honig-d` | #E8A93A / #B97F1E | #F0B54C / #B9822A | Bereit, Belohnung, Auswahl |
 | `--matte` | #2F4A2A | #22331A | Unterlage des Bretts |
+| `--warnung` | #B4532A | #F09A6B | Fehlende Kosten (ruhig markiert, nie als Alarm) |
+| `--nebel-f` / `--nebel-r` | Weiß 45 % / 90 % | Weiß 6 % / 38 % | Unerkundete Flecken: Füllung / gestrichelter Rand |
 
 ## Kacheln
 
