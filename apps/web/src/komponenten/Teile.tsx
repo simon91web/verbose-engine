@@ -1,7 +1,7 @@
 import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react';
 import { Check, CircleCheck, CloudCheck, CloudOff, Hammer, History, House, Info, Moon, Sparkles, Sprout, Trophy, Undo2, X } from 'lucide-react';
 import { ARTEN, SIEDLER, faehigkeitPruefen, type SiedlerId, type Tagwerk } from '@lichtung/spiel';
-import { Marke, SIEDLER_FARBE } from '../symbole';
+import { Marke, SIEDLER_FARBE, WolkePause } from '../symbole';
 import type { Hinweis, Meldung } from '../useSpiel';
 
 export function Wortmarke({ nurZeichen = false }: { nurZeichen?: boolean }) {
@@ -153,12 +153,12 @@ export function Toast({ hinweis, onSchliessen }: { hinweis: Hinweis | null; onSc
 }
 
 /** Reservierter Platz im Kopf: die Wolke erscheint nur, wenn nicht gespeichert werden kann; Antippen nennt den Grund. */
-export function SyncPlatz({ zeigen, text, onKlick }: { zeigen: boolean; text: string; onKlick: () => void }) {
+export function SyncPlatz({ zeigen, text, onKlick, pause = false }: { zeigen: boolean; text: string; onKlick: () => void; pause?: boolean }) {
   return (
     <span className="sync-platz">
       {zeigen && (
-        <button type="button" className="sync-knopf" onClick={onKlick} title={text} aria-label={text}>
-          <CloudOff className="ic" />
+        <button type="button" className={`sync-knopf${pause ? ' pause' : ''}`} onClick={onKlick} title={text} aria-label={text}>
+          {pause ? <WolkePause className="ic" /> : <CloudOff className="ic" />}
         </button>
       )}
     </span>

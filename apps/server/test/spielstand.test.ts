@@ -46,6 +46,49 @@ describe('Spielstand', () => {
   });
 });
 
+describe('Neuere Datenversion auf dem Server', () => {
+  const neu = (tag: number) => ({ version: 4, siedlung: { tag } });
+  const alt = (basis: number, tag: number) => ({ basis, daten: stand(tag), geaendert: tag * 1000, geraet: 'Handy' });
+
+  it('lehnt einen Stand mit älterer Version ab, ohne zu überschreiben', async () => {
+    const { app, cookie } = await angemeldeteApp();
+    await put(app, '/api/spielstand', { basis: 0, daten: neu(5), geaendert: 5000, geraet: 'Laptop' }, cookie);
+    const r = await put(app, '/api/spielstand', alt(1, 9), cookie);
+    expect(r.statusCode).toBe(409);
+    expect(r.json()).toMatchObject({ neuereVersion: true, revision: 1, daten: neu(5), geraet: 'Laptop' });
+    // auch mit falscher Basis zählt zuerst die Version
+    expect((await put(app, '/api/spielstand', alt(0, 9), cookie)).json().neuereVersion).toBe(true);
+    expect((await get(app, '/api/spielstand', cookie)).json()).toMatchObject({ revision: 1, daten: neu(5) });
+  });
+
+  it('lehnt auch erzwingen ab und legt keine Sicherung an', async () => {
+    const { app, cookie } = await angemeldeteApp();
+    await put(app, '/api/spielstand', { basis: 0, daten: neu(5), geaendert: 5000, geraet: 'Laptop' }, cookie);
+    const r = await put(app, '/api/spielstand?erzwingen=1', { ...alt(0, 9), grund: 'Überholt' }, cookie);
+    expect(r.statusCode).toBe(409);
+    expect(r.json()).toMatchObject({ neuereVersion: true, revision: 1, daten: neu(5) });
+    expect((await get(app, '/api/sicherungen', cookie)).json()).toEqual([]);
+    expect((await get(app, '/api/spielstand', cookie)).json().daten).toEqual(neu(5));
+  });
+
+  it('lässt gleiche und neuere Versionen durch', async () => {
+    const { app, cookie } = await angemeldeteApp();
+    await sichern(app, cookie, 0, 1);
+    expect((await put(app, '/api/spielstand', { basis: 1, daten: neu(2), geaendert: 2000, geraet: 'x' }, cookie)).statusCode).toBe(200);
+    expect((await put(app, '/api/spielstand', { basis: 2, daten: neu(3), geaendert: 3000, geraet: 'x' }, cookie)).statusCode).toBe(200);
+  });
+
+  it('nimmt Sicherungen weiter an und stellt ältere Sicherungen auf Wunsch wieder her', async () => {
+    const { app, cookie } = await angemeldeteApp();
+    await put(app, '/api/spielstand', { basis: 0, daten: neu(5), geaendert: 5000, geraet: 'Laptop' }, cookie);
+    const s = await post(app, '/api/sicherungen', { daten: stand(7), geaendert: 7000, geraet: 'Handy', grund: 'Vor dem Neuladen' }, { cookie });
+    expect(s.json()).toEqual({ ok: true });
+    const w = await post(app, '/api/sicherungen/1/wiederherstellen', {}, { cookie });
+    expect(w.statusCode).toBe(200);
+    expect(w.json()).toMatchObject({ revision: 2, daten: stand(7) });
+  });
+});
+
 describe('Sicherungen', () => {
   it('erzwingen legt den bisherigen Stand als Sicherung ab', async () => {
     const { app, cookie } = await angemeldeteApp();

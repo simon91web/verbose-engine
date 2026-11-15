@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { laden, neuerSpielstand, speichern, type Spieldaten, type Spielstand } from './spielstand';
+import { DATENVERSION, ladenGenau, neuerSpielstand, speichern, type Spieldaten, type Spielstand } from './spielstand';
 
 export type Abgleichsfelder = Partial<Pick<Spielstand, 'revision' | 'ungespeichert'>>;
 
@@ -9,8 +9,11 @@ export type Abgleichsfelder = Partial<Pick<Spielstand, 'revision' | 'ungespeiche
  * Was vom Server kommt, geht über `uebernehmen`; `epoche` zählt diese Wechsel, damit Ansichten mit eigenem Verlauf neu anfangen.
  */
 export function useSpielstand() {
-  const [ersterStart] = useState(() => laden() === null);
-  const [stand, setStand] = useState<Spielstand>(() => laden() ?? neuerSpielstand());
+  // Ein Stand von einer neueren App wird weder verworfen noch überschrieben: die App sperrt sich (`lokalZuNeu`)
+  const [start] = useState(ladenGenau);
+  const ersterStart = start.art === 'leer';
+  const lokalZuNeu = start.art === 'zuNeu';
+  const [stand, setStand] = useState<Spielstand>(() => (start.art === 'ok' ? start.stand : neuerSpielstand()));
   const [speicherFehler, setSpeicherFehler] = useState(false);
   const [epoche, setEpoche] = useState(0);
   const neuester = useRef(stand);
@@ -36,7 +39,7 @@ export function useSpielstand() {
 
   /** Spiel vom Server übernehmen: nichts ist ungespeichert, ein laufender Verlauf wird verworfen. */
   const uebernehmen = useCallback((spiel: Spieldaten, revision: number, geaendert: number) => {
-    ablegen({ version: 3, siedlung: spiel.siedlung, bester: spiel.bester, revision, geaendert, ungespeichert: false });
+    ablegen({ version: DATENVERSION, siedlung: spiel.siedlung, bester: spiel.bester, revision, geaendert, ungespeichert: false });
     epocheRef.current += 1;
     setEpoche(epocheRef.current);
   }, [ablegen]);
@@ -47,5 +50,5 @@ export function useSpielstand() {
 
   const epocheAktuell = useCallback(() => epocheRef.current, []);
 
-  return { stand, ersterStart, speicherFehler, epoche, epocheAktuell, setze, aendere, aktuell, merke, uebernehmen };
+  return { stand, ersterStart, lokalZuNeu, speicherFehler, epoche, epocheAktuell, setze, aendere, aktuell, merke, uebernehmen };
 }

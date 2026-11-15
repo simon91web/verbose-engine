@@ -19,6 +19,12 @@ const Planken = createLucideIcon('planken', [
   ['rect', { width: '18', height: '4', x: '3', y: '10', rx: '1', key: 'b' }],
   ['rect', { width: '18', height: '4', x: '3', y: '17', rx: '1', key: 'c' }],
 ]);
+/** Wolke mit Pause: „Hochladen pausiert“ (wie im Mockup). */
+export const WolkePause = createLucideIcon('wolke-pause', [
+  ['path', { d: 'M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z', key: 'a' }],
+  ['path', { d: 'M10.5 11.5v4', key: 'b' }],
+  ['path', { d: 'M13.5 11.5v4', key: 'c' }],
+]);
 const Schale = createLucideIcon('schale', [
   ['path', { d: 'M3 12h18a9 9 0 0 1-18 0Z', key: 'a' }],
   ['path', { d: 'M8 8c0-1.5 1.2-2 1.2-3.5', key: 'b' }],

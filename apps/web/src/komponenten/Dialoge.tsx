@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react';
-import { BookOpen, Check, ChevronRight, CloudCheck, CloudOff, HardDrive, History, Laptop, LogIn, LogOut, MapPin, Moon, Pencil, RefreshCw, RotateCcw, Smartphone, Sun, SunMoon, Tablet, Trophy, Lock } from 'lucide-react';
+import { BookOpen, Check, ChevronRight, CloudCheck, CloudOff, HardDrive, History, Laptop, LogIn, LogOut, MapPin, Moon, Pencil, RefreshCw, RotateCcw, Smartphone, Sun, SunMoon, Tablet, Trophy, Lock, Info } from 'lucide-react';
 import { ARTEN, ROHSTOFFE, WAREN, WAREN_LISTE, gesamtErtrag, istVorbei, type Lager, type Tagwerk } from '@lichtung/spiel';
 import { zahl, vorZeit } from '../anzeige';
 import { NAME_MAX, geraetSymbolName } from '../geraet';
 import type { Status } from '../useAbgleich';
-import { Marke } from '../symbole';
+import type { NeuLadenZustand } from '../pwa';
+import { Marke, WolkePause } from '../symbole';
 import { wenigerBewegung, type Stimmung } from '../umgebung';
 
 interface ModalProps {
@@ -138,6 +139,45 @@ export function RegelnDialog({ onSchliessen }: { onSchliessen: () => void }) {
   );
 }
 
+interface VeraltetProps {
+  zustand: NeuLadenZustand;
+  /** Die letzten Züge dieses Geräts liegen als Sicherung auf dem Server. */
+  sicherung: boolean;
+  onNeuLaden: () => void;
+}
+
+/**
+ * Ein Stand mit neuerer Datenversion ist da: diese App lädt nichts mehr hoch und spielt nicht weiter.
+ * Nur über „Neu laden“ zu verlassen: kein Escape, kein Klick daneben.
+ */
+export function VeraltetDialog({ zustand, sicherung, onNeuLaden }: VeraltetProps) {
+  const knopf = useRef<HTMLButtonElement>(null);
+  useEffect(() => knopf.current?.focus({ preventScroll: true }), [zustand]);
+  return (
+    <Modal titel="Neue Version nötig">
+      <div className="sp-status"><span className="chip text"><WolkePause className="ic" />Hochladen pausiert</span></div>
+      <p className="sp-text">
+        Dein Spielstand ist auf einem anderen Gerät schon mit einer neueren Version von Lichtung gespeichert. Diese App lädt nichts hoch, bis sie neu geladen ist.
+      </p>
+      {sicherung && <div className="hinweis"><History className="ic" /><span>Deine letzten Züge auf diesem Gerät sind als Sicherung aufgehoben.</span></div>}
+      {zustand === 'laedt' ? (
+        <div className="sp-lade" role="status"><RefreshCw className="ic dreht" /><span>Neue Version wird geladen …</span></div>
+      ) : (
+        <>
+          {zustand === 'haengt' && (
+            <div className="hinweis warn" role="alert"><Info className="ic" /><span>Hat nicht geklappt. Schließe Lichtung ganz und öffne es neu.</span></div>
+          )}
+          <div className="modal-fuss einzeln">
+            <button ref={knopf} className="knopf haupt" onClick={onNeuLaden}>
+              <RefreshCw className="ic" />{zustand === 'haengt' ? 'Nochmal versuchen' : 'Neu laden'}
+            </button>
+          </div>
+        </>
+      )}
+    </Modal>
+  );
+}
+
 const GRUPPEN: [string, 'rohstoff' | 'ware' | 'proviant'][] = [['Rohstoffe', 'rohstoff'], ['Waren', 'ware'], ['Proviant', 'proviant']];
 
 /** Alles im Lager, nach Rohstoffen, Waren und Proviant geordnet. */
@@ -193,10 +233,11 @@ export function statusText(status: Status, um: number | null, jetzt: number): st
     case 'abgemeldet': return 'Nicht angemeldet';
     case 'fehler': return 'Nicht gespeichert – neuer Versuch folgt';
     case 'lokal': return 'Nur auf diesem Gerät';
+    case 'veraltet': return 'Hochladen pausiert – neue Version nötig';
   }
 }
 
-const STATUS_SYMBOL = { gespeichert: CloudCheck, speichert: RefreshCw, offline: CloudOff, abgemeldet: Lock, fehler: CloudOff, lokal: HardDrive };
+const STATUS_SYMBOL = { gespeichert: CloudCheck, speichert: RefreshCw, offline: CloudOff, abgemeldet: Lock, fehler: CloudOff, lokal: HardDrive, veraltet: WolkePause };
 const GERAET_SYMBOL = { smartphone: Smartphone, tablet: Tablet, laptop: Laptop };
 
 /** Alle 20 s neu, damit „vor 3 Min.“ stimmt, solange das Menü offen ist. */
