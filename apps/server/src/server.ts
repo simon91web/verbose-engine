@@ -30,6 +30,8 @@ import {
   stelleWiederHer,
 } from './spielstand.ts';
 
+const ZU_NEU = 'Neuere Version auf dem Server';
+
 /**
  * Liefert das gebaute Spiel aus (apps/web/dist), verwaltet das eine Konto und speichert den Spielstand.
  * `baueApp` startet nichts; Tests nutzen sie mit app.inject() und einer Datenbank im Speicher.
@@ -184,13 +186,18 @@ export async function baueApp({ datenbank: db, web, version = 'dev', logger = fa
 
     if ((anfrage.query as Record<string, unknown>).erzwingen === '1') {
       const grund = typeof b.grund === 'string' && b.grund.trim() ? b.grund.trim().slice(0, 80) : 'Überholt';
-      return erzwinge(db, konto, eingang, grund);
+      const erzwungen = erzwinge(db, konto, eingang, grund);
+      if (!erzwungen.ok) return antwort.code(409).send({ fehler: ZU_NEU, neuereVersion: true, ...erzwungen.stand });
+      return { revision: erzwungen.revision };
     }
     if (typeof b.basis !== 'number' || !Number.isInteger(b.basis) || b.basis < 0) {
       return antwort.code(400).send({ fehler: 'Spielstand ungültig' });
     }
     const ergebnis = speichere(db, konto, b.basis, eingang);
-    if (!ergebnis.ok) return antwort.code(409).send({ fehler: 'Stand ist veraltet', ...ergebnis.stand });
+    if (!ergebnis.ok) {
+      const fehler = ergebnis.neuereVersion ? ZU_NEU : 'Stand ist veraltet';
+      return antwort.code(409).send({ fehler, ...(ergebnis.neuereVersion ? { neuereVersion: true } : {}), ...ergebnis.stand });
+    }
     return { revision: ergebnis.revision };
   });
 

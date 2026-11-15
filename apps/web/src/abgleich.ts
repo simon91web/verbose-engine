@@ -1,12 +1,14 @@
 import { WAREN_LISTE, type Ware } from '@lichtung/spiel';
 import type { ServerStand } from './api';
-import { ausServerDaten, gleichesSpiel, istUnberuehrt, type Spieldaten, type Spielstand } from './spielstand';
+import { ausServerDaten, gleichesSpiel, istUnberuehrt, istZuNeu, type Spieldaten, type Spielstand } from './spielstand';
 
 /** Die Regeln des Abgleichs, ohne Netz und ohne Oberfläche. */
 
 export type Seite = 'lokal' | 'server';
 
 export type Entscheidung =
+  /** Der Server hat einen Stand einer neueren Datenversion: nichts hochladen, nichts übernehmen, App sperren. */
+  | { art: 'zuNeu' }
   /** Weder hier noch auf dem Server gibt es etwas. */
   | { art: 'nichts' }
   /** Der Server ist leer: der Stand von hier geht hoch. */
@@ -27,6 +29,8 @@ export const neuerer = (lokal: Spielstand, server: { geaendert?: number }): Seit
   lokal.geaendert > (server.geaendert ?? 0) ? 'lokal' : 'server';
 
 export function entscheide(lokal: Spielstand, server: ServerStand): Entscheidung {
+  // Vor allen anderen Regeln: ein Stand von einer neueren App wird nie überschrieben
+  if (istZuNeu(server.daten)) return { art: 'zuNeu' };
   if (server.daten === null) return istUnberuehrt(lokal) ? { art: 'nichts' } : { art: 'hochladen' };
   const spiel = ausServerDaten(server.daten);
   // Unbrauchbarer Stand auf dem Server: der von hier gilt, der andere bleibt als Sicherung

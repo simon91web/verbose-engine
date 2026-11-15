@@ -9,7 +9,7 @@ import { TagwerkAnsicht } from './TagwerkAnsicht';
 import { WerkstattAnsicht } from './WerkstattAnsicht';
 import { wareText } from './anzeige';
 import { Anmelden, Einrichten, Laden } from './komponenten/Anmeldung';
-import { LagerDialog, Menue, RegelnDialog, statusText } from './komponenten/Dialoge';
+import { LagerDialog, Menue, RegelnDialog, VeraltetDialog, statusText } from './komponenten/Dialoge';
 import type { Effekt } from './komponenten/Landkarte';
 import { Rahmen, type Bereich } from './komponenten/Rahmen';
 import { SicherungenDialog, StandWahlDialog } from './komponenten/Sicherungen';
@@ -63,7 +63,7 @@ const nachtText = (arbeit: Arbeit[]): string[] =>
   arbeit.filter((a) => a.gemacht > 0).map((a) => `${GEBAEUDE[a.gebaeude].name}: ${wareText(REZEPTE[a.rezept].aus, a.gemacht)}`);
 
 export function App() {
-  const { stand, ersterStart, speicherFehler, epoche, epocheAktuell, setze, aendere, aktuell, merke, uebernehmen } = useSpielstand();
+  const { stand, ersterStart, lokalZuNeu, speicherFehler, epoche, epocheAktuell, setze, aendere, aktuell, merke, uebernehmen } = useSpielstand();
   const s = stand.siedlung;
   const breit = useBreit();
   const [stimmung, setStimmung] = useStimmung();
@@ -77,8 +77,9 @@ export function App() {
   const [effekt, setEffekt] = useState<Effekt | null>(null);
   const [geraet, setGeraet] = useGeraet();
   const oeffneSicherungen = useCallback(() => setSicherungenOffen(true), []);
-  const abgleich = useAbgleich({ stand, aktuell, merke, uebernehmen, geraet, melde: setHinweis, oeffneSicherungen });
+  const abgleich = useAbgleich({ stand, aktuell, merke, uebernehmen, geraet, melde: setHinweis, oeffneSicherungen, lokalZuNeu });
   const imSpiel = abgleich.phase === 'spiel';
+  const veraltet = abgleich.status === 'veraltet';
   const version = useNeueVersion();
   const versionRef = useRef(version);
   versionRef.current = version;
@@ -87,6 +88,16 @@ export function App() {
     () => (version.neu ? { text: 'Neue Version da', symbol: 'neu', dauer: 0, aktion: { text: 'Neu laden', tun: () => versionRef.current.laden() } } : null),
     [version.neu],
   );
+
+  // Ein Stand mit neuerer Datenversion sperrt das Spiel: Menü weg, Hinweise stehen dahinter still
+  useEffect(() => {
+    if (veraltet) setMenueOffen(false);
+  }, [veraltet]);
+  // Die Version stimmt wieder (Neuladen hat geklappt): der Merker vom Versuch ist erledigt
+  const neuGeladen = version.neuGeladen;
+  useEffect(() => {
+    if (abgleich.status === 'gespeichert') neuGeladen();
+  }, [abgleich.status, neuGeladen]);
 
   const schliesseMenue = useCallback(() => setMenueOffen(false), []);
   const schliesseHinweis = useCallback(() => setHinweis(null), []);
@@ -251,13 +262,13 @@ export function App() {
     return null;
   };
 
-  const fremderDialog = regelnOffen || sicherungenOffen || !!abgleich.frage;
+  const fremderDialog = regelnOffen || sicherungenOffen || !!abgleich.frage || veraltet;
   const dialogOffen = lagerOffen || fremderDialog;
   const imTagwerk = ansicht === 'tagwerk' && s.unterwegs;
-  const zeigeStatus = abgleich.status === 'offline' || abgleich.status === 'fehler';
+  const zeigeStatus = abgleich.status === 'offline' || abgleich.status === 'fehler' || veraltet;
   const statusZeile = statusText(abgleich.status, abgleich.gespeichertUm, Date.now());
-  const sync = <SyncPlatz zeigen={zeigeStatus} text={statusZeile} onKlick={() => setHinweis({ text: statusZeile, symbol: 'wolkeAus' })} />;
-  const angezeigt = hinweis ?? versionHinweis;
+  const sync = <SyncPlatz zeigen={zeigeStatus} pause={veraltet} text={statusZeile} onKlick={() => setHinweis({ text: statusZeile, symbol: 'wolkeAus' })} />;
+  const angezeigt = veraltet ? null : (hinweis ?? versionHinweis);
 
   const spielInhalt = imTagwerk ? (
     <TagwerkAnsicht
@@ -339,6 +350,7 @@ export function App() {
         <SicherungenDialog breit={breit} onSchliessen={() => setSicherungenOffen(false)} onWiederherstellen={wiederherstellen} onSitzungVerloren={abgleich.sitzungVerloren} />
       )}
       {imSpiel && abgleich.frage && <StandWahlDialog frage={abgleich.frage} onWaehle={abgleich.waehle} />}
+      {imSpiel && veraltet && <VeraltetDialog zustand={version.neuLaden} sicherung={abgleich.sicherungAbgelegt} onNeuLaden={version.holen} />}
     </div>
   );
 }

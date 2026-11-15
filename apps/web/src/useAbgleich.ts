@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import * as api from './api';
 import { entscheide, standInfo, type Entscheidung, type Seite, type StandInfo } from './abgleich';
-import { ausServerDaten, zuDaten, type Spieldaten, type Spielstand } from './spielstand';
+import { ausServerDaten, istZuNeu, zuDaten, type Spieldaten, type Spielstand } from './spielstand';
 import type { Abgleichsfelder } from './useSpielstand';
 import type { Hinweis } from './useSpiel';
 
@@ -13,10 +13,14 @@ import type { Hinweis } from './useSpiel';
  *   nicht eingerichtet → Einrichten · nicht angemeldet → Anmelden
  *   angemeldet → GET /api/spielstand und `entscheide` (siehe abgleich.ts)
  * Danach: 2 s nach jeder Änderung speichern, sofort beim Wechsel in den Hintergrund, wiederholen bei „online“ und alle 30 s.
+ *
+ * Neuere Datenversion: Liegt auf dem Server (oder in diesem Gerät) ein Stand einer neueren App, sperrt sich diese App
+ * (Status „veraltet“): kein Hochladen, kein Überschreiben, kein Abgleich mehr, bis sie neu geladen ist. Eigene
+ * ungespeicherte Züge gehen einmal als Sicherung auf den Server.
  */
 
 export type Phase = 'pruefen' | 'einrichten' | 'anmelden' | 'spiel';
-export type Status = 'lokal' | 'gespeichert' | 'speichert' | 'offline' | 'abgemeldet' | 'fehler';
+export type Status = 'lokal' | 'gespeichert' | 'speichert' | 'offline' | 'abgemeldet' | 'fehler' | 'veraltet';
 
 export interface Frage {
   lokal: StandInfo;
@@ -35,6 +39,7 @@ const VERZOEGERUNG = 2000;
 const WIEDERHOLEN = 30_000;
 const NEU_LADEN_ABSTAND = 10_000;
 const VERBUNDEN = 'lichtung.verbunden';
+export const SICHERUNG_VOR_NEULADEN = 'Vor dem Neuladen';
 export const KEINE_VERBINDUNG = 'Keine Verbindung';
 
 const nieVerbunden = (): boolean => {
@@ -52,6 +57,24 @@ const verbundenMerken = () => {
   }
 };
 
+/** Zeitpunkt (`geaendert`) der zuletzt vor dem Neuladen gesicherten Züge. */
+const GESICHERT_BEI = 'lichtung.gesichertVorNeuladen';
+const gesichertBei = (): number | null => {
+  try {
+    const w = Number(localStorage.getItem(GESICHERT_BEI));
+    return Number.isFinite(w) && w > 0 ? w : null;
+  } catch {
+    return null;
+  }
+};
+const gesichertMerken = (geaendert: number) => {
+  try {
+    localStorage.setItem(GESICHERT_BEI, String(geaendert));
+  } catch {
+    // dann wird beim nächsten Mal eben noch einmal gesichert
+  }
+};
+
 interface Eingabe {
   stand: Spielstand;
   aktuell: () => Spielstand;
@@ -60,20 +83,27 @@ interface Eingabe {
   geraet: string;
   melde: (h: Hinweis) => void;
   oeffneSicherungen: () => void;
+  /** Im Speicher dieses Geräts liegt ein Stand einer neueren App. */
+  lokalZuNeu?: boolean;
 }
 
 export function useAbgleich(eingabe: Eingabe) {
   const { stand } = eingabe;
-  const [phase, setPhaseState] = useState<Phase>('pruefen');
-  const [status, setStatusState] = useState<Status>('lokal');
+  const gesperrtStart = eingabe.lokalZuNeu === true;
+  const [phase, setPhaseState] = useState<Phase>(gesperrtStart ? 'spiel' : 'pruefen');
+  const [status, setStatusState] = useState<Status>(gesperrtStart ? 'veraltet' : 'lokal');
+  const [sicherungAbgelegt, setSicherungAbgelegt] = useState(false);
   const [gespeichertUm, setGespeichertUm] = useState<number | null>(null);
   const [frage, setFrageState] = useState<Frage | null>(null);
 
   // Immer der neueste Stand für Zeitgeber und Ereignisse
   const e = useRef(eingabe);
   e.current = eingabe;
-  const phaseRef = useRef<Phase>('pruefen');
-  const statusRef = useRef<Status>('lokal');
+  const phaseRef = useRef<Phase>(gesperrtStart ? 'spiel' : 'pruefen');
+  const statusRef = useRef<Status>(gesperrtStart ? 'veraltet' : 'lokal');
+  /** Gesetzt, sobald eine neuere Datenversion bekannt ist; gilt bis zum Neuladen der App. */
+  const gesperrtRef = useRef(gesperrtStart);
+  const sicherungVersucht = useRef(false);
   const frageRef = useRef<Frage | null>(null);
   const serverRef = useRef<api.ServerStand | null>(null);
   const zugRef = useRef(false);
@@ -83,10 +113,12 @@ export function useAbgleich(eingabe: Eingabe) {
   const kette = useRef<Promise<unknown>>(Promise.resolve());
 
   function setPhase(p: Phase) {
+    if (gesperrtRef.current && p !== 'spiel') return;
     phaseRef.current = p;
     setPhaseState(p);
   }
   function setStatus(s: Status) {
+    if (gesperrtRef.current && s !== 'veraltet') return;
     statusRef.current = s;
     setStatusState(s);
     if (s === 'gespeichert') setGespeichertUm(Date.now());
@@ -138,7 +170,7 @@ export function useAbgleich(eingabe: Eingabe) {
   const eingangVon = (s: Spielstand): api.Eingang => ({ daten: zuDaten(s), geaendert: s.geaendert, geraet: e.current.geraet });
 
   async function speichernInnen(o: { keepalive?: boolean; basis?: number; tiefe?: number } = {}): Promise<void> {
-    if (phaseRef.current !== 'spiel' || frageRef.current) return;
+    if (gesperrtRef.current || phaseRef.current !== 'spiel' || frageRef.current) return;
     const s = e.current.aktuell();
     if (!s.ungespeichert && o.basis === undefined) return;
     setStatus('speichert');
@@ -155,6 +187,27 @@ export function useAbgleich(eingabe: Eingabe) {
     } else if (r.art === 'nichtAngemeldet') zurAnmeldung();
     else if (r.art === 'nichtErreichbar') nichtErreichbar();
     else unterwegsFehler();
+  }
+
+  // ---------- Neuere Datenversion ----------
+
+  /** Ab hier läuft nichts mehr zum Server außer der einen Sicherung der eigenen, ungespeicherten Züge. */
+  async function sperren(): Promise<void> {
+    gesperrtRef.current = true;
+    wartend.current = null;
+    setFrage(null);
+    setPhase('spiel');
+    setStatus('veraltet');
+    const lokal = e.current.aktuell();
+    if (!lokal.ungespeichert || sicherungVersucht.current) return;
+    sicherungVersucht.current = true;
+    // Dieselben Züge nur einmal sichern, auch wenn die alte App mehrmals neu geladen wird
+    if (gesichertBei() === lokal.geaendert) return setSicherungAbgelegt(true);
+    const r = await api.sicherungAnlegen(eingangVon(lokal), SICHERUNG_VOR_NEULADEN);
+    if (r.art === 'ok') {
+      gesichertMerken(lokal.geaendert);
+      setSicherungAbgelegt(true);
+    }
   }
 
   // ---------- Entscheiden und anwenden ----------
@@ -203,6 +256,9 @@ export function useAbgleich(eingabe: Eingabe) {
       return true;
     };
     switch (d.art) {
+      case 'zuNeu':
+        await sperren();
+        break;
       case 'nichts':
         setStatus('gespeichert');
         break;
@@ -245,6 +301,7 @@ export function useAbgleich(eingabe: Eingabe) {
   }
 
   async function synchronisiereInnen(): Promise<void> {
+    if (gesperrtRef.current) return;
     const r = await api.spielstandLaden();
     zuletztGeladen.current = Date.now();
     if (r.art === 'nichtErreichbar') return nichtErreichbar();
@@ -255,6 +312,7 @@ export function useAbgleich(eingabe: Eingabe) {
 
   /** Start und jeder neue Versuch nach einer Unterbrechung. */
   async function verbinden(): Promise<void> {
+    if (gesperrtRef.current) return;
     const r = await api.ich();
     if (r.art !== 'ok') {
       if (r.art === 'nichtErreichbar') nichtErreichbar();
@@ -344,6 +402,7 @@ export function useAbgleich(eingabe: Eingabe) {
   }
 
   async function wiederherstellenInnen(id: number): Promise<WiederErgebnis> {
+    if (gesperrtRef.current) return { ok: false, fehler: 'Neue Version nötig' };
     // Eigene Änderungen gehen zuerst hoch, damit sie in „Vor Wiederherstellen“ landen
     if (e.current.aktuell().ungespeichert && statusRef.current === 'gespeichert') await speichernInnen();
     const r = await api.wiederherstellen(id);
@@ -353,6 +412,11 @@ export function useAbgleich(eingabe: Eingabe) {
       return { ok: false, fehler: 'Nicht angemeldet' };
     }
     if (r.art !== 'ok') return { ok: false, fehler: r.fehler };
+    // Eine Sicherung von einer neueren App ist jetzt der Stand auf dem Server: nicht anfassen, App sperren
+    if (istZuNeu(r.daten.daten)) {
+      await sperren();
+      return { ok: false, fehler: 'Neue Version nötig' };
+    }
     const spiel = ausServerDaten(r.daten.daten);
     if (!spiel) return { ok: false, fehler: 'Diese Sicherung lässt sich nicht öffnen' };
     e.current.uebernehmen(spiel, r.daten.revision, r.daten.geaendert ?? Date.now());
@@ -373,6 +437,8 @@ export function useAbgleich(eingabe: Eingabe) {
   useEffect(() => {
     if (gestartet.current) return;
     gestartet.current = true;
+    // Ein zu neuer Stand auf diesem Gerät: gar nicht erst verbinden
+    if (gesperrtRef.current) return;
     void o.current.reihe(o.current.verbinden);
   }, []);
 
@@ -444,7 +510,7 @@ export function useAbgleich(eingabe: Eingabe) {
     sitzungVerloren: () => g.current.zurAnmeldung(),
   }).current;
 
-  return { phase, status, gespeichertUm, frage, ...aussen };
+  return { phase, status, gespeichertUm, frage, sicherungAbgelegt, ...aussen };
 }
 
 export type Abgleich = ReturnType<typeof useAbgleich>;

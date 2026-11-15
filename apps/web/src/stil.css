@@ -484,6 +484,17 @@ input { font-family: inherit; }
 .sync-knopf { width: 44px; height: 44px; border: 0; border-radius: 50%; background: none; display: grid; place-items: center; cursor: pointer; color: var(--tinte-2); }
 .sync-knopf:hover { background: color-mix(in srgb, var(--perg) 60%, transparent); }
 .sync-knopf .ic { width: 22px; height: 22px; }
+.sync-knopf.pause { background: var(--perg); border: 2px solid var(--honig); box-shadow: var(--schatten-k); color: var(--tinte); }
+
+/* Neue Version nötig */
+.sp-status { display: flex; justify-content: center; margin: -4px 0 14px; }
+.sp-text { margin: 0 0 14px; font-weight: 700; line-height: 1.45; }
+.modal .hinweis { margin-bottom: 14px; }
+.hinweis.warn { border-left-color: var(--warnung); }
+.hinweis.warn .ic { color: var(--warnung); }
+.sp-lade { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 46px; font-weight: 800; color: var(--tinte-2); }
+.sp-lade .ic { width: 22px; height: 22px; }
+.modal-fuss.einzeln .knopf { width: 100%; }
 .leiste .rechts .sync-platz { margin-right: -6px; }
 .kopf .sync-platz { margin-right: -4px; }
 .kopf .titel h1 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }

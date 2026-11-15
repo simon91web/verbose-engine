@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { neueSiedlung } from '@lichtung/spiel';
 import { entscheide } from './abgleich';
 import type { ServerStand } from './api';
-import { migriere, zuDaten, type Spielstand } from './spielstand';
+import { DATENVERSION, istZuNeu, migriere, zuDaten, type Spielstand } from './spielstand';
 
 const spiel = (seed: number, tag = 1) => {
   const siedlung = { ...neueSiedlung(seed), tag };
@@ -51,7 +51,33 @@ describe('entscheide', () => {
   });
 
   it('unbrauchbarer Serverstand: der von hier gilt', () => {
-    expect(entscheide(lokal(1), { revision: 2, daten: { version: 9 }, geaendert: 1 })).toEqual({ art: 'konflikt', gewinner: 'lokal' });
+    expect(entscheide(lokal(1), { revision: 2, daten: { version: 1 }, geaendert: 1 })).toEqual({ art: 'konflikt', gewinner: 'lokal' });
+  });
+});
+
+describe('entscheide bei neuerer Datenversion', () => {
+  const zuNeu = (revision = 5): ServerStand => ({ revision, daten: { ...zuDaten(spiel(2)), version: DATENVERSION + 1 }, geaendert: 5000, geraet: 'Laptop' });
+
+  it('sperrt vor allen anderen Regeln', () => {
+    expect(entscheide(lokal(1), zuNeu())).toEqual({ art: 'zuNeu' });
+    // nichts gespielt, sonst „Serverstand übernehmen“
+    expect(entscheide(lokal(1, { geaendert: 0 }), zuNeu())).toEqual({ art: 'zuNeu' });
+    // gleiche Revision, sonst „lokalGilt“
+    expect(entscheide(lokal(1, { revision: 5, ungespeichert: true }), zuNeu(5))).toEqual({ art: 'zuNeu' });
+    // beide weiterentwickelt, sonst „konflikt“
+    expect(entscheide(lokal(1, { revision: 2, ungespeichert: true, geaendert: 9000 }), zuNeu())).toEqual({ art: 'zuNeu' });
+    // nie abgeglichen, sonst „fragen“
+    expect(entscheide(lokal(1, { geaendert: 9000 }), zuNeu())).toEqual({ art: 'zuNeu' });
+  });
+
+  it('unterscheidet „zu neu“ von „unbrauchbar“', () => {
+    expect(istZuNeu({ version: DATENVERSION + 1 })).toBe(true);
+    expect(istZuNeu({ version: DATENVERSION })).toBe(false);
+    expect(istZuNeu({ version: 2 })).toBe(false);
+    expect(istZuNeu({ version: 'x' })).toBe(false);
+    expect(istZuNeu(null)).toBe(false);
+    // unbrauchbar bleibt ein Konflikt
+    expect(entscheide(lokal(1), { revision: 2, daten: { version: 'kaputt' }, geaendert: 1 })).toEqual({ art: 'konflikt', gewinner: 'lokal' });
   });
 });
 

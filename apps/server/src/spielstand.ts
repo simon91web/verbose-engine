@@ -48,6 +48,17 @@ function tagVon(daten: unknown): number | null {
   return typeof tag === 'number' && Number.isFinite(tag) ? tag : null;
 }
 
+/** Datenversion eines Stands (`daten.version`); 0, wenn sie fehlt oder keine Zahl ist. */
+export function versionVon(daten: unknown): number {
+  const v = (daten as { version?: unknown } | null)?.version;
+  return typeof v === 'number' && Number.isFinite(v) ? v : 0;
+}
+
+/** Ein Gerät mit älterer App darf keinen Stand überschreiben, den eine neuere Version gespeichert hat. */
+function waereRueckschritt(aktuell: StandZeile | undefined, e: Eingang): boolean {
+  return !!aktuell && versionVon(e.daten) < versionVon(JSON.parse(aktuell.daten));
+}
+
 interface StandZeile {
   revision: number;
   daten: string;
@@ -103,29 +114,38 @@ function schreibe(db: Datenbank, konto: number, revision: number, daten: string,
   ).run(konto, revision, daten, geaendert, geraet);
 }
 
+/** Abgelehnt: entweder passt die Basis nicht, oder auf dem Server liegt eine neuere Datenversion (`neuereVersion`). */
+export type Ablehnung = { ok: false; stand: Stand; neuereVersion: boolean };
+
 /** Speichert, wenn `basis` zur aktuellen Revision passt; sonst kommt der Serverstand zurück (für 409). */
 export function speichere(
   db: Datenbank,
   konto: number,
   basis: number,
   e: Eingang,
-): { ok: true; revision: number } | { ok: false; stand: Stand } {
+): { ok: true; revision: number } | Ablehnung {
   return transaktion(db, () => {
     const aktuell = zeile(db, konto);
     const revision = aktuell?.revision ?? 0;
-    if (basis !== revision) return { ok: false as const, stand: alsStand(aktuell) };
+    if (waereRueckschritt(aktuell, e)) return { ok: false as const, stand: alsStand(aktuell), neuereVersion: true };
+    if (basis !== revision) return { ok: false as const, stand: alsStand(aktuell), neuereVersion: false };
     schreibe(db, konto, revision + 1, JSON.stringify(e.daten), e.geaendert, e.geraet);
     return { ok: true as const, revision: revision + 1 };
   });
 }
 
-/** Setzt den Stand unabhängig von der Revision; der bisherige wird Sicherung. */
-export function erzwinge(db: Datenbank, konto: number, e: Eingang, grund: string): { revision: number } {
+/**
+ * Setzt den Stand unabhängig von der Revision; der bisherige wird Sicherung.
+ * Nur eine neuere Datenversion auf dem Server ist unantastbar: dann passiert nichts (auch keine Sicherung).
+ */
+export function erzwinge(db: Datenbank, konto: number, e: Eingang, grund: string): { ok: true; revision: number } | Ablehnung {
   return transaktion(db, () => {
-    const revision = (zeile(db, konto)?.revision ?? 0) + 1;
+    const aktuell = zeile(db, konto);
+    if (waereRueckschritt(aktuell, e)) return { ok: false as const, stand: alsStand(aktuell), neuereVersion: true };
+    const revision = (aktuell?.revision ?? 0) + 1;
     sichereAktuellen(db, konto, grund);
     schreibe(db, konto, revision, JSON.stringify(e.daten), e.geaendert, e.geraet);
-    return { revision };
+    return { ok: true as const, revision };
   });
 }
 
